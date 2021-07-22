@@ -1,0 +1,30 @@
+# remind format:
+# "src in repo" = "install dst"
+
+# TODO
+# fix handlebars/vim fold market incompatibility to use template
+# so use [[[ for all template, otherwise = { target = "DST", type = "symbolic" }
+
+# bash
+[bash.files]
+"bash/bashrc" = "~/.bashrc"
+"bash/bash_profile" = "~/.bash_profile"
+"bash/automirror.sh" = "~/.bash_automirror.sh"
+[bash.variables]
+# nop
+
+# awesome
+[awesome.files]
+"awesome/rc.lua"    = "~/.config/awesome/rc.lua"
+"awesome/theme.lua" = "~/.config/awesome/theme.lua"
+"awesome/data" = { target = "~/.config/awesome/data", type = "symbolic" }
+"awesome/awesome-wm-widgets/volume-widget" = { target = "~/.config/awesome/awesome-wm-widgets/volume-widget", type = "symbolic" }
+"awesome/awesome-wm-widgets/batteryarc-widget" = { target = "~/.config/awesome/awesome-wm-widgets/batteryarc-widget", type = "symbolic" }
+"awesome/awesome-wm-widgets/brightness-widget" = { target = "~/.config/awesome/awesome-wm-widgets/brightness-widget", type = "symbolic" }
+# variable to customize
+[awesome.variables]
+awesome_network_interface = "eth0"
+
+# dummy "flag only" packages
+[laptop.variables]
+[mac.variables]
