@@ -1,0 +1,6 @@
+# suze setup
+
+packages = ["bash", "awesome", "laptop", "mac"]
+
+[variables]
+awesome_network_interface = "ens5"

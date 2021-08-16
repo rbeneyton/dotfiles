@@ -1,0 +1,6 @@
+# sake setup
+
+packages = ["bash", "awesome"]
+
+[variables]
+awesome_network_interface = "enp2s0"
