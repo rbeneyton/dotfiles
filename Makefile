@@ -21,8 +21,8 @@ dotter-install: utils rust-update
 
 neovim-install: utils
 	# apt-get-install ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip curl
-	$(eval SRC := ~/utils/neovim/)
-	$(eval INSTALL := ~/utils/neovim_install/)
+	$(eval SRC := ${HOME}/utils/neovim/)
+	$(eval INSTALL := ${HOME}/utils/neovim_install/)
 	rm -rf $(SRC)
 	git clone --branch release-0.5 --single-branch --depth 10 https://github.com/neovim/neovim.git $(SRC)
 	# git --git-dir $(SRC) checkout -b release-0.5 origin/release-0.5
@@ -31,10 +31,37 @@ neovim-install: utils
 	make -C $(SRC) install
 	rm -rf $(SRC)
 
+libevent-install: utils
+	$(eval SRC := ${HOME}/utils/libevent/)
+	$(eval INSTALL := ${HOME}/utils/libevent_install/)
+	rm -rf $(SRC)
+	mkdir -p $(SRC)
+	wget https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz -O $(SRC)/libevent.tar.gz
+	tar xvf $(SRC)/libevent.tar.gz -C $(SRC)
+	rm $(SRC)/libevent.tar.gz
+	cd $(SRC)/libevent* && ./configure --prefix=$(INSTALL) --disable-debug-mode
+	make -C $(SRC)/libevent* all
+	rm -rf $(INSTALL)
+	make -C $(SRC)/libevent* install
+	rm -rf $(SRC)
+
+tmux-install: utils libevent-install
+	$(eval SRC := ${HOME}/utils/tmux/)
+	$(eval INSTALL := ${HOME}/utils/tmux_install/)
+	rm -rf $(SRC)
+	git clone --branch master --single-branch --depth 10 https://github.com/tmux/tmux.git $(SRC)
+	cd $(SRC) && ./autogen.sh
+	cd $(SRC) && PKG_CONFIG_PATH=${HOME}/utils/libevent_install/lib/pkgconfig/ ./configure --prefix=$(INSTALL) --disable-debug-mode
+	make -C $(SRC) all
+	rm -rf $(INSTALL)
+	make -C $(SRC) install
+	patchelf --set-rpath ${HOME}/utils/libevent_install/lib/ $(INSTALL)/bin/tmux
+	rm -rf $(SRC)
+
 debian-install: debian-install-base debian-install-net debian-install-graphic
 
 debian-install-base:
-	apt-get install git tig build-essential tmux dstat tree cmake pkg-config conda
+	apt-get install git tig build-essential tmux dstat tree cmake pkg-config conda patchelf
 
 debian-install-net:
 	apt-get install network-manager-openconnect network-manager-gnome network-manager-openconnect-gnome
