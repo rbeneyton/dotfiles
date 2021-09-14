@@ -1,0 +1,461 @@
+#export PATH=${HOME}/bin:${HOME}/local/bin:${PATH}
+#export PATH=${HOME}/bin:${HOME}/devs/tools/master_install/bin:${PATH}
+export PATH=${HOME}/bin:${HOME}/devs/tools/master_llvm_3.4_install/bin:${PATH}
+#export PATH=/home/richard/local/clang_3.4/bin/:${PATH}
+
+export PATH=${HOME}/utils/git_install/bin/:${PATH}
+export MANPATH=${HOME}/utils/git_install/share/man/:${MANPATH}
+
+export PATH=${HOME}/utils/tig_install/bin/:${PATH}
+export MANPATH=${HOME}/utils/tig_install/share/man/:${MANPATH}
+
+export PATH=${HOME}/utils/gcc_install/bin/:${PATH}
+export MANPATH=${HOME}/utils/gcc_install/share/man/:${MANPATH}
+
+export PATH=${HOME}/utils/gdb_install/bin/:${PATH}
+export MANPATH=${HOME}/utils/gdb_install/share/man/:${MANPATH}
+
+export PATH=${HOME}/utils/tmux_install/bin/:${PATH}
+export MANPATH=${HOME}/utils/tmux_install/share/man/:${MANPATH}
+
+export PATH=${HOME}/bin:$PATH
+
+#export JAVA_HOME=/usr/lib/jvm/java-6-sun
+export MCMS_HOME=/home/richard/dev/mmsx/mcms
+
+export TMUX_INSTALL=${HOME}/utils/tmux_install
+export PATH=${TMUX_INSTALL}/bin/:${PATH}
+export MANPATH=${TMUX_INSTALL}/share/man/:${MANPATH}
+
+export LANG='C.UTF-8' # never 12H date
+
+# [[[ llvm
+
+# export PATH=/opt/tmp/rbeneyton/llvm-3.9.1_install/bin/:${PATH}
+# export MANPATH=/opt/tmp/rbeneyton/llvm-3.9.1_install/share/man/:${MANPATH}
+
+# ]]]
+#export CC=gcc-5
+#export CC=gcc-4.9
+#export CXX=g++-5
+#export CXX=g++-4.9
+#export QUICK=1
+#export VERBOSE=1
+export PROFILE=debug
+export NOCOMPRESS=1
+#export PYTHONPATH=/home/richard/devs/tools/master_install/lib/python/:/home/richard/dev.3/mmsx/lib-common/
+export PYTHONPATH=/home/richard/devs/tools/master_llvm_3.4_install/lib/python/:/home/richard/devs/tools/master_llvm_3.4/lib-common/
+
+# llvm
+export LLVM=/mnt/research-live/user/rbeneyton/utils/llvm_install/
+export PATH=${LLVM}/bin:${PATH}
+export MANPATH=${LLVM}/share/man:${MANPATH}
+export ASAN_SYMBOLIZER_PATH=${LLVM}/bin/llvm-symbolizer
+
+# from /srv/tools/share/dotfiles/bashrc
+# Useful options
+if type llvm-symbolizer &> /dev/null; then
+    export ASAN_SYMBOLIZER_PATH="$(which llvm-symbolizer)"
+fi
+export ASAN_OPTIONS=abort_on_error=1:detect_leaks=1
+export LSAN_OPTIONS=use_stacks=0:use_registers=0:use_globals=1:use_tls=1
+#end
+
+
+#alacritty GPU for suze
+#export LIBGL_ALWAYS_SOFTWARE=1
+
+alias condainit='source /opt/conda/etc/profile.d/conda.sh'
+
+
+
+export MALLOC_CHECK_=2
+ulimit -c unlimited
+
+if [[ -n $PS1 ]]; then
+    export LS_COLORS='no=00:fi=00:di=00;94:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.jpg=00;35:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*.c=00;96:*.h=00;95:*.py=00;92'
+    alias ls='/bin/ls --color=tty'
+    alias ll='ls -lrth'
+    alias llo='ls -lh'
+    alias lla='ll -a'
+    alias grep='grep --color=auto'
+    alias psu='ps -flwu rbeneyton w f'
+    alias topu='top -u rbeneyton'
+    alias cutd="cut -d' '"
+
+    alias trs='tr -s "  " " " | sed -e "s/^\s*//"'
+
+    function mkcd() {
+        mkdir -p -- "$1" && cd -P -- "$1"
+    }
+    function cdmk() {
+        mkdir -p -- "$1" && cd -P -- "$1"
+    }
+
+    alias fixcursor='echo -en "\e]50;CursorShape=0\x7"'
+    alias fixcursortmux='echo -en "\e[0 q"'
+
+    alias h='history'
+
+    alias i='ipython'
+    alias is='PYTHONNOUSERSITE=on ipython'
+
+    # to get git complete functions NOW
+    if [[ -r "/usr/share/bash-completion/completions/git" ]]; then
+        . /usr/share/bash-completion/completions/git
+    elif [[ -r "/home/richard/dotfiles/git/completions_git" ]]; then
+        . /home/richard/dotfiles/git/completions_git
+    fi
+
+    alias g='git'
+    __git_complete g __git_main
+    alias gem='${EDITOR} $(git status --ignore-submodules --porcelain | grep --color=no "^[ M]M" | trs | cut -d" " -f2)'
+    alias ges='${EDITOR} $(git status --ignore-submodules --porcelain | grep --color=no "^M" | trs | cut -d" " -f2)'
+    alias ge='${EDITOR} $(git status --ignore-submodules --porcelain | grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)'
+    alias gep='${EDITOR} $(git show --pretty="format:" --name-only)'
+
+    alias gt='cd $(git-top)'
+
+    alias gst='/usr/bin/git status'
+
+    alias gup='p=$PWD; cd ~/devs/bares; for i in clang.git compiler-rt.git google-map lib-common llvm.git mmsx platform qdb qrrd tcpdf tools v8 ; do echo $i; cd $i; g fea; cd ..; echo "" ;done ; cd $p'
+    alias gupl='p=$PWD; cd ~/devs/bares; for i in lib-common mmsx platform qrrd ; do echo $i; cd $i; g fe origin; cd ..; echo "" ;done ; cd $p'
+    alias gnw='sh /usr/share/doc/git/contrib/workdir/git-new-workdir'
+    # create workdirs for all uninitialized submodules, using ~/devs/bares/ repositories (delete empty folder if present)
+    alias gsubf='for i in $(git submodule status | sed "/^[U+ ]/d" | sed "s/^-//" | sed "s/ /@/" ) ; do export sha=$(echo $i | cut -d"@" -f1) ; export name=$(echo $i | cut -d"@" -f2) ; export repo=$(echo $name | rev | cut -d"/" -f1 | rev) ; echo setup $name at $sha … ; rmdir $name 2>/dev/null ; gnw ~/devs/bares/$repo $name $sha 1>/dev/null 2>/dev/null || { echo "failed to setup $name (using command \$ gnw ~/devs/bares/$repo $name $sha)"; break ; } ; git submodule init $name 1>/dev/null || { echo "failed to init $name (using command \$ git submodule init $name)"; break ; } ; done'
+
+    alias tmuxssh-add='rm -f $SSH_AUTH_SOCK ; kill -9 $(pidof ssh-agent) ; ssh-agent -a $SSH_AUTH_SOCK && ssh-add'
+
+    #alias t='/usr/bin/tig'
+    alias t='tig --date-order -500'
+    __git_complete t _git_show
+
+    #complete -o default -o nospace -F _git g
+    #. /usr/share/stgit/completion/stgit-completion.bash
+    #__git_complete g __git_main
+    #complete -o bashdefault -o default -o nospace -F _git g 2>/dev/null \
+    #    || complete -o default -o nospace -F _git g
+    #complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g 2>/dev/null \
+    #    || complete -o default -o nospace -F __git_wrap__git_main g
+
+    alias gl='/usr/bin/git logp -10'
+    __git_complete gl _git_show
+    alias gll='/usr/bin/git logp -25'
+    __git_complete gll _git_show
+    alias glll='/usr/bin/git logp -50'
+    __git_complete glll _git_show
+    alias gllll='/usr/bin/git logp -87'
+    __git_complete gllll _git_show
+
+    alias gs='/usr/bin/git st'
+
+    alias gv='/usr/bin/git v'
+
+    alias ga='/usr/bin/git add'
+    __git_complete gc _git_add
+
+    alias gc='/usr/bin/git commit'
+    __git_complete gc _git_commit
+
+    alias gr='grep --color'
+
+    alias ggr='/usr/bin/git gr'
+    __git_complete ggr _git_grep
+
+    #flat list of branches, for using in scripts
+    alias gbr='/usr/bin/git branch | sed "s/\*//" | sed "s/^\s*//"'
+
+    alias tempo='/usr/bin/git commit -m tempo -a'
+    alias tempoo='/usr/bin/git commit -m tempo -o '
+    alias k='kate -u'
+    if [[ -r "${HOME}/utils/neovim_install/bin/nvim" ]]; then
+        export PATH=${HOME}/utils/neovim_install/bin:${PATH}
+
+        alias v='nvim '
+        alias va='nvim ~/dotfiles/start.txt'
+        alias vr='nvim -R'
+        alias vl='nvim -S ~/.cache/session.vim'
+        alias vimdiff='nvim -d'
+    else
+        alias v='vim '
+        alias va='vim ~/dotfiles/start.txt'
+        alias vr='vim -R'
+        alias vl='vim -S ~/.cache/session.vim'
+    fi
+    alias v='nvim '
+    alias vim='nvim '
+    alias va='nvim ~/dotfiles/start.txt'
+    alias vr='nvim -R'
+    alias vl='nvim -S ~/.cache/session.vim'
+    alias vimdiff='nvim -d'
+
+    alias f='find . -name '
+    alias l='less '
+    alias p='pstree -ap | less '
+    alias m='make '
+    alias mn='make NOCHECK=1 '
+    alias mnn='make NOCHECK=1 NOLINK=1 && echo "XXX: NO LINK!"'
+    alias mc="Z_TAG_SKIP='upgrade wip' Z_MODE=' ' make check"
+
+    alias tags='mn tags && sed -i -e "s/signature:([^)]*)//" -e "7,\$s@\t@\t"${PWD}"/@" .tags'
+    #alias tree='tree -s --du -r -D'
+    alias ldap="ldapsearch -LLL -h 192.168.2.2 -x -b 'dc=intersec,dc=com' mail"
+
+    #go to the upper git repo head (returned value is correct)
+    alias up='export A=$(pwd); while git rev-parse --show-toplevel 1> /dev/null 2> /dev/null ; do export A=$(git rev-parse --show-toplevel 2> /dev/null) ; cd $A/.. ; done ; cd $A; unset A; git rev-parse --show-toplevel 1> /dev/null 2> /dev/null'
+
+    #build/refresh cscope db
+    alias cs='export B=$(pwd) ; up && find $PWD -regextype sed -regex ".*/[^.]*\.\(c\|cpp\|blk\|blkk\|h\|inc\.c\)$" -type f -print | grep -v "iop-compat.h" | grep -v "\/compat\/" | sort > .cscope.files && cscope $(grep -- "-I" .syntastic_c_config) -ub -i.cscope.files -f.cscope.out && echo "cscope build/updated"; cd $B; unset B'
+
+    alias check='Z_TAG_SKIP="upgrade wip" Z_MODE=" " make check'
+
+    alias gerrit='ssh -p 29418 git.corp gerrit'
+    alias c='cd /home/richard/dev.3/mmsx/'
+    alias c='cd /home/richard/devs/mmsx/igloo/4.1.plt/'
+    alias c='cd /home/richard/devs/platform/2015.1/'
+    alias c='cd /home/richard/devs/platform/master/'
+
+    alias tmuxa='tmux -2 att -d -t'
+    alias tmuxl='tmux ls'
+    alias tmuxn='tmux -2 new -s'
+    function tmuxd { tmux select-layout even-vertical 1>/dev/null 2>/dev/null; tmux split-window; sleep 1; tmux send-keys "$@" ; tmux send-keys 'C-m'; }
+    # affiche un pstree sur toutes les sessions/windows/panes (en prepend de line), sans les shells (bash):
+    alias tmuxps='for s in $(tmux list-sessions -F "#{session_name}") ; do for p in $(tmux list-panes -s -F "#{window_name} #{window_index}.#{pane_index} [#{pane_pid}]" -t "$s" | sed "s@ @_@g") ; do export w=$(echo $p | sed "s@\(.*\)_\[.*@\1@; s@_@ @") ; export b=$(echo $p | sed "s@.*\[\(.*\)\]@\1@g") ; pstree -ap -U -p $b | grep -v ",${b}$" | sed "s@^@$s:\t$w:\t@" ; done ; done'
+
+
+    #export LOCAL_IP=`hostname -i`
+    #export PS1="[\t] \u@\h [${LOCAL_IP}] (\!) \w > "
+
+    set history=50000
+    #set savehist=(10000 merge)
+    alias less='less -WsJ -j3 -x2'
+    alias lless='less -WsNJ -j3 -x2'
+    alias style='~/bin/astyle --indent=spaces=4 --style=linux --max-instatement-indent=40 --min-conditional-indent=2 --pad-oper --pad-header --unpad-paren --break-elseifs --align-pointer=name'
+
+    alias gdb='gdb -q'
+
+    alias automirror='AUTOMIRROR_PRIMARY_DISPLAY=eDP1 AUTOMIRROR_NOTIFY_COMMAND=echo ~/dotfiles/bash/automirror.sh'
+
+    #export LESS=aRi
+    #if [[ -n "$(which most)" ]]; then
+    #    export MANPAGER=most
+    #fi
+    export MANPAGER="/bin/sh -c \"unset PAGER;col -b -x | vim -R -c 'set ft=man nomod nolist nonumber norelativenumber readonly' -c 'map q :q<CR>' -c 'map <SPACE> <C-D>' -\""
+    export MANPAGER='nvim +Man!'
+
+    #command starting with ' ' aren't recorded
+    export HISTCONTROL=ignoreboth
+
+    HOSTNAME=$(hostname)
+    if [ "${HOSTNAME:0:7}" == "schnaps" ]; then
+        export MCABBER_JID="richard.beneyton@intersec.com"
+        #export MCABBER_HISTO="histo-${HOSTNAME}"
+    fi
+
+    # activate **
+    shopt -s globstar
+
+    function masterof { lsof -a -U -p $(pidof igl-master | tr -s ' ' ',') | grep igl-$1 | cut -d' ' -f2 | sort | uniq; }
+#     function __prompt_git() 
+#     { 
+#         local git_dir ref br; 
+#         git_dir=$(git rev-parse --git-dir 2> /dev/null) || return 
+#         ref=$(git symbolic-ref HEAD 2> /dev/null) || return 
+#         br=${ref#refs/heads/} 
+#         #nb=$(git status |grep modified:|wc -l 2> /dev/null) || return 
+#         #if test $nb -eq 0; then 
+#           echo -e "[git:$br]" 
+#         #else 
+#         #    echo -e "[git:$br($nb)]" 
+#         #fi 
+#     } 
+
+
+    #from http://www.git-attitude.fr/2010/07/14/le-prompt-bash-qui-change-la-vie-avec-git/
+    # Scavenged from Git 1.6.5.x contrib/completion/git_completion.bash
+    # __git_ps1 accepts 0 or 1 arguments (i.e., format string)
+    # returns text to add to bash PS1 prompt (includes branch name)
+    __gitdir ()
+    {
+    if [ -z "${1-}" ]; then
+        if [ -n "${__git_dir-}" ]; then
+            echo "$__git_dir"
+        elif [ -d .git ]; then
+            echo .git
+        else
+            git rev-parse --git-dir 2>/dev/null
+        fi
+    elif [ -d "$1/.git" ]; then
+        echo "$1/.git"
+    else
+        echo "$1"
+    fi
+    }
+    __git_ps1 ()
+    {
+    local g="$(__gitdir)"
+    if [ -n "$g" ]; then
+        local r
+        local b
+        if [ -f "$g/rebase-merge/interactive" ]; then
+            r="|REBASE-i"
+            b="$(cat "$g/rebase-merge/head-name")"
+        elif [ -d "$g/rebase-merge" ]; then
+            r="|REBASE-m"
+            b="$(cat "$g/rebase-merge/head-name")"
+        else
+        if [ -d "$g/rebase-apply" ]; then
+            if [ -f "$g/rebase-apply/rebasing" ]; then
+                r="|REBASE"
+            elif [ -f "$g/rebase-apply/applying" ]; then
+                r="|AM"
+            else
+                r="|AM/REBASE"
+            fi
+        elif [ -f "$g/MERGE_HEAD" ]; then
+            r="|MERGING"
+        elif [ -f "$g/BISECT_LOG" ]; then
+            r="|BISECTING"
+        fi
+
+        b="$(git symbolic-ref HEAD 2>/dev/null)" || {
+
+            b="$(
+            case "${GIT_PS1_DESCRIBE_STYLE-}" in
+            (contains)
+                git describe --contains HEAD ;;
+            (branch)
+                git describe --contains --all HEAD ;;
+            (describe)
+                git describe HEAD ;;
+            (* | default)
+                git describe --exact-match HEAD ;;
+            esac 2>/dev/null)" ||
+
+            b="$(cut -c1-7 "$g/HEAD" 2>/dev/null)..." ||
+            b="unknown"
+            b="($b)"
+        }
+        fi
+
+        local w
+        local i
+        local s
+        local u
+        local c
+
+        if [ "true" = "$(git rev-parse --is-inside-git-dir 2>/dev/null)" ]; then
+        if [ "true" = "$(git rev-parse --is-bare-repository 2>/dev/null)" ]; then
+            c="BARE:"
+        else
+            b="GIT_DIR!"
+        fi
+        elif [ "true" = "$(git rev-parse --is-inside-work-tree 2>/dev/null)" ]; then
+        if [ -n "${GIT_PS1_SHOWDIRTYSTATE-}" ]; then
+            if [ "$(git config --bool bash.showDirtyState)" != "false" ]; then
+                git diff --no-ext-diff --ignore-submodules \
+                --quiet --exit-code || w=" *"
+                if git rev-parse --quiet --verify HEAD >/dev/null; then
+                    git diff-index --cached --quiet \
+                    --ignore-submodules HEAD -- || i=" +"
+                else
+                    i=" #"
+                fi
+            fi
+        fi
+        if [ -n "${GIT_PS1_SHOWSTASHSTATE-}" ]; then
+            git rev-parse --verify refs/stash >/dev/null 2>&1 && s=" S"
+        fi
+
+        if [ -n "${GIT_PS1_SHOWUNTRACKEDFILES-}" ]; then
+            if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+                u=" U"
+            fi
+        fi
+        fi
+
+        if [ -n "${1-}" ]; then
+            printf "$1" "$c${b##refs/heads/}$w$i$s$u$r"
+        else
+            printf " (%s)" "$c${b##refs/heads/}$w$i$s$u$r"
+        fi
+    fi
+    }
+
+    export GIT_PS1_SHOWDIRTYSTATE=1
+    export GIT_PS1_SHOWUNTRACKEDFILES=1
+    export GIT_PS1_SHOWSTASHSTATE=1
+    export GIT_PS1_DESCRIBE_STYLE="branch"
+
+    # En fait l'important ici c'est le "\033[1;32m\]$(__git_ps1)\[\033[0m\]", le reste c'est mon prompt usuel…
+    #export PS1='\[\033[0;37m\]\u@\h:\[\033[0;33m\]\W\[\033[0m\]\[\033[1;32m\]$(__git_ps1)\[\033[0m\] \$ '
+
+    export PROMPT_COMMAND=__exit_status
+    function __exit_status() {
+        local EXIT="$?"
+        if [ $EXIT != 0 ]; then
+            export PS1_EXIT_E="${EXIT} $"
+            export PS1_EXIT=""
+        else
+            export PS1_EXIT_E=""
+            export PS1_EXIT="$"
+        fi
+        # only evaluate hostname once
+        #export SHORT_HOSTNAME=${SHORT_HOSTNAME-$(hostname | sed 's/.cfm.fr//')}
+        export SHORT_HOSTNAME="unknown"
+        if type hostname &> /dev/null
+        then
+            export SHORT_HOSTNAME=$(hostname)
+            #export SHORT_HOSTNAME=${SHORT_HOSTNAME/.cfm.fr/}
+        fi
+        #export ALIAS_HOSTNAME=$(dig -t TXT ${SHORT_HOSTNAME%.*}.reverse.cfm.fr | sed '/^;/d' | grep TXT | sed 's/[^"]*"\([^"]*\)"[^"]*/\1/' | sed 's/\.cfm\.fr//')
+    }
+
+    #PS1='[\t] \[\e[34;1m\]@\[\e[32;1m\]\H\[\033[1;31m\]$(__git_ps1)\[\033[0m\] \w \[\e[31;1m\]${PS1_EXIT_E}\[\e[0m\]\[\e[36;1m\]${PS1_EXIT}\[\e[0m\] '
+    #PS1='[\t] \[\e[34;1m\]@\[\e[32;1m\]\H\[\033[1;31m\]$(__git_ps1)\[\033[0m\] \w \! \[\e[31;1m\]${PS1_EXIT}\$ \[\e[0m\]'
+    #PS1='[\t] \[\e[34;1m\]\u@\[\e[32;1m\]\H:\[\e[31;1m\]$(__prompt_git) \[\e[0m\]\w \[\e[31;1m\]\$ \[\e[0m\]' 
+    PS1='[\t] \[\e[34;1m\]@\[\e[32;1m\]\H\[\033[1;31m\]$(__git_ps1)\[\033[0m\] \w \[\e[31;1m\]${PS1_EXIT_E}\[\e[0m\]\[\e[36;1m\]${PS1_EXIT}\[\e[0m\] '
+    PS1='[\t] \[\e[34;1m\]@\[\e[32;1m\]${SHORT_HOSTNAME}\[\033[1;31m\]$(__git_ps1)\[\033[0m\] \w \[\e[31;1m\]${PS1_EXIT_E}\[\e[0m\]\[\e[36;1m\]${PS1_EXIT}\[\e[0m\] '
+    # PS1='[\t] \[\e[34;1m\]@\[\e[32;1m\]${SHORT_HOSTNAME} ${ALIAS_HOSTNAME}\[\033[1;31m\]$(__git_ps1)\[\033[0m\] \w \[\e[31;1m\]${PS1_EXIT_E}\[\e[0m\]\[\e[36;1m\]${PS1_EXIT}\[\e[0m\] '
+
+    # powerline
+    #. /home/richard/dotfiles/powerline/powerline/bindings/bash/powerline.sh
+fi #PS1
+
+
+if [[ -n $PS1 ]]; then
+    if type bind &> /dev/null && type stty &> /dev/null
+    then
+        bind "\C-f":forward-word
+        bind "\C-g":forward-backward-delete-char
+        #see stty -a
+        stty lnext undef #^V
+        bind "\C-v":forward-char
+        stty werase undef #^W
+        stty eof undef #^D
+        bind "\C-h":backward-delete-char
+        bind "\C-j":backward-word
+        bind "\C-n":backward-char
+        bind "\C-p":previous-history #def
+        bind "\C-o":next-history
+        bind "\C-d":kill-word
+        #richard's mapping:
+        # w[<-EATW]                      o[HIST-] p[HIST-]
+        # d[EATW->] f[word->] g[eat->] h[<-eat] j[<-word]
+        #                v[->]              n[<-]  m[ENTER]
+        #bind "\C-j":vi-insertion-mode
+        #bind "\C-j":vi-movement-mode
+    fi
+fi #PS1
+#set -o vi
+
+# Predictable SSH authentication socket location.
+SOCK="/tmp/ssh-agent-$USER-screen"
+#if [ -S "$SSH_AUTH_SOCK" ] && [ ! -h "$SSH_AUTH_SOCK" ]; then
+#    ln -sf "$SSH_AUTH_SOCK" $SOCK
+#fi
+export SSH_AUTH_SOCK=$SOCK
+. "$HOME/.cargo/env"
+
+# dotter/handlebars+fold incompatibility: temporary [[[ / ]]]]
+# vim: foldmarker=[[[,]]]

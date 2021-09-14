@@ -1,0 +1,40 @@
+xkb_keymap {
+    xkb_keycodes { include "evdev+aliases(qwerty)" };
+    xkb_types {
+        include "complete"
+        type "SIMPLE_3_LEVEL_ONLY" {
+            modifiers = Shift+Control;
+            map[Shift] = Level2;
+            map[Control] = Level3;
+            level_name[Level1] = "Base";
+            level_name[Level2] = "Shift";
+            level_name[Level3] = "Control";
+        };
+    };
+    xkb_compat { include "complete" };
+    # default  partial alphanumeric_keys modifier_keys
+    xkb_symbols "us(rb)" {
+        include "pc"
+        # note the different keyword to only define a variant!
+{{#if dotter.packages.mac}}
+        augment "us(mac)"
+{{else}}
+        augment "us(basic)"
+{{/if}}
+            name[Group1]= "English (US, tmux friendly)";
+            key <AC10> {
+                type= "SIMPLE_3_LEVEL_ONLY",
+                # then I add 'Home' as Ctrl+';', which will be remapped
+                # to Ctrl+'b' in alacritty for simplicity, to avoid
+                # multiple prefix and allow nested tmux
+                symbols[Group1]= [ semicolon, colon, KP_Home ]
+            };
+        include "inet(evdev)"
+        include "level3(menu_switch)"
+        include "ctrl(nocaps)"
+        include "compose(ralt)"
+        include "compose(rwin)"
+        include "shift(both_capslock_cancel)"
+    };
+    # geometry not required
+};

@@ -1,0 +1,276 @@
+set confirm off
+set print elements 2000
+#entire string
+set print elements 0
+
+set print null-stop
+set print pretty on
+set history filename /home/richard/.gdbhistory
+set history save on
+set history size 65536
+set history expansion on
+#handle SIGSEGV nostop
+#handle SIGSEGV noprint
+#set follow-fork-mode child
+
+set tui border-mode normal
+set tui active-border-mode bold-standout
+set tui border-kind acs
+# tabset 4
+
+define xxd
+    dump binary memory dump.bin $arg0 $arg0+$arg1
+    shell xxd dump.bin
+end
+
+set print static-members on
+set print vtbl on
+set print demangle on
+set demangle-style gnu-v3
+set print sevenbit-strings off
+#set python print-stack full
+
+# colors!
+set style sources on
+
+set style filename foreground red
+set style filename background black
+# set style filename intensity VALUE
+
+set style function foreground yellow
+set style function background black
+# set style function intensity VALUE
+
+set style variable foreground cyan
+set style variable background black
+# set style variable intensity VALUE
+
+set style address foreground green
+set style address background black
+# set style address intensity VALUE
+
+# FIX pb with highlight
+# cp -ra /usr/share/source-highlight ${HOME}/.source-highlight
+# export SOURCE_HIGHLIGHT_DATADIR=${HOME}/.source-highlight
+# $ grep function ${SOURCE_HIGHLIGHT_DATADIR}/esc.style
+# function black b; -> function b;
+
+# Comment        xxx ctermfg=239 guifg=#80a0ff
+# Constant       xxx ctermfg=37 guifg=#ffa0a0
+# Special        xxx ctermfg=124 guifg=Orange
+# Statement      xxx ctermfg=64 gui=bold guifg=#ffff60
+# PreProc        xxx ctermfg=166 guifg=#ff80ff
+# Underlined     xxx ctermfg=61 gui=underline guifg=#80a0ff
+# Ignore         xxx guifg=bg
+# Todo           xxx cterm=bold ctermfg=125 guifg=Blue guibg=Yellow
+# Character      xxx links to Constant
+# Boolean        xxx links to Constant
+# Float          xxx links to Number
+# Function       xxx links to Identifier
+# Conditional    xxx links to Statement
+# Repeat         xxx links to Statement
+# Label          xxx links to Statement
+# Keyword        xxx links to Statement
+# Exception      xxx links to Statement
+# Include        xxx links to PreProc
+# Define         xxx links to PreProc
+# Macro          xxx links to PreProc
+# PreCondit      xxx links to PreProc
+# StorageClass   xxx links to Type
+# Structure      xxx links to Type
+# Typedef        xxx links to Type
+# Tag            xxx links to Special
+# SpecialComment xxx links to Special
+# Debug          xxx links to Special
+# VisualNOS      xxx cterm=reverse ctermbg=235
+# vimVar         xxx links to Identifier
+# vimFunc        xxx links to Function
+# vimUserFunc    xxx links to Function
+# helpSpecial    xxx links to Special
+
+# python
+# sys.path.insert(0, '/home/rbeneyton/dotfiles/gdb/pahole-gdb/')
+# import offsets
+# import pahole
+# end
+# to use: (gdb) pahole <name-of-the-struct>
+
+# alias m = make
+
+
+#set prompt \033[31mgdb$ \033[0m
+# If you use the GNU debugger gdb to debug the Python C runtime, you
+# might find some of the following commands useful.  Copy this to your
+# ~/.gdbinit file and it'll get loaded into gdb automatically when you
+# start it up.  Then, at the gdb prompt you can do things like:
+#
+#    (gdb) pyo apyobjectptr
+#    <module 'foobar' (built-in)>
+#    refcounts: 1
+#    address    : 84a7a2c
+#    $1 = void
+#    (gdb)
+#
+# NOTE: If you have gdb 7 or later, it supports debugging of Python directly
+# with embedded macros that you may find superior to what is in here.
+# See Tools/gdb/libpython.py and http://bugs.python.org/issue8032.
+
+# Prints a representation of the object to stderr, along with the
+# number of reference counts it current has and the hex address the
+# object is allocated at.  The argument must be a PyObject*
+define pyo
+    # side effect of calling _PyObject_Dump is to dump the object's
+    # info - assigning just prevents gdb from printing the
+    # NULL return value
+    set $_unused_void = _PyObject_Dump($arg0)
+end
+
+# Prints a representation of the object to stderr, along with the
+# number of reference counts it current has and the hex address the
+# object is allocated at.  The argument must be a PyGC_Head*
+define pyg
+    print _PyGC_Dump($arg0)
+end
+
+# print the local variables of the current frame
+define pylocals
+    set $_i = 0
+    while $_i < f->f_code->co_nlocals
+	if f->f_localsplus + $_i != 0
+	    set $_names = co->co_varnames
+	    set $_name = PyString_AsString(PyTuple_GetItem($_names, $_i))
+	    printf "%s:\n", $_name
+            pyo f->f_localsplus[$_i]
+	end
+        set $_i = $_i + 1
+    end
+end
+
+# A rewrite of the Python interpreter's line number calculator in GDB's
+# command language
+define lineno
+    set $__continue = 1
+    set $__co = f->f_code
+    set $__lasti = f->f_lasti
+    set $__sz = ((PyStringObject *)$__co->co_lnotab)->ob_size/2
+    set $__p = (unsigned char *)((PyStringObject *)$__co->co_lnotab)->ob_sval
+    set $__li = $__co->co_firstlineno
+    set $__ad = 0
+    while ($__sz-1 >= 0 && $__continue)
+      set $__sz = $__sz - 1
+      set $__ad = $__ad + *$__p
+      set $__p = $__p + 1
+      if ($__ad > $__lasti)
+        set $__continue = 0
+      else
+        set $__li = $__li + *$__p
+        set $__p = $__p + 1
+      end
+    end
+    printf "%d", $__li
+end
+
+# print the current frame - verbose
+define pyframev
+    pyframe
+    pylocals
+end
+
+define pyframe
+    set $__fn = (char *)((PyStringObject *)co->co_filename)->ob_sval
+    set $__n = (char *)((PyStringObject *)co->co_name)->ob_sval
+    printf "%s (", $__fn
+    lineno
+    printf "): %s\n", $__n
+### Uncomment these lines when using from within Emacs/XEmacs so it will
+### automatically track/display the current Python source line
+#    printf "%c%c%s:", 032, 032, $__fn
+#    lineno
+#    printf ":1\n"
+end
+
+define printframe
+    if $pc > PyEval_EvalFrameEx && $pc < PyEval_EvalCodeEx
+        pyframe
+    else
+        frame
+    end
+end
+
+# Here's a somewhat fragile way to print the entire Python stack from gdb.
+# It's fragile because the tests for the value of $pc depend on the layout
+# of specific functions in the C source code.
+
+# Explanation of while and if tests: We want to pop up the stack until we
+# land in Py_Main (this is probably an incorrect assumption in an embedded
+# interpreter, but the test can be extended by an interested party).  If
+# Py_Main <= $pc <= Py_GetArgcArv is true, $pc is in Py_Main(), so the while
+# tests succeeds as long as it's not true.  In a similar fashion the if
+# statement tests to see if we are in PyEval_EvalFrameEx().
+
+# Note: The name of the main interpreter function and the function which
+# follow it has changed over time.  This version of pystack works with this
+# version of Python.  If you try using it with older or newer versions of
+# the interpreter you may will have to change the functions you compare with
+# $pc.
+
+# print the entire Python call stack
+define pystack
+    while $pc < Py_Main || $pc > Py_GetArgcArgv
+        if $pc > PyEval_EvalFrameEx && $pc < PyEval_EvalCodeEx
+            pyframe
+        end
+        up-silently 1
+    end
+    select-frame 0
+end
+
+# print the entire Python call stack - verbose mode
+define pystackv
+    while $pc < Py_Main || $pc > Py_GetArgcArgv
+        if $pc > PyEval_EvalFrameEx && $pc < PyEval_EvalCodeEx
+            pyframev
+        end
+        up-silently 1
+    end
+    select-frame 0
+end
+
+# generally useful macro to print a Unicode string
+define pu
+  set $uni = $arg0 
+  set $i = 0
+  while (*$uni && $i++<100)
+    if (*$uni < 0x80) 
+      print *(char*)$uni++
+    else
+      print /x *(short*)$uni++
+    end
+  end
+end
+
+
+
+
+# own macro: hexdump
+python
+import os
+sys.path.insert(0, os.environ["HOME"] + "/.config/gdb/own/")
+import own
+end
+
+# pahole
+python
+import os
+sys.path.insert(0, os.environ["HOME"] + "/.config/gdb/pahole/")
+import offsets
+import pahole
+end
+
+# eigen
+python
+import os
+sys.path.insert(0, os.environ["HOME"] + "/.config/gdb/eigengdb/")
+import eigengdb
+eigengdb.register_eigen_printers(None)
+end
