@@ -3,7 +3,7 @@
 	url = https://github.com/streetturtle/awesome-wm-widgets.git
 [submodule "gdb/eigengdb"]
 	path = gdb/eigengdb
-	url = https://github.com/dmillard/eigengdb.git
+	url = git://github.com/dmillard/eigengdb.git
 [submodule "gdb/pahole"]
 	path = gdb/pahole
-	url = https://github.com/PhilArmstrong/pahole-gdb.git
+	url = git://github.com/PhilArmstrong/pahole-gdb.git
