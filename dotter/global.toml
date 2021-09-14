@@ -38,7 +38,7 @@ awesome_network_interface = "eth0"
 [alacritty.files]
 "alacritty/alacritty.yml" = "~/.config/alacritty/alacritty.yml"
 
-# alacritty
+# xkb
 [xkb.files]
 "xkb/keymap.xkb" = "~/.config/xkb/keymap.xkb"
 

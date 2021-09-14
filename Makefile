@@ -12,6 +12,9 @@ GNU_MIRROR = https://ftp.igh.cnrs.fr/pub/gnu/
 
 utils-install: gdb-install tig-install dotter-install neovim-install
 
+up:
+	dotter -l $(shell hostname).toml -v
+
 # {{{ dotter
 
 dotter-install: utils rust-update
