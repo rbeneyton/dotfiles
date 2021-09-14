@@ -1,6 +1,17 @@
 # suze setup
 
-packages = ["bash", "awesome", "laptop", "mac"]
+packages = [
+    "alacritty",
+    "awesome",
+    "bash",
+    "bluetooth",
+    "gdb",
+    "gtk",
+    "laptop",
+    "mac",
+    "redshift",
+    "xkb",
+    ]
 
 [variables]
 awesome_network_interface = "ens5"

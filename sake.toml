@@ -1,6 +1,15 @@
 # sake setup
 
-packages = ["bash", "awesome"]
+packages = [
+    "alacritty",
+    "awesome",
+    "bash",
+    "bluetooth",
+    "gdb",
+    "gtk",
+    "redshift",
+    "xkb",
+    ]
 
 [variables]
 awesome_network_interface = "enp2s0"

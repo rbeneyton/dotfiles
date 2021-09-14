@@ -414,7 +414,7 @@ awful.screen.connect_for_each_screen(function(s)
             brightness_widget{
                 type = 'icon_and_text',
                 program = 'light',
-                step = 5,        
+                step = 5,
                 timeout = 100000,
                 base = 25,
             },
@@ -829,19 +829,23 @@ run_if_not_running("parcellite", "")
 
 {{#if dotter.packages.mac}}
 -- macbook
-awful.spawn("setxkbmap -layout us -variant mac -option compose:rwin,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch,apple:alupckeys")
+-- awful.spawn("setxkbmap -layout us -variant mac -option compose:rwin,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch,apple:alupckeys")
 {{else}}
 -- usual keyboard setup
-awful.spawn("setxkbmap -layout us -option compose:lalt,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch")
+-- awful.spawn("setxkbmap -layout us -option compose:lalt,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch")
 {{/if}}
+awful.spawn("xkbcomp ~/.config/xkb/keymap.xkb $DISPLAY")
 
 -- awful.spawn("kmix")
-{{#if dotter.packages.laptop}}
+{{#if dotter.packages.bluetooth}}
 -- bluetooth (TODO also sake once dongle installed in sake)
 run_if_not_running("blueman-applet", "")
 run_if_not_running("pasystray", "")
 {{/if}}
 
+{{#if dotter.packages.redshift}}
+run_if_not_running("redshift-gtk", "")
+{{/if}}
 
 --if host == 'sake' or host == 'macbook_a' then
 --    run_once("nm-applet")

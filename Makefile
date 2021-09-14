@@ -3,6 +3,7 @@ NPROC=$(shell nproc)
 all:
 	true
 
+BIN = ${HOME}/bin
 UTILS = ${HOME}/utils
 $(UTILS):
 	mkdir -p $@
@@ -11,16 +12,195 @@ GNU_MIRROR = https://ftp.igh.cnrs.fr/pub/gnu/
 
 utils-install: gdb-install tig-install dotter-install neovim-install
 
-# {{{ rust
+# {{{ dotter
 
-rust-install:
-	type rustc || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
-rust-update: rust-install
-	rustup update
+dotter-install: utils rust-update
+	$(eval SRC := ~/utils/dotter/)
+	rm -rf $(SRC)
+	git clone git://github.com/SuperCuber/dotter.git $(SRC)
+	cargo build --manifest-path $(SRC)/Cargo.toml --release
+	cp $(SRC)/target/release/dotter $(BIN)
+	rm -rf $(SRC)/target
+	rm -rf $(SRC)
 
 # }}}
-# {{{ gcc/gdb
+# {{{ git/tig
+
+GIT_INSTALL = $(UTILS)/git_install
+$(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
+	$(eval NAME := git)
+	$(eval SRC := $(UTILS)/$(NAME))
+	$(eval TAR := $(UTILS)/$(NAME).tar.gz)
+	$(eval INSTALL := $(UTILS)/$(NAME)_install)
+	# no out-of-source-tree support
+	rm -rf $(SRC)
+	mkdir -p $(SRC)
+	wget https://www.kernel.org/pub/software/scm/git/git-2.33.0.tar.gz -O $(TAR)
+	tar xvf $(TAR) -C $(SRC) --strip-components 1
+	rm $(TAR)
+	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+		bash --noprofile --norc -c " \
+			set -e; \
+			cd $(SRC); \
+			CPP=$(GCC_INSTALL)/bin/cpp \
+			CC=$(GCC_INSTALL)/bin/gcc \
+			CFLAGS='-march=native -flto -O3' \
+			$(SRC)/configure \
+				--prefix=$(INSTALL) \
+				--with-curl \
+				--with-libpcre2 \
+				; \
+			make -j $$(($(NPROC) + 1)) all; \
+			make doc; \
+			rm -rf $(INSTALL); \
+			make install install-doc; \
+			rm -rf $(SRC);")
+git : $(GIT_INSTALL)
+
+TIG_INSTALL = $(UTILS)/tig_install
+$(TIG_INSTALL) : | $(GCC_INSTALL) $(GIT_INSTALL) $(UTILS)
+	$(eval NAME := tig)
+	$(eval SRC := $(UTILS)/$(NAME))
+	$(eval INSTALL := $(UTILS)/$(NAME)_install)
+	# no out-of-source-tree support
+	rm -rf $(SRC)
+	git clone --branch master --single-branch --depth 30 git://github.com/jonas/tig.git $(SRC)
+	make -C $(SRC) configure
+	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+		bash --noprofile --norc -c " \
+			set -e; \
+			cd $(SRC); \
+			CPP=$(GCC_INSTALL)/bin/cpp \
+			CC=$(GCC_INSTALL)/bin/gcc \
+			CFLAGS='-march=native -flto -O3' \
+			$(SRC)/configure \
+				--prefix=$(INSTALL) \
+				; \
+			make -j $$(($(NPROC) + 1)) all; \
+			make doc; \
+			rm -rf $(INSTALL); \
+			make install install-doc; \
+			rm -rf $(SRC);")
+tig : $(TIG_INSTALL)
+
+# }}}
+# {{{ neovim
+
+NEOVIM_INSTALL = $(UTILS)/neovim_install
+$(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
+	# apt-get-install ninja-build gettext
+	$(eval NAME := neovim)
+	$(eval SRC := ${HOME}/utils/$(NAME)/)
+	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
+	$(eval BUILD := $(SRC)/build/)
+	rm -rf $(SRC)
+	git clone --branch release-0.5 --single-branch --depth 10 git://github.com/neovim/neovim.git $(SRC)
+	# make -C $(SRC) CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$(INSTALL)"
+	mkdir -p $(BUILD)
+	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+		bash --noprofile --norc -c " \
+			set -e; \
+			cd $(BUILD); \
+			CPP=$(GCC_INSTALL)/bin/cpp \
+			CC=$(GCC_INSTALL)/bin/gcc \
+			CFLAGS='-march=native -flto -O3 -DNDEBUG' \
+			CXX=$(GCC_INSTALL)/bin/g++ \
+			CXXFLAGS='-march=native -flto -O3 -DNDEBUG' \
+			LDFLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64' \
+			nice -n 20 \
+				make -C $(SRC) \
+					-j $$(($(NPROC) + 1)) \
+					CMAKE_BUILD_TYPE=Invalid \
+					CMAKE_INSTALL_PREFIX=$(INSTALL) \
+				; \
+			rm -rf $(INSTALL); \
+			make install; \
+			rm -rf $(BUILD) $(SRC);")
+neovim-install: $(NEOVIM_INSTALL)
+
+NEOVIM_LSP_PYTHON = $(UTILS)/pyls
+$(NEOVIM_LSP_PYTHON) : | $(UTILS)
+	# apt-get install conda
+	$(eval CONDA := /opt/conda/bin/conda)
+	$(eval NAME := pyls)
+	$(eval SRC := ${HOME}/utils/$(NAME)/)
+	rm -rf $(SRC)
+	$(CONDA) create -y -p $(SRC)
+	$(CONDA) install -y -p $(SRC) -c conda-forge python-language-server
+	rm -f $(BIN)/pyls
+	ln -s ~/utils/pyls/bin/pyls $(BIN)
+neovim-lsp-python: $(NEOVIM_LSP_PYTHON)
+
+NEOVIM_LSP_RUST = $(BIN)/rust-analyzer
+$(NEOVIM_LSP_RUST) : | $(UTILS) rust-update
+	$(eval NAME := rls)
+	$(eval SRC := ${HOME}/utils/$(NAME)/)
+	rm -rf $(SRC)
+	git clone --branch release --single-branch --depth 10 git://github.com/rust-analyzer/rust-analyzer.git $(SRC)
+	cargo build --manifest-path $(SRC)/Cargo.toml --release
+	cp $(SRC)/target/release/$(NAME) $(BIN)
+	rm -rf $(SRC)
+neovim-lsp-rust: $(NEOVIM_LSP_RUST)
+
+# }}}
+# {{{ alacritty
+
+ALACRITTY = $(BIN)/alacritty
+$(ALACRITTY) : | $(UTILS) rust-update
+	$(eval NAME := alacritty)
+	$(eval SRC := ${HOME}/utils/$(NAME)/)
+	rm -rf $(SRC)
+	git clone --branch master --single-branch --depth 10 git://github.com/alacritty/alacritty.git $(SRC)
+	cargo build --manifest-path $(SRC)/Cargo.toml --release
+	cp $(SRC)/target/release/$(NAME) $(BIN)
+	rm -rf $(SRC)
+alacritty: $(ALACRITTY)
+
+# }}}
+# {{{ tmux
+
+libevent-install: utils
+	$(eval NAME := libevent)
+	$(eval SRC := ${HOME}/utils/$(NAME)/)
+	$(eval TAR := ${HOME}/utils/$(NAME).tar.gz)
+	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
+	rm -rf $(SRC)
+	mkdir -p $(SRC)
+	wget https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz -O $(TAR)
+	tar xvf $(TAR) -C $(SRC) --strip-components 1
+	rm $(TAR)
+	cd $(SRC) && \
+		CFLAGS="-march=native -O3" \
+		CXXFLAGS="-march=native -O3" \
+		$(SRC)/configure --prefix=$(INSTALL) \
+		--disable-debug-mode
+	make -C $(SRC) -j all
+	rm -rf $(INSTALL)
+	make -C $(SRC) install
+	rm -rf $(SRC)
+
+tmux-install: utils libevent-install
+	$(eval NAME := tmux)
+	$(eval SRC := ${HOME}/utils/$(NAME)/)
+	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
+	$(eval LIBEVENT := ${HOME}/utils/libevent_install/lib/)
+	rm -rf $(SRC)
+	git clone --branch master --single-branch --depth 300 git://github.com/tmux/tmux.git $(SRC)
+	cd $(SRC) && \
+		./autogen.sh && \
+		CFLAGS="-march=native -O3" \
+		CXXFLAGS="-march=native -O3" \
+		PKG_CONFIG_PATH=$(LIBEVENT)/pkgconfig/ \
+		$(SRC)/configure --prefix=$(INSTALL) \
+		--disable-debug
+	make -C $(SRC) -j all
+	rm -rf $(INSTALL)
+	make -C $(SRC) install
+	patchelf --set-rpath $(LIBEVENT) $(INSTALL)/bin/tmux
+	rm -rf $(SRC)
+
+# }}}
+# {{{ gcc/gdb/llvm
 
 GMP_INSTALL = $(UTILS)/gmp_install
 $(GMP_INSTALL) : | $(UTILS)
@@ -229,164 +409,25 @@ $(LLVM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 				-DCMAKE_BUILD_TYPE=Release \
 				-DCLANG_TOOLS_EXTRA_INCLUDE_DOCS=ON \
 				-DCLANG_ENABLE_CLANGD=ON \
+				-DCMAKE_INSTALL_PREFIX=$(INSTALL) \
 				$(SRC)/llvm \
 				; \
 			nice -n 20 \
 				make -j $$(($(NPROC) + 1)); \
-			make check-all; \
+			make check; \
 			rm -rf $(INSTALL); \
 			make install; \
 			rm -rf $(BUILD) $(SRC);")
 llvm : $(LLVM_INSTALL)
 
 # }}}
-# {{{ git/tig
+# {{{ rust
 
-GIT_INSTALL = $(UTILS)/git_install
-$(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
-	$(eval NAME := git)
-	$(eval SRC := $(UTILS)/$(NAME))
-	$(eval TAR := $(UTILS)/$(NAME).tar.gz)
-	$(eval INSTALL := $(UTILS)/$(NAME)_install)
-	# no out-of-source-tree support
-	rm -rf $(SRC)
-	mkdir -p $(SRC)
-	wget https://www.kernel.org/pub/software/scm/git/git-2.33.0.tar.gz -O $(TAR)
-	tar xvf $(TAR) -C $(SRC) --strip-components 1
-	rm $(TAR)
-	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
-		bash --noprofile --norc -c " \
-			set -e; \
-			cd $(SRC); \
-			CPP=$(GCC_INSTALL)/bin/cpp \
-			CC=$(GCC_INSTALL)/bin/gcc \
-			CFLAGS='-march=native -O3' \
-			$(SRC)/configure \
-				--prefix=$(INSTALL) \
-				--with-libpcre2 \
-				; \
-			make -j $$(($(NPROC) + 1)) all; \
-			make doc; \
-			rm -rf $(INSTALL); \
-			make install install-doc; \
-			rm -rf $(SRC);")
-git : $(GIT_INSTALL)
+rust-install:
+	type rustc || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-TIG_INSTALL = $(UTILS)/tig_install
-$(TIG_INSTALL) : | $(GCC_INSTALL) $(GIT_INSTALL) $(UTILS)
-	$(eval NAME := tig)
-	$(eval SRC := $(UTILS)/$(NAME))
-	$(eval INSTALL := $(UTILS)/$(NAME)_install)
-	# no out-of-source-tree support
-	rm -rf $(SRC)
-	git clone --branch master --single-branch --depth 30 git://github.com/jonas/tig.git $(SRC)
-	make -C $(SRC) configure
-	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
-		bash --noprofile --norc -c " \
-			set -e; \
-			cd $(SRC); \
-			CPP=$(GCC_INSTALL)/bin/cpp \
-			CC=$(GCC_INSTALL)/bin/gcc \
-			CFLAGS='-march=native -O3' \
-			$(SRC)/configure \
-				--prefix=$(INSTALL) \
-				; \
-			make -j $$(($(NPROC) + 1)) all; \
-			make doc; \
-			rm -rf $(INSTALL); \
-			make install install-doc; \
-			rm -rf $(SRC);")
-tig : $(TIG_INSTALL)
-
-# }}}
-# {{{ dotter
-
-dotter-install: utils rust-update
-	$(eval SRC := ~/utils/dotter/)
-	rm -rf $(SRC)
-	git clone git://github.com/SuperCuber/dotter.git $(SRC)
-	cargo build --manifest-path $(SRC)/Cargo.toml --release
-	cp $(SRC)/target/release/dotter ~/bin
-	rm -rf $(SRC)/target
-	rm -rf $(SRC)
-
-# }}}
-# {{{ vim
-
-NEOVIM_INSTALL = $(UTILS)/neovim_install
-$(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
-	# apt-get-install ninja-build gettext
-	$(eval NAME := neovim)
-	$(eval SRC := ${HOME}/utils/$(NAME)/)
-	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
-	$(eval BUILD := $(SRC)/build/)
-	rm -rf $(SRC)
-	git clone --branch release-0.5 --single-branch --depth 10 git://github.com/neovim/neovim.git $(SRC)
-	# make -C $(SRC) CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$(INSTALL)"
-	mkdir -p $(BUILD)
-	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
-		bash --noprofile --norc -c " \
-			set -e; \
-			cd $(BUILD); \
-			CPP=$(GCC_INSTALL)/bin/cpp \
-			CC=$(GCC_INSTALL)/bin/gcc \
-			CFLAGS='-march=native -flto -O3 -DNDEBUG' \
-			CXX=$(GCC_INSTALL)/bin/g++ \
-			CXXFLAGS='-march=native -flto -O3 -DNDEBUG' \
-			LDFLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64' \
-			nice -n 20 \
-				make -C $(SRC) \
-					-j $$(($(NPROC) + 1)) \
-					CMAKE_BUILD_TYPE=Invalid \
-					CMAKE_INSTALL_PREFIX=$(INSTALL) \
-				; \
-			rm -rf $(INSTALL); \
-			make install; \
-			rm -rf $(BUILD) $(SRC);")
-neovim-install: $(NEOVIM_INSTALL)
-
-# }}}
-# {{{ tmux
-
-libevent-install: utils
-	$(eval NAME := libevent)
-	$(eval SRC := ${HOME}/utils/$(NAME)/)
-	$(eval TAR := ${HOME}/utils/$(NAME).tar.gz)
-	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
-	rm -rf $(SRC)
-	mkdir -p $(SRC)
-	wget https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz -O $(TAR)
-	tar xvf $(TAR) -C $(SRC) --strip-components 1
-	rm $(TAR)
-	cd $(SRC) && \
-		CFLAGS="-march=native -O3" \
-		CXXFLAGS="-march=native -O3" \
-		$(SRC)/configure --prefix=$(INSTALL) \
-		--disable-debug-mode
-	make -C $(SRC) -j all
-	rm -rf $(INSTALL)
-	make -C $(SRC) install
-	rm -rf $(SRC)
-
-tmux-install: utils libevent-install
-	$(eval NAME := tmux)
-	$(eval SRC := ${HOME}/utils/$(NAME)/)
-	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
-	$(eval LIBEVENT := ${HOME}/utils/libevent_install/lib/)
-	rm -rf $(SRC)
-	git clone --branch master --single-branch --depth 300 git://github.com/tmux/tmux.git $(SRC)
-	cd $(SRC) && \
-		./autogen.sh && \
-		CFLAGS="-march=native -O3" \
-		CXXFLAGS="-march=native -O3" \
-		PKG_CONFIG_PATH=$(LIBEVENT)/pkgconfig/ \
-		$(SRC)/configure --prefix=$(INSTALL) \
-		--disable-debug
-	make -C $(SRC) -j all
-	rm -rf $(INSTALL)
-	make -C $(SRC) install
-	patchelf --set-rpath $(LIBEVENT) $(INSTALL)/bin/tmux
-	rm -rf $(SRC)
+rust-update: rust-install
+	rustup update
 
 # }}}
 # {{{ debian specific
@@ -396,6 +437,8 @@ debian-install: debian-install-base debian-install-net debian-install-graphic
 debian-install-base:
 	apt-get install git tig build-essential tmux dstat tree cmake pkg-config conda patchelf
 	apt-get-install libtool libtool-bin autogen autoconf autoconf-archive automake cmake g++ pkg-config unzip curl
+	apt-get-install firejail
+	apt-get-install libcurl4-gnutls-dev
 
 debian-install-net:
 	apt-get install network-manager-openconnect network-manager-gnome network-manager-openconnect-gnome
@@ -403,8 +446,11 @@ debian-install-net:
 debian-install-graphic:
 	apt-get install awesome awesome-extra
 	# libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
-	apt-get install parcellite mesa-utils fonts-dejavu fonts-dejavu-core fonts-dejavu-extra light ibam
-	apt-get install blueman pulseaudio-module-bluetooth pasystray pavucontrol
+	apt-get install parcellite mesa-utils fonts-dejavu fonts-dejavu-core fonts-dejavu-extra redshift redshift-gtk
+	# -t buster-backports
+	apt-get install blueman
+	apt-get install pulseaudio-module-bluetooth pasystray pavucontrol
+	# apt-get install light ibam # laptop only
 	# bluez bluez-utils ?
 
 debian-install-misc:
@@ -431,6 +477,41 @@ debian-install-kernel-mac:
 	# 6) temperature
 	# apt-get install lm-sensors
 	# sensors
+
+# }}}
+# {{{ misc
+
+FREERDP_INSTALL = $(UTILS)/freerdp_install
+# $(FREERDP_INSTALL) : | $(GCC_INSTALL) $(UTILS)
+$(FREERDP_INSTALL) :
+	$(eval NAME := freerdp)
+	$(eval SRC := $(UTILS)/$(NAME))
+	$(eval TAR := $(UTILS)/$(NAME).tar.xz)
+	$(eval INSTALL := $(UTILS)/$(NAME)_install)
+	$(eval BUILD := $(SRC)/build)
+	rm -rf $(SRC)
+	git clone --branch master --single-branch --depth 10 git://github.com/FreeRDP/FreeRDP.git $(SRC)
+	mkdir -p $(BUILD)
+	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+		bash --noprofile --norc -c " \
+			set -e; \
+			cd $(BUILD); \
+			cmake -G 'Unix Makefiles' \
+				-DCMAKE_C_COMPILER=$(GCC_INSTALL)/bin/gcc \
+				-DCMAKE_C_FLAGS='-march=native -O3 -flto -DNDEBUG' \
+				-DCMAKE_CXX_COMPILER=$(GCC_INSTALL)/bin/g++ \
+				-DCMAKE_CXX_FLAGS='-march=native -O3 -flto -DNDEBUG' \
+				-DCMAKE_CXX_LINK_FLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64' \
+				-D-DCMAKE_BUILD_TYPE=Invalid \
+				-DCMAKE_INSTALL_PREFIX=$(INSTALL) \
+				$(SRC) \
+				; \
+			nice -n 20 \
+				make -j $$(($(NPROC) + 1)); \
+			rm -rf $(INSTALL); \
+			make install; \
+			rm -rf $(BUILD) $(SRC);")
+freerdp : $(FREERDP_INSTALL)
 
 # }}}
 

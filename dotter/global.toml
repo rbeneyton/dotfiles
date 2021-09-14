@@ -1,9 +1,10 @@
 # remind format:
 # "src in repo" = "install dst"
 
-# TODO
-# fix handlebars/vim fold market incompatibility to use template
-# so use [[[ for all template, otherwise = { target = "DST", type = "symbolic" }
+# XXX
+# fix handlebars/vim fold market incompatibility in order to use template
+# so use [[[ for all template
+# otherwise explicit via = { target = "DST", type = "symbolic" }
 
 # bash
 [bash.files]
@@ -13,6 +14,15 @@
 [bash.variables]
 # nop
 
+# gdb
+[gdb.files]
+"gdb/gdbinit" = "~/.gdbinit"
+"gdb/own" = { target = "~/.config/gdb/own/own", type = "symbolic" }
+"gdb/eigengdb/bin" = { target = "~/.config/gdb/eigengdb/bin", type = "symbolic" }
+"gdb/eigengdb/eigengdb" = { target = "~/.config/gdb/eigengdb/eigengdb", type = "symbolic" }
+"gdb/pahole/offsets.py" = { target = "~/.config/gdb/pahole/offsets.py", type = "symbolic" }
+"gdb/pahole/pahole.py" = { target = "~/.config/gdb/pahole/pahole.py", type = "symbolic" }
+
 # awesome
 [awesome.files]
 "awesome/rc.lua"    = "~/.config/awesome/rc.lua"
@@ -21,10 +31,26 @@
 "awesome/awesome-wm-widgets/volume-widget" = { target = "~/.config/awesome/awesome-wm-widgets/volume-widget", type = "symbolic" }
 "awesome/awesome-wm-widgets/batteryarc-widget" = { target = "~/.config/awesome/awesome-wm-widgets/batteryarc-widget", type = "symbolic" }
 "awesome/awesome-wm-widgets/brightness-widget" = { target = "~/.config/awesome/awesome-wm-widgets/brightness-widget", type = "symbolic" }
-# variable to customize
 [awesome.variables]
 awesome_network_interface = "eth0"
 
+# alacritty
+[alacritty.files]
+"alacritty/alacritty.yml" = "~/.config/alacritty/alacritty.yml"
+
+# alacritty
+[xkb.files]
+"xkb/keymap.xkb" = "~/.config/xkb/keymap.xkb"
+
+# redshift
+[redshift.files]
+"redshift/redshift.conf" = "~/.config/redshift.conf"
+
+# gtk
+[gtk.files]
+"gtk/settings.ini" = "~/.config/gtk-3.0/settings.ini"
+
 # dummy "flag only" packages
+[bluetooth.variables]
 [laptop.variables]
 [mac.variables]
