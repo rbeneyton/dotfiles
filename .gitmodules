@@ -7,3 +7,6 @@
 [submodule "gdb/pahole"]
 	path = gdb/pahole
 	url = git://github.com/PhilArmstrong/pahole-gdb.git
+[submodule "awesome/json.lua"]
+	path = awesome/json.lua
+	url = git://github.com/rxi/json.lua.git

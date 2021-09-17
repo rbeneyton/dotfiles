@@ -190,6 +190,11 @@ loadicon:set_image(beautiful.widget_load)
 local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
 
 -- ]]]
+-- [[[ todo
+
+local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
+
+-- ]]]
 -- [[[ battery
 
 local battery_widget = require('awesome-wm-widgets.batteryarc-widget.batteryarc')
@@ -419,6 +424,7 @@ awful.screen.connect_for_each_screen(function(s)
                 base = 25,
             },
 {{/if}}
+            todo_widget(),
             wibox.widget.systray(),
         },
         s.mytasklist, -- Middle widget

@@ -31,6 +31,8 @@
 "awesome/awesome-wm-widgets/volume-widget" = { target = "~/.config/awesome/awesome-wm-widgets/volume-widget", type = "symbolic" }
 "awesome/awesome-wm-widgets/batteryarc-widget" = { target = "~/.config/awesome/awesome-wm-widgets/batteryarc-widget", type = "symbolic" }
 "awesome/awesome-wm-widgets/brightness-widget" = { target = "~/.config/awesome/awesome-wm-widgets/brightness-widget", type = "symbolic" }
+"awesome/awesome-wm-widgets/todo-widget" = { target = "~/.config/awesome/awesome-wm-widgets/todo-widget", type = "symbolic" }
+"awesome/json.lua/json.lua" = { target = "~/.config/awesome/json.lua", type = "symbolic" }
 [awesome.variables]
 awesome_network_interface = "eth0"
 
