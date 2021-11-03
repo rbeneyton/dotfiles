@@ -13,3 +13,5 @@ packages = [
 
 [variables]
 awesome_network_interface = "enp2s0"
+
+# vim: filetype=cfg

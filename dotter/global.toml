@@ -56,3 +56,5 @@ awesome_network_interface = "eth0"
 [bluetooth.variables]
 [laptop.variables]
 [mac.variables]
+
+# vim: filetype=cfg

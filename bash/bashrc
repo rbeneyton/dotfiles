@@ -18,6 +18,9 @@ export MANPATH=${HOME}/utils/gdb_install/share/man/:${MANPATH}
 export PATH=${HOME}/utils/tmux_install/bin/:${PATH}
 export MANPATH=${HOME}/utils/tmux_install/share/man/:${MANPATH}
 
+export PATH=${HOME}/utils/llvm_install/bin/:${PATH}
+export MANPATH=${HOME}/utils/llvm_install/share/man/:${MANPATH}
+
 export PATH=${HOME}/bin:$PATH
 
 #export JAVA_HOME=/usr/lib/jvm/java-6-sun
@@ -62,14 +65,16 @@ export LSAN_OPTIONS=use_stacks=0:use_registers=0:use_globals=1:use_tls=1
 #end
 
 
-#alacritty GPU for suze
-#export LIBGL_ALWAYS_SOFTWARE=1
+{{#if dotter.packages.mac}}
+#alacritty: disable GPU rendering for suze
+export LIBGL_ALWAYS_SOFTWARE=1
+{{/if}}
 
 alias condainit='source /opt/conda/etc/profile.d/conda.sh'
 
 
 
-export MALLOC_CHECK_=2
+# export MALLOC_CHECK_=2
 ulimit -c unlimited
 
 if [[ -n $PS1 ]]; then
@@ -109,6 +114,7 @@ if [[ -n $PS1 ]]; then
 
     alias g='git'
     __git_complete g __git_main
+
     alias gem='${EDITOR} $(git status --ignore-submodules --porcelain | grep --color=no "^[ M]M" | trs | cut -d" " -f2)'
     alias ges='${EDITOR} $(git status --ignore-submodules --porcelain | grep --color=no "^M" | trs | cut -d" " -f2)'
     alias ge='${EDITOR} $(git status --ignore-submodules --porcelain | grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)'

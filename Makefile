@@ -12,8 +12,12 @@ GNU_MIRROR = https://ftp.igh.cnrs.fr/pub/gnu/
 
 utils-install: gdb-install tig-install dotter-install neovim-install
 
+# trigger dotter update
 up:
-	dotter -l $(shell hostname).toml -v
+	dotter --local-config $(shell hostname).toml --verbose
+# preview
+dry:
+	dotter --local-config $(shell hostname).toml --verbose --dry-run
 
 # {{{ dotter
 
@@ -97,8 +101,8 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
 	$(eval BUILD := $(SRC)/build/)
 	rm -rf $(SRC)
-	git clone --branch release-0.5 --single-branch --depth 10 git://github.com/neovim/neovim.git $(SRC)
-	# make -C $(SRC) CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$(INSTALL)"
+	# git clone --branch release-0.5 --single-branch --depth 10 git://github.com/neovim/neovim.git $(SRC)
+	# git clone --branch release-0.5 --single-branch --depth 10 git@github.com:rbeneyton/neovim.git $(SRC)
 	mkdir -p $(BUILD)
 	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
@@ -505,7 +509,7 @@ $(FREERDP_INSTALL) :
 				-DCMAKE_CXX_COMPILER=$(GCC_INSTALL)/bin/g++ \
 				-DCMAKE_CXX_FLAGS='-march=native -O3 -flto -DNDEBUG' \
 				-DCMAKE_CXX_LINK_FLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64' \
-				-D-DCMAKE_BUILD_TYPE=Invalid \
+				-DCMAKE_BUILD_TYPE=Invalid \
 				-DCMAKE_INSTALL_PREFIX=$(INSTALL) \
 				$(SRC) \
 				; \

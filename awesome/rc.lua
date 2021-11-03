@@ -424,12 +424,12 @@ awful.screen.connect_for_each_screen(function(s)
                 base = 25,
             },
 {{/if}}
-            todo_widget(),
             wibox.widget.systray(),
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            todo_widget(),
             s.mylayoutbox,
         },
     }
@@ -853,7 +853,7 @@ run_if_not_running("pasystray", "")
 run_if_not_running("redshift-gtk", "")
 {{/if}}
 
---if host == 'sake' or host == 'macbook_a' then
+--if host == 'sake' or host == 'suze' then
 --    run_once("nm-applet")
 --end
 -- ]]]

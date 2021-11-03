@@ -15,3 +15,5 @@ packages = [
 
 [variables]
 awesome_network_interface = "ens5"
+
+# vim: filetype=cfg
