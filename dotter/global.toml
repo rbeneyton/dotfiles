@@ -42,11 +42,15 @@ awesome_network_interface = "eth0"
 
 # xkb
 [xkb.files]
-"xkb/keymap.xkb" = "~/.config/xkb/keymap.xkb"
+# sadly defining all in a unique keymap main file isn't supported
+"xkb/symbols/rb" = "~/.config/xkb/symbols/rb"
+"xkb/types/rb" = "~/.config/xkb/types/rb"
+"xkb/keymap/keymap.xkb" = "~/.config/xkb/keymap/keymap.xkb"
 
 # redshift
 [redshift.files]
-"redshift/redshift.conf" = "~/.config/redshift.conf"
+# apparmor blocks access to configuration if symlink (#977672), so force copy
+"redshift/redshift.conf" = { target = "~/.config/redshift.conf", type = "template" }
 
 # gtk
 [gtk.files]

@@ -18,6 +18,9 @@ up:
 # preview
 dry:
 	dotter --local-config $(shell hostname).toml --verbose --dry-run
+# force
+upforce:
+	dotter --local-config $(shell hostname).toml --verbose --force
 
 # {{{ dotter
 

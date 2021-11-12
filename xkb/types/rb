@@ -1,0 +1,21 @@
+partial default xkb_types "rb" {
+    // eclare our new types
+    type "RB_BASE_SHIFT_CONTROL" {
+        modifiers = Shift+Control;
+        map[Shift] = Level2;
+        map[Control] = Level3;
+        level_name[Level1] = "Base";
+        level_name[Level2] = "Shift";
+        level_name[Level3] = "Control";
+    };
+    // type "RB_BASE_SHIFT_LALT" {
+    //     modifiers = Shift+LAlt;
+    //     map[Shift] = Level2;
+    //     map[LAlt] = Level3;
+    //     level_name[Level1] = "Base";
+    //     level_name[Level2] = "Shift";
+    //     level_name[Level3] = "LAlt";
+    // };
+};
+
+// vim: filetype=cpp

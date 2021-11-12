@@ -1,0 +1,38 @@
+// This is equivalent to
+// setxkbmap -layout us -option compose:lalt,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch
+// + mapping of C^; (ie. CapsLock + ;) to Home (which will be remapped to C^b)
+// + dead_greak
+
+xkb_keymap {
+    xkb_keycodes { include "evdev+aliases(qwerty)" };
+    xkb_types {
+        include "complete"
+        include "rb"
+    };
+    xkb_compat { include "complete" };
+    xkb_symbols {
+        include "pc"
+        // note the different keyword to define a variant
+{{#if dotter.packages.mac}}
+        augment "us(mac)"
+{{else}}
+        // augment "us(basic)"
+        include "us"
+{{/if}}
+        include "rb"
+
+        include "inet(evdev)"
+        include "level3(menu_switch)"
+        include "ctrl(nocaps)"
+        include "compose(ralt)"
+        include "compose(rwin)"
+        include "shift(both_capslock_cancel)"
+{{#if dotter.packages.mac}}
+        // properly map SysRq on apple keyboard (for 'you know what')
+        include "macintosh_vndr/apple(alupckeys)"
+{{/if}}
+    };
+    // geometry not required
+};
+
+// vim: filetype=cpp
