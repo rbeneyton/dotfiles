@@ -5,6 +5,7 @@ packages = [
     "awesome",
     "bash",
     "bluetooth",
+    "compose",
     "gdb",
     "gtk",
     "redshift",

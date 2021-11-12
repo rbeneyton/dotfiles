@@ -52,6 +52,10 @@ awesome_network_interface = "eth0"
 # apparmor blocks access to configuration if symlink (#977672), so force copy
 "redshift/redshift.conf" = { target = "~/.config/redshift.conf", type = "template" }
 
+# compose
+[compose.files]
+"compose/XCompose" = "~/.XCompose"
+
 # gtk
 [gtk.files]
 "gtk/settings.ini" = "~/.config/gtk-3.0/settings.ini"
