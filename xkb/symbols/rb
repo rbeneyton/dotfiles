@@ -1,4 +1,4 @@
-default partial
+default partial modifier_keys
 xkb_symbols "rb" {
     name[Group1]= "English (US, tmux friendly)";
     // extend g via (both) Alt -> dead_greek

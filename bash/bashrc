@@ -178,24 +178,18 @@ if [[ -n $PS1 ]]; then
     alias k='kate -u'
     if [[ -r "${HOME}/utils/neovim_install/bin/nvim" ]]; then
         export PATH=${HOME}/utils/neovim_install/bin:${PATH}
+        export EDITOR=${HOME}/utils/neovim_install/bin/nvim
 
-        alias v='nvim '
-        alias va='nvim ~/dotfiles/start.txt'
-        alias vr='nvim -R'
-        alias vl='nvim -S ~/.cache/session.vim'
+        alias vim=$EDITOR
         alias vimdiff='nvim -d'
     else
-        alias v='vim '
-        alias va='vim ~/dotfiles/start.txt'
-        alias vr='vim -R'
-        alias vl='vim -S ~/.cache/session.vim'
+        export EDITOR='vim'
     fi
-    alias v='nvim '
-    alias vim='nvim '
-    alias va='nvim ~/dotfiles/start.txt'
-    alias vr='nvim -R'
-    alias vl='nvim -S ~/.cache/session.vim'
-    alias vimdiff='nvim -d'
+
+    alias v='vim '
+    alias va='vim ~/dotfiles/start.txt'
+    alias vr='vim -R'
+    alias vl='vim -S ~/.cache/session.vim'
 
     alias f='find . -name '
     alias l='less '

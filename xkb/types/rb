@@ -1,4 +1,5 @@
-partial default xkb_types "rb" {
+default partial
+xkb_types "rb" {
     // eclare our new types
     type "RB_BASE_SHIFT_CONTROL" {
         modifiers = Shift+Control;

@@ -17,7 +17,7 @@ xkb_keymap {
         augment "us(mac)"
 {{else}}
         // augment "us(basic)"
-        include "us"
+        augment "us"
 {{/if}}
         include "rb"
 
