@@ -11,4 +11,5 @@ echo $(basename ${BASH_SOURCE[0]}) " for display $DISPLAY got event " "$@"
 # currently same settings for all keyboards (amazon basics, ajazz, ...) but trivial to discrimate
 # customize by host also trivial via dotter
 CONF=${HOME}/.config/xkb
-xkbcomp -i "$id" -I${CONF} -R${CONF} ${CONF}/keymap/keymap.xkb $DISPLAY &> /dev/null
+# xkbcomp -i "$id" -I${CONF} -R${CONF} ${CONF}/keymap/keymap.xkb $DISPLAY &> /dev/null
+xkbcomp -I${CONF} -R${CONF} ${CONF}/keymap/keymap.xkb $DISPLAY &> /dev/null

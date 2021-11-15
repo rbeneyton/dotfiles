@@ -23,6 +23,7 @@ local debian = require("debian.menu")
 -- local host = awful.util.pread("hostname"):match('%S*')
 -- local host = 'main' --awful.util.pread("hostname"):match('%S*')
 local host = "{{trim (command_output "hostname")}}"
+local home = "{{trim (command_output "getent passwd \"$USER\" | cut -d : -f 6")}}"
 
 -- TODO dotter.root?
 local root_install = "{{trim (command_output "pwd")}}" .. "/awesome"
@@ -124,7 +125,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                     { "clementine", "clementine" },
                                     { "&chromium", "chromium" },
                                     { "&dolphin", "dolphin" },
-                                    { "&firefox", "/home/richard/firefox/firefox" },
+                                    { "&firefox", home .. "/firefox/firefox" },
                                     { "soundkonverter", "soundkonverter" },
                                     { "kaffeine", "kaffeine" },
                                     { "konqueror", "konqueror" },
@@ -830,8 +831,23 @@ end
 -- run_once("nm-applet")
 -- run_once("parcellite")
 -- awful.spawn("kshutdown --init")
-run_if_not_running("nm-applet", "")
-run_if_not_running("parcellite", "")
+-- run_if_not_running("nm-applet", "")
+-- run_if_not_running("parcellite", "")
+awful.spawn.with_shell("pkill -u $USER nm-applet ; nm-applet &")
+awful.spawn.with_shell("pkill -u $USER parcellite ; parcellite &")
+
+
+-- awful.spawn("kmix")
+{{#if dotter.packages.bluetooth}}
+-- bluetooth (TODO also sake once dongle installed in sake)
+awful.spawn.with_shell("pkill -u $USER blueman ; blueman-applet &")
+-- run_if_not_running("pasystray", "")
+awful.spawn.with_shell("pkill -u $USER pasystray ; pasystray &")
+{{/if}}
+
+{{#if dotter.packages.redshift}}
+awful.spawn.with_shell("pkill -u $USER redshift ; redshift-gtk &")
+{{/if}}
 
 {{#if dotter.packages.mac}}
 -- macbook
@@ -841,18 +857,8 @@ run_if_not_running("parcellite", "")
 -- awful.spawn("setxkbmap -layout us -option compose:lalt,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch")
 {{/if}}
 -- awful.spawn.with_shell("sleep 1 && xkbcomp -I${HOME}/.config/xkb -R${HOME}/.config/xkb ~/.config/xkb/keymap/keymap.xkb $DISPLAY")
-run_if_not_running("inputplug", "-d -0 -c ${HOME}/.config/xkb/inputplug.sh")
-
--- awful.spawn("kmix")
-{{#if dotter.packages.bluetooth}}
--- bluetooth (TODO also sake once dongle installed in sake)
-run_if_not_running("blueman-applet", "")
-run_if_not_running("pasystray", "")
-{{/if}}
-
-{{#if dotter.packages.redshift}}
-run_if_not_running("redshift-gtk", "")
-{{/if}}
+-- run_if_not_running("inputplug", "-0 -c " .. home .. "/.config/xkb/inputplug.sh")
+awful.spawn.with_shell("pkill -u $USER inputplug ; sleep 0.1 && inputplug -d -0 -c " .. home .. "/.config/xkb/inputplug.sh &")
 
 --if host == 'sake' or host == 'suze' then
 --    run_once("nm-applet")
