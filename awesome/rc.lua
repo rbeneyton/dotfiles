@@ -840,7 +840,8 @@ run_if_not_running("parcellite", "")
 -- usual keyboard setup
 -- awful.spawn("setxkbmap -layout us -option compose:lalt,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch")
 {{/if}}
-awful.spawn.with_shell("sleep 1 && xkbcomp -I${HOME}/.config/xkb -R${HOME}/.config/xkb ~/.config/xkb/keymap/keymap.xkb $DISPLAY")
+-- awful.spawn.with_shell("sleep 1 && xkbcomp -I${HOME}/.config/xkb -R${HOME}/.config/xkb ~/.config/xkb/keymap/keymap.xkb $DISPLAY")
+run_if_not_running("inputplug", "-d -0 -c ${HOME}/.config/xkb/inputplug.sh")
 
 -- awful.spawn("kmix")
 {{#if dotter.packages.bluetooth}}

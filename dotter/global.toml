@@ -42,10 +42,11 @@ awesome_network_interface = "eth0"
 
 # xkb
 [xkb.files]
-# sadly defining all in a unique keymap main file isn't supported
+# sadly defining all in a unique keymap main file seems unsupported
 "xkb/symbols/rb" = "~/.config/xkb/symbols/rb"
 "xkb/types/rb" = "~/.config/xkb/types/rb"
 "xkb/keymap/keymap.xkb" = "~/.config/xkb/keymap/keymap.xkb"
+"xkb/inputplug.sh" = "~/.config/xkb/inputplug.sh"
 
 # redshift
 [redshift.files]

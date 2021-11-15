@@ -456,10 +456,11 @@ debian-install-net:
 debian-install-graphic:
 	apt-get install awesome awesome-extra
 	# libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
-	apt-get install parcellite mesa-utils fonts-dejavu fonts-dejavu-core fonts-dejavu-extra redshift redshift-gtk
-	# -t buster-backports
-	apt-get install blueman
-	apt-get install pulseaudio-module-bluetooth pasystray pavucontrol
+	apt-get install parcellite mesa-utils fonts-dejavu fonts-dejavu-core fonts-dejavu-extra
+	apt-get install redshift redshift-gtk
+	apt-get-install x11-xkb-utils inputplug # xkb + detect/reload
+	apt-get install blueman pulseaudio-module-bluetooth
+	apt-get install pasystray pavucontrol
 	# apt-get install light ibam # laptop only
 	# bluez bluez-utils ?
 
