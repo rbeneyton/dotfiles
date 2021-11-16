@@ -10,7 +10,7 @@ xkb_keymap {
         include "rb"
     };
     xkb_compat { include "complete" };
-    xkb_symbols {
+    xkb_symbols "rb" {
         include "pc"
         // note the different keyword to define a variant
 {{#if dotter.packages.mac}}

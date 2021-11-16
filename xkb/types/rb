@@ -1,6 +1,6 @@
 default partial
 xkb_types "rb" {
-    // eclare our new types
+    // declare our new types
     type "RB_BASE_SHIFT_CONTROL" {
         modifiers = Shift+Control;
         map[Shift] = Level2;
