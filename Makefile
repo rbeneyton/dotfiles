@@ -10,7 +10,7 @@ $(UTILS):
 
 GNU_MIRROR = https://ftp.igh.cnrs.fr/pub/gnu/
 
-utils-install: gdb-install tig-install dotter-install neovim-install
+utils-install: gdb-install tig-install dotter-install neovim-install fish-install
 
 # trigger dotter update
 up:
@@ -45,7 +45,7 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	# no out-of-source-tree support
 	rm -rf $(SRC)
 	mkdir -p $(SRC)
-	wget https://www.kernel.org/pub/software/scm/git/git-2.33.0.tar.gz -O $(TAR)
+	wget https://www.kernel.org/pub/software/scm/git/git-2.34.1.tar.gz -O $(TAR)
 	tar xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
 	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
@@ -103,9 +103,10 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval SRC := ${HOME}/utils/$(NAME)/)
 	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
 	$(eval BUILD := $(SRC)/build/)
-	rm -rf $(SRC)
+	# rm -rf $(SRC)
 	# git clone --branch release-0.5 --single-branch --depth 10 git://github.com/neovim/neovim.git $(SRC)
 	# git clone --branch release-0.5 --single-branch --depth 10 git@github.com:rbeneyton/neovim.git $(SRC)
+	rm -rf $(BUILD)
 	mkdir -p $(BUILD)
 	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
@@ -117,6 +118,7 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 			CXX=$(GCC_INSTALL)/bin/g++ \
 			CXXFLAGS='-march=native -flto -O3 -DNDEBUG' \
 			LDFLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64' \
+			make -C $(SRC) distclean; \
 			nice -n 20 \
 				make -C $(SRC) \
 					-j $$(($(NPROC) + 1)) \
@@ -124,8 +126,9 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 					CMAKE_INSTALL_PREFIX=$(INSTALL) \
 				; \
 			rm -rf $(INSTALL); \
-			make install; \
-			rm -rf $(BUILD) $(SRC);")
+			make -C $(SRC) install; \
+			make -C $(SRC) distclean; \
+	")
 neovim-install: $(NEOVIM_INSTALL)
 
 NEOVIM_LSP_PYTHON = $(UTILS)/pyls
@@ -449,6 +452,7 @@ debian-install-base:
 	apt-get-install libtool libtool-bin autogen autoconf autoconf-archive automake cmake g++ pkg-config unzip curl
 	apt-get-install firejail
 	apt-get-install libcurl4-gnutls-dev
+	apt-get-install sqlite3
 
 debian-install-net:
 	apt-get install network-manager-openconnect network-manager-gnome network-manager-openconnect-gnome
@@ -463,16 +467,22 @@ debian-install-graphic:
 	apt-get install pasystray pavucontrol
 	# apt-get install light ibam # laptop only
 	# bluez bluez-utils ?
+	# 1) keychron Fn keys
+	echo "options hid_apple fnmode=2" > /etc/modprobe.d/hid_apple.conf
+	update-initramfs -u
 
 debian-install-misc:
+	# signal
 	wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > /usr/share/keyrings/signal-desktop-keyring.gpg
 	echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' > /etc/apt/sources.list.d/signal-xenial.list
 	apt-get update
 	apt-get install signal-desktop
+	# yt-dlp
+	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/bin/yt-dlp
 
 debian-install-kernel-mac:
 	# 1) i915
-	# apt-get install firmware-misc-nonfree
+	apt-get install firmware-misc-nonfree
 	# 2) camera
 	# https://archive.org/details/AppleUSBVideoSupport
 	apt-get install isight-firmware-tools
@@ -483,11 +493,49 @@ debian-install-kernel-mac:
 	# acpi_osi=!Darwin acpi_mask_gpe=0x17
 	# /etc/default/grub GRUB_CMDLINE_LINUX= + update-grub
 	# 5) sound
-	# echo "options snd_hda_intel model=intel-mac-auto" > /etc/modprobe.d/50-sound.conf
-	# update-initramfs -u
+	echo "options snd_hda_intel model=intel-mac-auto" > /etc/modprobe.d/50-sound.conf
+	update-initramfs -u
 	# 6) temperature
-	# apt-get install lm-sensors
+	apt-get install lm-sensors
 	# sensors
+
+# }}}
+# {{{ fish
+
+FISH_INSTALL = $(UTILS)/fish_install
+# $(FISH_INSTALL) : | $(GCC_INSTALL) $(UTILS)
+$(FISH_INSTALL) :
+	$(eval NAME := fish)
+	$(eval SRC := $(UTILS)/$(NAME))
+	$(eval TAR := $(UTILS)/$(NAME).tar.xz)
+	$(eval INSTALL := $(UTILS)/$(NAME)_install)
+	$(eval BUILD := $(SRC)/build)
+	rm -rf $(SRC)
+	mkdir -p $(SRC)
+	mkdir -p $(BUILD)
+	wget https://github.com/fish-shell/fish-shell/releases/download/3.4.1/fish-3.4.1.tar.xz -O $(TAR)
+	tar xvf $(TAR) -C $(SRC) --strip-components 1
+	rm $(TAR)
+	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+		bash --noprofile --norc -c " \
+			set -e; \
+			cd $(BUILD); \
+			cmake -G 'Unix Makefiles' \
+				-DCMAKE_C_COMPILER=$(GCC_INSTALL)/bin/gcc \
+				-DCMAKE_C_FLAGS='-march=native -O3 -flto -DNDEBUG' \
+				-DCMAKE_CXX_COMPILER=$(GCC_INSTALL)/bin/g++ \
+				-DCMAKE_CXX_FLAGS='-march=native -O3 -flto -DNDEBUG' \
+				-DCMAKE_CXX_LINK_FLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64' \
+				-DCMAKE_BUILD_TYPE=Invalid \
+				-DCMAKE_INSTALL_PREFIX=$(INSTALL) \
+				$(SRC) \
+				; \
+			nice -n 20 \
+				make -j $$(($(NPROC) + 1)); \
+			rm -rf $(INSTALL); \
+			make install; \
+			rm -rf $(BUILD) $(SRC);")
+fish : $(FISH_INSTALL)
 
 # }}}
 # {{{ misc

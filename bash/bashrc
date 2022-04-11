@@ -21,6 +21,9 @@ export MANPATH=${HOME}/utils/tmux_install/share/man/:${MANPATH}
 export PATH=${HOME}/utils/llvm_install/bin/:${PATH}
 export MANPATH=${HOME}/utils/llvm_install/share/man/:${MANPATH}
 
+export PATH=${HOME}/utils/fish_install/bin/:${PATH}
+export MANPATH=${HOME}/utils/fish_install/share/man/:${MANPATH}
+
 export PATH=${HOME}/bin:$PATH
 
 #export JAVA_HOME=/usr/lib/jvm/java-6-sun
@@ -30,7 +33,8 @@ export TMUX_INSTALL=${HOME}/utils/tmux_install
 export PATH=${TMUX_INSTALL}/bin/:${PATH}
 export MANPATH=${TMUX_INSTALL}/share/man/:${MANPATH}
 
-export LANG='C.UTF-8' # never 12H date
+export LANGUAGE=en_US:en
+export LANG='C.UTF-8' # never 12H AM/PM stupid date format
 
 # [[[ llvm
 

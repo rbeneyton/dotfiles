@@ -858,7 +858,7 @@ awful.spawn.with_shell("pkill -u $USER redshift ; redshift-gtk &")
 {{/if}}
 -- awful.spawn.with_shell("sleep 1 && xkbcomp -I${HOME}/.config/xkb -R${HOME}/.config/xkb ~/.config/xkb/keymap/keymap.xkb $DISPLAY")
 -- run_if_not_running("inputplug", "-0 -c " .. home .. "/.config/xkb/inputplug.sh")
-awful.spawn.with_shell("pkill -u $USER inputplug ; sleep 0.1 && inputplug -d -0 -c " .. home .. "/.config/xkb/inputplug.sh &")
+awful.spawn.with_shell("pkill -u $USER inputplug ; sleep 1.1 && inputplug -d -0 -c " .. home .. "/.config/xkb/inputplug.sh &")
 
 --if host == 'sake' or host == 'suze' then
 --    run_once("nm-applet")
