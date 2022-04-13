@@ -62,6 +62,17 @@ awesome_network_interface = "eth0"
 [gtk.files]
 "gtk/settings.ini" = "~/.config/gtk-3.0/settings.ini"
 
+# fonts
+[fonts.files]
+"fonts/DejaVu Sans Mono Bold Nerd Font Complete Mono.ttf" = { target = "~/.fonts/DejaVu Sans Mono Bold Nerd Font Complete Mono.ttf", type = "symbolic" }
+"fonts/DejaVu Sans Mono Bold Nerd Font Complete.ttf" = { target = "~/.fonts/DejaVu Sans Mono Bold Nerd Font Complete.ttf", type = "symbolic" }
+"fonts/DejaVu Sans Mono Bold Oblique Nerd Font Complete Mono.ttf" = { target = "~/.fonts/DejaVu Sans Mono Bold Oblique Nerd Font Complete Mono.ttf", type = "symbolic" }
+"fonts/DejaVu Sans Mono Bold Oblique Nerd Font Complete.ttf" = { target = "~/.fonts/DejaVu Sans Mono Bold Oblique Nerd Font Complete.ttf", type = "symbolic" }
+"fonts/DejaVu Sans Mono Nerd Font Complete Mono.ttf" = { target = "~/.fonts/DejaVu Sans Mono Nerd Font Complete Mono.ttf", type = "symbolic" }
+"fonts/DejaVu Sans Mono Nerd Font Complete.ttf" = { target = "~/.fonts/DejaVu Sans Mono Nerd Font Complete.ttf", type = "symbolic" }
+"fonts/DejaVu Sans Mono Oblique Nerd Font Complete Mono.ttf" = { target = "~/.fonts/DejaVu Sans Mono Oblique Nerd Font Complete Mono.ttf", type = "symbolic" }
+"fonts/DejaVu Sans Mono Oblique Nerd Font Complete.ttf" = { target = "~/.fonts/DejaVu Sans Mono Oblique Nerd Font Complete.ttf", type = "symbolic" }
+
 # dummy "flag only" packages
 [bluetooth.variables]
 [laptop.variables]

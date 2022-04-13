@@ -6,6 +6,7 @@ packages = [
     "bash",
     "bluetooth",
     "compose",
+    "fonts",
     "gdb",
     "gtk",
     "redshift",
