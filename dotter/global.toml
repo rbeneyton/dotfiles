@@ -72,6 +72,11 @@ awesome_network_interface = "eth0"
 "fonts/DejaVu Sans Mono Nerd Font Complete.ttf" = { target = "~/.fonts/DejaVu Sans Mono Nerd Font Complete.ttf", type = "symbolic" }
 "fonts/DejaVu Sans Mono Oblique Nerd Font Complete Mono.ttf" = { target = "~/.fonts/DejaVu Sans Mono Oblique Nerd Font Complete Mono.ttf", type = "symbolic" }
 "fonts/DejaVu Sans Mono Oblique Nerd Font Complete.ttf" = { target = "~/.fonts/DejaVu Sans Mono Oblique Nerd Font Complete.ttf", type = "symbolic" }
+# TODO post_deploy.sh to call fc-cache -fv
+
+# starship
+[starship.files]
+"starship/starship.toml" = "~/.config/starship.toml"
 
 # dummy "flag only" packages
 [bluetooth.variables]

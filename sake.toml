@@ -10,6 +10,7 @@ packages = [
     "gdb",
     "gtk",
     "redshift",
+    "starship",
     "xkb",
     ]
 

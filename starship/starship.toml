@@ -1,0 +1,46 @@
+# XXX to get info/timings:
+# $ starship explain
+
+# no newline
+add_newline = false
+# Always time before anything
+format = "$time$all"
+
+# TODO $character doesn't allow to print the return code value as I did in bash
+
+# do not waste a line, so half of the screen!
+[line_break]
+disabled = true
+
+# no username
+[username]
+disabled = true
+
+# correct hostname
+[hostname]
+ssh_only = false
+disabled = false
+format = '[@](bold blue)[$hostname](bold green) '
+# trim_at = '.'
+
+# add time
+[time]
+disabled = false
+format = '[\[$time\]](white) '
+time_format = '%R'
+
+# useless
+[python]
+disabled = true
+
+# pollution
+[lua]
+disabled = true
+
+# 20ms to get version that we don't care of
+[rust]
+disabled = true
+
+# dont be lost
+[directory]
+truncation_length = 6

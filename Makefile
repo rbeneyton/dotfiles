@@ -477,8 +477,6 @@ debian-install-misc:
 	echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' > /etc/apt/sources.list.d/signal-xenial.list
 	apt-get update
 	apt-get install signal-desktop
-	# yt-dlp
-	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/bin/yt-dlp
 
 debian-install-kernel-mac:
 	# 1) i915
@@ -498,6 +496,15 @@ debian-install-kernel-mac:
 	# 6) temperature
 	apt-get install lm-sensors
 	# sensors
+
+# }}}
+# {{{ user tools
+
+misc-user:
+	# yt-dlp
+	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/bin/yt-dlp
+	# starfish
+	cargo install starship --locked
 
 # }}}
 # {{{ fish
