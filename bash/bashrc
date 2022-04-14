@@ -26,6 +26,8 @@ export MANPATH=${HOME}/utils/fish_install/share/man/:${MANPATH}
 
 export PATH=${HOME}/bin:$PATH
 
+. "$HOME/.cargo/env"
+
 #export JAVA_HOME=/usr/lib/jvm/java-6-sun
 export MCMS_HOME=/home/richard/dev/mmsx/mcms
 
@@ -426,6 +428,10 @@ if [[ -n $PS1 ]]; then
 
     # powerline
     #. /home/richard/dotfiles/powerline/powerline/bindings/bash/powerline.sh
+
+    # starfish
+    eval "$(starship init bash)"
+
 fi #PS1
 
 
@@ -461,7 +467,6 @@ SOCK="/tmp/ssh-agent-$USER-screen"
 #    ln -sf "$SSH_AUTH_SOCK" $SOCK
 #fi
 export SSH_AUTH_SOCK=$SOCK
-. "$HOME/.cargo/env"
 
 # dotter/handlebars+fold incompatibility: temporary [[[ / ]]]]
 # vim: foldmarker=[[[,]]]

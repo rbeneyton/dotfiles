@@ -44,3 +44,5 @@ disabled = true
 # dont be lost
 [directory]
 truncation_length = 6
+
+# vim: filetype=cfg
