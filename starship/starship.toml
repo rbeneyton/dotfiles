@@ -45,4 +45,8 @@ disabled = true
 [directory]
 truncation_length = 6
 
+# too slow
+[battery]
+disabled = true
+
 # vim: filetype=cfg
