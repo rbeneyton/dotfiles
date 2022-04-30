@@ -6,8 +6,6 @@ add_newline = false
 # Always time before anything
 format = "$time$all"
 
-# TODO $character doesn't allow to print the return code value as I did in bash
-
 # do not waste a line, so half of the screen!
 [line_break]
 disabled = true
@@ -48,5 +46,10 @@ truncation_length = 6
 # too slow
 [battery]
 disabled = true
+
+# correct return code
+[status]
+map_symbol = true
+disabled = false
 
 # vim: filetype=cfg
