@@ -1,0 +1,23 @@
+# shochu setup
+
+packages = [
+    "alacritty",
+    "awesome",
+    "bash",
+    "bluetooth",
+    "compose",
+    "fonts",
+    "gdb",
+    "git",
+    "gtk",
+    "laptop",
+    "redshift",
+    "starship",
+    "xkb",
+    ]
+
+[variables]
+awesome_network_interface = "enp5s0" # wlp3s0
+awesome_disk_interface = "nvme0n1"
+
+# vim: filetype=cfg
