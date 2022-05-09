@@ -4,6 +4,8 @@ all:
 	true
 
 BIN = ${HOME}/bin
+$(BIN):
+	mkdir -p $@
 UTILS = ${HOME}/utils
 $(UTILS):
 	mkdir -p $@
@@ -27,12 +29,12 @@ upforce:
 
 # {{{ dotter
 
-dotter-install: utils rust-update
+dotter-install: bin utils rust-update
 	$(eval SRC := ~/utils/dotter/)
 	rm -rf $(SRC)
 	git clone https://github.com/SuperCuber/dotter.git $(SRC)
 	cargo build --manifest-path $(SRC)/Cargo.toml --release
-	cp $(SRC)/target/release/dotter $(BIN)
+	cp $(SRC)/target/release/dotter $(BIN)/
 	rm -rf $(SRC)/target
 	rm -rf $(SRC)
 
@@ -136,7 +138,7 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 neovim-install: $(NEOVIM_INSTALL)
 
 NEOVIM_LSP_PYTHON = $(UTILS)/pyls
-$(NEOVIM_LSP_PYTHON) : | $(UTILS)
+$(NEOVIM_LSP_PYTHON) : | bin utils
 	# apt-get install conda
 	$(eval CONDA := /opt/conda/bin/conda)
 	$(eval NAME := pyls)
@@ -145,17 +147,17 @@ $(NEOVIM_LSP_PYTHON) : | $(UTILS)
 	$(CONDA) create -y -p $(SRC)
 	$(CONDA) install -y -p $(SRC) -c conda-forge python-language-server
 	rm -f $(BIN)/pyls
-	ln -s ~/utils/pyls/bin/pyls $(BIN)
+	ln -s ~/utils/pyls/bin/pyls $(BIN)/
 neovim-lsp-python: $(NEOVIM_LSP_PYTHON)
 
 NEOVIM_LSP_RUST = $(BIN)/rust-analyzer
-$(NEOVIM_LSP_RUST) : | $(UTILS) rust-update
+$(NEOVIM_LSP_RUST) : | bin utils rust-update
 	$(eval NAME := rust-analyzer)
 	$(eval SRC := ${HOME}/utils/$(NAME)/)
 	rm -rf $(SRC)
 	git clone --branch release --single-branch --depth 10 https://github.com/rust-analyzer/rust-analyzer.git $(SRC)
 	cargo build --manifest-path $(SRC)/Cargo.toml --release
-	cp $(SRC)/target/release/$(NAME) $(BIN)
+	cp $(SRC)/target/release/$(NAME) $(BIN)/
 	rm -rf $(SRC)
 neovim-lsp-rust: $(NEOVIM_LSP_RUST)
 
@@ -163,14 +165,14 @@ neovim-lsp-rust: $(NEOVIM_LSP_RUST)
 # {{{ alacritty
 
 ALACRITTY = $(BIN)/alacritty
-$(ALACRITTY) : | $(UTILS) rust-update
+$(ALACRITTY) : | bin utils rust-update
 	$(eval NAME := alacritty)
 	$(eval SRC := ${HOME}/utils/$(NAME)/)
 	rm -rf $(SRC)
 	# git clone --branch master --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
 	git clone --branch v0.10.1 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
 	cargo build --manifest-path $(SRC)/Cargo.toml --release
-	cp $(SRC)/target/release/$(NAME) $(BIN)
+	cp $(SRC)/target/release/$(NAME) $(BIN)/
 	rm -rf $(SRC)
 alacritty: $(ALACRITTY)
 
