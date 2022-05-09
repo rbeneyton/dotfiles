@@ -9,6 +9,7 @@ $(UTILS):
 	mkdir -p $@
 
 GNU_MIRROR = https://ftp.igh.cnrs.fr/pub/gnu/
+GNU_MIRROR = https://mirror.ibcp.fr/pub/gnu/
 
 utils-install: gdb-install tig-install dotter-install neovim-install fish-install
 
@@ -38,6 +39,7 @@ dotter-install: utils rust-update
 
 GIT_INSTALL = $(UTILS)/git_install
 $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
+	# apt-get-install asciidoc
 	$(eval NAME := git)
 	$(eval SRC := $(UTILS)/$(NAME))
 	$(eval TAR := $(UTILS)/$(NAME).tar.gz)
@@ -317,9 +319,9 @@ $(MPC_INSTALL) : | $(GMP_INSTALL) $(MPFR_INSTALL) $(UTILS)
 mpc : $(MPC_INSTALL)
 
 GCC_INSTALL = $(UTILS)/gcc_install
-# $(GCC_INSTALL) : | $(MPC_INSTALL) $(GMP_INSTALL) $(MPFR_INSTALL) $(UTILS)
+$(GCC_INSTALL) : | $(MPC_INSTALL) $(GMP_INSTALL) $(MPFR_INSTALL) $(UTILS)
 $(GCC_INSTALL) :
-	# apt-get-install gcc-multilib
+	# apt-get-install gcc-multilib flex
 	$(eval NAME := gcc)
 	$(eval SRC := $(UTILS)/$(NAME))
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
@@ -343,6 +345,7 @@ $(GCC_INSTALL) :
 				--host=x86_64-pc-linux-gnu \
 				--disable-nls \
 				--disable-docs \
+				--disable-multilib \
 				; \
 			nice -n 20 \
 				make -j $$(($(NPROC) + 1)) bootstrap; \
@@ -503,6 +506,7 @@ debian-install-kernel-mac:
 misc-user:
 	# yt-dlp
 	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/bin/yt-dlp
+	chmod u+x ~/bin/yt-dlp
 	# starfish
 	cargo install starship --locked
 
