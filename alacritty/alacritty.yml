@@ -758,6 +758,7 @@ key_bindings:
   - { key: Insert,   mods: Control, action: Paste                        }
     # map Home (aka C-;) to C-b for tmux
   - { key: Home,     mods: Control, chars: "\x02"                        }
+  - { key: Semicolon, mods: Control, chars: "\x02"                       } #RB tmux
 
 #debug:
   # Display the time it takes to redraw each frame.
