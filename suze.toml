@@ -8,6 +8,7 @@ packages = [
     "compose",
     "fonts",
     "gdb",
+    "git",
     "gtk",
     "laptop",
     "mac",
@@ -18,5 +19,6 @@ packages = [
 
 [variables]
 awesome_network_interface = "ens5"
+awesome_disk_interface = "sda"
 
 # vim: filetype=cfg

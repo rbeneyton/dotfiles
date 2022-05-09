@@ -280,7 +280,8 @@ local brightness_widget = require('awesome-wm-widgets.brightness-widget.brightne
 local iowidget = wibox.widget.textbox()
 vicious.register(iowidget, vicious.widgets.dio, function (widget, args)
     return string.format('<span color="#498FE4">R%4.1f</span> <span color="#E48671">W%4.1f</span>', 
-                         args['{sda read_mb}'], args['{sda write_mb}'])
+                         args['{' .. '{{awesome_disk_interface}} read_mb}'],
+                         args['{' .. '{{awesome_disk_interface}} write_mb}']) 
     end, 3)
 local ioicon = wibox.widget.imagebox()
 ioicon:set_image(beautiful.widget_io)

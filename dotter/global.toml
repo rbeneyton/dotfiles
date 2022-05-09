@@ -78,6 +78,11 @@ awesome_network_interface = "eth0"
 [starship.files]
 "starship/starship.toml" = "~/.config/starship.toml"
 
+# git
+[git.files]
+"git/gitconfig" = "~/.gitconfig"
+"git/include.gitconfig" = "~/.gitconfig.include"
+
 # dummy "flag only" packages
 [bluetooth.variables]
 [laptop.variables]

@@ -1,0 +1,155 @@
+[instaweb]
+#  local = true
+#  port = 8080
+
+[core]
+  editor = vim
+  excludesfile = ~/.gitignore
+#  editor = nano
+
+[color "diff"]
+  meta = bold green
+  frag = yellow
+  old = magenta
+  new = bold cyan
+  message = bold green
+
+[color "status"]
+  header = bold blue
+  added  = bold green
+  changed = bold red
+  untracked = bold yellow
+
+#[tig "color"]
+#  cursor          red     default underline
+#  diff-header blue default bold
+#  diff-add green default bold
+#  diff-chunk red default bold
+#  diff-del red default bold
+
+[color]
+  branch = auto
+  diff = auto
+  interactive = auto
+  status = auto
+  ui = true
+
+[color "diff"]
+  whitespace = red reverse
+
+[alias]
+  graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
+  st = status
+  fm = format-patch --patience
+  ct = commit
+  cta = commit --amend
+  ctaa = commit -a --amend
+  cto = commit -c ORIG_HEAD
+  sta = stash
+  stap = stash pop
+  ap = add -p
+  addu = add -u
+  br = branch
+  brc = branch origin/* --remotes --contains
+  co = checkout
+  cof = checkout -f
+  cp = cherry-pick
+  cpx = cherry-pick -x
+  cpa = cherry-pick --abort
+  df = diff --patience --full-index
+  dfs = diff --patience --full-index --stat
+  e  = !vim `git status --porcelain | grep '^M' | tr -s '  ' ' ' | cut -d' ' -f2`
+  es = !vim `git status --porcelain | grep '^M ' | tr -s '  ' ' ' | cut -d' ' -f2`
+  em = !vim `git status --porcelain | grep '^ M' | tr -s '  ' ' ' | cut -d' ' -f3`
+  ep = !vim `git show --pretty="format:" --name-only`
+  lg = log -p
+  who = shortlog -s --
+  squash = commit -s --amend -C HEAD
+  dc = diff --patience --cached --full-index
+  logp = log --pretty=oneline --decorate=full -15
+  lol = log --graph --decorate --pretty=oneline --abbrev-commit
+  lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  lag = log --all --grep
+  reflogp = reflog show --pretty=oneline --decorate=full
+  ls = ls-files
+  gr = grep -n
+  re = rebase
+  ri = rebase -i
+  rec = rebase --continue
+  rea = rebase --abort
+  rio = rebase -i origin/master
+#  rio = rebase -i origin/qrrd/master
+#  rio = rebase -i origin/qrrd/1.0
+  rese = reset HEAD~1
+  resa = reset --hard HEAD
+  fe = fetch
+  fea = fetch --all
+  s = status
+  sh = show
+  sub = submodule
+  subi = submodule init
+  subu = submodule update
+  subur = submodule update --recursive
+  subui = submodule update --init
+  subuir = submodule update --init --recursive
+  subs = submodule summary
+#  subf = "submodule foreach 'rm -rf $toplevel/$path ; sh /usr/share/doc/git/contrib/workdir/git-new-workdir ~/devs/bares/$name $toplevel/$path $sha1 ; rm -rf $toplevel/.git/modules/$path'"
+  v = !vim $(git status --ignore-submodules --porcelain | sed -ne 's/^ M //p')
+  pr = pull --rebase
+  pro = pull --rebase origin
+  ign = ls-files -o -i --exclude-standard
+  sta = stash
+  stal = stash list
+  pop = stash pop
+  human = name-rev --name-only --refs=refs/heads/*
+
+[grep]
+  lineNumber = true
+
+[push]
+  default = tracking
+
+[notes]
+  displayRef = refs/notes/*
+
+[merge]
+  verbosity = 1
+  conflictstyle = diff3
+  tool = fugitive
+
+[rerere]
+  enabled = 1
+
+[mergetool "fugitive"]
+  cmd = vim -f -c \"Gdiff\" \"$MERGED\"
+
+[merge "verify"]
+  name = merge and verify driver
+  driver = ~/bin/merge-and-verify-driver %A %O %B
+
+[diff]
+  renameLimit = 10000
+  renames = copies
+
+
+[url "ssh://git.corp:29418/"]
+    insteadOf = git.corp:/srv/git
+    insteadOf = ssh://git.corp/srv/git
+    insteadOf = gitolite@git.corp:
+
+[url "ssh://git.corp:29418/platform"]
+    insteadOf = git.corp:/srv/git/qdb
+    insteadOf = ssh://git.corp/srv/git/qdb
+    insteadOf = ssh://git.corp:29418/qdb
+    insteadOf = gitolite@git.corp:qdb
+    insteadOf = git.corp:/srv/git/qrrd
+    insteadOf = ssh://git.corp/srv/git/qrrd
+    insteadOf = ssh://git.corp:29418/qrrd
+    insteadOf = gitolite@git.corp:qrrd
+
+[transfer]
+    fsckobjects = true
+[fetch]
+    fsckobjects = true
+[receive]
+    fsckObjects = true

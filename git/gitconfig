@@ -1,0 +1,7 @@
+[user]
+  name = Richard Beneyton
+  email = richard.beneyton@gmail.com
+
+[include]
+  path = {{trim (command_output "getent passwd \"$USER\" | cut -d : -f 6")}}/.gitconfig.include
+

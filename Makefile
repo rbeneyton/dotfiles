@@ -7,28 +7,30 @@ BIN = ${HOME}/bin
 UTILS = ${HOME}/utils
 $(UTILS):
 	mkdir -p $@
+utils: $(UTILS)
 
 GNU_MIRROR = https://ftp.igh.cnrs.fr/pub/gnu/
 GNU_MIRROR = https://mirror.ibcp.fr/pub/gnu/
 
 utils-install: gdb-install tig-install dotter-install neovim-install fish-install
 
+
 # trigger dotter update
 up:
-	dotter --local-config $(shell hostname).toml --verbose
+	$(BIN)/dotter --local-config $(shell hostname).toml --verbose
 # preview
 dry:
-	dotter --local-config $(shell hostname).toml --verbose --dry-run
+	$(BIN)/dotter --local-config $(shell hostname).toml --verbose --dry-run
 # force
 upforce:
-	dotter --local-config $(shell hostname).toml --verbose --force
+	$(BIN)/dotter --local-config $(shell hostname).toml --verbose --force
 
 # {{{ dotter
 
 dotter-install: utils rust-update
 	$(eval SRC := ~/utils/dotter/)
 	rm -rf $(SRC)
-	git clone git://github.com/SuperCuber/dotter.git $(SRC)
+	git clone https://github.com/SuperCuber/dotter.git $(SRC)
 	cargo build --manifest-path $(SRC)/Cargo.toml --release
 	cp $(SRC)/target/release/dotter $(BIN)
 	rm -rf $(SRC)/target
@@ -39,7 +41,6 @@ dotter-install: utils rust-update
 
 GIT_INSTALL = $(UTILS)/git_install
 $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
-	# apt-get-install asciidoc
 	$(eval NAME := git)
 	$(eval SRC := $(UTILS)/$(NAME))
 	$(eval TAR := $(UTILS)/$(NAME).tar.gz)
@@ -61,6 +62,7 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 				--prefix=$(INSTALL) \
 				--with-curl \
 				--with-libpcre2 \
+				--without-tcltk \
 				; \
 			make -j $$(($(NPROC) + 1)) all; \
 			make doc; \
@@ -76,7 +78,7 @@ $(TIG_INSTALL) : | $(GCC_INSTALL) $(GIT_INSTALL) $(UTILS)
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	# no out-of-source-tree support
 	rm -rf $(SRC)
-	git clone --branch master --single-branch --depth 30 git://github.com/jonas/tig.git $(SRC)
+	git clone --branch master --single-branch --depth 30 https://github.com/jonas/tig.git $(SRC)
 	make -C $(SRC) configure
 	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
@@ -105,9 +107,9 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval SRC := ${HOME}/utils/$(NAME)/)
 	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
 	$(eval BUILD := $(SRC)/build/)
-	# rm -rf $(SRC)
-	# git clone --branch release-0.5 --single-branch --depth 10 git://github.com/neovim/neovim.git $(SRC)
-	# git clone --branch release-0.5 --single-branch --depth 10 git@github.com:rbeneyton/neovim.git $(SRC)
+	rm -rf $(SRC)
+	# git clone --branch release-0.6 --single-branch --depth 10 https://github.com/neovim/neovim.git $(SRC)
+	git clone --branch release-0.6 --single-branch --depth 10 https://github.com/rbeneyton/neovim.git $(SRC)
 	rm -rf $(BUILD)
 	mkdir -p $(BUILD)
 	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
@@ -148,10 +150,10 @@ neovim-lsp-python: $(NEOVIM_LSP_PYTHON)
 
 NEOVIM_LSP_RUST = $(BIN)/rust-analyzer
 $(NEOVIM_LSP_RUST) : | $(UTILS) rust-update
-	$(eval NAME := rls)
+	$(eval NAME := rust-analyzer)
 	$(eval SRC := ${HOME}/utils/$(NAME)/)
 	rm -rf $(SRC)
-	git clone --branch release --single-branch --depth 10 git://github.com/rust-analyzer/rust-analyzer.git $(SRC)
+	git clone --branch release --single-branch --depth 10 https://github.com/rust-analyzer/rust-analyzer.git $(SRC)
 	cargo build --manifest-path $(SRC)/Cargo.toml --release
 	cp $(SRC)/target/release/$(NAME) $(BIN)
 	rm -rf $(SRC)
@@ -165,7 +167,8 @@ $(ALACRITTY) : | $(UTILS) rust-update
 	$(eval NAME := alacritty)
 	$(eval SRC := ${HOME}/utils/$(NAME)/)
 	rm -rf $(SRC)
-	git clone --branch master --single-branch --depth 10 git://github.com/alacritty/alacritty.git $(SRC)
+	# git clone --branch master --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
+	git clone --branch v0.10.1 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
 	cargo build --manifest-path $(SRC)/Cargo.toml --release
 	cp $(SRC)/target/release/$(NAME) $(BIN)
 	rm -rf $(SRC)
@@ -200,7 +203,7 @@ tmux-install: utils libevent-install
 	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
 	$(eval LIBEVENT := ${HOME}/utils/libevent_install/lib/)
 	rm -rf $(SRC)
-	git clone --branch master --single-branch --depth 300 git://github.com/tmux/tmux.git $(SRC)
+	git clone --branch master --single-branch --depth 300 https://github.com/tmux/tmux.git $(SRC)
 	cd $(SRC) && \
 		./autogen.sh && \
 		CFLAGS="-march=native -O3" \
@@ -327,7 +330,7 @@ $(GCC_INSTALL) :
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	$(eval BUILD := $(SRC)/build)
 	rm -rf $(SRC)
-	git clone --branch releases/gcc-11 --single-branch --depth 10 git://gcc.gnu.org/git/gcc.git $(SRC)
+	git clone --branch releases/gcc-11 --single-branch --depth 10 https://gcc.gnu.org/git/gcc.git $(SRC)
 	mkdir -p $(BUILD)
 	# -disable-multilib --disable-shared # gcc bug 66955
 	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
@@ -363,11 +366,11 @@ $(GDB_INSTALL) :
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	$(eval BUILD := $(SRC)/build)
 	rm -rf $(SRC)
-	# git clone --branch gdb-10-branch --single-branch --depth 10 git://sourceware.org/git/binutils-gdb.git $(SRC)
+	# git clone --branch gdb-10-branch --single-branch --depth 10 https://sourceware.org/git/binutils-gdb.git $(SRC)
 	mkdir -p $(SRC) $(BUILD)
 	wget $(GNU_MIRROR)/gdb/gdb-10.2.tar.xz -O $(TAR)
 	tar xf $(TAR) -C $(SRC) --strip-components 1
-	# rm $(TAR)
+	rm $(TAR)
 	# recursiv make/configure isn't possible with gdb
 	# autoreconf -f -i $(SRC) neither
 	# we escape from our Makefile environment to do the build
@@ -406,7 +409,7 @@ $(LLVM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
 	$(eval BUILD := $(SRC)/build/)
 	rm -rf $(SRC)
-	git clone --branch release/12.x --single-branch --depth 300 git://github.com/llvm/llvm-project.git $(SRC)
+	git clone --branch release/12.x --single-branch --depth 300 https://github.com/llvm/llvm-project.git $(SRC)
 	mkdir -p $(BUILD)
 	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
@@ -443,7 +446,7 @@ rust-install:
 	type rustc || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 rust-update: rust-install
-	rustup update
+	${HOME}/.cargo/bin/rustup update
 
 # }}}
 # {{{ debian specific
@@ -451,11 +454,22 @@ rust-update: rust-install
 debian-install: debian-install-base debian-install-net debian-install-graphic
 
 debian-install-base:
-	apt-get install git tig build-essential tmux dstat tree cmake pkg-config conda patchelf
-	apt-get-install libtool libtool-bin autogen autoconf autoconf-archive automake cmake g++ pkg-config unzip curl
-	apt-get-install firejail
-	apt-get-install libcurl4-gnutls-dev
-	apt-get-install sqlite3
+	apt-get install make # chicken & egg, here to remember
+	apt-get install nfs-common curl
+	apt-get install git tig build-essential tmux dstat tree cmake pkg-config patchelf
+	# apt-get install conda
+	apt-get install libtool libtool-bin autogen autoconf autoconf-archive automake cmake g++ pkg-config unzip curl
+	apt-get install firejail
+	apt-get install libcurl4-gnutls-dev
+	apt-get install sqlite3
+	apt-get install flex # for gcc (bug 84715 using multilib but not in src tree /o\)
+	apt-get install zlib1g-dev # zlib.h
+	apt-get install asciidoc gettext # git
+	apt-get install libncurses-dev # tig
+	apt-get install texinfo # gdb
+	apt-get install pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3 # alacritty
+	apt-get install libssl-dev # libevent
+	apt-get install bison # tmux
 
 debian-install-net:
 	apt-get install network-manager-openconnect network-manager-gnome network-manager-openconnect-gnome
@@ -465,7 +479,7 @@ debian-install-graphic:
 	# libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
 	apt-get install parcellite mesa-utils fonts-dejavu fonts-dejavu-core fonts-dejavu-extra
 	apt-get install redshift redshift-gtk
-	apt-get-install x11-xkb-utils inputplug # xkb + detect/reload
+	apt-get install x11-xkb-utils inputplug # xkb + detect/reload
 	apt-get install blueman pulseaudio-module-bluetooth
 	apt-get install pasystray pavucontrol
 	# apt-get install light ibam # laptop only
@@ -504,10 +518,12 @@ debian-install-kernel-mac:
 # {{{ user tools
 
 misc-user:
+	mkdir -p ~/bin
 	# yt-dlp
-	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o ~/bin/yt-dlp
+	rm -f ~/bin/yt-dlp
+	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/yt-dlp -o ~/bin/yt-dlp
 	chmod u+x ~/bin/yt-dlp
-	# starfish
+	# starship
 	cargo install starship --locked
 
 # }}}
@@ -560,7 +576,7 @@ $(FREERDP_INSTALL) :
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	$(eval BUILD := $(SRC)/build)
 	rm -rf $(SRC)
-	git clone --branch master --single-branch --depth 10 git://github.com/FreeRDP/FreeRDP.git $(SRC)
+	git clone --branch master --single-branch --depth 10 https://github.com/FreeRDP/FreeRDP.git $(SRC)
 	mkdir -p $(BUILD)
 	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \

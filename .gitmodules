@@ -3,10 +3,10 @@
 	url = https://github.com/streetturtle/awesome-wm-widgets.git
 [submodule "gdb/eigengdb"]
 	path = gdb/eigengdb
-	url = git://github.com/dmillard/eigengdb.git
+	url = https://github.com/dmillard/eigengdb.git
 [submodule "gdb/pahole"]
 	path = gdb/pahole
-	url = git://github.com/PhilArmstrong/pahole-gdb.git
+	url = https://github.com/PhilArmstrong/pahole-gdb.git
 [submodule "awesome/json.lua"]
 	path = awesome/json.lua
-	url = git://github.com/rxi/json.lua.git
+	url = https://github.com/rxi/json.lua.git
