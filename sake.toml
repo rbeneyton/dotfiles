@@ -12,6 +12,7 @@ packages = [
     "gtk",
     "redshift",
     "starship",
+    "tmux",
     "xkb",
     ]
 

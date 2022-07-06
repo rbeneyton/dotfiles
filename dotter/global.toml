@@ -84,6 +84,10 @@ awesome_network_interface = "eth0"
 "git/gitconfig" = "~/.gitconfig"
 "git/include.gitconfig" = "~/.gitconfig.include"
 
+# tmux
+[tmux.files]
+"tmux/tmux.conf" = "~/.tmux.conf"
+
 # dummy "flag only" packages
 [bluetooth.variables]
 [laptop.variables]

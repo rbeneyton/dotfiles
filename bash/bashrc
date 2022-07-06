@@ -467,6 +467,7 @@ SOCK="/tmp/ssh-agent-$USER-screen"
 #    ln -sf "$SSH_AUTH_SOCK" $SOCK
 #fi
 export SSH_AUTH_SOCK=$SOCK
+. "$HOME/.cargo/env"
 
 # dotter/handlebars+fold incompatibility: temporary [[[ / ]]]]
 # vim: foldmarker=[[[,]]]
