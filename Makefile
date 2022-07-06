@@ -151,7 +151,7 @@ $(NEOVIM_LSP_PYTHON) : | bin utils
 neovim-lsp-python: $(NEOVIM_LSP_PYTHON)
 
 NEOVIM_LSP_RUST = $(BIN)/rust-analyzer
-$(NEOVIM_LSP_RUST) : | bin utils rust-update
+$(NEOVIM_LSP_RUST) : | $(UTILS) rust-update
 	$(eval NAME := rust-analyzer)
 	$(eval SRC := ${HOME}/utils/$(NAME)/)
 	rm -rf $(SRC)
