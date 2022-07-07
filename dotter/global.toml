@@ -88,6 +88,12 @@ awesome_network_interface = "eth0"
 [tmux.files]
 "tmux/tmux.conf" = "~/.tmux.conf"
 
+# vim
+[vim.files]
+"vim/vimrc" = { target = "~/.vimrc", type = "symbolic" }
+"vim" = { target = "~/.vim", type = "symbolic", recurse = false }
+"nvim" = { target = "~/.config/nvim", type = "symbolic", recurse = false }
+
 # dummy "flag only" packages
 [bluetooth.variables]
 [laptop.variables]

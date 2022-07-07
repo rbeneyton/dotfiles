@@ -29,7 +29,7 @@ upforce:
 
 # {{{ dotter
 
-dotter-install: bin utils rust-update
+dotter-install: $(BIN) $(UTILS) rust-update
 	$(eval SRC := ~/utils/dotter/)
 	rm -rf $(SRC)
 	git clone https://github.com/SuperCuber/dotter.git $(SRC)

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#--nofork for pre KDE 5
+# konsole --separate --hide-menubar --hide-tabbar --notransparency -e 'vim -n -c "set filetype=mail" -f '$@
+alacritty -t mail -e nvim -n -c "set filetype=mail" -f $@

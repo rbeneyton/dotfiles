@@ -1,0 +1,92 @@
+" to put in settings
+" seems buggy see https://github.com/1995eaton/chromium-vim/issues/312
+"let configpath = '/home/richard/.cvimrc'
+"set localconfig
+
+set noautofocus
+set cncpcompletion
+set nosmoothscroll
+set nohud
+set autohidecursor
+set numerichints
+set typelinkhints
+let scrollduration = 0
+let searchlimit = 40
+let searchengine mdn = "https://developer.mozilla.org/en-US/search?q="
+let searchengine stackoverflow = "http://stackoverflow.com/search?q="
+let searchalias s = "stackoverflow"
+let searchalias g = "google"
+"let qmark b = ["http://www.reddit.com/", "https://github.com/", "https://mail.google.com/mail/u/0/?shva=1#inbox", "https://news.ycombinator.com/"]
+set nolinkanimations
+set incsearch
+let scrollstep = 75
+let barposition = "bottom"
+let vimcommand = "konsole -e 'vim'"
+
+let qmark r = ["https://git.corp/r/#/"]
+let qmark s = ["https://support.intersec.com/"]
+
+" Mappings
+map <C-R> rootFrame
+
+map <C-j> <Esc>
+imap <C-j> <Esc>
+
+unmap a
+map <C-d> scrollPageDown
+map <C-u> scrollPageUp
+
+unmap x
+map d closeTab
+
+map gg scrollToTop
+map G scrollToBottom
+
+map gt nextTab
+map gT previousTab
+
+map gb :buffers<Space>
+map aa :tabopen g<Space>
+map T :tabopen<CR>
+
+map <C-o> goBack
+map <C-i> goForward
+
+map i goToInput
+map t :tabnew<CR>
+map F createActiveTabbedHint
+map f createHint
+map R r
+
+
+site '*://git.corp/*' {
+   unmap ?
+   unmap /
+   unmap j
+   unmap k
+   unmap n
+   unmap p
+   unmap [
+   unmap ]
+   unmap o
+   unmap R
+   unmap u
+   unmap J
+   unmap K
+   unmap O
+   unmap ga
+   unmap gm
+   unmap go
+   unmap gc
+   unmap gd
+   unmap gi
+   unmap gs
+   unmap gw
+   unmap c
+   unmap z
+   unmap t
+   unmap x
+   unmap a
+   unmap s
+   unmap r
+}

@@ -13,6 +13,7 @@ packages = [
     "redshift",
     "starship",
     "tmux",
+    "vim",
     "xkb",
     ]
 

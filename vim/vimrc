@@ -1,0 +1,1369 @@
+" {{{ richard: pathogen
+
+" To disable a plugin, add it's bundle name to the following list
+let g:pathogen_disabled = ['clang_complete']
+" let g:pathogen_disabled = ['clang_complete', 'syntastic' ]
+" let g:pathogen_disabled = ['clang_complete', 'tmuxline']
+let g:pathogen_disabled = ['clang_complete', 'YouCompleteMe', 'LanguageClient-neovim']
+" let g:pathogen_disabled = ['clang_complete', 'YouCompleteMe', 'syntastic' ]
+
+if has('nvim')
+    let g:pathogen_disabled += ['vim-lsp']
+else
+    let g:pathogen_disabled += ['nvim-lspconfig']
+endif
+
+" let g:pathogen_disabled += ['vim-slime']
+let g:pathogen_disabled += ['slimux']
+let g:pathogen_disabled += ['gundo']
+
+"let g:pathogen_disabled += ['vim-lsp']
+"let g:pathogen_disabled += ['nvim-lspconfig']
+
+let g:pathogen_disabled += ['syntastic' ]
+
+" set rtp+=/home/richard/dotfiles/powerline/powerline/bindings/vim
+
+"debian 'harcoded' path ?
+if has("unix")
+    "set rtp+=/usr/share/vim/vim74
+    let g:pathogen_disabled += ['neovim-qt-colors-solarized-truecolor-only']
+else
+    "set rtp+=H:\dotfiles\vim
+    set rtp+=D:\utils\vim
+    "set rtp+=D:\utils\Neovim\share\nvim\runtime
+    let $PATH .= ';' . 'D:\utils\PortableGit\bin'
+    "let g:pathogen_disabled += ['fugitive', 'gitgutter']
+    "let g:pathogen_disabled += ['tmuxline']
+    "let g:pathogen_disabled += ['vim-airline']
+    "let g:pathogen_disabled += ['vim-airline-themes']
+    let g:pathogen_disabled += ['vim-colors-solarized' ]
+    "let g:pathogen_disabled += ['syntastic' ]
+    "FIXME Guifont DejaVu Sans Mono:h9
+endif
+
+call pathogen#infect()
+call pathogen#helptags()
+
+:packadd nvim-lspconfig
+
+" NB: to temporary use alias in :! command: (break fugitive plugin)
+"set shell=/bin/bash\ -i
+
+" }}}
+" {{{ main settings
+
+" let mapleader=","
+let mapleader = "\<Space>"
+
+set nocompatible                " Use Vim defaults instead of 100% vi compatibility
+set encoding=utf-8
+set backspace=indent,eol,start  " more powerful backspacing
+
+set autoindent                  " always set auto-indenting on
+set autoread                    " reload unchanged files silentely
+set clipboard=unnamed           " copy/paste to global clipboard (klipper)
+set hidden                      " allow to cycle and hide modified buffers
+set nobackup                    " Don't keep a backup file
+set backupcopy=auto,breakhardlink
+"nvim set swapsync=
+"nvim set esckeys                     " allow usage of curs keys within insert mode
+set timeout
+set ttimeoutlen=10
+set timeoutlen=500              " set timout for esc to 50ms
+
+set listchars=tab:\ \ ,trail:-,extends:>,precedes:<
+set listchars=tab:>-,trail:-,extends:>,precedes:<
+set list
+set lazyredraw                  " [VIM5];  do not update screen	while executing macros
+set ttyfast
+set magic                       " Use some magic in search patterns?  Certainly!
+set modeline                    " Allow the last line to be a modeline - useful when
+                                " the last line in sig gives the preferred text-width
+                                " for replies.
+set modelines=5
+set pastetoggle=<F4>
+set nopaste
+
+set nojoinspaces                " avoid to get "previous sentence.  New sentence"
+set number                      " show line numbers
+if exists('+relativenumber')
+    set relativenumber          " better for many line movemenet
+endif
+set report=0                    " show a report when N lines were changed.
+                                " report=0 thus means "show all changes"!
+
+set laststatus=2                " show status line?  Yes, always!
+set noruler                     " show cursor position?  Yep!
+
+"remind
+" hi User1 term=inverse,bold ctermfg=DarkBlue ctermbg=Black
+" hi User2 term=inverse,bold ctermfg=DarkRed ctermbg=Black
+" hi User3 term=inverse,bold ctermfg=DarkMagenta ctermbg=Black
+" hi User4 term=inverse,bold ctermfg=DarkGreen ctermbg=Black
+" hi User5 term=inverse,bold ctermfg=DarkYellow ctermbg=Black
+" hi User6 term=inverse,bold ctermfg=DarkCyan ctermbg=Black
+" hi User7 term=inverse,bold ctermfg=White ctermbg=Black
+
+" }}}
+" {{{ main settings cont'd
+
+set shiftwidth=4                " Number of spaces to use for each insertion of
+                                " (auto)indent.
+set scrolloff=2                 " context
+set showcmd                     " Show current uncompleted command?  Absolutely!
+set showmatch                   " Show the matching bracket for the last ')'?
+set showmode                    " Show the current mode?  YEEEEEEEEESSSSSSSSSSS!
+
+set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc,.cmi,.cmo,.iop.h,.iop.c,.iop.json,.blk.c
+                                " Suffixes to ignore in file completion
+set tabstop=8                   " tabstop
+set tabstop=4                   " CFM
+set softtabstop=4               " sts
+set expandtab                   " expand tabs
+" set notextmode                  " no - I am using Vim on UNIX!
+set textwidth=0                 " Don't wrap words by default
+if exists('+colorcolumn')
+    set colorcolumn=+1          " highlight column after 'textwidth'
+endif
+set title                       " Permet de voir le tit. du doc. crt. ds les XTERM
+" nvim: let the editor chose the viminfo filename (so avoid option "n~/.viminfo" at the end
+set viminfo='1000,/1000,:1000,<1000,@1000
+set history=1000
+                                " What info to store from an editing session
+                                " in the viminfo file;  can be used at next session.
+set sessionoptions=buffers,folds,localoptions,options,tabpages,help
+set sessionoptions-=blank       " for syntastic
+
+"set ignorecase                  " Do case insensitive matching
+set smartcase                    " Do case sensitive matching when search contains capital
+set incsearch                   " Incremental search
+set hlsearch                    " hilight search
+
+set whichwrap=<,>,[,]           "
+set wildchar=<TAB>              " the char used for "expansion" on the command line
+                                " default value is "<C-E>" but I prefer the tab key:
+set wildmenu                    " Completion on the command line shows a menu
+set wildmode=longest,list,full
+set winminheight=0              " Minimum height of VIM's windows opened
+"set mouse=a
+"set mousefocus
+set wrapmargin=1
+set nowritebackup
+set foldmethod=marker
+set foldlevelstart=20
+
+set tildeop                     " ~W marche
+
+set cinoptions=
+set cinoptions+=L0.5s          " align labels at 0.5 shiftwidth
+set cinoptions+=:0.5s,=0.5s    " same for case labels and code following a label
+set cinoptions+=g0.5s,h0.5s    " same for c++ stuff
+set cinoptions+=t0             " type on the line before the functions is not idented
+set cinoptions+=(0,Ws          " indent in functions ( ... ) when it breaks
+set cinoptions+=m1             " aligh the closing ) properly
+set cinoptions+=j1             " java/javscript -> fixes blocks
+"set cinoptions+=l0.5s          " align code after label ignoring braces.
+
+set nowrapscan                 " stop search at end of buffer
+" }}}
+" {{{ main settins cont'dd
+
+set autochdir            " autochdir: NO...
+set virtualedit=onemore    " Yes I want to be able to be "on \n"
+set spelllang=en_us,fr
+set pumheight=16
+
+" make <enter> work in popup
+inoremap <cr> <C-R>=pumvisible() ? "\<lt>C-Y>" : "\<lt>cr>"<cr>
+
+" autocmd BufEnter * :lcd %:p:h
+
+" allow to loop via Tab in C-X lists
+function! CleverTab()
+    if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
+        return "\<Tab>"
+    else
+        return "\<C-F>" " C-N cannot be used
+    endif
+endfunction
+inoremap <Tab> <C-R>=CleverTab()<CR>
+
+
+" }}}
+" {{{ richard statusline
+
+" with remaining cursor/letter index
+"set statusline=%<%f\ %m%1*%r%0*\ %1*%n%0*%=%-10(%l,%02c\ %1*%02p%%%0*%)\ %-16(c:%o,l:%03b(%02B)%)
+"set statusline=%<%f\ %m%1*%r%0*\ %1*%n%0*%=%-10(%l,%02c\ %1*%02p%%%0*%)
+"set statusline=%<%f\ %m%1*%r%0*\ %1*%n%0*%=%#warningmsg#%{SyntasticStatuslineFlag()}%*\ %-10(%l,%02c\ %1*%02p%%%0*%)
+set statusline=        "start
+set statusline+=%<
+set statusline+=%4*    "switch to User highlight
+set statusline+=%f     "filename
+set statusline+=\      "space
+set statusline+=%5*    "switch to User highlight
+set statusline+=%Y     "filetype
+set statusline+=\      "space
+set statusline+=%1*    "switch to User highlight
+if exists('g:loaded_fugitive')
+    set statusline+=%{fugitive#head()}     "modified
+endif
+" set statusline+=\      "space (not required?)
+set statusline+=%2*    "switch to User highlight
+set statusline+=%M     "modified
+set statusline+=%R     "readonly flag
+set statusline+=\      "space
+set statusline+=%6*    "switch to User highlight
+set statusline+=%n     "buffer number
+set statusline+=\      "space
+set statusline+=%0*    "switch back to statusline highlight
+set statusline+=%=     "left/right separator
+set statusline+=%#warningmsg# "switch to warningmsg highlight
+if exists('g:loaded_syntastic_plugin')
+    set statusline+=%{SyntasticStatuslineFlag()} "put syntastic message
+endif
+set statusline+=%*     "switch back to normal statusline highlight
+set statusline+=\      "space
+" set statusline+=%-10(  "start a group left aligned of 10 characters
+set statusline+=%7*    "switch to User highlight
+set statusline+=%l     "line number
+set statusline+=,      "comma
+set statusline+=%02c   "column number, zero padded
+set statusline+=\      "space
+set statusline+=%6*    "switch to User highlight, aka inverse bold for me
+set statusline+=%02p%% "percentage inside the file, zero padded, with %
+set statusline+=%0*    "switch back to statusline highlight
+" set statusline+=%)     "end of the group
+" hi User1 term=inverse,bold cterm=inverse,bold ctermfg=lightyellow
+
+" }}}
+" {{{ external tools: diff, make, grep, path…
+
+set diffopt=filler,context:5,iwhite
+set fillchars+=diff:\ ,vert:\│
+
+set makeprg=LC_ALL=C\ make\ MONOCHROME=1\ L=1
+" set grepprg=egrep\ --exclude='*.blk.c'\ --exclude='*.blkk.cc'\ -n\ $*\ /dev/null
+"set grepprg=git\ grep\ -H\ -n "Ggrep do that
+"Gg is Ggrep and do that
+
+if has("unix")
+    exe "set path=." . system("echo | cpp -v 2>&1 | grep '^ .*/include' | tr -d \"\n\" | tr \" \" \",\"")
+endif
+set path+=.;/
+set path+=./include
+set path+=./../include
+
+
+" }}}
+" {{{ Mappings
+
+nnoremap <C-PageDown> :bnext<cr>
+nnoremap <C-PageUp> :bprevious<cr>
+
+map + :cnext<cr>zv<cr>
+map _ :cprevious<cr>zv<cr>
+map - :cprevious<cr>zv<cr>
+"map = :cclose<cr>
+"map = :botright :cwindow 25<cr>
+map <kPlus> :cnext<cr>zv<cr>
+map <kMinus> :cprevious<cr>zv<cr>
+if has("autocmd")
+    " disable number / relativenumber for big files, to avoid to read to count lines
+    augroup LargeFile
+        autocmd BufReadPre *
+          \ let f=expand("<afile>")           |
+          \ if getfsize(f) > 20 * 1024 * 1024 |
+          \     set eventignore+=FileType     |
+          \     setlocal ft=large             |
+          \     setlocal noswapfile           |
+          \     setlocal bufhidden=unload     |
+          \     setlocal foldmethod=manual    |
+          \     setlocal nofoldenable         |
+          \     setlocal nobackup             |
+          \     setlocal nowritebackup        |
+          \     setlocal undolevels=-1        |
+          \     setlocal nonumber             |
+          \     setlocal norelativenumber     |
+          \ else                              |
+          \     set eventignore-=FileType     |
+          \ endif
+    augroup END
+    " autocmd Filetype * if getfsize(@%) > 1000000 | setlocal syntax=OFF | endif
+
+    " open the quick list window after make
+    autocmd QuickFixCmdPost [^l]* nested botright cwindow 10
+    autocmd FileType quickfix setlocal scrolloff=0
+    "autocmd BufReadPost quickfix exe "normal! zt"
+    autocmd BufWinEnter quickfix exe "normal! zt"
+endif " has ("autocmd")
+
+" map C-h to get cursor position
+nnoremap <C-H> :call HighlightNearCursor()<CR>
+function HighlightNearCursor()
+  if !exists("s:highlightcursor")
+    match Todo /\k*\%#\k*/
+    let s:highlightcursor=1
+    set cursorline
+  else
+    match None
+    unlet s:highlightcursor
+    set nocursorline
+  endif
+endfunction
+
+" }}}
+"{{{ FTYPES
+
+filetype plugin indent on
+syntax on
+
+" apply diff syntax to git patch view
+autocmd FileType git set syntax=diff
+
+autocmd Syntax {cpp,c,javascript} runtime syntax/doxygen.vim
+
+autocmd BufReadPost *
+            \ if line("'\"") > 0 && line("'\"") <= line("$") |
+            \   exe "normal g`\"" |
+            \ endif
+
+" allow tu use :let per buffer, when adding on first line stuff like:
+" // VIM: let b:syntastic_c_cflags = "-DIGL_CORE_DAEMON"
+runtime! plugin/let-modeline.vim
+autocmd BufNewFile * let b:this_is_new_buffer=1
+autocmd BufReadPost * call FirstModeLine()
+
+if has("unix")
+	autocmd VimLeave * mksession! ~/.cache/session.vim
+endif
+
+autocmd FileType debchangelog normal zO
+
+autocmd FileType javascript setlocal cindent tw=78 iskeyword+=$
+autocmd FileType actionscript setlocal cindent tw=78 iskeyword+=$ noignorecase ff=dos
+autocmd FileType mail setlocal noet iskeyword+=- tw=72 " RFC 3676
+autocmd FileType asciidoc setlocal spell spelllang=en_us
+autocmd FileType asciidoc setlocal syntax off
+autocmd BufRead,BufNewFile *.adoc setf asciidoc
+autocmd BufRead,BufNewFile *.md setf markdown
+autocmd BufRead,BufNewFile *.pck setf sql
+autocmd BufRead,BufNewFile *.conf setf dosini
+
+" txt have been previously selected for *.txt, so we need to force new
+" filetype manually (without setf which doesn't overwrite if)
+" autocmd BufRead,BufNewFile CMakeRules.txt setf cmake
+autocmd BufRead,BufNewFile CMake*.txt setlocal filetype=cmake
+" firefox plugin "It's all text!" put its temporary files in a temp folder
+" in firefox profile and name of the file is like:
+" <server-fqdn><port>_<text aread div>_<page title>.<random>.txt
+" so it's easy to select filetype
+autocmd BufRead,BufNewFile *Mail*.txt setlocal filetype=mail
+" setlocal issue? we need to reset these [mail] options
+" autocmd BufRead,BufNewFile *Mail*.txt setlocal noet iskeyword+=- tw=72 " RFC 3676
+
+autocmd FileType haxe setlocal tw=78 noignorecase cin ai
+" autocmd FileType c,cpp setlocal tw=78 noignorecase "fo-=ro
+autocmd FileType c,cpp setlocal tw=78 "fo-=ro
+autocmd FileType ocaml,acute,omlet setlocal sw=2 sts=2 tw=78
+autocmd FileType php  setlocal et fo+=ro tw=78 indentexpr= cin
+autocmd FileType python setlocal foldmethod=marker foldnestmax=20
+let python_highlight_all=1
+
+autocmd FileType diff   setlocal nofoldenable
+
+autocmd FileType html,xhtml,xml setlocal sw=2
+autocmd FileType mail setlocal spell
+autocmd FileType mail hi clear SpellBad
+autocmd FileType mail hi SpellBad cterm=underline
+autocmd FileType mail hi clear SpellRare
+autocmd FileType mail hi SpellRare cterm=underline
+autocmd FileType mail hi clear SpellCap
+autocmd FileType mail hi SpellCap cterm=underline
+autocmd FileType mail hi clear SpellLocal
+autocmd FileType mail hi SpellLocal cterm=underline
+
+" make error list special
+autocmd BufRead quickfix setlocal nobuflisted nowrap number
+
+autocmd FileType svn setlocal spell tw=76
+autocmd FileType git setlocal spell tw=76
+
+autocmd BufRead,BufNewFile */dev/scm/git/* setlocal noet sw=8
+
+" }}}
+" {{{ weird options
+
+let ocaml_noindent_let=1
+let git_diff_spawn_mode=2
+let git_diff_opts = "--no-renames --summary -C -M"
+let c_gnu=1
+let c_space_errors=1
+let c_no_curly_error=1
+
+let g:bufExplorerFindActive=0
+let g:bufExplorerSplitOutPathName=1
+let g:bufExplorerShowRelativePath=0
+let g:bufExplorerSortBy='fullpath'
+
+let g:is_bash=1
+let g:sh_fold_enabled=1
+
+let g:debchangelog_fold_enable = 1
+let g:debcontrol_fold_enable = 1
+
+" String to put at the start of lines that have been wrapped
+let &showbreak='↪ '
+
+" }}}
+" {{{ man plugin
+
+runtime! ftplugin/man.vim      " to get pretty :Man
+nmap K :Man <C-R>=expand("<cword>")<CR><CR>
+
+" }}}
+" {{{ let-modeline plugin callback def
+
+" Loads FirstModeLine()
+" if !exists('*FirstModeLine')
+"   " :Runtime emules :runtime with VIM 5.x
+"   Runtime plugin/let-modeline.vim
+" endif
+" if exists('*FirstModeLine')
+"  aug ALL
+"    au!
+"    " To not interfer with Templates loaders
+"    autocmd BufNewFile * :let b:this_is_new_buffer=1
+"    " Modeline interpretation
+"    autocmd BufEnter * :call FirstModeLine()
+"  aug END
+" endif
+
+" }}}
+" {{{ richard: netrw
+
+let g:netrw_sort_sequence = '[\/]$'
+let g:netrw_sort_sequence += ',\.iop$'
+let g:netrw_sort_sequence += ',\.h$|\.c$|\.cpp$|\.blk$|\.blkk$'
+let g:netrw_sort_sequence += ',\.py$'
+let g:netrw_sort_sequence += ',^Makefile$'
+let g:netrw_sort_sequence += ',*'
+let g:netrw_sort_sequence += ',\.json$'
+let g:netrw_sort_sequence += ',\.iop.[hc]$'
+let g:netrw_sort_sequence += ',\.blk\.c$,\.blkk.c$'
+let g:netrw_sort_sequence += ',\.o$'
+let g:netrw_sort_sequence += ',\.obj$'
+let g:netrw_sort_sequence += ',\.git'
+let g:netrw_sort_sequence += ',\.info$'
+let g:netrw_sort_sequence += ',\.swp$'
+let g:netrw_sort_sequence += ',\.bak$'
+" \@! after will force no match
+" let g:netrw_sort_sequence += ',\.*[\/]\@!$'
+let g:netrw_sort_sequence += ',\~$'
+
+let g:netrw_special_syntax = 1
+
+" }}}
+" {{{ richard: super F5...
+
+"richard: NO RECORDING
+"nmap qq :q!<cr>
+
+"function! RefreshAll()
+"  set noconfirm
+"  :bufdo! :e!
+"  :windo! :e!
+"  set confirm
+"endfunction
+"noremap <F5> <ESC>:call RefreshAll()<CR>
+
+" }}}
+" {{{ richard: clang for complete
+
+" let g:clang_use_library = 1
+" let g:clang_library_path = '/home/richard/local/clang_3.4/lib/'
+" "let g:clang_library_path = '/home/richard/local/clang_3.2/lib/'
+" "let g:clang_library_path = '/home/richard/local/clang_3.1/lib/'
+" let g:clang_close_preview = 1
+" let g:clang_complete_macros = 1
+" let g:clang_complete_patterns = 3
+" "no preview
+" "rb set completeopt="menu"
+" "set completeopt="menu"
+" set completeopt-=preview
+" "rb set complete=".,w,b,u,t,i,e,a,n,p" "e,a,n,p from clang_complete
+" set complete=".,w,b,u,t,i,kspell" "kspell = dictionary when spell on
+" CTRL SPACE SAIBIEN'
+"inoremap <S-space> <C-x><C-u>
+
+" CTRL SPACE SAI <ESC>
+"inoremap <Nul> <ESC>l
+"vnoremap <Nul> <ESC>
+
+" }}}
+" {{{ richard: misc map
+
+" esc with CTR-j
+inoremap <C-j> <esc>l
+vnoremap <C-j> <esc>
+nnoremap <C-j> <esc>
+
+"inoremap <C-space> <ESC>
+
+" }}}
+" {{{ richard: tags & cscope
+
+set tags=tags;/,.tags;/,TAGS;/
+
+if !has("nvim") && has("cscope") && has('modify_fname')
+    "use cscope by default
+    set cscopetag
+
+    "use cscope before tags
+    set cscopetagorder=0
+
+    "set cscopequickfix="s-,c-,d-,i-,t-,e"
+
+    " set nocscopeverbose
+    " " add any database in current directory
+    " if filereadable(".cscope.out")
+    "     cscope add .cscope.out
+    "     " else add database pointed to by environment
+    " elseif $CSCOPE_DB != ""
+    "     cscope add $CSCOPE_DB
+    " endif
+    " set cscopeverbose
+
+    "adapted from http://vim.sourceforge.net/scripts/script.php?script_id=157
+
+"TODO make the same auto add/remove for gtags
+"    "==
+"    " windowdir
+"    "  Gets the directory for the file in the current window
+"    "  Or the current working dir if there isn't one for the window.
+"    function! s:windowdir()
+"        return winbufnr(0) == -1 ? getcwd() : fnamemodify(bufname(winbufnr(0)), ':p:h')
+"    endfunction
+"
+"    "==
+"    " Find_in_parent
+"    " find the file argument and returns the path to it.
+"    " Starting with the current working dir, it walks up the parent folders
+"    " until it finds the file, or it hits the stop dir.
+"    " If it doesn't find it, it returns "Nothing"
+"    function! s:Find_in_parent(fln,flsrt,flstp)
+"        let here = a:flsrt
+"        while ( strlen( here) > 0 )
+"            if filereadable( here . "/" . a:fln )
+"                return here
+"            endif
+"            let fr = match(here, "/[^/]*$")
+"            if fr == -1
+"                break
+"            endif
+"            let here = strpart(here, 0, fr)
+"            if here == a:flstp
+"                break
+"            endif
+"        endwhile
+"        return "Nothing"
+"    endfunction
+"
+"    "==
+"    " Cycle_csdb
+"    "  cycle the loaded cscope db.
+"    function! s:Cycle_csdb()
+"        if exists("b:csdbpath") && cscope_connection(3, "out", b:csdbpath)
+"            "it is already loaded. don't try to reload it.
+"            return
+"        endif
+"        let newcsdbpath = s:Find_in_parent(".cscope.out",s:windowdir(),$HOME)
+"        "    echo "Found cscope.out at: " . newcsdbpath
+"        "    echo "Windowdir: " . s:windowdir()
+"        if newcsdbpath != "Nothing"
+"            let b:csdbpath = newcsdbpath
+"            if !cscope_connection(3, "out", b:csdbpath)
+"                let save_csvb = &csverb
+"                set nocscopeverbose
+"                exe "cscope add " . b:csdbpath . "/.cscope.out " . b:csdbpath
+"                set cscopeverbose
+"                let &csverb = save_csvb
+"            endif
+"        endif
+"    endfunction
+"
+"    augroup autoload_cscope
+"        au!
+"        autocmd FileType c call <SID>Cycle_csdb()
+"        autocmd FileType cpp call <SID>Cycle_csdb()
+"        "no unload…
+"    augroup END
+"
+"    "my update macro, rely on cs shell alias, so use temporary an interactive
+"    "shell for that
+"    let @u=':wall:set shell=/bin/bash\ -i:! cs:cscope reset:set shell=/bin/bash'
+"    "TODO nvim: use :terminal
+
+    let GtagsCscope_Auto_Load = 1
+    let GtagsCscope_Quiet = 1
+    let GtagsCscope_Absolute_Path = 1
+    "let g:Gtags_Auto_Update = 1 "global -u --file % after each write
+    let @u=':GtagsUpdate:cscope reset'
+    "TODO nvim: use :terminal
+
+endif
+
+" C-g 'go' to tag
+"nnoremap <C-g> <C-]>
+
+" g\ ->open tag of the word under cursor on a new window at right
+"nnoremap g\ <ESC>:vert :rightbelow :scscope <C-R>=expand("<cword>")<CR><CR>
+"nnoremap <C-\> <ESC>:vert :rightbelow :split :cstag <C-R>=expand("<cword>")<CR><CR>
+
+function! GetVisualSelection()
+    let [s:lnum1, s:col1] = getpos("'<")[1:2]
+    let [s:lnum2, s:col2] = getpos("'>")[1:2]
+    let s:lines = getline(s:lnum1, s:lnum2)
+    let s:lines[-1] = s:lines[-1][: s:col2 - (&selection == 'inclusive' ? 1 : 2)]
+    let s:lines[0] = s:lines[0][s:col1 - 1:]
+    return join(s:lines, ' ')
+endfunction
+
+" "all symbol
+" nnoremap <leader>s <ESC>:vert :rightbelow :scscope find s <C-R>=expand("<cword>")<CR><CR>
+" vnoremap <leader>s <ESC>:execute ':vert :rightbelow :scscope find s '.GetVisualSelection()<CR>
+" "go to definition
+" "nnoremap <C-]> <ESC>:cstag <C-R>=expand("<cword>")<CR><CR>
+" nnoremap <C-]> <ESC>:scscope find g <C-R>=expand("<cword>")<CR><CR>
+" vnoremap <C-]> <ESC>:execute ':cstag '.GetVisualSelection()<CR>
+" "go to definition / ctags version
+" nnoremap <C-p> <ESC>:tjump <C-R>=expand("<cword>")<CR><CR>
+" vnoremap <C-p> <ESC>:execute ':tjump '.GetVisualSelection()<CR>
+" 
+" "nnoremap <C-\> <ESC>:vert :rightbelow :cstag <C-R>=expand("<cword>")<CR><CR>
+" nnoremap <C-\> <ESC>:vert :rightbelow :scscope find g <C-R>=expand("<cword>")<CR><CR>
+" "vnoremap <C-\> <ESC>:execute ':vert :rightbelow :cstag '.GetVisualSelection()<CR>
+" vnoremap <C-\> <ESC>:execute ':vert :rightbelow :scscope find g '.GetVisualSelection()<CR>
+" "calling this function
+" nnoremap <leader>c <ESC>:vert :rightbelow :scscope find c <C-R>=expand("<cword>")<CR><CR>
+" vnoremap <leader>c <ESC>:execute ':vert :rightbelow :scscope find c '.GetVisualSelection()<CR>
+" "go to definition (cscope shortcut are weird)
+" nnoremap <leader>d <ESC>:vert :rightbelow :scscope find g <C-R>=expand("<cword>")<CR><CR>
+" vnoremap <leader>d <ESC>:execute ':vert :rightbelow :scscope find g '.GetVisualSelection()<CR>
+" "including this file
+" nnoremap <leader>i <ESC>:vert :rightbelow :scscope find i <C-R>=expand("<cword>")<CR><CR>
+" vnoremap <leader>i <ESC>:execute ':vert :rightbelow :scscope find i '.GetVisualSelection()<CR>
+" "find this text (avoid Ggrep)
+" nnoremap <leader>t <ESC>:vert :rightbelow :scscope find t <C-R>=expand("<cword>")<CR><CR>
+" vnoremap <leader>t <ESC>:execute ':vert :rightbelow :scscope find t '.GetVisualSelection()<CR>
+" nnoremap <C-t> <ESC>:cscope find t <C-R>=expand("<cword>")<CR><CR>
+" vnoremap <C-t> <ESC>:execute ':cscope find t '.GetVisualSelection()<CR>
+" 
+" "manual jumpt to <args>
+" command! -nargs=1 Find cscope find g <args>
+" command! -nargs=1 VFind vert rightbelow scscope find g <args>
+
+" }}}
+" {{{ richard: macros
+
+" tt is command to align on space
+cab tt Tabularize /\S\+;
+
+"" Toggle number
+nnoremap <F12> :tabdo :windo :set nonumber!<CR>:tabdo :windo :set norelativenumber!<CR>
+inoremap <F12> :tabdo :windo :set nonumber!<CR>:tabdo :windo :set norelativenumber!<CR>
+
+"" Toggle &virtualedit
+function! Toggle_virtualedit_()
+  if &virtualedit == 'all'
+    if version >= 700
+      set virtualedit =onemore    " Yes I want to be able to be "on \n"
+    else
+      set virtualedit =
+    endif
+  else
+    set virtualedit =all
+  endif
+endfunction
+map <F7> <ESC>:call Toggle_virtualedit_()<CR>:set virtualedit?<CR>
+
+" DA richard™© C macro unificator (grrrr, faut iCTRL-vCTRL-m pour faire <CR>)
+let @l=':set virtualedit =allgv:s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj'
+let @m=':set virtualedit =all?#definev}kk:''<,''>s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj'
+" on top of a git conflict, open tabs with diff of ancestor vs. new branch and
+" ancestor vs. current HEAD
+" reg f = name of HEAD
+" reg e = name of common ancestor branch
+" reg d = name of the new branch
+" reg x = HEAD
+" reg y = common ancestor branch
+" reg z = new branch
+" marks:
+" <<<<<<< HEADa
+" 1
+" 1b
+" ||||||| merged common ancestors
+" 2
+" 2c
+" =======
+" 3
+" 3d
+" >>>>>>> new branch
+let @c=':tabonly0/HEAD"fy$$ma/|||||||W"ey$0k$mb0j/=======k$mc0j/>>>>>>>W"dy$0k$md0j`a"xy`b`b0jj"yy`c`c0jj"zy`d`a:tabnew"yP:diffthis:noswapfile :file /tmp/=substitute(@e,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:vert :rightb :new"zP:diffthis:noswapfile :file /tmp/=substitute(@d,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:tabnew"yP:diffthis:noswapfile :file /tmp/=substitute(@e,"[ /]","_","g").2:setlocal buftype=nofile nomodified bufhidden=wipe:vert :rightb :new"xP:diffthis:noswapfile :file /tmp/=substitute(@f,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:tabprevious:let@/="HEAD"'
+" }}}
+" {{{ richard: maps
+
+" disable arrow keys
+noremap  <up>     <nop>
+noremap  <down>   <nop>
+noremap  <left>   <nop>
+noremap  <right>  <nop>
+inoremap  <up>     <nop>
+inoremap  <down>   <nop>
+inoremap  <left>   <nop>
+inoremap  <right>  <nop>
+"map <up> <nop>
+"map <down> <nop>
+"map <left> <nop>
+"map <right> <nop>
+"vnoremap  <up>     <nop>
+"vnoremap  <down>   <nop>
+"vnoremap  <left>   <nop>
+"vnoremap  <right>  <nop>
+"inoremap  <up>     <nop>
+"inoremap  <down>   <nop>
+"inoremap  <left>   <nop>
+"inoremap  <right>  <nop>
+
+"use real line movement when used without <count>
+noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
+noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
+
+" inverse ; and : in normal+visual+select mode
+" temporary diable due to
+" http://stackoverflow.com/questions/19519589/remapping-semicolon-to-colon-in-vim-breaks-ls
+nnoremap <leader>; :
+"nnoremap ; :
+"nnoremap : ;
+noremap q; q:
+
+" in insert mode, C-o do completion previous and C-n do a normal command
+inoremap <C-o> <C-n>
+inoremap <C-n> <C-o>
+
+" command line navigation exactly as my bash navigation
+" remind that C-f pop up command line window
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+"cnoremap <C-p> <Up>
+cnoremap <C-o> <Down>
+cnoremap <C-v> <Right>
+cnoremap <C-n> <Left>
+cnoremap <C-g> <Del>
+cnoremap <C-h> <backspace>
+cnoremap <C-j> <C-c>  " really weird that <ESC> do <CR>
+
+" }}}
+" {{{ richard: fts
+
+autocmd FileType php  set et sts=4 sw=4
+autocmd FileType html set et sts=4 sw=4 syntax=php
+autocmd FileType java set et sts=4 sw=4
+autocmd FileType c set et sts=4 sw=4
+autocmd FileType cpp set et sts=4 sw=4
+autocmd FileType javascript set et sts=4 sw=4
+autocmd FileType html,xhtml,xml setlocal sw=2 syntax=smarty
+autocmd FileType css  set et sts=4 sw=4
+autocmd FileType sql  set et sts=4 sw=4
+autocmd FileType actionscript  set et sts=4 sw=4
+autocmd FileType asciidoc  set tw=78
+autocmd FileType gitcommit set tw=72
+autocmd FileType gitcommit set spelllang=en_us
+autocmd FileType gitcommit set spell
+
+" remove trailing whitespace at write
+autocmd FileType c,cpp,java,php,asciidoc autocmd BufWritePre <buffer> :%s/\s\+$//e
+autocmd BufWritePre *.iop :%s/\s\+$//e
+autocmd BufWritePre *.py :%s/\s\+$//e
+autocmd BufWritePre *.tex :%s/\s\+$//e
+autocmd BufWritePre COMMIT_EDITMSG :%s/\s\+$//e
+autocmd BufWritePre COMMIT_EDITMSG set tw=78
+
+" }}}
+" {{{ richard: macros cont'd
+
+" map to remove trailing spaces
+nnoremap <Leader>b :s/\s\+$//e<CR>
+vnoremap <Leader>b :s/\s\+$//e<CR>
+
+
+" alias M for make
+nnoremap <Leader>m <ESC>:wall<CR>:make<CR>
+nnoremap <Leader>M <ESC>:wall<CR>:set shell=/bin/bash\ -i<CR>:! mn<CR>:set shell=/bin/bash<CR>'
+"let @m=':wall:set shell=/bin/bash\ -i:! mn M=1:set shell=/bin/bash' command! M make
+
+" alias x for :x
+nnoremap <Leader>x :xa<CR>
+
+" map to append a changeId
+" grep -m40 -ao '[0-9a-f]' /dev/urandom | head -n40 | paste -sd '' do the job
+"" Toggle &virtualedit
+function! Append_gen_changid()
+" :read !grep -m40 -ao '[0-9a-f]' /dev/urandom | head -n40 | paste -sd ''
+  :read !LANG=C grep -m40 -ao -P '[\x30-\x39\x61-\x66]' /dev/urandom | head -n40 | paste -sd ''
+endfunction
+"nnoremap <Leader>C <ESC>oChange-Id: I<ESC>:call Append_gen_changid()<CR>kJxoSigned-off-by: Richard Beneyton <richard.beneyton@intersec.com><ESC>
+nnoremap <Leader>C <ESC>oChange-Id: I<ESC>:call Append_gen_changid()<CR>kJx<ESC>
+
+
+" ,/ clear the search register -> like :noh
+nnoremap <silent> <Leader>/ :let@/=""<CR>
+
+" the grep operator
+"let g:grep_operator = 'git grep'
+"nmap <leader><leader>g <Plug>GrepOperatorOnCurrentDirectory
+"vmap <leader><leader>g <Plug>GrepOperatorOnCurrentDirectory
+"nmap <leader>g <Plug>GrepOperatorWithFilenamePrompt
+"vmap <leader>g <Plug>GrepOperatorWithFilenamePrompt
+"nmap <leader>g <Plug>GrepOperatorOnCurrentDirectory
+"vmap <leader>g <Plug>GrepOperatorOnCurrentDirectory
+"nmap <leader><leader>g <Plug>GrepOperatorWithFilenamePrompt
+"vmap <leader><leader>g <Plug>GrepOperatorWithFilenamePrompt
+
+"git grep on current word
+nnoremap <leader>g <ESC>:Ggrep <C-R>=expand("<cword>")<CR><CR>
+vnoremap <leader>g <ESC>:execute ':Ggrep '.GetVisualSelection()<CR>
+" version with prompt
+nnoremap <leader>G <ESC>:Ggrep <C-R>=expand("<cword>")<CR>
+vnoremap <leader>G <ESC>:execute ':Ggrep '.GetVisualSelection()
+
+" Have <esc> or mine C-j leave cmdline-window
+autocmd CmdwinEnter * nnoremap <buffer> <esc> :q<CR>
+autocmd CmdwinEnter * nnoremap <buffer> <C-j> :q<CR>
+" Disable line numbers in command line window
+autocmd CmdwinEnter * set nonumber
+autocmd CmdwinEnter * set norelativenumber
+
+" Disable line numbers in quickfix
+autocmd BufWinEnter quickfix set nonumber
+autocmd BufWinEnter quickfix set norelativenumber
+
+"set cinoptions=
+"set cinoptions+=,t0            " type on the line before the functions is not idented
+"set cinoptions+=,:2,=2         " indent case ...: of 2 from the switch {
+"set cinoptions+=,(0,W4         " indent in functions ( ... ) when it breaks
+"set cinoptions+=,g2,h2         " indent C++ scope of 2, and the members from 2 from it
+
+" }}}
+" {{{ richard: highlights
+
+"hi Comment      cterm=none       ctermfg=blue       ctermbg=none
+"hi Include      cterm=none       ctermfg=darkblue   ctermbg=none
+"hi Define       cterm=none       ctermfg=lightblue  ctermbg=none
+"hi Folded       cterm=none       ctermfg=brown      ctermbg=none
+
+"hi Visual       cterm=reverse    ctermfg=none       ctermbg=none
+"hi IncSearch    cterm=none       ctermfg=lightred   ctermbg=white
+"hi Search       cterm=reverse    ctermfg=lightred   ctermbg=none
+
+"hi StatusLine   cterm=none       ctermfg=white      ctermbg=blue
+"hi StatusLineNc cterm=none       ctermfg=black      ctermbg=white
+"hi WildMenu     cterm=none       ctermfg=white      ctermbg=none
+"hi VertSplit    cterm=none       ctermfg=darkgray   ctermbg=none
+"hi NonText      cterm=none       ctermfg=darkgray   ctermbg=none
+
+"hi MatchParen   cterm=reverse    ctermfg=none       ctermbg=none
+"hi Pmenu        cterm=none       ctermfg=gray       ctermbg=black
+"hi PmenuSel     cterm=none       ctermfg=black      ctermbg=gray
+"hi PmenuSbar    cterm=none       ctermfg=blue       ctermbg=blue
+"hi PmenuThumb   cterm=none       ctermfg=gray       ctermbg=gray
+
+"hi SpellBad     cterm=underline  ctermfg=lightred   ctermbg=none
+"hi SpellCap     cterm=none       ctermfg=lightred   ctermbg=none
+"hi SpellLocal   cterm=underline  ctermfg=darkgreen  ctermbg=none
+"hi SpellRare    cterm=none       ctermfg=none       ctermbg=none
+
+"hi clear
+
+" }}}
+" {{{ richard: colortheme
+
+":colorscheme wombat256
+":colorscheme wombat
+":colorscheme desert
+
+" konsole allows also CustomCursorColor=#ffffd7/#8a8a8a (but disalllow adaptation) and BlinkingCursorEnabled=0/1
+" tmux ack for passing $echo -en "\e]50;CursorShape=0\x7" stuff
+" kde 5 breaks its API for switching cursor
+if !exists('$VIMNOCURSOR') && !has('nvim') && (!exists('$KDE_SESSION_VERSION') || $KDE_SESSION_VERSION != "5")
+    if exists('$TMUX') || exists('$TMUX_PANE')
+        " for konsole via tmux
+        " with configuration set -g terminal-overrides ',*:Ss=\E]50;CursorShape=%?%p1%{3}%<%t%{0}%e%p1%{2}%-%;%d\007'
+        let &t_SI = "\<Esc>[3 q"
+        let &t_EI = "\<Esc>[1 q"
+        autocmd VimLeave * silent !let &t_EI = "\<Esc>[0 q"
+
+        " cygwin64
+        " let &t_SI = "\<Esc>[6 q"
+        " let &t_EI = "\<Esc>[0 q"
+        " autocmd VimLeave * silent !let &t_EI = "\<Esc>[0 q"
+    else
+        " konsole
+        " Vertical bar in insert mode
+        let &t_SI = "\<Esc>]50;CursorShape=1;\x7"
+        " Block in normal mode
+        let &t_EI = "\<Esc>]50;CursorShape=0;\x7"
+        " Clean at exit
+        autocmd VimLeave * silent !let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+        " cygwin64
+        " " Vertical bar in insert mode
+        " let &t_SI = "\<Esc>[6 q"
+        " " Block in normal mode
+        " let &t_EI = "\<Esc>[0 q"
+        " " Clean at exit
+        " autocmd VimLeave * silent !let &t_EI = "\<Esc>[0 q"
+    endif
+else
+    " TODO neovim cursor behavior is really weird…
+endif
+
+if has("unix")
+    let g:solarized_termcolors=256
+    "let g:solarized_contrast="high"
+    "call togglebg#map("<F2>")
+    set t_Co=256
+    syntax enable
+    set background=dark
+    colorscheme solarized
+else
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+    syntax enable
+    set background=dark
+    colorscheme solarized_nvimqt
+endif
+
+"inhibit background of signcolumn as vertsplit
+hi SignColumn ctermbg=none
+"suggested by gitgutter
+highlight clear SignColumn
+
+" }}}
+" {{{ richard: neovim specific
+
+if has('nvim')
+    " Override TERM set by tmux as konsole works fine through tmux
+    " if $TERM == "screen"
+    "     let $TERM = "konsole-256color"
+    " endif
+
+    " neovim default is 'a', which is unusable and inhibit ~normal~ copy/paste
+    set mouse=
+
+    " exit from term with alt space (not binding by any shell or tool IMHO)
+    tnoremap <A-Space> <C-\><C-n>
+
+    " same history than tmux
+    let g:terminal_scrollback_buffer_size=99999
+endif
+
+" }}}
+" {{{ richard: airline options
+
+let g:airline_powerline_fonts=1
+"no y section = (fileencoding, fileformat)
+let g:airline#extensions#default#layout = [['a','b','c'],['y','x','z','warning']]
+" suppress hunks from line, they're shown by gitgutter
+if has("unix")
+    let g:airline_section_b = '%{airline#util#wrap(airline#extensions#branch#get_head(),0)}'
+endif
+"let g:airline_section_i = '%{fugitive#head()}' " real git msgs
+"let g:airline_section_x = '%Y'
+" b:slime_config["target_pane"] 
+let g:airline_section_y = '%n' " buffer number, no fileencoding
+" let g:airline_theme="serene"
+" let g:airline_theme="powerlineish"
+" let g:airline_theme = "wombat"
+" let g:airline_theme = "ubaryd"
+let g:airline_theme = "base16"
+" let g:airline_theme='solarized'
+" let g:airline_solarized_bg='dark'
+let g:airline#extensions#tabline#enabled = 0
+
+" display slime tmux target next to buffer number
+let g:airline_section_y = airline#section#create_right(['slime'])
+function! AirlineSlime()
+  if !exists('b:slime_config["target_pane"]')
+    return bufnr('%')
+  " drop useless :. prefix
+  elseif b:slime_config["target_pane"][0:1] == ':.'
+    return bufnr('%') . ' Ꞩ' . b:slime_config["target_pane"][2:]
+  endif
+  return bufnr('%') . ' Ꞩ' . b:slime_config["target_pane"]
+endfunction
+let g:airline_section_y = '%{AirlineSlime()}'
+
+" }}}
+" {{{ richard: tmuxline options
+
+let g:airline#extensions#tmuxline#enabled = 1
+let g:airline#extensions#tmuxline#color_template = 'visual' " wombat visual++
+let g:airline#extensions#tmuxline#color_template = 'normal' " base16 normal++
+if has("unix")
+    let g:airline#extensions#tmuxline#snapshot_file = "~/dotfiles/tmux/tmuxline.cf"
+    let g:tmuxline_preset = {
+      \'a'    : '#S',
+      \'win'  : '#I #W #F',
+      \'cwin' : '#I #W #F',
+      \'x'    : '#(cut -d " " -f 1-4 /proc/loadavg) ',
+      \'y'    : '%Y-%m-%d %H:%M:%S ',
+      \'z'    : '#H',
+      \'options' : {'status-justify' : 'left'}}
+else
+    let g:airline#extensions#tmuxline#snapshot_file = "H:\dotfiles\tmux\tmuxline.cf"
+    let g:tmuxline_preset = {
+          \'a'    : '#S',
+          \'win'  : '#I #W #F',
+          \'cwin' : '#I #W #F',
+          \'y'    : '%Y-%m-%d %H:%M:%S ',
+          \'z'    : '#H',
+          \'options' : {'status-justify' : 'left'}}
+endif
+let g:tmuxline_separators = {
+      \ 'left' : '',
+      \ 'left_alt': '>',
+      \ 'right' : '',
+      \ 'right_alt' : '<',
+      \ 'space' : ''}
+let g:tmuxline_powerline_separators = 1
+
+" }}}
+" {{{ richard: syntastic options
+
+" XXX Syntastic fails to find your header files? Try 'make syntastic' in the
+"     root directory of your repository.
+
+"syntastic sign on one char, not two
+let g:syntastic_error_symbol = "✗"
+let g:syntastic_warning_symbol = "⚠"
+let g:syntastic_style_error_symbol = 'S'
+let g:syntastic_style_warning_symbol = 's'
+
+" javascript makes vim freeze
+let g:syntastic_mode_map = { 'mode': 'active',
+                           \ 'active_filetypes': [ 'python', 'sh', 'php', 'c', 'cpp' ],
+                           \ 'passive_filetypes': [ 'javascript'] }
+" avoid error on generated by build include file
+let g:syntastic_ignore_files = [ '\m^/usr/include/' ]
+let g:syntastic_auto_loc_list=1
+let g:syntastic_auto_jump=0
+let g:syntastic_check_on_open=0
+let g:syntastic_silent_make=0
+let g:syntastic_loc_list_height=3
+let g:syntastic_debug=0
+
+let g:syntastic_c_compiler = 'clang'
+let g:syntastic_c_compiler = 'gcc'
+let g:syntastic_c_compiler_options = ''
+let g:syntastic_c_compiler_options = "-std=gnu11 -Wall -Wextra -Wpedantic -DLINUX"
+let g:syntastic_c_cflags = ''
+let g:syntastic_c_include_dirs = [ '/home/richard/Python-2.7.11_install/include/python2.7' ]
+let g:syntastic_c_remove_include_errors = 0 " to avoid report error about unknown include
+let g:syntastic_c_no_include_search = 1
+let g:syntastic_c_no_default_include_dirs = 1
+"let b:syntastic_c_cflags = "-DLINUX"
+let g:syntastic_c_check_header = 1
+
+let g:syntastic_cpp_compiler = 'clang++-6.0'
+let g:syntastic_cpp_compiler_options = "-std=c++17 -Wall -Wno-unknown-pragmas -Wextra -Wpedantic -DLINUX"
+let g:syntastic_cpp_include_dirs = [ '/home/beneyton/utils/boost_1_68_0/include/' ]
+let g:syntastic_cpp_check_header = 1
+let g:syntastic_quiet_messages = {
+            \ "file:p":  ['FastDelegate.h'] } " discard report on those files
+let g:syntastic_quiet_messages = {
+            \ "file":  ['/home/rbeneyton/work/libraries/msgpack/include/msgpack/type/nil.hpp'] }
+" let g:syntastic_quiet_messages = {
+"             \ "file:p":  ['nil.hpp'] }
+
+" suppress all msgpack related warning/error
+let g:syntastic_quiet_messages = {
+        \ "regex":  ['msgpack\|protobuf'],
+        \ "file:p":  ['msgpack\|protobuf'] }
+
+
+let g:syntastic_cpp_remove_include_errors = 0 " to avoid report error about unknown include
+let g:syntastic_cpp_no_include_search = 1
+let g:syntastic_cpp_no_default_include_dirs = 1
+"let g:syntastic_cpp_config_file='.clang_complete'
+" let g:syntastic_cpp_pylint_quiet_messages = { "level": "errors" , \ "file:p": ['.*config.h'] }
+
+let g:syntastic_python_compiler = 'pylint'
+let g:syntastic_python_compiler_options = '--errors-only --rcfile=/home/richard/.pylintrc'
+let g:syntastic_python_pylint_quiet_messages = { "level": "warnings" }
+
+" disable syntastic for asciidoc (way too long)
+let g:syntastic_asciidoc_checkers=[]
+
+" disable ycm syntastic
+" let g:syntastic_c_checkers=['gcc']
+" let g:syntastic_cpp_checkers=['gcc']
+let g:ycm_register_as_syntastic_checker = 1
+
+" do not always ask to lod python .ycm_extra_conf.py
+let g:ycm_confirm_extra_conf = 0
+
+" close preview after accept
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+" finally, not preview windows at all
+let g:ycm_add_preview_to_completeopt = 0
+
+"let g:syntastic_debug = 0
+"let g:syntastic_debug_file = '/tmp/syntastic.log'
+
+" }}}
+" {{{ richard: GitGutter opts
+
+" always sign column, 'cause blinking makes me crazy
+"let g:gitgutter_sign_column_always = 1
+if has('nvim')
+    set signcolumn=yes
+else
+    " TODO
+endif
+
+" CFM white space no policy
+let g:gitgutter_diff_args = '-w'
+
+nnoremap <Leader>hs <Plug>GitGutterStageHunk
+nnoremap <Leader>hr <Plug>GitGutterRevertHunk
+
+" }}}
+" {{{ disable paste to avoid bracketed mode
+
+augroup disable_paste
+    au!
+    au InsertLeave * set nopaste
+augroup END
+
+" }}}
+" {{{ richard: Slime opts
+
+if !empty($TMUX)
+    let g:slime_target = "tmux"
+    let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.1"}
+    let g:slime_dont_ask_default = 0
+    " dans ipython il faut %autoindent à OFF!
+    " il faut que le type de fichier dans vim soit python pour passer en mode
+    " cpaste
+    let g:slime_python_ipython = 1
+    let g:slime_paste_file = "$HOME/.slime_paste"
+    let g:slime_dispatch_ipython_pause = 100
+    " let g:slime_no_mappings = 1
+    "if has('nvim')
+    "    let g:slime_target = "neovim"
+    "endif
+endif
+
+" let g:slimux_select_from_current_window = 1
+
+" }}}
+" {{{ richard: a module opts + gundo
+
+" a.vim
+let g:alternateRelativeFiles   = 1
+let g:alternateExtensions_blk  = "h"
+let g:alternateExtensions_blkk = "h"
+let g:alternateExtensions_h    = "c,cpp,cxx,cc,CC,blk,blkk"
+
+let g:alternateSearchPath = 'sfr:../src,sfr:../../src,sfr:../include,sfr:../include/cruise/,sfr:../include/cruise2/'
+
+" }}}
+" {{{ LSP
+
+" Required for operations modifying multiple buffers like rename.
+set hidden
+
+" let g:LanguageClient_serverCommands = {
+"     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+"     \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+"     \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+"     \ 'python': ['/usr/local/bin/pyls'],
+"     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+"     \ }
+" let g:LanguageClient_serverCommands = {
+"     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+"     \ }
+"
+" let $LANGUAGECLIENT_DEBUG=1
+" let g:LanguageClient_loggingLevel='DEBUG'
+" let g:LanguageClient_autoStart=0
+
+
+
+
+
+" LSP using builtin neovim
+if has('nvim')
+    let g:airline#extensions#nvimlsp#enabled = 1
+
+    " shortcuts
+lua << EOF
+    local nvim_lsp = require('lspconfig')
+
+    -- Use an on_attach function to only map the following keys 
+    -- after the language server attaches to the current buffer
+    local on_attach = function(client, bufnr)
+        local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+        local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+        --Enable completion triggered by <c-x><c-o>
+        buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+        -- Mappings.
+        local opts = { noremap=true, silent=true }
+
+        -- See `:help vim.lsp.*` for documentation on any of the below functions
+        buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+        buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+        buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+        buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+        buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+        buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+        buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+        buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+        buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+        buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+        buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+        buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+        buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+        buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+        buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+        buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+        buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    end
+
+    -- Use a loop to conveniently call 'setup' on multiple servers and
+    -- map buffer local keybindings when the language server attaches
+    -- local servers = { "pyls", "rust_analyzer", "clangd" }
+    -- for _, lsp in ipairs(servers) do
+    --     nvim_lsp[lsp].setup { on_attach = on_attach }
+    -- end
+
+    nvim_lsp.rust_analyzer.setup{ on_attach = on_attach }
+EOF
+
+    " rust
+    if executable('rust-analyzer')
+        " cd /home/rbeneyton/o/tmp && git clone https://github.com/rust-analyzer/rust-analyzer.git && cd rust-analyzer
+        " cargo build --release && cp target/release/rust-analyzer ~/bin/
+        " ou
+        " curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux -o ~/bin/rust-analyzer
+        " if executable('rls')
+        " au User lsp_setup call lsp#register_server({
+        "             \ 'name': 'rls',
+        "             \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+        "             \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
+        "             \ 'whitelist': ['rust'],
+        "             \ })
+lua << EOF
+        -- local nvim_lsp = require'lspconfig'
+        -- nvim_lsp.rust_analyzer.setup{ on_attach = on_attach }
+EOF
+        " autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
+    endif
+
+    " python
+    if executable('pyls')
+        " source /opt/conda/etc/profile.d/conda.sh
+        " conda create -p /home/beneyton/conda-envs/pyls python-language-server
+        " pip/conda install python-language-server
+        " au User lsp_setup call lsp#register_server({
+        "             \ 'name': 'pyls',
+        "             \ 'cmd': {server_info->['pyls', '-v', '--log-file', '/home/rbeneyton/pyls.log']},
+        "             \ 'whitelist': ['python'],
+        "             \ })
+        "
+lua << EOF
+        local nvim_lsp = require'lspconfig'
+        nvim_lsp.pyls.setup{
+            name = 'pyls',
+            cmd = { 'pyls' },
+            log_level = { vim.lsp.protocol.MessageType.Log },
+            whitelist = { 'python' },
+            root_dir = function(fname)
+                return nvim_lsp.util.find_git_ancestor(fname) or vim.loop.os_homedir()
+            end;
+            settings = {
+                pyls = {
+                    plugins = {
+                        pycodestyle = {
+                            maxLineLength = 100;
+                        }
+                    }
+                }
+            },
+            on_attach = on_attach
+        }
+EOF
+        " autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
+    endif
+
+    " C++
+    if executable('clangd')
+        " llvm 9 + cfe + clang-tools-extra
+        " au User lsp_setup call lsp#register_server({
+        "             \ 'name': 'clangd',
+        "             \ 'cmd': {server_info->['clangd']},
+        "             \ 'whitelist': ['c', 'cpp'],
+        "             \ })
+lua << EOF
+        local nvim_lsp = require'lspconfig'
+        nvim_lsp.clangd.setup{ on_attach = on_attach }
+EOF
+        " autocmd Filetype {c,cpp} setlocal omnifunc=v:lua.vim.lsp.omnifunc
+    endif
+
+    " default shortcut, only for source code
+    " autocmd Filetype rust,python,c,cpp setl omnifunc=v:lua.vim.lsp.omnifunc
+    " autocmd Filetype rust,python,c,cpp nmap <buffer><silent>gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+    " autocmd Filetype rust,python,c,cpp nmap <buffer><silent><C-]> <cmd>lua vim.lsp.buf.definition()<CR>
+    " autocmd Filetype rust,python,c,cpp nmap <buffer><silent>K     <cmd>lua vim.lsp.buf.hover()<CR>
+    " autocmd Filetype rust,python,c,cpp nmap <buffer><silent>gi    <cmd>lua vim.lsp.buf.implementation()<CR>
+    " autocmd Filetype rust,python,c,cpp nmap <buffer><silent><C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+    " autocmd Filetype rust,python,c,cpp nmap <buffer><silent>1gc   <cmd>lua vim.lsp.buf.type_definition()<CR>
+
+endif
+
+" }}}
+" {{{ gundo/mundo/undotree
+
+" let g:gundo_prefer_python3 = 1
+" nnoremap <F6> :GundoToggle<CR>
+" nnoremap <F6> :MundoToggle<CR>
+nnoremap <F5> :UndotreeToggle<cr>
+let g:undotree_WindowLayout=2 " full width diff
+let g:undotree_SplitWidth=40 " default (30) is too short
+let g:undotree_SetFocusWhenToggle=1 " get focus on toggle
+
+" }}}
+" {{{ vimwiki
+
+let wiki = {}
+let wiki.nested_syntaxes = {'bash': 'sh', 'python': 'python', 'c++': 'cpp', 'rust': 'rust'}
+let g:vimwiki_list = [wiki]
+
+" }}}
+" {{{ richard: user colors
+
+" define at end as all plugin try to clear my colors
+hi User1 term=inverse,bold ctermfg=DarkBlue ctermbg=Black
+hi User2 term=inverse,bold ctermfg=DarkRed ctermbg=Black
+hi User3 term=inverse,bold ctermfg=DarkMagenta ctermbg=Black
+hi User4 term=inverse,bold ctermfg=DarkGreen ctermbg=Black
+hi User5 term=inverse,bold ctermfg=DarkYellow ctermbg=Black
+hi User6 term=inverse,bold ctermfg=DarkCyan ctermbg=Black
+hi User7 term=inverse,bold ctermfg=White ctermbg=Black
+
+" }}}
