@@ -1,3 +1,12 @@
+gtk-enable-animations=1
+gtk-primary-button-warps-slider=0
+gtk-toolbar-style=3
+gtk-menu-images=1
+gtk-button-images=1
+gtk-cursor-theme-size=24
+gtk-cursor-theme-name="breeze_cursors"
+gtk-icon-theme-name="breeze"
+gtk-font-name="DejaVu Sans,  8"
 # created by KDE, Thu Dec 10 11:07:05 2015
 #
 # If you do not want KDE to override your GTK settings, select
