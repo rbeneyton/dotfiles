@@ -45,7 +45,7 @@ endif
 call pathogen#infect()
 call pathogen#helptags()
 
-:packadd nvim-lspconfig
+" :packadd nvim-lspconfig
 
 " NB: to temporary use alias in :! command: (break fugitive plugin)
 "set shell=/bin/bash\ -i
@@ -336,7 +336,7 @@ autocmd BufNewFile * let b:this_is_new_buffer=1
 autocmd BufReadPost * call FirstModeLine()
 
 if has("unix")
-	autocmd VimLeave * mksession! ~/.cache/session.vim
+    autocmd VimLeave * mksession! ~/.cache/session.vim
 endif
 
 autocmd FileType debchangelog normal zO
@@ -929,20 +929,17 @@ else
     " TODO neovim cursor behavior is really weird…
 endif
 
-if has("unix")
-    let g:solarized_termcolors=256
-    "let g:solarized_contrast="high"
-    "call togglebg#map("<F2>")
-    set t_Co=256
-    syntax enable
-    set background=dark
-    colorscheme solarized
+let g:solarized_termcolors=256
+"let g:solarized_contrast="high"
+"call togglebg#map("<F2>")
+set t_Co=256
+syntax enable
+if exists('theme') && theme == 'light'
+    set background=light
 else
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-    syntax enable
     set background=dark
-    colorscheme solarized_nvimqt
 endif
+colorscheme solarized
 
 "inhibit background of signcolumn as vertsplit
 hi SignColumn ctermbg=none

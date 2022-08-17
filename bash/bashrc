@@ -196,6 +196,9 @@ if [[ -n $PS1 ]]; then
     alias va='vim ~/dotfiles/start.txt'
     alias vr='vim -R'
     alias vl='vim -S ~/.cache/session.vim'
+    function vimlight {
+        env vim --cmd "let theme = 'light'" $@
+    }
 
     alias f='find . -name '
     alias l='less '
