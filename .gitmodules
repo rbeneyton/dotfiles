@@ -15,7 +15,7 @@
 	url = https://github.com/tpope/vim-pathogen.git
 	branch = v2.4-21-ge0a3efb
 [submodule "vim/plugin/a"]
-	path = vim/plugin/a
+	path = vim/pack/misc/start/a
 	url = https://github.com/vim-scripts/a.vim.git
 [submodule "vim/bundle/airline"]
 	path = vim/bundle/airline
