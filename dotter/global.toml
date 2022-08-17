@@ -86,7 +86,7 @@ awesome_network_interface = "eth0"
 
 # tmux
 [tmux.files]
-"tmux/tmux.conf" = "~/.tmux.conf"
+"tmux/tmux.conf" = "~/.config/tmux/tmux.conf"
 
 # vim
 [vim.files]

@@ -1011,7 +1011,7 @@ let g:airline#extensions#tmuxline#enabled = 1
 let g:airline#extensions#tmuxline#color_template = 'visual' " wombat visual++
 let g:airline#extensions#tmuxline#color_template = 'normal' " base16 normal++
 if has("unix")
-    let g:airline#extensions#tmuxline#snapshot_file = "~/dotfiles/tmux/tmuxline.cf"
+    let g:airline#extensions#tmuxline#snapshot_file = "~/.config/tmux/tmuxline.cf"
     let g:tmuxline_preset = {
       \'a'    : '#S',
       \'win'  : '#I #W #F',

@@ -482,6 +482,7 @@ debian-install-graphic:
 	apt-get install parcellite mesa-utils fonts-dejavu fonts-dejavu-core fonts-dejavu-extra
 	apt-get install redshift redshift-gtk
 	apt-get install x11-xkb-utils inputplug # xkb + detect/reload
+	apt-get install light brightnessctl
 	apt-get install blueman pulseaudio-module-bluetooth
 	apt-get install pasystray pavucontrol
 	# apt-get install light ibam # laptop only
