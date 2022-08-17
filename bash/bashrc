@@ -192,12 +192,15 @@ if [[ -n $PS1 ]]; then
         export EDITOR='vim'
     fi
 
-    alias v='vim '
-    alias va='vim ~/dotfiles/start.txt'
-    alias vr='vim -R'
-    alias vl='vim -S ~/.cache/session.vim'
+    alias v='$EDITOR '
+    alias va='$EDITOR ~/dotfiles/start.txt'
+    alias vr='$EDITOR -R'
+    alias vl='$EDITOR -S ~/.cache/session.vim'
     function vimlight {
-        env vim --cmd "let theme = 'light'" $@
+        env $EDITOR --cmd "let theme = 'light'" $@
+    }
+    function vimlightl {
+        env $EDITOR -S ~/.cache/session.vim --cmd "let theme = 'light'" $@
     }
 
     alias f='find . -name '
