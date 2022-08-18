@@ -50,7 +50,7 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	# no out-of-source-tree support
 	rm -rf $(SRC)
 	mkdir -p $(SRC)
-	wget https://www.kernel.org/pub/software/scm/git/git-2.34.1.tar.gz -O $(TAR)
+	wget https://www.kernel.org/pub/software/scm/git/git-2.37.2.tar.gz -O $(TAR)
 	tar xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
 	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
@@ -70,8 +70,9 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 			make doc; \
 			rm -rf $(INSTALL); \
 			make install install-doc; \
-			rm -rf $(SRC);")
-git : $(GIT_INSTALL)
+			rm -rf $(SRC); \
+	")
+git-install : $(GIT_INSTALL)
 
 TIG_INSTALL = $(UTILS)/tig_install
 $(TIG_INSTALL) : | $(GCC_INSTALL) $(GIT_INSTALL) $(UTILS)
@@ -96,7 +97,8 @@ $(TIG_INSTALL) : | $(GCC_INSTALL) $(GIT_INSTALL) $(UTILS)
 			make doc; \
 			rm -rf $(INSTALL); \
 			make install install-doc; \
-			rm -rf $(SRC);")
+			rm -rf $(SRC); \
+	")
 tig : $(TIG_INSTALL)
 
 # }}}
@@ -111,20 +113,20 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval BUILD := $(SRC)/build/)
 	rm -rf $(SRC)
 	# git clone --branch release-0.6 --single-branch --depth 10 https://github.com/neovim/neovim.git $(SRC)
-	git clone --branch release-0.6 --single-branch --depth 10 https://github.com/rbeneyton/neovim.git $(SRC)
+	git clone --branch release-0.7 --single-branch --depth 10 https://github.com/rbeneyton/neovim.git $(SRC)
 	rm -rf $(BUILD)
 	mkdir -p $(BUILD)
 	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			cd $(BUILD); \
+			make -C $(SRC) distclean; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
 			CC=$(GCC_INSTALL)/bin/gcc \
 			CFLAGS='-march=native -flto -O3 -DNDEBUG' \
 			CXX=$(GCC_INSTALL)/bin/g++ \
 			CXXFLAGS='-march=native -flto -O3 -DNDEBUG' \
 			LDFLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64' \
-			make -C $(SRC) distclean; \
 			nice -n 20 \
 				make -C $(SRC) \
 					-j $$(($(NPROC) + 1)) \
@@ -133,7 +135,7 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 				; \
 			rm -rf $(INSTALL); \
 			make -C $(SRC) install; \
-			make -C $(SRC) distclean; \
+			rm -rf $(BUILD); \
 	")
 neovim-install: $(NEOVIM_INSTALL)
 
@@ -179,45 +181,70 @@ alacritty: $(ALACRITTY)
 # }}}
 # {{{ tmux
 
-libevent-install: utils
+LIBEVENT_INSTALL = $(UTILS)/libevent_install
+$(LIBEVENT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval NAME := libevent)
-	$(eval SRC := ${HOME}/utils/$(NAME)/)
-	$(eval TAR := ${HOME}/utils/$(NAME).tar.gz)
-	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
+	$(eval SRC := $(UTILS)/$(NAME))
+	$(eval TAR := $(UTILS)/$(NAME).tar.gz)
+	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	rm -rf $(SRC)
 	mkdir -p $(SRC)
 	wget https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz -O $(TAR)
 	tar xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
-	cd $(SRC) && \
-		CFLAGS="-march=native -O3" \
-		CXXFLAGS="-march=native -O3" \
-		$(SRC)/configure --prefix=$(INSTALL) \
-		--disable-debug-mode
-	make -C $(SRC) -j all
-	rm -rf $(INSTALL)
-	make -C $(SRC) install
-	rm -rf $(SRC)
+	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+		bash --noprofile --norc -c " \
+			set -e; \
+			cd $(SRC); \
+			CPP=$(GCC_INSTALL)/bin/cpp \
+			CC=$(GCC_INSTALL)/bin/gcc \
+			CFLAGS='-march=native -O3' \
+			CXX=$(GCC_INSTALL)/bin/g++ \
+			CXXFLAGS='-march=native -O3' \
+			$(SRC)/configure \
+				--prefix=$(INSTALL) \
+				--disable-debug-mode \
+				; \
+			make -j $$(($(NPROC) + 1)) all; \
+			rm -rf $(INSTALL); \
+			make -C $(SRC) install; \
+			rm -rf $(SRC); \
+	")
+libevent: $(LIBEVENT_INSTALL)
 
+TMUX_INSTALL = $(UTILS)/tmux_install
+$(TMUX_INSTALL) : | $(LIBEVENT_INSTALL) $(GCC_INSTALL) $(UTILS)
 tmux-install: utils libevent-install
 	$(eval NAME := tmux)
-	$(eval SRC := ${HOME}/utils/$(NAME)/)
-	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
-	$(eval LIBEVENT := ${HOME}/utils/libevent_install/lib/)
+	$(eval SRC := $(UTILS)/$(NAME))
+	$(eval TAR := $(UTILS)/$(NAME).tar.gz)
+	$(eval INSTALL := $(UTILS)/$(NAME)_install)
+	$(eval NAME := tmux)
+	$(eval LIBEVENT := $(UTILS)/libevent_install/lib/)
 	rm -rf $(SRC)
 	git clone --branch master --single-branch --depth 300 https://github.com/tmux/tmux.git $(SRC)
-	cd $(SRC) && \
-		./autogen.sh && \
-		CFLAGS="-march=native -O3" \
-		CXXFLAGS="-march=native -O3" \
-		PKG_CONFIG_PATH=$(LIBEVENT)/pkgconfig/ \
-		$(SRC)/configure --prefix=$(INSTALL) \
-		--disable-debug
-	make -C $(SRC) -j all
-	rm -rf $(INSTALL)
-	make -C $(SRC) install
-	patchelf --set-rpath $(LIBEVENT) $(INSTALL)/bin/tmux
-	rm -rf $(SRC)
+	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+		bash --noprofile --norc -c " \
+			set -e; \
+			cd $(SRC); \
+			./autogen.sh; \
+			CPP=$(GCC_INSTALL)/bin/cpp \
+			CC=$(GCC_INSTALL)/bin/gcc \
+			CFLAGS='-march=native -O3' \
+			CXX=$(GCC_INSTALL)/bin/g++ \
+			CXXFLAGS='-march=native -O3' \
+			PKG_CONFIG_PATH=$(LIBEVENT)/pkgconfig/ \
+			$(SRC)/configure \
+				--prefix=$(INSTALL) \
+				--disable-debug \
+				; \
+			make -j $$(($(NPROC) + 1)) all; \
+			rm -rf $(INSTALL); \
+			make -C $(SRC) install; \
+			patchelf --set-rpath $(LIBEVENT) $(INSTALL)/bin/tmux; \
+			rm -rf $(SRC); \
+	")
+tmux: $(TMUX_INSTALL)
 
 # }}}
 # {{{ gcc/gdb/llvm
@@ -254,7 +281,7 @@ $(GMP_INSTALL) : | $(UTILS)
 			rm -rf $(INSTALL); \
 			make install; \
 			rm -rf $(BUILD) $(SRC);")
-gmp : $(GMP_INSTALL)
+gmp: $(GMP_INSTALL)
 
 MPFR_INSTALL = $(UTILS)/mpfr_install
 $(MPFR_INSTALL) : | $(GMP_INSTALL) $(UTILS)
@@ -287,7 +314,7 @@ $(MPFR_INSTALL) : | $(GMP_INSTALL) $(UTILS)
 			rm -rf $(INSTALL); \
 			make install; \
 			rm -rf $(BUILD) $(SRC);")
-mpfr : $(MPFR_INSTALL)
+mpfr: $(MPFR_INSTALL)
 
 MPC_INSTALL = $(UTILS)/mpc_install
 $(MPC_INSTALL) : | $(GMP_INSTALL) $(MPFR_INSTALL) $(UTILS)
@@ -321,7 +348,7 @@ $(MPC_INSTALL) : | $(GMP_INSTALL) $(MPFR_INSTALL) $(UTILS)
 			rm -rf $(INSTALL); \
 			make install; \
 			rm -rf $(BUILD) $(SRC);")
-mpc : $(MPC_INSTALL)
+mpc: $(MPC_INSTALL)
 
 GCC_INSTALL = $(UTILS)/gcc_install
 $(GCC_INSTALL) : | $(MPC_INSTALL) $(GMP_INSTALL) $(MPFR_INSTALL) $(UTILS)
@@ -357,7 +384,7 @@ $(GCC_INSTALL) :
 			rm -rf $(INSTALL); \
 			make install-strip; \
 			rm -rf $(BUILD) $(SRC);")
-gcc : $(GCC_INSTALL)
+gcc: $(GCC_INSTALL)
 
 GDB_INSTALL = $(UTILS)/gdb_install
 # $(GDB_INSTALL) : | $(GCC_INSTALL) $(UTILS)
@@ -377,7 +404,6 @@ $(GDB_INSTALL) :
 	# autoreconf -f -i $(SRC) neither
 	# we escape from our Makefile environment to do the build
 	# "manual" fresh login (TODO: remove some entries in PATH)
-	# XXX never ever use make -j
 	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
@@ -498,15 +524,26 @@ debian-install-misc:
 	apt-get update
 	apt-get install signal-desktop
 
+debian-install-kernel:
+	# no security slow down
+	# curl https://make-linux-fast-again.com/
+	# /etc/default/grub GRUB_CMDLINE_LINUX= + update-grub
+
+debian-install-kernel-amd:
+	apt-get install firmware-amd-graphics
+	# AMD P-State
+	apt-get install linux-cpupower
+	echo "blacklist acpi_cpufreq" > /etc/modules-load.d/amd_pstate.conf
+	echo "amd_pstate" >> /etc/modules-load.d/amd_pstate.conf
+	update-initramfs -u
+	# check with cpupower frequency-info
+
 debian-install-kernel-mac:
 	# 1) i915
 	apt-get install firmware-misc-nonfree
 	# 2) camera
 	# https://archive.org/details/AppleUSBVideoSupport
 	apt-get install isight-firmware-tools
-	# 3) no slow due to security
-	# https://make-linux-fast-again.com/
-	# /etc/default/grub GRUB_CMDLINE_LINUX= + update-grub
 	# 4) skip weird interupt (see $ grep . -r /sys/firmware/acpi/interrupts/)
 	# acpi_osi=!Darwin acpi_mask_gpe=0x17
 	# /etc/default/grub GRUB_CMDLINE_LINUX= + update-grub
