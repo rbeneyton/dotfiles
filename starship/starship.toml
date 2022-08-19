@@ -52,4 +52,9 @@ disabled = true
 map_symbol = true
 disabled = false
 
+# no git status versus remote
+[git_status]
+ahead = ""
+behind = ""
+
 # vim: filetype=cfg
