@@ -1295,13 +1295,15 @@ endif
 " }}}
 " {{{ gundo/mundo/undotree
 
-" let g:gundo_prefer_python3 = 1
-" nnoremap <F6> :GundoToggle<CR>
-" nnoremap <F6> :MundoToggle<CR>
-nnoremap <F5> :UndotreeToggle<cr>
+let g:gundo_prefer_python3 = 1 " no more python2 installed
+" nnoremap <F5> :GundoToggle<CR>
+
+:packadd undotree
 let g:undotree_WindowLayout=2 " full width diff
 let g:undotree_SplitWidth=40 " default (30) is too short
 let g:undotree_SetFocusWhenToggle=1 " get focus on toggle
+let g:undotree_HelpLine = 1
+nnoremap <F5> :UndotreeToggle<CR>
 
 " }}}
 " {{{ vimwiki
