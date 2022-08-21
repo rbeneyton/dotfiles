@@ -39,7 +39,7 @@
 	path = vim/pack/lsp/start/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lsp.git
 [submodule "vim/bundle/rust"]
-	path = vim/bundle/rust
+	path = vim/pack/lang/start/rust
 	url = https://github.com/rust-lang/rust.vim.git
 [submodule "vim/bundle/syntastic"]
 	path = vim/pack/extend/start/syntastic
