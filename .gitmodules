@@ -18,10 +18,10 @@
 	path = vim/pack/misc/start/a
 	url = https://github.com/vim-scripts/a.vim.git
 [submodule "vim/bundle/airline"]
-	path = vim/bundle/airline
+	path = vim/pack/theme/start/airline
 	url = https://github.com/bling/vim-airline.git
 [submodule "vim/bundle/airline-themes"]
-	path = vim/bundle/airline-themes
+	path = vim/pack/theme/start/airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
 [submodule "vim/bundle/async"]
 	path = vim/bundle/async
@@ -51,13 +51,13 @@
 	path = vim/bundle/tcomment-vim
 	url = https://github.com/tomtom/tcomment_vim.git
 [submodule "vim/bundle/tmuxline"]
-	path = vim/bundle/tmuxline
+	path = vim/pack/theme/start/tmuxline
 	url = https://github.com/edkolev/tmuxline.vim.git
 [submodule "vim/bundle/vimwiki"]
 	path = vim/bundle/vimwiki
 	url = https://github.com/vimwiki/vimwiki.git
 [submodule "vim/bundle/vim-colors-solarized"]
-	path = vim/bundle/vim-colors-solarized
+	path = vim/pack/theme/start/vim-colors-solarized
 	url = https://github.com/altercation/vim-colors-solarized.git
 [submodule "vim/bundle/vim-commentary"]
 	path = vim/bundle/vim-commentary
