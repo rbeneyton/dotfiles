@@ -4,7 +4,7 @@
 # no newline
 add_newline = false
 # Always time before anything
-format = "$time$all"
+format = "$time$all$directory$cmd_duration$jobs$status$character"
 
 # do not waste a line, so half of the screen!
 [line_break]
