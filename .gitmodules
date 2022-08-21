@@ -36,7 +36,7 @@
 	path = vim/pack/extend/start/gundo
 	url = http://github.com/sjl/gundo.vim.git
 [submodule "vim/bundle/nvim-lsp"]
-	path = vim/bundle/nvim-lspconfig
+	path = vim/pack/lsp/start/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lsp.git
 [submodule "vim/bundle/rust"]
 	path = vim/bundle/rust
