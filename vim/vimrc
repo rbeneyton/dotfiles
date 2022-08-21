@@ -1,51 +1,10 @@
 " {{{ richard: pathogen
 
-" To disable a plugin, add it's bundle name to the following list
-let g:pathogen_disabled = ['clang_complete']
-" let g:pathogen_disabled = ['clang_complete', 'syntastic' ]
-" let g:pathogen_disabled = ['clang_complete', 'tmuxline']
-let g:pathogen_disabled = ['clang_complete', 'YouCompleteMe', 'LanguageClient-neovim']
-" let g:pathogen_disabled = ['clang_complete', 'YouCompleteMe', 'syntastic' ]
-
 if has('nvim')
-    let g:pathogen_disabled += ['vim-lsp']
+    :packadd nvim-lspconfig
 else
-    let g:pathogen_disabled += ['nvim-lspconfig']
+    :packadd vim-lsp
 endif
-
-" let g:pathogen_disabled += ['vim-slime']
-let g:pathogen_disabled += ['slimux']
-let g:pathogen_disabled += ['gundo']
-
-"let g:pathogen_disabled += ['vim-lsp']
-"let g:pathogen_disabled += ['nvim-lspconfig']
-
-let g:pathogen_disabled += ['syntastic' ]
-
-" set rtp+=/home/richard/dotfiles/powerline/powerline/bindings/vim
-
-"debian 'harcoded' path ?
-if has("unix")
-    "set rtp+=/usr/share/vim/vim74
-    let g:pathogen_disabled += ['neovim-qt-colors-solarized-truecolor-only']
-else
-    "set rtp+=H:\dotfiles\vim
-    set rtp+=D:\utils\vim
-    "set rtp+=D:\utils\Neovim\share\nvim\runtime
-    let $PATH .= ';' . 'D:\utils\PortableGit\bin'
-    "let g:pathogen_disabled += ['fugitive', 'gitgutter']
-    "let g:pathogen_disabled += ['tmuxline']
-    "let g:pathogen_disabled += ['vim-airline']
-    "let g:pathogen_disabled += ['vim-airline-themes']
-    let g:pathogen_disabled += ['vim-colors-solarized' ]
-    "let g:pathogen_disabled += ['syntastic' ]
-    "FIXME Guifont DejaVu Sans Mono:h9
-endif
-
-call pathogen#infect()
-call pathogen#helptags()
-
-" :packadd nvim-lspconfig
 
 " NB: to temporary use alias in :! command: (break fugitive plugin)
 "set shell=/bin/bash\ -i
