@@ -48,19 +48,19 @@
 	path = vim/pack/extend/start/tabular
 	url = https://github.com/godlygeek/tabular.git
 [submodule "vim/bundle/tcomment-vim"]
-	path = vim/bundle/tcomment-vim
+	path = vim/pack/extend/start/tcomment-vim
 	url = https://github.com/tomtom/tcomment_vim.git
 [submodule "vim/bundle/tmuxline"]
 	path = vim/pack/theme/start/tmuxline
 	url = https://github.com/edkolev/tmuxline.vim.git
 [submodule "vim/bundle/vimwiki"]
-	path = vim/bundle/vimwiki
+	path = vim/pack/extend/start/vimwiki
 	url = https://github.com/vimwiki/vimwiki.git
 [submodule "vim/bundle/vim-colors-solarized"]
 	path = vim/pack/theme/start/vim-colors-solarized
 	url = https://github.com/altercation/vim-colors-solarized.git
 [submodule "vim/bundle/vim-commentary"]
-	path = vim/bundle/vim-commentary
+	path = vim/pack/extend/start/vim-commentary
 	url = https://github.com/tpope/vim-commentary.git
 [submodule "vim/bundle/vim-grep-operator"]
 	path = vim/pack/extend/start/vim-grep-operator
@@ -69,7 +69,7 @@
 	path = vim/pack/extend/start/vim-slime
 	url = https://github.com/jpalardy/vim-slime.git
 [submodule "vim/bundle/vim-surround"]
-	path = vim/bundle/vim-surround
+	path = vim/pack/extend/start/vim-surround
 	url = https://github.com/tpope/vim-surround.git
 [submodule "vim/bundle/vim-visual-star-search"]
 	path = vim/pack/extend/start/vim-visual-star-search
