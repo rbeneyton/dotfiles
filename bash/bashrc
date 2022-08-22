@@ -104,10 +104,27 @@ ulimit -c unlimited
     alias tmuxa='tmux -2 att -d -t'
     alias tmuxl='tmux ls'
     alias tmuxn='tmux -2 new -s'
-    function tmuxd { tmux select-layout even-vertical 1>/dev/null 2>/dev/null; tmux split-window; sleep 1; tmux send-keys "$@" ; tmux send-keys 'C-m'; }
+    function tmuxd {
+        tmux select-layout even-vertical 1>/dev/null 2>/dev/null
+        tmux split-window
+        sleep 1 # perfectible™
+        tmux send-keys "$@"
+        tmux send-keys 'C-m'
+    }
     # tmux aware pstree (with sessions/windows/pane info)
     # FIXME slow!
-    alias tmuxps='for s in $(tmux list-sessions -F "#{session_name}") ; do for p in $(tmux list-panes -s -F "#{window_name} #{window_index}.#{pane_index} [#{pane_pid}]" -t "$s" | sed "s@ @_@g") ; do export w=$(echo $p | sed "s@\(.*\)_\[.*@\1@; s@_@ @") ; export b=$(echo $p | sed "s@.*\[\(.*\)\]@\1@g") ; pstree -ap -U -p $b | grep -v ",${b}$" | sed "s@^@$s:\t$w:\t@" ; done ; done'
+    # alias tmuxps='for s in $(tmux list-sessions -F "#{session_name}") ; do for p in $(tmux list-panes -s -F "#{window_name} #{window_index}.#{pane_index} [#{pane_pid}]" -t "$s" | sed "s@ @_@g") ; do export w=$(echo $p | sed "s@\(.*\)_\[.*@\1@; s@_@ @") ; export b=$(echo $p | sed "s@.*\[\(.*\)\]@\1@g") ; pstree -ap -U -p $b | grep -v ",${b}$" | sed "s@^@$s:\t$w:\t@" ; done ; done'
+    function tmuxps {
+        for s in $(tmux list-sessions -F "#{session_name}")
+        do
+            for p in $(tmux list-panes -s -F "#{window_name} #{window_index}.#{pane_index} [#{pane_pid}]" -t "$s" | sed "s@ @_@g")
+            do
+                export w=$(echo $p | sed "s@\(.*\)_\[.*@\1@; s@_@ @")
+                export b=$(echo $p | sed "s@.*\[\(.*\)\]@\1@g")
+                pstree -ap -U -p $b | grep -v ",${b}$" | sed "s@^@$s:\t$w:\t@"
+            done
+        done
+    }
 
 # ]]]
 # [[[ git
