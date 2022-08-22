@@ -1,7 +1,6 @@
-#export PATH=${HOME}/bin:${HOME}/local/bin:${PATH}
-#export PATH=${HOME}/bin:${HOME}/devs/tools/master_install/bin:${PATH}
-export PATH=${HOME}/bin:${HOME}/devs/tools/master_llvm_3.4_install/bin:${PATH}
-#export PATH=/home/richard/local/clang_3.4/bin/:${PATH}
+export PATH=${HOME}/bin:$PATH
+
+# [[[ own install
 
 export PATH=${HOME}/utils/git_install/bin/:${PATH}
 export MANPATH=${HOME}/utils/git_install/share/man/:${MANPATH}
@@ -18,100 +17,59 @@ export MANPATH=${HOME}/utils/gdb_install/share/man/:${MANPATH}
 export PATH=${HOME}/utils/tmux_install/bin/:${PATH}
 export MANPATH=${HOME}/utils/tmux_install/share/man/:${MANPATH}
 
-export PATH=${HOME}/utils/llvm_install/bin/:${PATH}
+export LLVM_INSTALL=${HOME}/utils/llvm_install
+export PATH=${LLVM_INSTALL}/bin/:${PATH}
 export MANPATH=${HOME}/utils/llvm_install/share/man/:${MANPATH}
-
-export PATH=${HOME}/utils/fish_install/bin/:${PATH}
-export MANPATH=${HOME}/utils/fish_install/share/man/:${MANPATH}
-
-export PATH=${HOME}/bin:$PATH
-
-. "$HOME/.cargo/env"
-
-#export JAVA_HOME=/usr/lib/jvm/java-6-sun
-export MCMS_HOME=/home/richard/dev/mmsx/mcms
-
-export TMUX_INSTALL=${HOME}/utils/tmux_install
-export PATH=${TMUX_INSTALL}/bin/:${PATH}
-export MANPATH=${TMUX_INSTALL}/share/man/:${MANPATH}
-
-export LANGUAGE=en_US:en
-export LANG='C.UTF-8' # never 12H AM/PM stupid date format
-
-# [[[ llvm
-
-# export PATH=/opt/tmp/rbeneyton/llvm-3.9.1_install/bin/:${PATH}
-# export MANPATH=/opt/tmp/rbeneyton/llvm-3.9.1_install/share/man/:${MANPATH}
-
-# ]]]
-#export CC=gcc-5
-#export CC=gcc-4.9
-#export CXX=g++-5
-#export CXX=g++-4.9
-#export QUICK=1
-#export VERBOSE=1
-export PROFILE=debug
-export NOCOMPRESS=1
-#export PYTHONPATH=/home/richard/devs/tools/master_install/lib/python/:/home/richard/dev.3/mmsx/lib-common/
-export PYTHONPATH=/home/richard/devs/tools/master_llvm_3.4_install/lib/python/:/home/richard/devs/tools/master_llvm_3.4/lib-common/
-
-# llvm
-export LLVM=/mnt/research-live/user/rbeneyton/utils/llvm_install/
-export PATH=${LLVM}/bin:${PATH}
-export MANPATH=${LLVM}/share/man:${MANPATH}
-export ASAN_SYMBOLIZER_PATH=${LLVM}/bin/llvm-symbolizer
-
-# from /srv/tools/share/dotfiles/bashrc
-# Useful options
 if type llvm-symbolizer &> /dev/null; then
     export ASAN_SYMBOLIZER_PATH="$(which llvm-symbolizer)"
 fi
 export ASAN_OPTIONS=abort_on_error=1:detect_leaks=1
 export LSAN_OPTIONS=use_stacks=0:use_registers=0:use_globals=1:use_tls=1
-#end
 
+export PATH=${HOME}/utils/fish_install/bin/:${PATH}
+export MANPATH=${HOME}/utils/fish_install/share/man/:${MANPATH}
 
-{{#if dotter.packages.mac}}
-#alacritty: disable GPU rendering for suze
-export LIBGL_ALWAYS_SOFTWARE=1
-{{/if}}
+export TMUX_INSTALL=${HOME}/utils/tmux_install
+export PATH=${TMUX_INSTALL}/bin/:${PATH}
+export MANPATH=${TMUX_INSTALL}/share/man/:${MANPATH}
 
-alias condainit='source /opt/conda/etc/profile.d/conda.sh'
+# ]]]
 
-
+export LANGUAGE=en_US:en
+export LANG='C.UTF-8' # never 12H AM/PM stupid date format
 
 # export MALLOC_CHECK_=2
 ulimit -c unlimited
 
+alias ls='/bin/ls --color=tty'
+alias ll='ls -lrth'
+alias llo='ls -lh'
+alias lla='ll -a'
+alias grep='grep --color=auto'
+alias psu='ps -flwu $USER w f'
+alias topu='top -u $USER'
+alias cutd="cut -d' '"
+alias trs='tr -s "  " " " | sed -e "s/^\s*//"'
+
+function mkcd() {
+        mkdir -p -- "$1" && cd -P -- "$1"
+}
+function cdmk() {
+        mkdir -p -- "$1" && cd -P -- "$1"
+}
+
+alias fixcursor='echo -en "\e]50;CursorShape=0\x7"'
+alias fixcursortmux='echo -en "\e[0 q"'
+
+alias composekeylist='cat "/usr/share/X11/locale/$(grep --max-count=1 "${LANG%.*}.UTF-8\$" /usr/share/X11/locale/locale.dir | cut --delimiter=/ --fields 1)/Compose"'
+
+alias h='history'
+
+alias i='ipython'
+alias is='PYTHONNOUSERSITE=on ipython'
+
 if [[ -n $PS1 ]]; then
     export LS_COLORS='no=00:fi=00:di=00;94:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.jpg=00;35:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*.c=00;96:*.h=00;95:*.py=00;92'
-    alias ls='/bin/ls --color=tty'
-    alias ll='ls -lrth'
-    alias llo='ls -lh'
-    alias lla='ll -a'
-    alias grep='grep --color=auto'
-    alias psu='ps -flwu rbeneyton w f'
-    alias topu='top -u rbeneyton'
-    alias cutd="cut -d' '"
-
-    alias trs='tr -s "  " " " | sed -e "s/^\s*//"'
-
-    function mkcd() {
-        mkdir -p -- "$1" && cd -P -- "$1"
-    }
-    function cdmk() {
-        mkdir -p -- "$1" && cd -P -- "$1"
-    }
-
-    alias fixcursor='echo -en "\e]50;CursorShape=0\x7"'
-    alias fixcursortmux='echo -en "\e[0 q"'
-
-    alias composekeylist='cat "/usr/share/X11/locale/$(grep --max-count=1 "${LANG%.*}.UTF-8\$" /usr/share/X11/locale/locale.dir | cut --delimiter=/ --fields 1)/Compose"'
-
-    alias h='history'
-
-    alias i='ipython'
-    alias is='PYTHONNOUSERSITE=on ipython'
 
     # to get git complete functions NOW
     if [[ -r "/usr/share/bash-completion/completions/git" ]]; then
@@ -132,15 +90,8 @@ if [[ -n $PS1 ]]; then
 
     alias gst='/usr/bin/git status'
 
-    alias gup='p=$PWD; cd ~/devs/bares; for i in clang.git compiler-rt.git google-map lib-common llvm.git mmsx platform qdb qrrd tcpdf tools v8 ; do echo $i; cd $i; g fea; cd ..; echo "" ;done ; cd $p'
-    alias gupl='p=$PWD; cd ~/devs/bares; for i in lib-common mmsx platform qrrd ; do echo $i; cd $i; g fe origin; cd ..; echo "" ;done ; cd $p'
-    alias gnw='sh /usr/share/doc/git/contrib/workdir/git-new-workdir'
-    # create workdirs for all uninitialized submodules, using ~/devs/bares/ repositories (delete empty folder if present)
-    alias gsubf='for i in $(git submodule status | sed "/^[U+ ]/d" | sed "s/^-//" | sed "s/ /@/" ) ; do export sha=$(echo $i | cut -d"@" -f1) ; export name=$(echo $i | cut -d"@" -f2) ; export repo=$(echo $name | rev | cut -d"/" -f1 | rev) ; echo setup $name at $sha … ; rmdir $name 2>/dev/null ; gnw ~/devs/bares/$repo $name $sha 1>/dev/null 2>/dev/null || { echo "failed to setup $name (using command \$ gnw ~/devs/bares/$repo $name $sha)"; break ; } ; git submodule init $name 1>/dev/null || { echo "failed to init $name (using command \$ git submodule init $name)"; break ; } ; done'
-
     alias tmuxssh-add='rm -f $SSH_AUTH_SOCK ; kill -9 $(pidof ssh-agent) ; ssh-agent -a $SSH_AUTH_SOCK && ssh-add'
 
-    #alias t='/usr/bin/tig'
     alias t='tig --date-order -500'
     __git_complete t _git_show
 
@@ -260,32 +211,13 @@ if [[ -n $PS1 ]]; then
     #command starting with ' ' aren't recorded
     export HISTCONTROL=ignoreboth
 
-    HOSTNAME=$(hostname)
-    if [ "${HOSTNAME:0:7}" == "schnaps" ]; then
-        export MCABBER_JID="richard.beneyton@intersec.com"
-        #export MCABBER_HISTO="histo-${HOSTNAME}"
-    fi
-
     # activate **
     shopt -s globstar
 
-    function masterof { lsof -a -U -p $(pidof igl-master | tr -s ' ' ',') | grep igl-$1 | cut -d' ' -f2 | sort | uniq; }
-#     function __prompt_git() 
-#     { 
-#         local git_dir ref br; 
-#         git_dir=$(git rev-parse --git-dir 2> /dev/null) || return 
-#         ref=$(git symbolic-ref HEAD 2> /dev/null) || return 
-#         br=${ref#refs/heads/} 
-#         #nb=$(git status |grep modified:|wc -l 2> /dev/null) || return 
-#         #if test $nb -eq 0; then 
-#           echo -e "[git:$br]" 
-#         #else 
-#         #    echo -e "[git:$br($nb)]" 
-#         #fi 
-#     } 
+    # starship supersed all that, but I keep a valid PS1 as backup solution
+    # [[[ PS1 with some info
 
-
-    #from http://www.git-attitude.fr/2010/07/14/le-prompt-bash-qui-change-la-vie-avec-git/
+    # from http://www.git-attitude.fr/2010/07/14/le-prompt-bash-qui-change-la-vie-avec-git/
     # Scavenged from Git 1.6.5.x contrib/completion/git_completion.bash
     # __git_ps1 accepts 0 or 1 arguments (i.e., format string)
     # returns text to add to bash PS1 prompt (includes branch name)
@@ -401,7 +333,6 @@ if [[ -n $PS1 ]]; then
     export GIT_PS1_SHOWSTASHSTATE=1
     export GIT_PS1_DESCRIBE_STYLE="branch"
 
-    # En fait l'important ici c'est le "\033[1;32m\]$(__git_ps1)\[\033[0m\]", le reste c'est mon prompt usuel…
     #export PS1='\[\033[0;37m\]\u@\h:\[\033[0;33m\]\W\[\033[0m\]\[\033[1;32m\]$(__git_ps1)\[\033[0m\] \$ '
 
     export PROMPT_COMMAND=__exit_status
@@ -419,21 +350,14 @@ if [[ -n $PS1 ]]; then
         export SHORT_HOSTNAME="unknown"
         if type hostname &> /dev/null
         then
-            export SHORT_HOSTNAME=$(hostname)
-            #export SHORT_HOSTNAME=${SHORT_HOSTNAME/.cfm.fr/}
+            export SHORT_HOSTNAME=$(hostname -s)
         fi
-        #export ALIAS_HOSTNAME=$(dig -t TXT ${SHORT_HOSTNAME%.*}.reverse.cfm.fr | sed '/^;/d' | grep TXT | sed 's/[^"]*"\([^"]*\)"[^"]*/\1/' | sed 's/\.cfm\.fr//')
     }
 
-    #PS1='[\t] \[\e[34;1m\]@\[\e[32;1m\]\H\[\033[1;31m\]$(__git_ps1)\[\033[0m\] \w \[\e[31;1m\]${PS1_EXIT_E}\[\e[0m\]\[\e[36;1m\]${PS1_EXIT}\[\e[0m\] '
-    #PS1='[\t] \[\e[34;1m\]@\[\e[32;1m\]\H\[\033[1;31m\]$(__git_ps1)\[\033[0m\] \w \! \[\e[31;1m\]${PS1_EXIT}\$ \[\e[0m\]'
-    #PS1='[\t] \[\e[34;1m\]\u@\[\e[32;1m\]\H:\[\e[31;1m\]$(__prompt_git) \[\e[0m\]\w \[\e[31;1m\]\$ \[\e[0m\]' 
-    PS1='[\t] \[\e[34;1m\]@\[\e[32;1m\]\H\[\033[1;31m\]$(__git_ps1)\[\033[0m\] \w \[\e[31;1m\]${PS1_EXIT_E}\[\e[0m\]\[\e[36;1m\]${PS1_EXIT}\[\e[0m\] '
     PS1='[\t] \[\e[34;1m\]@\[\e[32;1m\]${SHORT_HOSTNAME}\[\033[1;31m\]$(__git_ps1)\[\033[0m\] \w \[\e[31;1m\]${PS1_EXIT_E}\[\e[0m\]\[\e[36;1m\]${PS1_EXIT}\[\e[0m\] '
     # PS1='[\t] \[\e[34;1m\]@\[\e[32;1m\]${SHORT_HOSTNAME} ${ALIAS_HOSTNAME}\[\033[1;31m\]$(__git_ps1)\[\033[0m\] \w \[\e[31;1m\]${PS1_EXIT_E}\[\e[0m\]\[\e[36;1m\]${PS1_EXIT}\[\e[0m\] '
 
-    # powerline
-    #. /home/richard/dotfiles/powerline/powerline/bindings/bash/powerline.sh
+    # ]]]
 
     # starfish
     eval "$(starship init bash)"
@@ -457,23 +381,21 @@ if [[ -n $PS1 ]]; then
         bind "\C-p":previous-history #def
         bind "\C-o":next-history
         bind "\C-d":kill-word
-        #richard's mapping:
+        #personal mapping:
         # w[<-EATW]                      o[HIST-] p[HIST-]
         # d[EATW->] f[word->] g[eat->] h[<-eat] j[<-word]
         #                v[->]              n[<-]  m[ENTER]
-        #bind "\C-j":vi-insertion-mode
-        #bind "\C-j":vi-movement-mode
     fi
 fi #PS1
 #set -o vi
 
-# Predictable SSH authentication socket location.
+# Predictable SSH authentication socket location for tmux, tmuxssh-add with
+# force reset
 SOCK="/tmp/ssh-agent-$USER-screen"
-#if [ -S "$SSH_AUTH_SOCK" ] && [ ! -h "$SSH_AUTH_SOCK" ]; then
-#    ln -sf "$SSH_AUTH_SOCK" $SOCK
-#fi
 export SSH_AUTH_SOCK=$SOCK
-. "$HOME/.cargo/env"
+
+# conda
+alias condainit='source /opt/conda/etc/profile.d/conda.sh'
 
 # dotter/handlebars+fold incompatibility: temporary [[[ / ]]]]
 # vim: foldmarker=[[[,]]]

@@ -3,11 +3,14 @@
 if has('nvim')
     :packadd nvim-lspconfig
 else
-    :packadd vim-lsp
+    " FIXME no more editing code using vim, so don't maintain settings
+    " :packadd vim-lsp
 endif
 
 " NB: to temporary use alias in :! command: (break fugitive plugin)
-"set shell=/bin/bash\ -i
+" set shell=/bin/bash\ -i
+let $BASH_ENV = "~/.config/nvim/bash_env"
+
 
 " ]]]
 " [[[ main settings
@@ -23,26 +26,32 @@ set autoindent                  " always set auto-indenting on
 set autoread                    " reload unchanged files silentely
 set clipboard=unnamed           " copy/paste to global clipboard (parcellite)
 set hidden                      " allow to cycle and hide modified buffers
+
 set nobackup                    " Don't keep a backup file
-set backupcopy=auto,breakhardlink
+set nowritebackup
+set backupcopy=auto,breakhardlink " when backup is manually set
+
 "nvim set swapsync=
 "nvim set esckeys                     " allow usage of curs keys within insert mode
 set timeout
-set ttimeoutlen=10
-set timeoutlen=500              " set timout for esc to 50ms
+set timeoutlen=100              " 100ms before next key
+set ttimeout
+set ttimeoutlen=50              " 50ms after esc
 
+set list
 set listchars=tab:\ \ ,trail:-,extends:>,precedes:<
 set listchars=tab:>-,trail:-,extends:>,precedes:<
-set list
 set lazyredraw                  " [VIM5];  do not update screen	while executing macros
-set ttyfast
-set magic                       " Use some magic in search patterns?  Certainly!
-set modeline                    " Allow the last line to be a modeline - useful when
-                                " the last line in sig gives the preferred text-width
-                                " for replies.
+if !has('nvim')
+    set ttyfast
+endif
+
+set magic                       " Use some magic in search patterns
+set modeline                    " Allow the last line to be a modeline
 set modelines=5
-set pastetoggle=<F4>
+
 set nopaste
+set pastetoggle=<F4>            " TODO bracketed mode might avoid manual switch
 
 set nojoinspaces                " avoid to get "previous sentence.  New sentence"
 set number                      " show line numbers
@@ -52,8 +61,8 @@ endif
 set report=0                    " show a report when N lines were changed.
                                 " report=0 thus means "show all changes"!
 
-set laststatus=2                " show status line?  Yes, always!
-set noruler                     " show cursor position?  Yep!
+set laststatus=2                " show status line?
+set ruler                       " show cursor position? superseed
 
 "remind
 " hi User1 term=inverse,bold ctermfg=DarkBlue ctermbg=Black
@@ -70,9 +79,9 @@ set noruler                     " show cursor position?  Yep!
 set shiftwidth=4                " Number of spaces to use for each insertion of
                                 " (auto)indent.
 set scrolloff=2                 " context
-set showcmd                     " Show current uncompleted command?  Absolutely!
+set showcmd                     " Show current uncompleted command?
 set showmatch                   " Show the matching bracket for the last ')'?
-set showmode                    " Show the current mode?  YEEEEEEEEESSSSSSSSSSS!
+set showmode                    " Show the current mode?
 
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc,.cmi,.cmo,.iop.h,.iop.c,.iop.json,.blk.c
                                 " Suffixes to ignore in file completion
@@ -108,7 +117,6 @@ set winminheight=0              " Minimum height of VIM's windows opened
 "set mouse=a
 "set mousefocus
 set wrapmargin=1
-set nowritebackup
 set foldmethod=marker
 set foldlevelstart=20
 
@@ -378,8 +386,15 @@ let &showbreak='↪ '
 " ]]]
 " [[[ man plugin
 
-runtime! ftplugin/man.vim      " to get pretty :Man
+if !has('nvim')
+    runtime! ftplugin/man.vim      " to get pretty :Man
+endif
 nmap K :Man <C-R>=expand("<cword>")<CR><CR>
+
+" activate matchit
+if has('nvim')
+   let loaded_matchit = 1
+endif
 
 " ]]]
 " [[[ let-modeline plugin callback def
