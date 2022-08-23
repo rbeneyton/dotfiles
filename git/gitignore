@@ -1,0 +1,9 @@
+# basic
+*~
+*.bck
+*.old
+# C/CPP
+*.o
+*.so
+# vim
+Session.vim
