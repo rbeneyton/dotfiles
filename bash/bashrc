@@ -1,6 +1,6 @@
 export PATH=${HOME}/bin:$PATH
 
-# [[[ own install
+# [[[ own installs
 
 export PATH=${HOME}/utils/git_install/bin/:${PATH}
 export MANPATH=${HOME}/utils/git_install/share/man/:${MANPATH}
@@ -14,13 +14,16 @@ export MANPATH=${HOME}/utils/gcc_install/share/man/:${MANPATH}
 export PATH=${HOME}/utils/gdb_install/bin/:${PATH}
 export MANPATH=${HOME}/utils/gdb_install/share/man/:${MANPATH}
 
+export PATH=${HOME}/utils/neovim_install/bin/:${PATH}
+export MANPATH=${HOME}/utils/neovim_install/share/man/:${MANPATH}
+
 export PATH=${HOME}/utils/tmux_install/bin/:${PATH}
 export MANPATH=${HOME}/utils/tmux_install/share/man/:${MANPATH}
 
-export LLVM_INSTALL=${HOME}/utils/llvm_install
-export PATH=${LLVM_INSTALL}/bin/:${PATH}
+export PATH=${HOME}/utils/llvm_install/bin/:${PATH}
 export MANPATH=${HOME}/utils/llvm_install/share/man/:${MANPATH}
 if type llvm-symbolizer &> /dev/null; then
+    # FIXME safe which
     export ASAN_SYMBOLIZER_PATH="$(which llvm-symbolizer)"
 fi
 export ASAN_OPTIONS=abort_on_error=1:detect_leaks=1
@@ -113,7 +116,6 @@ ulimit -c unlimited
     }
     # tmux aware pstree (with sessions/windows/pane info)
     # FIXME slow!
-    # alias tmuxps='for s in $(tmux list-sessions -F "#{session_name}") ; do for p in $(tmux list-panes -s -F "#{window_name} #{window_index}.#{pane_index} [#{pane_pid}]" -t "$s" | sed "s@ @_@g") ; do export w=$(echo $p | sed "s@\(.*\)_\[.*@\1@; s@_@ @") ; export b=$(echo $p | sed "s@.*\[\(.*\)\]@\1@g") ; pstree -ap -U -p $b | grep -v ",${b}$" | sed "s@^@$s:\t$w:\t@" ; done ; done'
     function tmuxps {
         for s in $(tmux list-sessions -F "#{session_name}")
         do
@@ -122,6 +124,19 @@ ulimit -c unlimited
                 export w=$(echo $p | sed "s@\(.*\)_\[.*@\1@; s@_@ @")
                 export b=$(echo $p | sed "s@.*\[\(.*\)\]@\1@g")
                 pstree -ap -U -p $b | grep -v ",${b}$" | sed "s@^@$s:\t$w:\t@"
+            done
+        done
+    }
+    function tmuxps2 {
+        for s in $(tmux list-sessions -F "#{session_name}")
+        do
+            for p in $(tmux list-panes -s -F "#{window_name}\\t#{window_index}.#{pane_index}\\t[#{pane_pid}]" -t "$s")
+            do
+                echo p:$p
+                export w=$(echo $p | sed "s@\(.*\)_\[.*@\1@; s@_@ @")
+                export b=$(echo $p | sed "s@.*\[\(.*\)\]@\1@g")
+                export prefix="$s:\t$w:\t"
+                pstree -ap -U -p $b | grep -v ",${b}$" | sed "s@^@$prefix@"
             done
         done
     }
