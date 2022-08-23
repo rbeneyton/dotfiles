@@ -79,3 +79,6 @@
 [submodule "vim/pack/todo/start"]
 	path = vim/pack/todo/start/xit
 	url = https://github.com/synaptiko/xit.nvim
+[submodule "vim/pack/parser/opt/nvim-treesitter"]
+	path = vim/pack/parser/opt/nvim-treesitter
+	url = https://github.com/nvim-treesitter/nvim-treesitter

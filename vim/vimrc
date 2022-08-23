@@ -1,19 +1,12 @@
-" [[[ richard: pathogen
+" [[[ pathogen
 
-if has('nvim')
-    :packadd nvim-lspconfig
-else
-    " FIXME no more editing code using vim, so don't maintain settings
-    " :packadd vim-lsp
-endif
-
-" NB: to temporary use alias in :! command: (break fugitive plugin)
-" set shell=/bin/bash\ -i
-let $BASH_ENV = "~/.config/nvim/bash_env"
-
+" remind: manual ':helptags ALL' after adding new package
 
 " ]]]
 " [[[ main settings
+
+" allow bash aliases in :! commands
+let $BASH_ENV = "~/.config/nvim/bash_env"
 
 " let mapleader=","
 let mapleader = "\<Space>"
@@ -158,7 +151,7 @@ inoremap <Tab> <C-R>=CleverTab()<CR>
 
 
 " ]]]
-" [[[ richard statusline
+" [[[ statusline
 
 " with remaining cursor/letter index
 "set statusline=%<%f\ %m%1*%r%0*\ %1*%n%0*%=%-10(%l,%02c\ %1*%02p%%%0*%)\ %-16(c:%o,l:%03b(%02B)%)
@@ -302,9 +295,7 @@ runtime! plugin/let-modeline.vim
 autocmd BufNewFile * let b:this_is_new_buffer=1
 autocmd BufReadPost * call FirstModeLine()
 
-if has("unix")
-    autocmd VimLeave * mksession! ~/.cache/session.vim
-endif
+autocmd VimLeave * mksession! ~/.cache/session.vim
 
 autocmd FileType debchangelog normal zO
 
@@ -415,7 +406,7 @@ endif
 " endif
 
 " ]]]
-" [[[ richard: netrw
+" [[[ netrw
 
 let g:netrw_sort_sequence = '[\/]$'
 let g:netrw_sort_sequence += ',\.iop$'
@@ -439,54 +430,15 @@ let g:netrw_sort_sequence += ',\~$'
 let g:netrw_special_syntax = 1
 
 " ]]]
-" [[[ richard: super F5...
+" [[[ misc map
 
-"richard: NO RECORDING
-"nmap qq :q!<cr>
-
-"function! RefreshAll()
-"  set noconfirm
-"  :bufdo! :e!
-"  :windo! :e!
-"  set confirm
-"endfunction
-"noremap <F5> <ESC>:call RefreshAll()<CR>
-
-" ]]]
-" [[[ richard: clang for complete
-
-" let g:clang_use_library = 1
-" let g:clang_library_path = '/home/richard/local/clang_3.4/lib/'
-" "let g:clang_library_path = '/home/richard/local/clang_3.2/lib/'
-" "let g:clang_library_path = '/home/richard/local/clang_3.1/lib/'
-" let g:clang_close_preview = 1
-" let g:clang_complete_macros = 1
-" let g:clang_complete_patterns = 3
-" "no preview
-" "rb set completeopt="menu"
-" "set completeopt="menu"
-" set completeopt-=preview
-" "rb set complete=".,w,b,u,t,i,e,a,n,p" "e,a,n,p from clang_complete
-" set complete=".,w,b,u,t,i,kspell" "kspell = dictionary when spell on
-" CTRL SPACE SAIBIEN'
-"inoremap <S-space> <C-x><C-u>
-
-" CTRL SPACE SAI <ESC>
-"inoremap <Nul> <ESC>l
-"vnoremap <Nul> <ESC>
-
-" ]]]
-" [[[ richard: misc map
-
-" esc with CTR-j
+" ESC with CTR-j
 inoremap <C-j> <esc>l
 vnoremap <C-j> <esc>
 nnoremap <C-j> <esc>
 
-"inoremap <C-space> <ESC>
-
 " ]]]
-" [[[ richard: tags & cscope
+" [[[ tags & cscope
 
 set tags=tags;/,.tags;/,TAGS;/
 
@@ -639,7 +591,7 @@ endfunction
 " command! -nargs=1 VFind vert rightbelow scscope find g <args>
 
 " ]]]
-" [[[ richard: macros
+" [[[ macros
 
 " tt is command to align on space
 cab tt Tabularize /\S\+;
@@ -662,11 +614,11 @@ function! Toggle_virtualedit_()
 endfunction
 map <F7> <ESC>:call Toggle_virtualedit_()<CR>:set virtualedit?<CR>
 
-" DA richard™© C macro unificator (grrrr, faut iCTRL-vCTRL-m pour faire <CR>)
+" C macro management (iCTRL-vCTRL-m to insert real <CR>)
 let @l=':set virtualedit =allgv:s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj'
 let @m=':set virtualedit =all?#definev}kk:''<,''>s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj'
-" on top of a git conflict, open tabs with diff of ancestor vs. new branch and
-" ancestor vs. current HEAD
+
+" when solving a git conflict, extract next hunk and open 2 tabs with diff of ancestor vs. new branch and ancestor vs. current HEAD
 " reg f = name of HEAD
 " reg e = name of common ancestor branch
 " reg d = name of the new branch
@@ -684,9 +636,10 @@ let @m=':set virtualedit =all?#definev}kk:''<,''>s/\(\s\|\\\)\+$//gegv:nor
 " 3
 " 3d
 " >>>>>>> new branch
-let @c=':tabonly0/HEAD"fy$$ma/|||||||W"ey$0k$mb0j/=======k$mc0j/>>>>>>>W"dy$0k$md0j`a"xy`b`b0jj"yy`c`c0jj"zy`d`a:tabnew"yP:diffthis:noswapfile :file /tmp/=substitute(@e,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:vert :rightb :new"zP:diffthis:noswapfile :file /tmp/=substitute(@d,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:tabnew"yP:diffthis:noswapfile :file /tmp/=substitute(@e,"[ /]","_","g").2:setlocal buftype=nofile nomodified bufhidden=wipe:vert :rightb :new"xP:diffthis:noswapfile :file /tmp/=substitute(@f,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:tabprevious:let@/="HEAD"'
+let @c=':tabonly0/HEAD"fy$$j0ma/|||||||W"ey$0k$mb0j/=======k$mc0j/>>>>>>>W"dy$0k$md0j`a"xy`b`b0jj"yy`c`c0jj"zy`d`a:tabnew"yP:diffthis:noswapfile :file /tmp/=substitute(@e,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:vert :rightb :new"zP:diffthis:noswapfile :file /tmp/=substitute(@d,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:tabnew"yP:diffthis:noswapfile :file /tmp/=substitute(@e,"[ /]","_","g").2:setlocal buftype=nofile nomodified bufhidden=wipe:vert :rightb :new"xP:diffthis:noswapfile :file /tmp/=substitute(@f,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:tabprevious:let@/="HEAD"'
+
 " ]]]
-" [[[ richard: maps
+" [[[ maps
 
 " disable arrow keys
 noremap  <up>     <nop>
@@ -697,20 +650,8 @@ inoremap  <up>     <nop>
 inoremap  <down>   <nop>
 inoremap  <left>   <nop>
 inoremap  <right>  <nop>
-"map <up> <nop>
-"map <down> <nop>
-"map <left> <nop>
-"map <right> <nop>
-"vnoremap  <up>     <nop>
-"vnoremap  <down>   <nop>
-"vnoremap  <left>   <nop>
-"vnoremap  <right>  <nop>
-"inoremap  <up>     <nop>
-"inoremap  <down>   <nop>
-"inoremap  <left>   <nop>
-"inoremap  <right>  <nop>
 
-"use real line movement when used without <count>
+" use real line movement when used without <count>
 noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
 noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
 
@@ -739,38 +680,34 @@ cnoremap <C-h> <backspace>
 cnoremap <C-j> <C-c>  " really weird that <ESC> do <CR>
 
 " ]]]
-" [[[ richard: fts
+" [[[ filetypes
 
-autocmd FileType php  set et sts=4 sw=4
-autocmd FileType html set et sts=4 sw=4 syntax=php
-autocmd FileType java set et sts=4 sw=4
+autocmd FileType actionscript set et sts=4 sw=4
+autocmd FileType asciidoc set tw=78
 autocmd FileType c set et sts=4 sw=4
 autocmd FileType cpp set et sts=4 sw=4
-autocmd FileType javascript set et sts=4 sw=4
+autocmd FileType css set et sts=4 sw=4
+autocmd FileType gitcommit set spell spelllang=en_us tw=72
+autocmd FileType html set et sts=4 sw=4 syntax=php
 autocmd FileType html,xhtml,xml setlocal sw=2 syntax=smarty
-autocmd FileType css  set et sts=4 sw=4
-autocmd FileType sql  set et sts=4 sw=4
-autocmd FileType actionscript  set et sts=4 sw=4
-autocmd FileType asciidoc  set tw=78
-autocmd FileType gitcommit set tw=72
-autocmd FileType gitcommit set spelllang=en_us
-autocmd FileType gitcommit set spell
+autocmd FileType java set et sts=4 sw=4
+autocmd FileType javascript set et sts=4 sw=4
+autocmd FileType php set et sts=4 sw=4
+autocmd FileType sql set et sts=4 sw=4
 
 " remove trailing whitespace at write
 autocmd FileType c,cpp,java,php,asciidoc autocmd BufWritePre <buffer> :%s/\s\+$//e
-autocmd BufWritePre *.iop :%s/\s\+$//e
 autocmd BufWritePre *.py :%s/\s\+$//e
 autocmd BufWritePre *.tex :%s/\s\+$//e
 autocmd BufWritePre COMMIT_EDITMSG :%s/\s\+$//e
 autocmd BufWritePre COMMIT_EDITMSG set tw=78
 
 " ]]]
-" [[[ richard: macros cont'd
+" [[[ macros cont'd
 
 " map to remove trailing spaces
 nnoremap <Leader>b :s/\s\+$//e<CR>
 vnoremap <Leader>b :s/\s\+$//e<CR>
-
 
 " alias M for make
 nnoremap <Leader>m <ESC>:wall<CR>:make<CR>
@@ -781,17 +718,13 @@ nnoremap <Leader>M <ESC>:wall<CR>:set shell=/bin/bash\ -i<CR>:! mn<CR>:set shell
 nnoremap <Leader>x :xa<CR>
 
 " map to append a changeId
-" grep -m40 -ao '[0-9a-f]' /dev/urandom | head -n40 | paste -sd '' do the job
-"" Toggle &virtualedit
 function! Append_gen_changid()
-" :read !grep -m40 -ao '[0-9a-f]' /dev/urandom | head -n40 | paste -sd ''
+  " grep -m40 -ao '[0-9a-f]' /dev/urandom | head -n40 | paste -sd '' do the job
   :read !LANG=C grep -m40 -ao -P '[\x30-\x39\x61-\x66]' /dev/urandom | head -n40 | paste -sd ''
 endfunction
-"nnoremap <Leader>C <ESC>oChange-Id: I<ESC>:call Append_gen_changid()<CR>kJxoSigned-off-by: Richard Beneyton <richard.beneyton@intersec.com><ESC>
 nnoremap <Leader>C <ESC>oChange-Id: I<ESC>:call Append_gen_changid()<CR>kJx<ESC>
 
-
-" ,/ clear the search register -> like :noh
+" clear the search register -> like :noh
 nnoremap <silent> <Leader>/ :let@/=""<CR>
 
 " the grep operator
@@ -805,7 +738,7 @@ nnoremap <silent> <Leader>/ :let@/=""<CR>
 "nmap <leader><leader>g <Plug>GrepOperatorWithFilenamePrompt
 "vmap <leader><leader>g <Plug>GrepOperatorWithFilenamePrompt
 
-"git grep on current word
+" git grep on current word
 nnoremap <leader>g <ESC>:Ggrep <C-R>=expand("<cword>")<CR><CR>
 vnoremap <leader>g <ESC>:execute ':Ggrep '.GetVisualSelection()<CR>
 " version with prompt
@@ -830,7 +763,7 @@ autocmd BufWinEnter quickfix set norelativenumber
 "set cinoptions+=,g2,h2         " indent C++ scope of 2, and the members from 2 from it
 
 " ]]]
-" [[[ richard: highlights
+" [[[ highlights
 
 "hi Comment      cterm=none       ctermfg=blue       ctermbg=none
 "hi Include      cterm=none       ctermfg=darkblue   ctermbg=none
@@ -861,7 +794,7 @@ autocmd BufWinEnter quickfix set norelativenumber
 "hi clear
 
 " ]]]
-" [[[ richard: colortheme
+" [[[ colortheme
 
 ":colorscheme wombat256
 ":colorscheme wombat
@@ -921,7 +854,7 @@ hi SignColumn ctermbg=none
 highlight clear SignColumn
 
 " ]]]
-" [[[ richard: neovim specific
+" [[[ neovim specific
 
 if has('nvim')
     " Override TERM set by tmux as konsole works fine through tmux
@@ -940,30 +873,23 @@ if has('nvim')
 endif
 
 " ]]]
-" [[[ richard: airline options
+" [[[ airline options
 
 let g:airline_powerline_fonts=1
 "no y section = (fileencoding, fileformat)
 let g:airline#extensions#default#layout = [['a','b','c'],['y','x','z','warning']]
 " suppress hunks from line, they're shown by gitgutter
-if has("unix")
-    let g:airline_section_b = '%{airline#util#wrap(airline#extensions#branch#get_head(),0)}'
-endif
+let g:airline_section_b = '%{airline#util#wrap(airline#extensions#branch#get_head(),0)}'
 "let g:airline_section_i = '%{fugitive#head()}' " real git msgs
 "let g:airline_section_x = '%Y'
-" b:slime_config["target_pane"] 
 let g:airline_section_y = '%n' " buffer number, no fileencoding
-" let g:airline_theme="serene"
-" let g:airline_theme="powerlineish"
-" let g:airline_theme = "wombat"
-" let g:airline_theme = "ubaryd"
 let g:airline_theme = "base16"
 " let g:airline_theme='solarized'
 " let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled = 0
 
 " display slime tmux target next to buffer number
-let g:airline_section_y = airline#section#create_right(['slime'])
+" let g:airline_section_y = airline#section#create_right(['slime'])
 function! AirlineSlime()
   if !exists('b:slime_config["target_pane"]')
     return bufnr('%')
@@ -976,31 +902,20 @@ endfunction
 let g:airline_section_y = '%{AirlineSlime()}'
 
 " ]]]
-" [[[ richard: tmuxline options
+" [[[ tmuxline options
 
 let g:airline#extensions#tmuxline#enabled = 1
 let g:airline#extensions#tmuxline#color_template = 'visual' " wombat visual++
 let g:airline#extensions#tmuxline#color_template = 'normal' " base16 normal++
-if has("unix")
-    let g:airline#extensions#tmuxline#snapshot_file = "~/.config/tmux/tmuxline.cf"
-    let g:tmuxline_preset = {
-      \'a'    : '#S',
-      \'win'  : '#I #W #F',
-      \'cwin' : '#I #W #F',
-      \'x'    : '#(cut -d " " -f 1-4 /proc/loadavg) ',
-      \'y'    : '%Y-%m-%d %H:%M:%S ',
-      \'z'    : '#H',
-      \'options' : {'status-justify' : 'left'}}
-else
-    let g:airline#extensions#tmuxline#snapshot_file = "H:\dotfiles\tmux\tmuxline.cf"
-    let g:tmuxline_preset = {
-          \'a'    : '#S',
-          \'win'  : '#I #W #F',
-          \'cwin' : '#I #W #F',
-          \'y'    : '%Y-%m-%d %H:%M:%S ',
-          \'z'    : '#H',
-          \'options' : {'status-justify' : 'left'}}
-endif
+let g:airline#extensions#tmuxline#snapshot_file = "~/.config/tmux/tmuxline.cf"
+let g:tmuxline_preset = {
+  \'a'    : '#S',
+  \'win'  : '#I #W #F',
+  \'cwin' : '#I #W #F',
+  \'x'    : '#(cut -d " " -f 1-4 /proc/loadavg) ',
+  \'y'    : '%Y-%m-%d %H:%M:%S ',
+  \'z'    : '#H',
+  \'options' : {'status-justify' : 'left'}}
 let g:tmuxline_separators = {
       \ 'left' : '',
       \ 'left_alt': '>',
@@ -1010,7 +925,7 @@ let g:tmuxline_separators = {
 let g:tmuxline_powerline_separators = 1
 
 " ]]]
-" [[[ richard: syntastic options
+" [[[ syntastic options
 
 " XXX Syntastic fails to find your header files? Try 'make syntastic' in the
 "     root directory of your repository.
@@ -1094,7 +1009,7 @@ let g:ycm_add_preview_to_completeopt = 0
 "let g:syntastic_debug_file = '/tmp/syntastic.log'
 
 " ]]]
-" [[[ richard: GitGutter opts
+" [[[ GitGutter opts
 
 " always sign column, 'cause blinking makes me crazy
 "let g:gitgutter_sign_column_always = 1
@@ -1119,7 +1034,7 @@ augroup disable_paste
 augroup END
 
 " ]]]
-" [[[ richard: Slime opts
+" [[[ Slime opts
 
 if !empty($TMUX)
     let g:slime_target = "tmux"
@@ -1140,7 +1055,7 @@ endif
 " let g:slimux_select_from_current_window = 1
 
 " ]]]
-" [[[ richard: a module opts + gundo
+" [[[ 'a' module options
 
 " a.vim
 let g:alternateRelativeFiles   = 1
@@ -1152,6 +1067,14 @@ let g:alternateSearchPath = 'sfr:../src,sfr:../../src,sfr:../include,sfr:../incl
 
 " ]]]
 " [[[ LSP
+
+if has('nvim')
+    " native nvim lsp
+    :packadd nvim-lspconfig
+else
+    " FIXME no more editing code using vim, so don't maintain settings
+    " :packadd vim-lsp
+endif
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
@@ -1308,8 +1231,54 @@ EOF
 endif
 
 " ]]]
+" [[[ treesitter
+
+if has('nvim')
+    " treesitter: always call TSUpdate after up
+    :packadd nvim-treesitter
+
+lua << EOF
+    require'nvim-treesitter.configs'.setup {
+      -- A directory to install the parsers into.
+      -- If this is excluded or nil parsers are installed
+      -- to either the package dir, or the "site" dir.
+      -- If a custom path is used (not nil) it must be added to the runtimepath.
+      parser_install_dir = "~/.config/nvim/parsers",
+
+      -- A list of parser names, or "all"
+      ensure_installed = { "c", "cpp", "lua", "rust" },
+
+      -- Install parsers synchronously (only applied to `ensure_installed`)
+      sync_install = false,
+
+      -- Automatically install missing parsers when entering buffer
+      auto_install = false,
+
+      -- List of parsers to ignore installing (for "all")
+      ignore_install = { "javascript" },
+
+      highlight = {
+        -- `false` will disable the whole extension
+        enable = true,
+
+        -- list of language that will be disabled
+        disable = { },
+
+        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+        -- Using this option may slow down your editor, and you may see some duplicate highlights.
+        -- Instead of true it can also be a list of languages
+        additional_vim_regex_highlighting = false,
+      },
+    }
+    vim.opt.runtimepath:append("~/.config/nvim/parsers")
+EOF
+endif
+
+" ]]]
 " [[[ gundo/mundo/undotree
 
+" :packadd gundo
 " let g:gundo_prefer_python3 = 1 " no more python2 installed
 " nnoremap <F5> :GundoToggle<CR>
 
@@ -1317,7 +1286,6 @@ endif
 let g:undotree_WindowLayout=2 " full width diff
 let g:undotree_SplitWidth=40 " default (30) is too short
 let g:undotree_SetFocusWhenToggle=1 " get focus on toggle
-let g:undotree_HelpLine = 1
 nnoremap <F5> :UndotreeToggle<CR>
 
 " ]]]
@@ -1328,9 +1296,9 @@ let wiki.nested_syntaxes = {'bash': 'sh', 'python': 'python', 'c++': 'cpp', 'rus
 let g:vimwiki_list = [wiki]
 
 " ]]]
-" [[[ richard: user colors
+" [[[ user colors
 
-" define at end as all plugin try to clear my colors
+" define at end as all plugin try to clear colors
 hi User1 term=inverse,bold ctermfg=DarkBlue ctermbg=Black
 hi User2 term=inverse,bold ctermfg=DarkRed ctermbg=Black
 hi User3 term=inverse,bold ctermfg=DarkMagenta ctermbg=Black
