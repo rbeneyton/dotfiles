@@ -58,24 +58,20 @@ ulimit -c unlimited
     alias trs='tr -s "  " " " | sed -e "s/^\s*//"'
     alias less='less -WsJ -j3 -x2'
     alias lless='less -WsNJ -j3 -x2'
+    alias l='less '
 
     function mkcd() {
             mkdir -p -- "$1" && cd -P -- "$1"
     }
-    function cdmk() {
-            mkdir -p -- "$1" && cd -P -- "$1"
-    }
 
     alias f='find . -name '
-    alias l='less '
     alias p='pstree -ap | less '
     alias m='make '
-    alias mv='make VERBOSE=1 '
     alias gdb='gdb -q'
 
     alias style='~/bin/astyle --indent=spaces=4 --style=linux --max-instatement-indent=40 --min-conditional-indent=2 --pad-oper --pad-header --unpad-paren --break-elseifs --align-pointer=name'
 
-    alias automirror='AUTOMIRROR_PRIMARY_DISPLAY=eDP1 AUTOMIRROR_NOTIFY_COMMAND=echo ~/dotfiles/bash/automirror.sh'
+    alias automirror='AUTOMIRROR_PRIMARY_DISPLAY=eDP1 AUTOMIRROR_NOTIFY_COMMAND=echo ~/.bash_automirror.sh'
     alias fixcursor='echo -en "\e]50;CursorShape=0\x7"'
     alias fixcursortmux='echo -en "\e[0 q"'
 
@@ -98,12 +94,15 @@ ulimit -c unlimited
 # [[[ tmux
 
     # Predictable SSH authentication socket location for tmux
-    # tmuxssh-add will force reset
     SOCK="/tmp/ssh-agent-$USER-screen"
     export SSH_AUTH_SOCK=$SOCK
-
-    alias tmuxssh-add='rm -f $SSH_AUTH_SOCK ; kill -9 $(pidof ssh-agent) ; ssh-agent -a $SSH_AUTH_SOCK && ssh-add'
-
+    # pass key as optional argument
+    function tmuxssh-add() {
+        rm -f $SSH_AUTH_SOCK
+        pkill -U $USER --signal SIGKILL ssh-agent
+        ssh-agent -a $SSH_AUTH_SOCK
+        ssh-add "$@"
+    }
     alias tmuxa='tmux -2 att -d -t'
     alias tmuxl='tmux ls'
     alias tmuxn='tmux -2 new -s'
@@ -130,7 +129,7 @@ ulimit -c unlimited
     function tmuxps2 {
         for s in $(tmux list-sessions -F "#{session_name}")
         do
-            for p in $(tmux list-panes -s -F "#{window_name}\\t#{window_index}.#{pane_index}\\t[#{pane_pid}]" -t "$s")
+            for p in $(tmux list-panes -s -F "#{window_name}\t#{window_index}.#{pane_index}\t[#{pane_pid}]" -t "$s")
             do
                 echo p:$p
                 export w=$(echo $p | sed "s@\(.*\)_\[.*@\1@; s@_@ @")
@@ -210,24 +209,26 @@ ulimit -c unlimited
     if [[ -r "${HOME}/utils/neovim_install/bin/nvim" ]]; then
         export EDITOR=${HOME}/utils/neovim_install/bin/nvim
         export MANPAGER='nvim +Man!'
-
         alias vim=$EDITOR
         alias vimdiff='nvim -d'
     else
         export EDITOR='vim'
         export MANPAGER="/bin/sh -c \"unset PAGER;col -b -x | vim -R -c 'set ft=man nomod nolist nonumber norelativenumber readonly' -c 'map q :q<CR>' -c 'map <SPACE> <C-D>' -\""
     fi
-
     alias v='$EDITOR '
     alias va='$EDITOR ~/dotfiles/start.txt'
     alias vr='$EDITOR -R'
     alias vl='$EDITOR -S ~/.cache/session.vim'
-    function vimlight {
-        env $EDITOR --cmd "let theme = 'light'" $@
+    function vimlight() {
+        env theme='light' $EDITOR $@
     }
-    function vimlightl {
-        env $EDITOR -S ~/.cache/session.vim --cmd "let theme = 'light'" $@
+    function vimlightl() {
+        env theme='light' $EDITOR -S ~/.cache/session.vim $@
     }
+    function manlight() {
+        env theme='light' man "$@"
+    }
+
 
 # ]]]
 

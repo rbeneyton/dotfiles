@@ -883,7 +883,7 @@ let g:solarized_termcolors=256
 "call togglebg#map("<F2>")
 set t_Co=256
 syntax enable
-if exists('theme') && theme == 'light'
+if !empty($theme) && $theme == 'light'
     set background=light
 else
     set background=dark

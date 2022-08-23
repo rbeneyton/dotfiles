@@ -528,6 +528,8 @@ debian-install-kernel:
 	# no security slow down
 	# curl https://make-linux-fast-again.com/
 	# /etc/default/grub GRUB_CMDLINE_LINUX= + update-grub
+	# reduce battery usage
+	echo "options snd_hda_intel power_save=1" > /etc/modprobe.d/audio_powersave.conf
 
 debian-install-kernel-amd:
 	apt-get install firmware-amd-graphics
@@ -537,6 +539,15 @@ debian-install-kernel-amd:
 	echo "amd_pstate" >> /etc/modules-load.d/amd_pstate.conf
 	update-initramfs -u
 	# check with cpupower frequency-info
+	# add iommu=pt kernel options to fix S0ix sleep state wake-up issue
+	# thinkpad battery mgmt
+	apt-get install tlp tlp-rdw
+	# mic, systemd service to fix led (FIXME still not functional, need alsamixer/pavucontrol)
+	curl https://aur.archlinux.org/cgit/aur.git/plain/fix-tp-mic-led.sh?h=thinkpad-p14s -o /usr/bin/fix-tp-mic-led.sh
+	chmod +x /usr/bin/fix-tp-mic-led.sh
+	curl https://aur.archlinux.org/cgit/aur.git/plain/fix-tp-mic-led.service?h=thinkpad-p14s -o /etc/systemd/system/fix-tp-mic-led.service
+	systemctl daemon-reload
+	systemctl enable fix-tp-mic-led.service
 
 debian-install-kernel-mac:
 	# 1) i915
