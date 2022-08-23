@@ -1237,6 +1237,9 @@ if has('nvim')
     " treesitter: always call TSUpdate after up
     :packadd nvim-treesitter
 
+    " xit
+    " :packadd tree-sitter-xit
+
 lua << EOF
     require'nvim-treesitter.configs'.setup {
       -- A directory to install the parsers into.
