@@ -77,7 +77,7 @@
 	path = vim/pack/undo/opt/undotree
 	url = https://github.com/mbbill/undotree.git
 [submodule "vim/pack/todo/start"]
-	path = vim/pack/todo/start/xit
+	path = vim/pack/lang/opt/xit.nvim
 	url = https://github.com/synaptiko/xit.nvim
 [submodule "vim/pack/parser/opt/nvim-treesitter"]
 	path = vim/pack/parser/opt/nvim-treesitter
