@@ -929,6 +929,8 @@ let g:airline_theme = "base16"
 " let g:airline_theme='solarized'
 " let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled = 0
+let g:airline#extensions#obsession#enabled = 1
+let g:airline#extensions#obsession#indicator_text = '' " C-vuf413
 
 " display slime tmux target next to buffer number
 " let g:airline_section_y = airline#section#create_right(['slime'])
@@ -937,9 +939,9 @@ function! AirlineSlime()
     return bufnr('%')
   " drop useless :. prefix
   elseif b:slime_config["target_pane"][0:1] == ':.'
-    return bufnr('%') . ' Ꞩ' . b:slime_config["target_pane"][2:]
+    return bufnr('%') . ' ' . b:slime_config["target_pane"][2:]
   endif
-  return bufnr('%') . ' Ꞩ' . b:slime_config["target_pane"]
+  return bufnr('%') . ' ' . b:slime_config["target_pane"]
 endfunction
 let g:airline_section_y = '%{AirlineSlime()}'
 
@@ -947,8 +949,8 @@ let g:airline_section_y = '%{AirlineSlime()}'
 " [[[ tmuxline options
 
 let g:airline#extensions#tmuxline#enabled = 1
-let g:airline#extensions#tmuxline#color_template = 'visual' " wombat visual++
-let g:airline#extensions#tmuxline#color_template = 'normal' " base16 normal++
+let g:airline#extensions#tmuxline#color_template = 'visual'
+let g:airline#extensions#tmuxline#color_template = 'normal'
 let g:airline#extensions#tmuxline#snapshot_file = "~/.config/tmux/tmuxline.cf"
 let g:tmuxline_preset = {
   \'a'    : '#S',

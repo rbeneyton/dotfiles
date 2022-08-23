@@ -85,3 +85,6 @@
 [submodule "vim/pack/parser/opt/tree-sitter-xit"]
 	path = vim/pack/parser/opt/tree-sitter-xit
 	url = https://github.com/synaptiko/tree-sitter-xit.git
+[submodule "vim/pack/extend/start/vim-obsession"]
+	path = vim/pack/extend/start/vim-obsession
+	url = https://github.com/tpope/vim-obsession.git
