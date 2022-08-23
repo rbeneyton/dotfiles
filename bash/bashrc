@@ -114,30 +114,11 @@ ulimit -c unlimited
         tmux send-keys 'C-m'
     }
     # tmux aware pstree (with sessions/windows/pane info)
-    # FIXME slow!
     function tmuxps {
-        for s in $(tmux list-sessions -F "#{session_name}")
+        while IFS='=' read -r pane_prefix pane_pid
         do
-            for p in $(tmux list-panes -s -F "#{window_name} #{window_index}.#{pane_index} [#{pane_pid}]" -t "$s" | sed "s@ @_@g")
-            do
-                export w=$(echo $p | sed "s@\(.*\)_\[.*@\1@; s@_@ @")
-                export b=$(echo $p | sed "s@.*\[\(.*\)\]@\1@g")
-                pstree -ap -U -p $b | grep -v ",${b}$" | sed "s@^@$s:\t$w:\t@"
-            done
-        done
-    }
-    function tmuxps2 {
-        for s in $(tmux list-sessions -F "#{session_name}")
-        do
-            for p in $(tmux list-panes -s -F "#{window_name}\t#{window_index}.#{pane_index}\t[#{pane_pid}]" -t "$s")
-            do
-                echo p:$p
-                export w=$(echo $p | sed "s@\(.*\)_\[.*@\1@; s@_@ @")
-                export b=$(echo $p | sed "s@.*\[\(.*\)\]@\1@g")
-                export prefix="$s:\t$w:\t"
-                pstree -ap -U -p $b | grep -v ",${b}$" | sed "s@^@$prefix@"
-            done
-        done
+            pstree -a -l --hide-threads -U -p $pane_pid | sed -e "/,$pane_pid/d" -e "/pstree,/d" -e "/sed,/d" -e "s@^@$pane_prefix@"
+        done < <(tmux list-panes -a -F '#{session_name} #{window_name} #{window_index}.#{pane_index} =#{pane_pid}' | column -t)
     }
 
 # ]]]
@@ -226,7 +207,7 @@ ulimit -c unlimited
         env theme='light' $EDITOR -S ~/.cache/session.vim $@
     }
     function manlight() {
-        env theme='light' man "$@"
+        env theme='light' man $@
     }
 
 
