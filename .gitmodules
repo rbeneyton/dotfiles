@@ -76,3 +76,6 @@
 [submodule "vim/pack/undo/opt/undotree"]
 	path = vim/pack/undo/opt/undotree
 	url = https://github.com/mbbill/undotree.git
+[submodule "vim/pack/todo/start"]
+	path = vim/pack/todo/start/xit
+	url = https://github.com/synaptiko/xit.nvim
