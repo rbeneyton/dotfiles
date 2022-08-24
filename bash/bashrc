@@ -170,7 +170,7 @@ ulimit -c unlimited
         __git_complete gll _git_show
         __git_complete glll _git_show
         __git_complete gllll _git_show
-        __git_complete gc _git_add
+        __git_complete ga _git_add
         __git_complete gc _git_commit
         __git_complete ggr _git_grep
     fi #PS1

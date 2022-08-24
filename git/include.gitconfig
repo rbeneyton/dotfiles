@@ -3,9 +3,8 @@
 #  port = 8080
 
 [core]
-  editor = vim
+  editor = nvim
   excludesfile = ~/.gitignore
-#  editor = nano
 
 [color "diff"]
   meta = bold green
@@ -20,6 +19,7 @@
   changed = bold red
   untracked = bold yellow
 
+# tigrc
 #[tig "color"]
 #  cursor          red     default underline
 #  diff-header blue default bold
@@ -153,3 +153,5 @@
     fsckobjects = true
 [receive]
     fsckObjects = true
+
+# vim: filetype=dosini
