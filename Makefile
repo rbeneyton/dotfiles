@@ -106,7 +106,6 @@ tig : $(TIG_INSTALL)
 
 NEOVIM_INSTALL = $(UTILS)/neovim_install
 $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
-	# apt-get-install ninja-build gettext
 	$(eval NAME := neovim)
 	$(eval SRC := ${HOME}/utils/$(NAME)/)
 	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
@@ -478,6 +477,7 @@ rust-update: rust-install
 
 # }}}
 # {{{ debian specific
+# FIXME arch
 
 debian-install: debian-install-base debian-install-net debian-install-graphic
 
@@ -493,7 +493,7 @@ debian-install-base:
 	apt-get install sqlite3
 	apt-get install flex # for gcc (bug 84715 using multilib but not in src tree /o\)
 	apt-get install zlib1g-dev # zlib.h
-	apt-get install asciidoc gettext # git
+	apt-get install asciidoc gettext # git neovim
 	apt-get install libncurses-dev # tig
 	apt-get install texinfo # gdb
 	apt-get install pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev # alacritty
