@@ -487,6 +487,7 @@ debian-install-base:
 	apt-get install git tig build-essential tmux dstat tree cmake pkg-config patchelf
 	# apt-get install conda
 	apt-get install libtool libtool-bin autogen autoconf autoconf-archive automake cmake g++ pkg-config unzip curl
+	apt-get install strace
 	apt-get install firejail
 	apt-get install libcurl4-gnutls-dev
 	apt-get install sqlite3
@@ -495,9 +496,10 @@ debian-install-base:
 	apt-get install asciidoc gettext # git
 	apt-get install libncurses-dev # tig
 	apt-get install texinfo # gdb
-	apt-get install pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3 # alacritty
+	apt-get install pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev # alacritty
 	apt-get install libssl-dev # libevent
 	apt-get install bison # tmux
+	apt-get install python3 ipython3
 
 debian-install-net:
 	apt-get install network-manager-openconnect network-manager-gnome network-manager-openconnect-gnome
@@ -505,7 +507,7 @@ debian-install-net:
 debian-install-graphic:
 	apt-get install awesome awesome-extra
 	# libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
-	apt-get install parcellite mesa-utils fonts-dejavu fonts-dejavu-core fonts-dejavu-extra
+	apt-get install diodon mesa-utils fonts-dejavu fonts-dejavu-core fonts-dejavu-extra
 	apt-get install redshift redshift-gtk
 	apt-get install x11-xkb-utils inputplug # xkb + detect/reload
 	apt-get install light brightnessctl
@@ -542,6 +544,11 @@ debian-install-kernel-amd:
 	# add iommu=pt kernel options to fix S0ix sleep state wake-up issue
 	# thinkpad battery mgmt
 	apt-get install tlp tlp-rdw
+	# reenable wifi power save (https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi)
+	echo "options iwldvm force_cam=0" > /etc/modprobe.d/intel_wifi.conf
+	echo "options iwlmvm power_scheme=1" >> /etc/modprobe.d/intel_wifi.conf
+	echo "options iwlwifi power_save=1 power_level=5" >> /etc/modprobe.d/intel_wifi.conf
+	update-initramfs -u
 	# mic, systemd service to fix led (FIXME still not functional, need alsamixer/pavucontrol)
 	curl https://aur.archlinux.org/cgit/aur.git/plain/fix-tp-mic-led.sh?h=thinkpad-p14s -o /usr/bin/fix-tp-mic-led.sh
 	chmod +x /usr/bin/fix-tp-mic-led.sh
