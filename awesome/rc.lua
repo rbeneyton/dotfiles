@@ -835,7 +835,7 @@ end
 -- run_if_not_running("nm-applet", "")
 -- run_if_not_running("parcellite", "")
 awful.spawn.with_shell("pkill -u $USER nm-applet ; nm-applet &")
-awful.spawn.with_shell("pkill -u $USER parcellite ; parcellite &")
+awful.spawn.with_shell("pkill -u $USER diodon ; diodon &")
 
 
 -- awful.spawn("kmix")
