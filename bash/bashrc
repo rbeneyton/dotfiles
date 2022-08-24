@@ -190,7 +190,8 @@ ulimit -c unlimited
 # ]]]
 # [[[ editor
 
-    if [[ -r "${HOME}/utils/neovim_install/bin/nvim" ]]; then
+    if [[ -r "${HOME}/utils/neovim_install/bin/nvim" ]]
+    then
         export EDITOR=${HOME}/utils/neovim_install/bin/nvim
         export MANPAGER='nvim +Man!'
         alias vim=$EDITOR
@@ -202,17 +203,17 @@ ulimit -c unlimited
     alias v='$EDITOR '
     alias va='$EDITOR ~/dotfiles/start.txt'
     alias vr='$EDITOR -R'
+    alias vs='$EDITOR -S Session.vim'
     alias vl='$EDITOR -S ~/.cache/session.vim'
+    # sun mgmt
+    alias theme_light='export theme="light"'
+    alias theme_dark='unset theme'
     function vimlight() {
         env theme='light' $EDITOR $@
-    }
-    function vimlightl() {
-        env theme='light' $EDITOR -S ~/.cache/session.vim $@
     }
     function manlight() {
         env theme='light' man $@
     }
-
 
 # ]]]
 

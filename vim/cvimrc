@@ -23,9 +23,6 @@ let scrollstep = 75
 let barposition = "bottom"
 let vimcommand = "konsole -e 'vim'"
 
-let qmark r = ["https://git.corp/r/#/"]
-let qmark s = ["https://support.intersec.com/"]
-
 " Mappings
 map <C-R> rootFrame
 

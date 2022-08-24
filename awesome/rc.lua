@@ -572,6 +572,14 @@ globalkeys = table_join(
           {description = "decrease brightness", group = "custom"}),
 {{/if}}
 
+    -- todo switch
+    awful.key({ }, "XF86Favorites",
+        function ()
+              todo_widget.widget.visible = not todo_widget.widget.visible
+              todo_widget.widget.update_widget()
+           end,
+          {description = "toggle todo", group = "custom"}),
+
     -- audio control
     awful.key({ }, "XF86AudioRaiseVolume", function() volume_widget:inc() end),
     awful.key({ }, "XF86AudioLowerVolume", function() volume_widget:dec() end),
