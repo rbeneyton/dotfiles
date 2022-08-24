@@ -36,6 +36,9 @@ export TMUX_INSTALL=${HOME}/utils/tmux_install
 export PATH=${TMUX_INSTALL}/bin/:${PATH}
 export MANPATH=${TMUX_INSTALL}/share/man/:${MANPATH}
 
+# rust
+. "$HOME/.cargo/env"
+
 # ]]]
 
 export LANGUAGE=en_US:en
@@ -84,8 +87,8 @@ ulimit -c unlimited
     export HISTCONTROL=ignoreboth
     alias h='history'
 
-    alias i='ipython'
-    alias is='PYTHONNOUSERSITE=on ipython'
+    alias i='ipython3'
+    alias is='PYTHONNOUSERSITE=on ipython3'
 
     # conda
     alias condainit='source /opt/conda/etc/profile.d/conda.sh'
