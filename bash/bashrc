@@ -136,34 +136,25 @@ ulimit -c unlimited
 
     alias gt='cd $(git-top)'
 
-    alias gst='/usr/bin/git status'
+    alias gst='git status'
 
     alias t='tig --date-order -500'
 
     # go to the upper git repo head (returned value is correct)
     alias up='export A=$(pwd); while git rev-parse --show-toplevel 1> /dev/null 2> /dev/null ; do export A=$(git rev-parse --show-toplevel 2> /dev/null) ; cd $A/.. ; done ; cd $A; unset A; git rev-parse --show-toplevel 1> /dev/null 2> /dev/null'
 
-    #complete -o default -o nospace -F _git g
-    #. /usr/share/stgit/completion/stgit-completion.bash
-    #__git_complete g __git_main
-    #complete -o bashdefault -o default -o nospace -F _git g 2>/dev/null \
-    #    || complete -o default -o nospace -F _git g
-    #complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g 2>/dev/null \
-    #    || complete -o default -o nospace -F __git_wrap__git_main g
+    alias gl='git logp -10'
+    alias gll='git logp -25'
+    alias glll='git logp -50'
+    alias gllll='git logp -87'
 
-    alias gl='/usr/bin/git logp -10'
-    alias gll='/usr/bin/git logp -25'
-    alias glll='/usr/bin/git logp -50'
-    alias gllll='/usr/bin/git logp -87'
-
-    alias gs='/usr/bin/git st'
-    alias gv='/usr/bin/git v'
-    alias ga='/usr/bin/git add'
-    alias gc='/usr/bin/git commit'
+    alias gs='git st'
+    alias gv='git v'
+    alias ga='git add'
+    alias gc='git commit'
     alias gr='grep --color'
-    alias ggr='/usr/bin/git gr'
-
-    alias tempo='/usr/bin/git commit -m tempo -a'
+    alias ggr='git gr'
+    alias tempo='git commit -m tempo -a'
 
     if [[ -n $PS1 ]]; then
         # to get git complete functions NOW
@@ -185,7 +176,7 @@ ulimit -c unlimited
     fi #PS1
 
     # flat list of branches, for using in scripts
-    alias gbr='/usr/bin/git branch | sed "s/\*//" | sed "s/^\s*//"'
+    alias gbr='git branch | sed "s/\*//" | sed "s/^\s*//"'
 
 # ]]]
 # [[[ editor
