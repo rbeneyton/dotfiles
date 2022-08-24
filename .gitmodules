@@ -88,3 +88,6 @@
 [submodule "vim/pack/extend/start/vim-obsession"]
 	path = vim/pack/extend/start/vim-obsession
 	url = https://github.com/tpope/vim-obsession.git
+[submodule "git/gitignore"]
+	path = git/gitignore
+	url = https://github.com/github/gitignore.git
