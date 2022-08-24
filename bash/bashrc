@@ -141,7 +141,19 @@ ulimit -c unlimited
     alias t='tig --date-order -500'
 
     # go to the upper git repo head (returned value is correct)
-    alias up='export A=$(pwd); while git rev-parse --show-toplevel 1> /dev/null 2> /dev/null ; do export A=$(git rev-parse --show-toplevel 2> /dev/null) ; cd $A/.. ; done ; cd $A; unset A; git rev-parse --show-toplevel 1> /dev/null 2> /dev/null'
+    function up() {
+        export B=$(pwd)
+        export A=$(pwd)
+        while git rev-parse --show-toplevel 1> /dev/null 2> /dev/null
+        do
+            export A=$(git rev-parse --show-toplevel 2> /dev/null)
+            cd $(dirname $A)
+        done
+        cd $A
+        unset A
+        # fail is outside a git repo
+        git rev-parse --show-toplevel 2> /dev/null || (cd $B ; false)
+    }
 
     alias gl='git logp -10'
     alias gll='git logp -25'
@@ -194,7 +206,22 @@ ulimit -c unlimited
     alias v='$EDITOR '
     alias va='$EDITOR ~/dotfiles/start.txt'
     alias vr='$EDITOR -R'
-    alias vs='$EDITOR -S Session.vim'
+    # open closest upper obsession session
+    function vs() {
+        export A=$(pwd)
+        while [ "$PWD" != "/" ]
+        do
+            if [[ -r Session.vim ]]
+            then
+                $EDITOR -S Session.vim
+                cd $A
+                return
+            fi
+            cd ..
+        done
+        cd $A
+        false
+    }
     alias vl='$EDITOR -S ~/.cache/session.vim'
     # sun mgmt
     alias theme_light='export theme="light"'
