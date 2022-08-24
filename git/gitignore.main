@@ -1,9 +1,24 @@
-# basic
+*.old
+
+# vim
 *~
 *.bck
-*.old
-# C/CPP
+Session.vim
+
+# C/C++
+*.d
+*.a
 *.o
 *.so
-# vim
-Session.vim
+
+# python
+__pycache__/
+*.py[cod]
+eggs/
+.eggs/
+*.egg-info/
+*.egg
+
+# rust
+debug/
+target/

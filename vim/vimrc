@@ -47,7 +47,7 @@ set backspace=indent,eol,start  " more powerful backspacing
 
 set autoindent                  " always set auto-indenting on
 set autoread                    " reload unchanged files silentely
-set clipboard=unnamed           " copy/paste to global clipboard (parcellite)
+set clipboard=unnamed           " copy/paste to global clipboard
 set hidden                      " allow to cycle and hide modified buffers
 
 set nobackup                    " Don't keep a backup file
@@ -1082,8 +1082,10 @@ augroup END
 
 if !empty($TMUX)
     let g:slime_target = "tmux"
-    let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.1"}
-    let g:slime_dont_ask_default = 0
+    " let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.1"}
+    let g:slime_default_config = {"socket_name": get(split($TMUX, ","), 0), "target_pane": ":.1"}
+    " let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+    " let g:slime_dont_ask_default = 1
     " dans ipython il faut %autoindent à OFF!
     " il faut que le type de fichier dans vim soit python pour passer en mode
     " cpaste

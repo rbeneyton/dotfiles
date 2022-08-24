@@ -307,7 +307,7 @@ bell:
 
   # Duration of the visual bell flash in milliseconds. A `duration` of `0` will
   # disable the visual bell animation.
-  duration: 500
+  duration: 200
 
   # Visual bell animation color.
   color: '#34e2e2' # bright cyan

@@ -83,7 +83,7 @@ awesome_network_interface = "eth0"
 [git.files]
 "git/gitconfig" = "~/.gitconfig"
 "git/include.gitconfig" = "~/.gitconfig.include"
-"git/gitignore" = "~/.gitignore"
+"git/gitignore.main" = "~/.gitignore"
 
 # tmux
 [tmux.files]
