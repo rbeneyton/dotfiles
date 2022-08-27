@@ -554,15 +554,11 @@ globalkeys = table_join(
 
     -- lock
     awful.key({ modkey            }, "BackSpace", function ()
-                  awful.util.spawn("kshutdown --lock") end),
+                  awful.spawn("slock") end),
 
     -- shudown
-    awful.key({ modkey , "Shift"  }, "BackSpace", function ()
-                  awful.util.spawn("kshutdown --shutdown now") end),
-
-    -- logout
-    awful.key({ modkey , "Shift"  }, "q", function ()
-                  awful.util.spawn("kshutdown --logout now") end),
+    -- awful.key({ modkey , "Shift"  }, "BackSpace", function ()
+    --               awful.util.spawn("kshutdown --shutdown now") end),
 
 {{#if dotter.packages.laptop}}
     -- light control
@@ -836,17 +832,16 @@ function run_if_not_running(program, arguments)
    end)
 end
 
--- run_once("kshutdown","--init")
--- run_once("nm-applet")
--- run_once("parcellite")
 -- awful.spawn("kshutdown --init")
 -- run_if_not_running("nm-applet", "")
--- run_if_not_running("parcellite", "")
 awful.spawn.with_shell("pkill -u $USER nm-applet ; nm-applet &")
+
+-- clipboard management (parcellite drains battery)
 awful.spawn.with_shell("pkill -u $USER diodon ; diodon &")
 
+-- dim screen after 2 minutes, lock session after 1
+awful.spawn.with_shell("pkill -u $USER xss-lock ; xset s 120 60 && xss-lock slock &")
 
--- awful.spawn("kmix")
 {{#if dotter.packages.bluetooth}}
 -- bluetooth (TODO also sake once dongle installed in sake)
 awful.spawn.with_shell("pkill -u $USER blueman ; blueman-applet &")

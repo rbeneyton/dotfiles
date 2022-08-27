@@ -504,9 +504,11 @@ debian-install-base:
 
 debian-install-net:
 	apt-get install network-manager-openconnect network-manager-gnome network-manager-openconnect-gnome
+	apt-get install sylpheed
 
 debian-install-graphic:
 	apt-get install awesome awesome-extra
+	apt-get install xss-lock suckless-tools
 	# libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
 	apt-get install diodon mesa-utils fonts-dejavu fonts-dejavu-core fonts-dejavu-extra
 	apt-get install redshift redshift-gtk
