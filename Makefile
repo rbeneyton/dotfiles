@@ -484,6 +484,7 @@ debian-install: debian-install-base debian-install-net debian-install-graphic
 debian-install-base:
 	apt-get install make # chicken & egg, here to remember
 	apt-get install nfs-common curl
+	apt-get install bash-completion
 	apt-get install git tig build-essential tmux dstat tree cmake pkg-config patchelf
 	# apt-get install conda
 	apt-get install libtool libtool-bin autogen autoconf autoconf-archive automake cmake g++ pkg-config unzip curl

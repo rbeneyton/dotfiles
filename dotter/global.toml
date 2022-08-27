@@ -11,6 +11,7 @@
 "bash/bashrc" = "~/.bashrc"
 "bash/bash_profile" = "~/.bash_profile"
 "bash/automirror.sh" = "~/.bash_automirror.sh"
+"bash/complete-alias/complete_alias" = "~/.complete_alias"
 [bash.variables]
 # nop
 
