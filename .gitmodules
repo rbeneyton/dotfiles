@@ -88,3 +88,6 @@
 [submodule "vim/pack/extend/start/vim-obsession"]
 	path = vim/pack/extend/start/vim-obsession
 	url = https://github.com/tpope/vim-obsession.git
+[submodule "bash/complete-alias"]
+	path = bash/complete-alias
+	url = https://github.com/cykerway/complete-alias.git
