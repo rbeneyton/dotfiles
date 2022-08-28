@@ -15,6 +15,12 @@
 [bash.variables]
 # nop
 
+# fish
+[fish.files]
+"fish/config.fish" = "~/.config/fish/config.fish"
+[fish.variables]
+# nop
+
 # gdb
 [gdb.files]
 "gdb/gdbinit" = "~/.gdbinit"

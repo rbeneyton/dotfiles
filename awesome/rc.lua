@@ -568,14 +568,6 @@ globalkeys = table_join(
           {description = "decrease brightness", group = "custom"}),
 {{/if}}
 
-    -- todo switch
-    awful.key({ }, "XF86Favorites",
-        function ()
-              todo_widget.widget.visible = not todo_widget.widget.visible
-              todo_widget.widget.update_widget()
-           end,
-          {description = "toggle todo", group = "custom"}),
-
     -- audio control
     awful.key({ }, "XF86AudioRaiseVolume", function() volume_widget:inc() end),
     awful.key({ }, "XF86AudioLowerVolume", function() volume_widget:dec() end),
@@ -839,8 +831,8 @@ awful.spawn.with_shell("pkill -u $USER nm-applet ; nm-applet &")
 -- clipboard management (parcellite drains battery)
 awful.spawn.with_shell("pkill -u $USER diodon ; diodon &")
 
--- dim screen after 2 minutes, lock session after 1
-awful.spawn.with_shell("pkill -u $USER xss-lock ; xset s 120 60 && xss-lock slock &")
+-- dim screen after 2 minutes, lock session after
+awful.spawn.with_shell("pkill -u $USER xss-lock ; xset s 120 130 && xss-lock slock &")
 
 {{#if dotter.packages.bluetooth}}
 -- bluetooth (TODO also sake once dongle installed in sake)

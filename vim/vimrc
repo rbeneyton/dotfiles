@@ -35,6 +35,11 @@ endif
 " ]]]
 " [[[ main settings
 
+" fish shell might break some features
+if &shell =~# 'fish$'
+  set shell=sh
+endif
+
 " allow bash aliases in :! commands
 let $BASH_ENV = "~/.config/nvim/bash_env"
 

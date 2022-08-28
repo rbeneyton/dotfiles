@@ -14,8 +14,7 @@ utils: $(UTILS)
 GNU_MIRROR = https://ftp.igh.cnrs.fr/pub/gnu/
 GNU_MIRROR = https://mirror.ibcp.fr/pub/gnu/
 
-utils-install: gdb-install tig-install dotter-install neovim-install fish-install
-
+utils-install: dotter git tig neovim alacritty tmux rust fish
 
 # trigger dotter update
 up:
@@ -29,14 +28,17 @@ upforce:
 
 # {{{ dotter
 
-dotter-install: $(BIN) $(UTILS) rust-update
+DOTTER_INSTALL = $(BIN)/dotter
+$(DOTTER_INSTALL) : | $(UTILS) rust-update
+	$(eval NAME := dotter)
+	$(eval SRC := $(UTILS)/$(NAME))
 	$(eval SRC := ~/utils/dotter/)
 	rm -rf $(SRC)
 	git clone https://github.com/SuperCuber/dotter.git $(SRC)
 	cargo build --manifest-path $(SRC)/Cargo.toml --release
 	cp $(SRC)/target/release/dotter $(BIN)/
-	rm -rf $(SRC)/target
 	rm -rf $(SRC)
+dotter: $(DOTTER_INSTALL)
 
 # }}}
 # {{{ git/tig
@@ -72,7 +74,7 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 			make install install-doc; \
 			rm -rf $(SRC); \
 	")
-git-install : $(GIT_INSTALL)
+git: $(GIT_INSTALL)
 
 TIG_INSTALL = $(UTILS)/tig_install
 $(TIG_INSTALL) : | $(GCC_INSTALL) $(GIT_INSTALL) $(UTILS)
@@ -99,7 +101,7 @@ $(TIG_INSTALL) : | $(GCC_INSTALL) $(GIT_INSTALL) $(UTILS)
 			make install install-doc; \
 			rm -rf $(SRC); \
 	")
-tig : $(TIG_INSTALL)
+tig: $(TIG_INSTALL)
 
 # }}}
 # {{{ neovim
@@ -136,7 +138,7 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 			make -C $(SRC) install; \
 			rm -rf $(BUILD); \
 	")
-neovim-install: $(NEOVIM_INSTALL)
+neovim: $(NEOVIM_INSTALL)
 
 NEOVIM_LSP_PYTHON = $(UTILS)/pyls
 $(NEOVIM_LSP_PYTHON) : | bin utils
@@ -427,7 +429,7 @@ $(GDB_INSTALL) :
 			make -C gdb install; \
 			make -C gdbserver install; \
 			rm -rf $(BUILD) $(SRC);")
-gdb : $(GDB_INSTALL)
+gdb: $(GDB_INSTALL)
 
 LLVM_INSTALL = $(UTILS)/llvm_install
 $(LLVM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
@@ -469,10 +471,10 @@ llvm : $(LLVM_INSTALL)
 # }}}
 # {{{ rust
 
-rust-install:
+rust:
 	type rustc || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-rust-update: rust-install
+rust-update: rust
 	${HOME}/.cargo/bin/rustup update
 
 # }}}
@@ -601,7 +603,7 @@ $(FISH_INSTALL) :
 	rm -rf $(SRC)
 	mkdir -p $(SRC)
 	mkdir -p $(BUILD)
-	wget https://github.com/fish-shell/fish-shell/releases/download/3.4.1/fish-3.4.1.tar.xz -O $(TAR)
+	wget https://github.com/fish-shell/fish-shell/releases/download/3.5.1/fish-3.5.1.tar.xz -O $(TAR)
 	tar xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
 	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
