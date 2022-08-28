@@ -304,19 +304,20 @@ if status --is-interactive
     # [[[ own keymap
 
     if type bind &> /dev/null and type stty &> /dev/null
-        bind "\C-f":forward-word
-        bind "\C-g":forward-backward-delete-char
+        # use fish_key_reader to get key
+        bind \cF forward-word # C-f
+        bind \a delete-char # C-g
         #see stty -a
         stty lnext undef #^V
-        bind "\C-v":forward-char
+        bind \cV forward-char
         stty werase undef #^W
-        stty eof undef #^D
-        bind "\C-h":backward-delete-char
-        bind "\C-j":backward-word
-        bind "\C-n":backward-char
-        bind "\C-p":previous-history #def
-        bind "\C-o":next-history
-        bind "\C-d":kill-word
+        # stty eof undef #^D
+        bind \b backward-delete-char # C-h
+        bind \n backward-word # C-j
+        bind \cN backward-char # C-n
+        bind \cP history-prefix-search-backward #def # C-p
+        bind \cO history-prefix-search-forward # C-o
+        bind \cD kill-word
         #personal mapping:
         # w[<-EATW]                      o[HIST-] p[HIST-]
         # d[EATW->] f[word->] g[eat->] h[<-eat] j[<-word]
