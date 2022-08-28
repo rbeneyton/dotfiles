@@ -32,7 +32,6 @@ DOTTER_INSTALL = $(BIN)/dotter
 $(DOTTER_INSTALL) : | $(UTILS) rust-update
 	$(eval NAME := dotter)
 	$(eval SRC := $(UTILS)/$(NAME))
-	$(eval SRC := ~/utils/dotter/)
 	rm -rf $(SRC)
 	git clone https://github.com/SuperCuber/dotter.git $(SRC)
 	cargo build --manifest-path $(SRC)/Cargo.toml --release
@@ -109,8 +108,8 @@ tig: $(TIG_INSTALL)
 NEOVIM_INSTALL = $(UTILS)/neovim_install
 $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval NAME := neovim)
-	$(eval SRC := ${HOME}/utils/$(NAME)/)
-	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
+	$(eval SRC := $(UTILS)/$(NAME)/)
+	$(eval INSTALL := $(UTILS)/$(NAME)_install/)
 	$(eval BUILD := $(SRC)/build/)
 	rm -rf $(SRC)
 	# git clone --branch release-0.6 --single-branch --depth 10 https://github.com/neovim/neovim.git $(SRC)
@@ -141,11 +140,11 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 neovim: $(NEOVIM_INSTALL)
 
 NEOVIM_LSP_PYTHON = $(UTILS)/pyls
-$(NEOVIM_LSP_PYTHON) : | bin utils
+$(NEOVIM_LSP_PYTHON) : | $(BIN) $(UTILS)
 	# apt-get install conda
 	$(eval CONDA := /opt/conda/bin/conda)
 	$(eval NAME := pyls)
-	$(eval SRC := ${HOME}/utils/$(NAME)/)
+	$(eval SRC := $(UTILS)/$(NAME)/)
 	rm -rf $(SRC)
 	$(CONDA) create -y -p $(SRC)
 	$(CONDA) install -y -p $(SRC) -c conda-forge python-language-server
@@ -156,7 +155,7 @@ neovim-lsp-python: $(NEOVIM_LSP_PYTHON)
 NEOVIM_LSP_RUST = $(BIN)/rust-analyzer
 $(NEOVIM_LSP_RUST) : | $(UTILS) rust-update
 	$(eval NAME := rust-analyzer)
-	$(eval SRC := ${HOME}/utils/$(NAME)/)
+	$(eval SRC := $(UTILS)/$(NAME)/)
 	rm -rf $(SRC)
 	git clone --branch release --single-branch --depth 10 https://github.com/rust-analyzer/rust-analyzer.git $(SRC)
 	cargo build --manifest-path $(SRC)/Cargo.toml --release
@@ -168,9 +167,9 @@ neovim-lsp-rust: $(NEOVIM_LSP_RUST)
 # {{{ alacritty
 
 ALACRITTY = $(BIN)/alacritty
-$(ALACRITTY) : | bin utils rust-update
+$(ALACRITTY) : | $(BIN) $(UTILS) rust-update
 	$(eval NAME := alacritty)
-	$(eval SRC := ${HOME}/utils/$(NAME)/)
+	$(eval SRC := $(UTILS)/$(NAME)/)
 	rm -rf $(SRC)
 	# git clone --branch master --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
 	git clone --branch v0.10.1 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
@@ -215,7 +214,7 @@ libevent: $(LIBEVENT_INSTALL)
 
 TMUX_INSTALL = $(UTILS)/tmux_install
 $(TMUX_INSTALL) : | $(LIBEVENT_INSTALL) $(GCC_INSTALL) $(UTILS)
-tmux-install: utils libevent-install
+tmux-install: $(UTILS) libevent-install
 	$(eval NAME := tmux)
 	$(eval SRC := $(UTILS)/$(NAME))
 	$(eval TAR := $(UTILS)/$(NAME).tar.gz)
@@ -434,8 +433,8 @@ gdb: $(GDB_INSTALL)
 LLVM_INSTALL = $(UTILS)/llvm_install
 $(LLVM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval NAME := llvm)
-	$(eval SRC := ${HOME}/utils/$(NAME)/)
-	$(eval INSTALL := ${HOME}/utils/$(NAME)_install/)
+	$(eval SRC := $(UTILS)/$(NAME)/)
+	$(eval INSTALL := $(UTILS)/$(NAME)_install/)
 	$(eval BUILD := $(SRC)/build/)
 	rm -rf $(SRC)
 	git clone --branch release/12.x --single-branch --depth 300 https://github.com/llvm/llvm-project.git $(SRC)
