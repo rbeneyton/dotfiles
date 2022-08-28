@@ -1,3 +1,5 @@
+set -gx SHELL fish # not done by default
+
 set -U fish_greeting # no fish welcome
 
 fish_add_path $HOME/bin
@@ -97,11 +99,7 @@ ulimit -c unlimited
 
     abbr --add composekeylist cat /usr/share/X11/locale/en_US.UTF-8/Compose
 
-    # FIXME
-    #set history 50000
-    #set savehist=(10000 merge)
-
-    #command starting with ' ' aren't recorded
+    # command starting with ' ' aren't recorded
     set -gx HISTCONTROL ignoreboth
     abbr --add h history
 
@@ -311,17 +309,20 @@ if status --is-interactive
         stty lnext undef #^V
         bind \cV forward-char
         stty werase undef #^W
-        # stty eof undef #^D
+        stty eof undef #^D
         bind \b backward-delete-char # C-h
         bind \n backward-word # C-j
         bind \cN backward-char # C-n
-        bind \cP history-prefix-search-backward #def # C-p
+        bind \cP history-prefix-search-backward # C-p
         bind \cO history-prefix-search-forward # C-o
         bind \cD kill-word
         #personal mapping:
         # w[<-EATW]                      o[HIST-] p[HIST-]
         # d[EATW->] f[word->] g[eat->] h[<-eat] j[<-word]
         #                v[->]              n[<-]  m[ENTER]
+
+        bind \t complete-and-search # always search mode (shift+tab) on tab
+        bind \cD delete-or-exit # restore usual behavior
     end
 
     # ]]]
