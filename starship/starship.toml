@@ -57,4 +57,10 @@ disabled = false
 ahead = ""
 behind = ""
 
+# bash/fish
+[shell]
+disabled = false
+fish_indicator = ""
+bash_indicator = ""
+
 # vim: filetype=cfg
