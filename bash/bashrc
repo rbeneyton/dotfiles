@@ -55,7 +55,7 @@ ulimit -c unlimited
     alias llo='ls -lh'
     alias lla='ls -lrth -a'
     alias grep='grep --color=auto'
-    alias gr='grep --color'
+    alias gr=grep
     alias psu='ps -flwu $USER w f'
     alias topu='top -u $USER'
     alias cutd="cut -d' '"
@@ -131,6 +131,7 @@ ulimit -c unlimited
 
     alias g='git'
 
+    # TODO safer method
     alias gem='${EDITOR} $(git status --ignore-submodules --porcelain | grep --color=no "^[ M]M" | trs | cut -d" " -f2)'
     alias ges='${EDITOR} $(git status --ignore-submodules --porcelain | grep --color=no "^M" | trs | cut -d" " -f2)'
     alias ge='${EDITOR} $(git status --ignore-submodules --porcelain | grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)'
@@ -161,6 +162,7 @@ ulimit -c unlimited
     alias gs='git status'
     alias gv='git v'
     alias ga='git add'
+    alias gap='git add -p'
     alias gc='git commit'
     alias ggr='git grep -n'
     alias tempo='git commit -a -m tempo'
@@ -177,7 +179,7 @@ ulimit -c unlimited
         alias vim=$EDITOR
         alias vimdiff='nvim -d'
     else
-        export EDITOR='vim'
+        export EDITOR=vim
         export MANPAGER="/bin/sh -c \"unset PAGER;col -b -x | vim -R -c 'set ft=man nomod nolist nonumber norelativenumber readonly' -c 'map q :q<CR>' -c 'map <SPACE> <C-D>' -\""
     fi
     alias v='$EDITOR '
