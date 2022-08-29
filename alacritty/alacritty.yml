@@ -287,7 +287,7 @@ colors:
 # Bell
 #
 # The bell is rung every time the BEL control character is received.
-bell:
+# bell:
   # Visual Bell Animation
   #
   # Animation effect for flashing the screen when the visual bell is rung.
@@ -303,14 +303,14 @@ bell:
   #   - EaseOutExpo
   #   - EaseOutCirc
   #   - Linear
-  animation: Linear
+  # animation: Linear
 
   # Duration of the visual bell flash in milliseconds. A `duration` of `0` will
   # disable the visual bell animation.
-  duration: 200
+  # duration: 200
 
   # Visual bell animation color.
-  color: '#34e2e2' # bright cyan
+  # color: '#34e2e2' # bright cyan
 
   # Bell Command
   #

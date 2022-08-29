@@ -243,9 +243,9 @@ set makeprg=LC_ALL=C\ make\ MONOCHROME=1\ L=1
 "set grepprg=git\ grep\ -H\ -n "Ggrep do that
 "Gg is Ggrep and do that
 
-if has("unix")
-    exe "set path=." . system("echo | cpp -v 2>&1 | grep '^ .*/include' | tr -d \"\n\" | tr \" \" \",\"")
-endif
+" if has("unix")
+"     exe "set path=." . system("echo | cpp -v 2>&1 | grep '^ .*/include' | tr -d \"\n\" | tr \" \" \",\"")
+" endif
 set path+=.;/
 set path+=./include
 set path+=./../include

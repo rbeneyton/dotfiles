@@ -1,27 +1,38 @@
-export PATH=${HOME}/bin:$PATH
-
 # [[[ own installs
 
-export PATH=${HOME}/utils/git_install/bin/:${PATH}
-export MANPATH=${HOME}/utils/git_install/share/man/:${MANPATH}
+function pathadd() {
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+        PATH="$1${PATH:+":$PATH"}"
+    fi
+}
+function manpathadd() {
+    if [ -d "$1" ] && [[ ":$MANPATH:" != *":$1:"* ]]; then
+        MANPATH="$1${MANPATH:+":$MANPATH"}"
+    fi
+}
 
-export PATH=${HOME}/utils/tig_install/bin/:${PATH}
-export MANPATH=${HOME}/utils/tig_install/share/man/:${MANPATH}
+pathadd $HOME/bin
 
-export PATH=${HOME}/utils/gcc_install/bin/:${PATH}
-export MANPATH=${HOME}/utils/gcc_install/share/man/:${MANPATH}
+pathadd $HOME/utils/git_install/bin
+manpathadd $HOME/utils/git_install/share/man
 
-export PATH=${HOME}/utils/gdb_install/bin/:${PATH}
-export MANPATH=${HOME}/utils/gdb_install/share/man/:${MANPATH}
+pathadd $HOME/utils/tig_install/bin
+manpathadd $HOME/utils/tig_install/share/man
 
-export PATH=${HOME}/utils/neovim_install/bin/:${PATH}
-export MANPATH=${HOME}/utils/neovim_install/share/man/:${MANPATH}
+pathadd $HOME/utils/gcc_install/bin
+manpathadd $HOME/utils/gcc_install/share/man
 
-export PATH=${HOME}/utils/tmux_install/bin/:${PATH}
-export MANPATH=${HOME}/utils/tmux_install/share/man/:${MANPATH}
+pathadd $HOME/utils/gdb_install/bin
+manpathadd $HOME/utils/gdb_install/share/man
 
-export PATH=${HOME}/utils/llvm_install/bin/:${PATH}
-export MANPATH=${HOME}/utils/llvm_install/share/man/:${MANPATH}
+pathadd $HOME/utils/neovim_install/bin
+manpathadd $HOME/utils/neovim_install/share/man
+
+pathadd $HOME/utils/tmux_install/bin
+manpathadd $HOME/utils/tmux_install/share/man
+
+pathadd $HOME/utils/llvm_install/bin
+manpathadd $HOME/utils/llvm_install/share/man
 if type llvm-symbolizer &> /dev/null; then
     # FIXME safe which
     export ASAN_SYMBOLIZER_PATH="$(which llvm-symbolizer)"
@@ -29,25 +40,21 @@ fi
 export ASAN_OPTIONS=abort_on_error=1:detect_leaks=1
 export LSAN_OPTIONS=use_stacks=0:use_registers=0:use_globals=1:use_tls=1
 
-export PATH=${HOME}/utils/fish_install/bin/:${PATH}
-export MANPATH=${HOME}/utils/fish_install/share/man/:${MANPATH}
-
-export TMUX_INSTALL=${HOME}/utils/tmux_install
-export PATH=${TMUX_INSTALL}/bin/:${PATH}
-export MANPATH=${TMUX_INSTALL}/share/man/:${MANPATH}
+pathadd $HOME/utils/fish_install/bin
+manpathadd $HOME/utils/fish_install/share/man
 
 # rust
-. "$HOME/.cargo/env"
+pathadd $HOME/.cargo/bin
 
 # ]]]
 
 export LANGUAGE=en_US:en
-export LANG='C.UTF-8' # never 12H AM/PM stupid date format
+export LANG='C.UTF-8' # never 12H AM/PM date format
 
-# export MALLOC_CHECK_=2
 ulimit -c unlimited
 
 # [[[ aliases
+
 # [[[ misc
 
     alias ls='/bin/ls --color=tty'
@@ -68,8 +75,8 @@ ulimit -c unlimited
         mkdir -p -- "$1" && cd -P -- "$1"
     }
 
-    alias f='find . -name '
-    alias p='pstree -ap | less '
+    alias f='find . -name'
+    alias p='pstree -ap | less'
     alias m=make
     alias gdb='gdb -q'
 
@@ -127,15 +134,54 @@ ulimit -c unlimited
     }
 
 # ]]]
+# [[[ editor
+
+    if [[ -r "${HOME}/utils/neovim_install/bin/nvim" ]]
+    then
+        export EDITOR=${HOME}/utils/neovim_install/bin/nvim
+        export MANPAGER='nvim +Man!'
+        alias vim='$EDITOR'
+        alias vimdiff='nvim -d'
+    else
+        export EDITOR=vim
+        export MANPAGER="/bin/sh -c \"unset PAGER;col -b -x | vim -R -c 'set ft=man nomod nolist nonumber norelativenumber readonly' -c 'map q :q<CR>' -c 'map <SPACE> <C-D>' -\""
+    fi
+    alias v='$EDITOR'
+    alias va='$EDITOR ~/dotfiles/start.txt'
+    alias vr='$EDITOR -R'
+    # open closest upper obsession session
+    function vs() {
+        export A=$(pwd)
+        while [ "$PWD" != "/" ]
+        do
+            if [[ -r Session.vim ]]
+            then
+                $EDITOR -S Session.vim
+                cd $A
+                return
+            fi
+            cd ..
+        done
+        cd $A
+        false
+    }
+    alias vl='$EDITOR -S ~/.cache/session.vim'
+    # sun mgmt
+    alias theme_light='export theme="light"'
+    alias theme_dark='unset theme'
+    alias vimlight='theme="light" $EDITOR'
+    alias manlight='theme="light" man'
+
+# ]]]
 # [[[ git
 
-    alias g='git'
+    alias g=git
 
     # TODO safer method
-    alias gem='${EDITOR} $(git status --ignore-submodules --porcelain | grep --color=no "^[ M]M" | trs | cut -d" " -f2)'
-    alias ges='${EDITOR} $(git status --ignore-submodules --porcelain | grep --color=no "^M" | trs | cut -d" " -f2)'
-    alias ge='${EDITOR} $(git status --ignore-submodules --porcelain | grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)'
-    alias gep='${EDITOR} $(git show --pretty="format:" --name-only)'
+    alias gem='$EDITOR $(git status --ignore-submodules --porcelain | grep --color=no "^[ M]M" | trs | cut -d" " -f2)'
+    alias ges='$EDITOR $(git status --ignore-submodules --porcelain | grep --color=no "^M" | trs | cut -d" " -f2)'
+    alias ge='$EDITOR $(git status --ignore-submodules --porcelain | grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)'
+    alias gep='$EDITOR $(git show --pretty="format:" --name-only)'
 
     alias t='tig --date-order -500'
 
@@ -170,45 +216,6 @@ ulimit -c unlimited
     alias gbr='git branch | sed "s/\*//" | sed "s/^\s*//"'
 
 # ]]]
-# [[[ editor
-
-    if [[ -r "${HOME}/utils/neovim_install/bin/nvim" ]]
-    then
-        export EDITOR=${HOME}/utils/neovim_install/bin/nvim
-        export MANPAGER='nvim +Man!'
-        alias vim=$EDITOR
-        alias vimdiff='nvim -d'
-    else
-        export EDITOR=vim
-        export MANPAGER="/bin/sh -c \"unset PAGER;col -b -x | vim -R -c 'set ft=man nomod nolist nonumber norelativenumber readonly' -c 'map q :q<CR>' -c 'map <SPACE> <C-D>' -\""
-    fi
-    alias v='$EDITOR '
-    alias va='$EDITOR ~/dotfiles/start.txt'
-    alias vr='$EDITOR -R'
-    # open closest upper obsession session
-    function vs() {
-        export A=$(pwd)
-        while [ "$PWD" != "/" ]
-        do
-            if [[ -r Session.vim ]]
-            then
-                $EDITOR -S Session.vim
-                cd $A
-                return
-            fi
-            cd ..
-        done
-        cd $A
-        false
-    }
-    alias vl='$EDITOR -S ~/.cache/session.vim'
-    # sun mgmt
-    alias theme_light='export theme="light"'
-    alias theme_dark='unset theme'
-    alias vimlight="theme='light' $EDITOR"
-    alias manlight="theme='light' man"
-
-# ]]]
 
 # ]]]
 # [[[ interactiv only settings
@@ -220,9 +227,13 @@ then
     # activate **
     shopt -s globstar
 
-    # completions
-    bind 'set bell-style none' # no bell
+    # [[[ completions
+
+    . /usr/share/bash-completion/bash_completion
+
+    # on alias
     . ~/.complete_alias
+    # complete -F _complete_alias "${!BASH_ALIASES[@]}"
     for a in ll          \
              llo         \
              lla         \
@@ -259,7 +270,9 @@ then
         complete -F _complete_alias $a
     done
 
-    # starship
+    # ]]]
+    # [[[ prompt
+
     if type starship &> /dev/null; then
         eval "$(starship init bash)"
     else
@@ -409,10 +422,13 @@ then
         # ]]]
     fi
 
+    # ]]]
     # [[[ own keymap
 
     if type bind &> /dev/null && type stty &> /dev/null
     then
+        bind 'set bell-style none' # no bell
+
         bind "\C-f":forward-word
         bind "\C-g":forward-backward-delete-char
         #see stty -a
@@ -433,11 +449,10 @@ then
     fi
 
     # ]]]
-fi #PS1
+
+fi
 
 # ]]]
-
-#set -o vi
 
 # dotter/handlebars+fold incompatibility: temporary [[[ / ]]]]
 # vim: foldmarker=[[[,]]]
