@@ -6,7 +6,7 @@ set -U fish_greeting # no fish welcome
 for a in (abbr --list)
     abbr --erase $a
 end
-# purge universal path
+# never ever use universal path
 set -e -U fish_user_paths
 
 # [[[ own installs
@@ -158,7 +158,9 @@ ulimit -c unlimited
     if test -r "$HOME/utils/neovim_install/bin/nvim"
         set -gx EDITOR $HOME/utils/neovim_install/bin/nvim
         set -gx MANPAGER 'nvim +Man!'
-        abbr --global --add vim $EDITOR
+        function vim
+            $EDITOR $argv
+        end
         abbr --global --add vimdiff nvim -d
     else
         set -gx EDITOR vim
@@ -170,16 +172,16 @@ ulimit -c unlimited
     abbr --global --add va $EDITOR ~/dotfiles/start.txt
     abbr --global --add vr $EDITOR -R
     function vs -d "open closest upper obsession session"
-        set A $PWD
-        while $PWD != "/"
+        set --local BCK $PWD
+        while ! string match (dirname $PWD) $PWD
             if test -r Session.vim
                 $EDITOR -S Session.vim
-                cd $A
+                cd $BCK
                 return
             end
             cd ..
         end
-        cd $A
+        cd $BCK
         false
     end
     function vl -d "open latest saved vim session"
@@ -187,7 +189,7 @@ ulimit -c unlimited
     end
     # sun mgmt
     function theme_light
-        set -x theme="light"
+        set -gx theme light
     end
     function theme_dark
         set -e theme
