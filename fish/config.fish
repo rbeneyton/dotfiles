@@ -172,16 +172,14 @@ ulimit -c unlimited
     abbr --global --add va $EDITOR ~/dotfiles/start.txt
     abbr --global --add vr $EDITOR -R
     function vs -d "open closest upper obsession session"
-        set --local BCK $PWD
-        while ! string match (dirname $PWD) $PWD
-            if test -r Session.vim
-                $EDITOR -S Session.vim
-                cd $BCK
+        set A $PWD
+        while ! string match (dirname $A) $A
+            if test -r $A/Session.vim
+                $EDITOR -S $A/Session.vim
                 return
             end
-            cd ..
+            set A (dirname $A)
         end
-        cd $BCK
         false
     end
     function vl -d "open latest saved vim session"

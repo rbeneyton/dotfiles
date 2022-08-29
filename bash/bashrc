@@ -151,18 +151,16 @@ ulimit -c unlimited
     alias vr='$EDITOR -R'
     # open closest upper obsession session
     function vs() {
-        export A=$(pwd)
-        while [ "$PWD" != "/" ]
+        A=$(pwd)
+        while [ "$(dirname $A)" != "$A" ]
         do
-            if [[ -r Session.vim ]]
+            if [[ -r $A/Session.vim ]]
             then
-                $EDITOR -S Session.vim
-                cd $A
+                $EDITOR -S $A/Session.vim
                 return
             fi
-            cd ..
+            A=$(dirname $A)
         done
-        cd $A
         false
     }
     alias vl='$EDITOR -S ~/.cache/session.vim'
