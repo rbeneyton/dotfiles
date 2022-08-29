@@ -13,6 +13,16 @@ function manpathadd() {
 
 pathadd $HOME/bin
 
+pathadd $HOME/utils/fish_install/bin
+manpathadd $HOME/utils/fish_install/share/man
+
+if [[ -n $PS1 ]] && [[ -z $NOFISH ]]
+then
+    exec fish
+    # in case of problems…
+    # ssh -t localhost 'env NOFISH=1 /bin/bash'
+fi
+
 pathadd $HOME/utils/git_install/bin
 manpathadd $HOME/utils/git_install/share/man
 
@@ -39,9 +49,6 @@ if type llvm-symbolizer &> /dev/null; then
 fi
 export ASAN_OPTIONS=abort_on_error=1:detect_leaks=1
 export LSAN_OPTIONS=use_stacks=0:use_registers=0:use_globals=1:use_tls=1
-
-pathadd $HOME/utils/fish_install/bin
-manpathadd $HOME/utils/fish_install/share/man
 
 # rust
 pathadd $HOME/.cargo/bin

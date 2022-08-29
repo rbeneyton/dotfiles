@@ -40,6 +40,7 @@
 "awesome/awesome-wm-widgets/brightness-widget" = { target = "~/.config/awesome/awesome-wm-widgets/brightness-widget", type = "symbolic" }
 "awesome/awesome-wm-widgets/todo-widget" = { target = "~/.config/awesome/awesome-wm-widgets/todo-widget", type = "symbolic" }
 "awesome/json.lua/json.lua" = { target = "~/.config/awesome/json.lua", type = "symbolic" }
+"awesome/dim-screen.sh" = "~/.config/awesome/dim-screen.sh"
 [awesome.variables]
 awesome_network_interface = "eth0"
 

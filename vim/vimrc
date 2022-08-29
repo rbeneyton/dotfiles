@@ -37,6 +37,7 @@ endif
 
 " fish shell might break some features
 if &shell =~# 'fish$'
+  " as PS1 isn't defined, we don't need NOFISH
   set shell=/bin/bash
 endif
 

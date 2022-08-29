@@ -831,8 +831,9 @@ awful.spawn.with_shell("pkill -u $USER nm-applet ; nm-applet &")
 -- clipboard management (parcellite drains battery)
 awful.spawn.with_shell("pkill -u $USER diodon ; diodon &")
 
--- dim screen after 2 minutes, lock session after
-awful.spawn.with_shell("pkill -u $USER xss-lock ; xset s 120 130 && xss-lock slock &")
+-- dim the screen after 2 minutes of inactivity, lock the screen 10 seconds later (if no activity) using slock
+awful.spawn.with_shell("xset s 120 130")
+awful.spawn.with_shell("pkill -u $USER xss-lock ; xss-lock -n ~/.config/awesome/dim-screen.sh -- slock &")
 
 {{#if dotter.packages.bluetooth}}
 -- bluetooth (TODO also sake once dongle installed in sake)
