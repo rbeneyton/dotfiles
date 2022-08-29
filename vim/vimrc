@@ -37,7 +37,7 @@ endif
 
 " fish shell might break some features
 if &shell =~# 'fish$'
-  set shell=sh
+  set shell=/bin/bash
 endif
 
 " allow bash aliases in :! commands

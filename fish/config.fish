@@ -1,13 +1,13 @@
-set -gx SHELL fish # not done by default
+set --global --export SHELL fish # not done by default
 
-set -U fish_greeting # no fish welcome
+set --universal fish_greeting # no fish welcome
 
 # purge all universal abbrevations (idempotent init script)
 for a in (abbr --list)
     abbr --erase $a
 end
 # never ever use universal path
-set -e -U fish_user_paths
+set --erase --universal fish_user_paths
 
 # [[[ own installs
 
@@ -15,7 +15,9 @@ function pathadd
     fish_add_path --global $argv
 end
 function manpathadd
-    set -gx MANPATH $MANPATH $argv
+    if ! contains $argv $MANPATH
+        set --global --export MANPATH $MANPATH $argv
+    end
 end
 
 pathadd $HOME/bin
@@ -42,21 +44,24 @@ pathadd $HOME/utils/llvm_install/bin
 manpathadd $HOME/utils/llvm_install/share/man
 if type llvm-symbolizer &> /dev/null
     # FIXME safe which
-    set -gx ASAN_SYMBOLIZER_PATH="$(which llvm-symbolizer)"
+    set --global --export ASAN_SYMBOLIZER_PATH=(which llvm-symbolizer)
 end
-set -gx ASAN_OPTIONS abort_on_error=1:detect_leaks=1
-set -gx LSAN_OPTIONS use_stacks=0:use_registers=0:use_globals=1:use_tls=1
+set --global --export ASAN_OPTIONS abort_on_error=1:detect_leaks=1
+set --global --export LSAN_OPTIONS use_stacks=0:use_registers=0:use_globals=1:use_tls=1
 
 pathadd $HOME/utils/fish_install/bin
 manpathadd $HOME/utils/fish_install/share/man
+
+# XXX fish MANPATH bug #2090
+manpathadd ":"
 
 # rust
 pathadd $HOME/.cargo/bin
 
 # ]]]
 
-set -gx LANGUAGE en_US:en
-set -gx LANG 'C.UTF-8' # never 12H AM/PM date format
+set --global --export LANGUAGE en_US:en
+set --global --export LANG 'C.UTF-8' # never 12H AM/PM date format
 
 ulimit -c unlimited
 
@@ -122,8 +127,8 @@ ulimit -c unlimited
 # [[[ tmux
 
     # Predictable SSH authentication socket location for tmux
-    set -gx SOCK "/tmp/ssh-agent-$USER-screen"
-    set -gx SSH_AUTH_SOCK $SOCK
+    set --global --export SOCK "/tmp/ssh-agent-$USER-screen"
+    set --global --export SSH_AUTH_SOCK $SOCK
     function tmuxssh-add -d "reset current tmux associated ssh agent (pass key-file as optional argument)"
         rm -f $SSH_AUTH_SOCK
         pkill -U $USER --signal SIGKILL ssh-agent
@@ -156,15 +161,15 @@ ulimit -c unlimited
 # [[[ editor
 
     if test -r "$HOME/utils/neovim_install/bin/nvim"
-        set -gx EDITOR $HOME/utils/neovim_install/bin/nvim
-        set -gx MANPAGER 'nvim +Man!'
+        set --global --export EDITOR $HOME/utils/neovim_install/bin/nvim
+        set --global --export MANPAGER 'nvim +Man!'
         function vim
             $EDITOR $argv
         end
         abbr --global --add vimdiff nvim -d
     else
-        set -gx EDITOR vim
-        set -gx MANPAGER="/bin/sh -c \"unset PAGER;col -b -x | vim -R -c 'set ft=man nomod nolist nonumber norelativenumber readonly' -c 'map q :q<CR>' -c 'map <SPACE> <C-D>' -\""
+        set --global --export EDITOR vim
+        set --global --export MANPAGER="/bin/sh -c \"unset PAGER;col -b -x | vim -R -c 'set ft=man nomod nolist nonumber norelativenumber readonly' -c 'map q :q<CR>' -c 'map <SPACE> <C-D>' -\""
     end
     function v
         $EDITOR $argv
@@ -172,7 +177,7 @@ ulimit -c unlimited
     abbr --global --add va $EDITOR ~/dotfiles/start.txt
     abbr --global --add vr $EDITOR -R
     function vs -d "open closest upper obsession session"
-        set A $PWD
+        set --local A $PWD
         while ! string match (dirname $A) $A
             if test -r $A/Session.vim
                 $EDITOR -S $A/Session.vim
@@ -187,10 +192,11 @@ ulimit -c unlimited
     end
     # sun mgmt
     function theme_light
-        set -gx theme light
+        # universal makes sense here
+        set --universal --export theme light
     end
     function theme_dark
-        set -e theme
+        set --erase theme
     end
     function vimlight
         theme='light' $EDITOR $argv
@@ -221,19 +227,19 @@ ulimit -c unlimited
     abbr --global --add t tig --date-order -500
 
     function up -d "go to the upper git repo head"
-        set -x B $(pwd)
-        set -x A $(pwd)
+        set BCK $(pwd)
+        set A $(pwd)
         while git rev-parse --show-toplevel 1> /dev/null 2> /dev/null
-            set -x A $(git rev-parse --show-toplevel 2> /dev/null)
+            set A $(git rev-parse --show-toplevel 2> /dev/null)
             cd $(dirname $A)
         end
         cd $A
-        set -u A
+        set --erase A
         # fail is outside a git repo
-        if git rev-parse --show-toplevel 2> /dev/null
+        if git rev-parse --show-toplevel &> /dev/null
             true
         else
-            cd $B
+            cd $BCK
             false
         end
     end
@@ -260,7 +266,7 @@ ulimit -c unlimited
 # [[[ interactiv only settings
 
 if status --is-interactive
-    set -gx LS_COLORS 'no=00:fi=00:di=00;94:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.jpg=00;35:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*.c=00;96:*.h=00;95:*.py=00;92'
+    set --global --export LS_COLORS 'no=00:fi=00:di=00;94:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.jpg=00;35:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*.c=00;96:*.h=00;95:*.py=00;92'
 
     # [[[ prompt
 
@@ -275,11 +281,12 @@ if status --is-interactive
 
     if type bind &> /dev/null and type stty &> /dev/null
         # use fish_key_reader to get key
+        bind \cU forward-char # C-u accept suggestion
         bind \cF forward-word # C-f
         bind \a delete-char # C-g
         #see stty -a
         stty lnext undef #^V
-        bind \cV forward-char
+        bind \cV forward-char # C-v (move one char, can accept)
         stty werase undef #^W
         stty eof undef #^D
         bind \b backward-delete-char # C-h
@@ -289,11 +296,11 @@ if status --is-interactive
         bind \cO history-prefix-search-forward # C-o
         bind \cD kill-word
         #personal mapping:
-        # w[<-EATW]                      o[HIST-] p[HIST-]
+        # w[<-EATW]         u[OK] i[TAB] o[HIST-] p[HIST-]
         # d[EATW->] f[word->] g[eat->] h[<-eat] j[<-word]
         #                v[->]              n[<-]  m[ENTER]
 
-        bind \t complete-and-search # always search mode (shift+tab) on tab
+        # bind \t complete-and-search # always search mode (shift+tab) on tab
         bind \cD delete-or-exit # restore usual behavior
     end
 

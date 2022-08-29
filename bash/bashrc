@@ -185,17 +185,16 @@ ulimit -c unlimited
 
     # go to the upper git repo head (returned value is correct)
     function up() {
-        export B=$(pwd)
-        export A=$(pwd)
+        B=$(pwd)
+        A=$(pwd)
         while git rev-parse --show-toplevel 1> /dev/null 2> /dev/null
         do
             export A=$(git rev-parse --show-toplevel 2> /dev/null)
             cd $(dirname $A)
         done
         cd $A
-        unset A
         # fail is outside a git repo
-        git rev-parse --show-toplevel 2> /dev/null || (cd $B ; false)
+        git rev-parse --show-toplevel &> /dev/null || (cd $B ; false)
     }
 
     alias gl='git logp -10'
