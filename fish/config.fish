@@ -129,9 +129,14 @@ ulimit -c unlimited
         ssh-agent -a $SSH_AUTH_SOCK
         ssh-add $argv
     end
-    alias tmuxa 'tmux -2 att -d -t'
+    function tmuxa
+        if test (count $argv) -gt 0
+            tmux new-session -A -D -s $argv
+        else
+            tmux attach\; choose-tree
+        end
+    end
     alias tmuxl 'tmux ls'
-    alias tmuxn 'tmux -2 new -s'
     function tmuxd
         tmux select-layout even-vertical &>/dev/null
         tmux split-window
