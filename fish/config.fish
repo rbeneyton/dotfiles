@@ -69,16 +69,12 @@ ulimit -c unlimited
 
 # [[[ misc
 
-    # function aren't replaced, abbrevation are
-    function ls
-        command /bin/ls --color=tty $argv
-    end
-    abbr --global --add ll ls -lrth
-    abbr --global --add llo ls -lh
+    # function/alias aren't replaced when typing, abbrevation are
+    alias ls "/bin/ls --color=tty"
+    alias ll "ls -lrth"
+    alias llo "ls -lh"
     abbr --global --add lla ls -lrth -a
-    function grep
-        command grep --color=auto $argv
-    end
+    alias grep "grep --color=auto"
     abbr --global --add gr grep
     abbr --global --add psu ps -flwu $USER w f
     abbr --global --add topu top -u $USER
@@ -86,10 +82,8 @@ ulimit -c unlimited
     function trs
         command tr -s "  " " " | sed -e "s/^\s*//" $argv
     end
-    function less
-        command /usr/bin/less -WsJ -j3 -x2 $argv
-    end
-    abbr --global --add lless less -WsNJ -j3 -x2
+    alias less "less -WsJ -j3 -x2"
+    alias lless "less -WsNJ -j3 -x2"
     abbr --global --add l less
 
     function mkcd
@@ -104,7 +98,7 @@ ulimit -c unlimited
         command pstree -ap | less
     end
     abbr --global --add m make
-    abbr --global --add gdb gdb -q
+    alias gdb "gdb -q"
 
     abbr --global --add style /bin/astyle --indent=spaces=4 --style=linux --max-instatement-indent=40 --min-conditional-indent=2 --pad-oper --pad-header --unpad-paren --break-elseifs --align-pointer=name
 
@@ -135,26 +129,27 @@ ulimit -c unlimited
         ssh-agent -a $SSH_AUTH_SOCK
         ssh-add $argv
     end
-    function tmuxa
-        command tmux -2 att -d -t $argv
-    end
-    function tmuxl
-        command tmux ls
-    end
-    function tmuxn
-        command tmux -2 new -s $argv
-    end
+    alias tmuxa 'tmux -2 att -d -t'
+    alias tmuxl 'tmux ls'
+    alias tmuxn 'tmux -2 new -s'
     function tmuxd
-        tmux select-layout even-vertical 1>/dev/null 2>/dev/null
+        tmux select-layout even-vertical &>/dev/null
         tmux split-window
         sleep 1 # perfectible™
         tmux send-keys "$argv"
         tmux send-keys 'C-m'
     end
     function tmuxps -d "get all process sorted by their tmux sessions/windows/pane"
-        tmux list-panes -a -F '#{session_name} #{window_name} #{window_index}.#{pane_index} =#{pane_pid}' | column -t | while read -d '=' pane_prefix pane_pid
-            pstree -a -l --hide-threads -U -p $pane_pid | sed -e "/,$pane_pid/d" -e "/pstree,/d" -e "/sed,/d" -e "/(tmux: client/d" -e "s@^@$pane_prefix@"
-        end
+        tmux list-panes -a -F '#{session_name} #{window_name} #{window_index}.#{pane_index} =#{pane_pid}' |
+            column -t |
+            while read -d '=' pane_prefix pane_pid
+                pstree -a -l --hide-threads -U -p $pane_pid |
+                    sed -e "/,$pane_pid/d" \
+                        -e "/pstree,/d" \
+                        -e "/sed,/d" \
+                        -e "/(tmux: client/d" \
+                        -e "s@^@$pane_prefix@"
+            end
     end
 
 # ]]]

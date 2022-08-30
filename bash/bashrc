@@ -16,6 +16,7 @@ pathadd $HOME/bin
 pathadd $HOME/utils/fish_install/bin
 manpathadd $HOME/utils/fish_install/share/man
 
+# fish as default shell
 if [[ -n $PS1 ]] && [[ -z $NOFISH ]]
 then
     exec fish
@@ -126,7 +127,7 @@ ulimit -c unlimited
     alias tmuxl='tmux ls'
     alias tmuxn='tmux -2 new -s'
     function tmuxd {
-        tmux select-layout even-vertical 1>/dev/null 2>/dev/null
+        tmux select-layout even-vertical &>/dev/null
         tmux split-window
         sleep 1 # perfectible™
         tmux send-keys "$@"
@@ -136,7 +137,11 @@ ulimit -c unlimited
     function tmuxps {
         while IFS='=' read -r pane_prefix pane_pid
         do
-            pstree -a -l --hide-threads -U -p $pane_pid | sed -e "/,$pane_pid/d" -e "/pstree,/d" -e "/sed,/d" -e "s@^@$pane_prefix@"
+            pstree -a -l --hide-threads -U -p $pane_pid |
+                sed -e "/,$pane_pid/d" \
+                    -e "/pstree,/d" \
+                    -e "/sed,/d" \
+                    -e "s@^@$pane_prefix@"
         done < <(tmux list-panes -a -F '#{session_name} #{window_name} #{window_index}.#{pane_index} =#{pane_pid}' | column -t)
     }
 
