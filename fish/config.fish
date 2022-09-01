@@ -281,7 +281,6 @@ if status --is-interactive
 
     if type bind &> /dev/null and type stty &> /dev/null
         # use fish_key_reader to get key
-        bind \cU forward-char # C-u accept suggestion
         bind \cF forward-word # C-f
         bind \a delete-char # C-g
         #see stty -a
@@ -302,6 +301,7 @@ if status --is-interactive
 
         # bind \t complete-and-search # always search mode (shift+tab) on tab
         bind \cD delete-or-exit # restore usual behavior
+        bind \cU accept-autosuggestion execute # C-u accept suggestion and run
     end
 
     # ]]]
