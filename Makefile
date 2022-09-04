@@ -437,13 +437,12 @@ $(LLVM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval INSTALL := $(UTILS)/$(NAME)_install/)
 	$(eval BUILD := $(SRC)/build/)
 	rm -rf $(SRC)
-	git clone --branch release/12.x --single-branch --depth 300 https://github.com/llvm/llvm-project.git $(SRC)
+	git clone --branch release/14.x --single-branch --depth 300 https://github.com/llvm/llvm-project.git $(SRC)
 	mkdir -p $(BUILD)
 	(env -i - HOME=${HOME} PATH=${PATH} LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			cd $(BUILD); \
-			CPP=$(GCC_INSTALL)/bin/cpp \
 			cmake -G 'Unix Makefiles' \
 				-DCMAKE_C_COMPILER=$(GCC_INSTALL)/bin/gcc \
 				-DCMAKE_C_FLAGS='-march=native' \
