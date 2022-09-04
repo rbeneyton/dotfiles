@@ -301,7 +301,7 @@ if status --is-interactive
 
         # bind \t complete-and-search # always search mode (shift+tab) on tab
         bind \cD delete-or-exit # restore usual behavior
-        bind \cU accept-autosuggestion execute # C-u accept suggestion and run
+        bind \cU accept-autosuggestion # execute # C-u accept suggestion
     end
 
     # ]]]
