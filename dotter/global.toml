@@ -92,6 +92,7 @@ awesome_network_interface = "eth0"
 "git/gitconfig" = "~/.gitconfig"
 "git/include.gitconfig" = "~/.gitconfig.include"
 "git/gitignore.main" = "~/.gitignore"
+"git/git-submodule-align" = "~/bin/git-submodule-align"
 
 # tmux
 [tmux.files]

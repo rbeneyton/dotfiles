@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# This script reorders and sort git submodule repositories based on their actual paths (after potential moves).
+# .gitmodules file content is then deterministic and allows easy comparison between repo.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+[ -f .gitmodules ] || (echo "not at repo root" ; false)
+export GMN=$(pwd)/.gitmodules.new
+cp .gitmodules $GMN
+
+# new layout
+git submodule absorbgitdirs
+
+
+git submodule --quiet foreach '
+    if [ "$name" != "$sm_path" ]
+    then
+        # move submodule repo
+        mkdir -p $(dirname $toplevel/.git/modules/$sm_path)
+        mv $toplevel/.git/modules/$name $toplevel/.git/modules/$sm_path
+        # update repo config
+        sed -i "s@^.\*worktree = .\*\$@&$(realpath --relative-to=$toplevel/.git/modules/$sm_path $toplevel/$sm_path)@" $toplevel/.git/modules/$sm_path/config
+        # update worktree pointer
+        sed -i "s@$name@$sm_path@" .git
+        # update submodule name in main repo
+        sed -i "s@^\[submodule \"$name\"\]\$@[submodule \"$sm_path\"]@" $GMN
+        echo $name → $sm_path
+    fi
+' || (rm -f $GMN ; false)
+
+# cleaning
+find .git/modules -type d -empty -delete
+
+# ordering + boostrap
+cat $GMN |
+    tr -s \\n @ |
+    sed 's/@\[submodule/\n[submodule/g' |
+    sort |
+    tr -s @ \\n > .gitmodules
+rm $GMN
+git submodule update --init &> /dev/null
+
+echo "Commit .gitmodules now!"
