@@ -1,4 +1,4 @@
-[submodule "awesome/data/awesome-wm-widgets"]
+[submodule "awesome/awesome-wm-widgets"]
 	path = awesome/awesome-wm-widgets
 	url = https://github.com/streetturtle/awesome-wm-widgets.git
 [submodule "awesome/json.lua"]
@@ -13,84 +13,84 @@
 [submodule "gdb/pahole"]
 	path = gdb/pahole
 	url = https://github.com/PhilArmstrong/pahole-gdb.git
-[submodule "vim/bundle/async"]
+[submodule "vim/pack/extend/start/async"]
 	path = vim/pack/extend/start/async
 	url = https://github.com/prabirshrestha/async.vim.git
-[submodule "vim/bundle/syntastic"]
+[submodule "vim/pack/extend/start/syntastic"]
 	path = vim/pack/extend/start/syntastic
 	url = https://github.com/scrooloose/syntastic.git
-[submodule "vim/bundle/tabular"]
+[submodule "vim/pack/extend/start/tabular"]
 	path = vim/pack/extend/start/tabular
 	url = https://github.com/godlygeek/tabular.git
-[submodule "vim/bundle/tcomment-vim"]
+[submodule "vim/pack/extend/start/tcomment-vim"]
 	path = vim/pack/extend/start/tcomment-vim
 	url = https://github.com/tomtom/tcomment_vim.git
-[submodule "vim/bundle/vim-commentary"]
+[submodule "vim/pack/extend/start/vim-commentary"]
 	path = vim/pack/extend/start/vim-commentary
 	url = https://github.com/tpope/vim-commentary.git
-[submodule "vim/bundle/vim-grep-operator"]
+[submodule "vim/pack/extend/start/vim-grep-operator"]
 	path = vim/pack/extend/start/vim-grep-operator
 	url = https://github.com/inside/vim-grep-operator.git
 [submodule "vim/pack/extend/start/vim-obsession"]
 	path = vim/pack/extend/start/vim-obsession
 	url = https://github.com/tpope/vim-obsession.git
-[submodule "vim/bundle/vim-slime"]
+[submodule "vim/pack/extend/start/vim-slime"]
 	path = vim/pack/extend/start/vim-slime
 	url = https://github.com/jpalardy/vim-slime.git
-[submodule "vim/bundle/vim-surround"]
+[submodule "vim/pack/extend/start/vim-surround"]
 	path = vim/pack/extend/start/vim-surround
 	url = https://github.com/tpope/vim-surround.git
-[submodule "vim/bundle/vim-unimpaired"]
+[submodule "vim/pack/extend/start/vim-unimpaired"]
 	path = vim/pack/extend/start/vim-unimpaired
 	url = https://github.com/tpope/vim-unimpaired.git
-[submodule "vim/bundle/vim-visual-star-search"]
+[submodule "vim/pack/extend/start/vim-visual-star-search"]
 	path = vim/pack/extend/start/vim-visual-star-search
 	url = https://github.com/nelstrom/vim-visual-star-search.git
-[submodule "vim/bundle/vimwiki"]
+[submodule "vim/pack/extend/start/vimwiki"]
 	path = vim/pack/extend/start/vimwiki
 	url = https://github.com/vimwiki/vimwiki.git
-[submodule "vim/bundle/fugitive"]
+[submodule "vim/pack/git/start/fugitive"]
 	path = vim/pack/git/start/fugitive
 	url = http://github.com/tpope/vim-fugitive.git
-[submodule "vim/bundle/gitgutter"]
+[submodule "vim/pack/git/start/gitgutter"]
 	path = vim/pack/git/start/gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
-[submodule "vim/plugin/a"]
-	path = vim/pack/misc/start/a
-	url = https://github.com/vim-scripts/a.vim.git
-[submodule "vim/bundle/airline"]
-	path = vim/pack/theme/start/airline
-	url = https://github.com/bling/vim-airline.git
-[submodule "vim/bundle/airline-themes"]
-	path = vim/pack/theme/start/airline-themes
-	url = https://github.com/vim-airline/vim-airline-themes
-[submodule "vim/bundle/gundo"]
-	path = vim/pack/undo/opt/gundo
-	url = http://github.com/sjl/gundo.vim.git
-[submodule "vim/bundle/nvim-lsp"]
-	path = vim/pack/lsp/opt/nvim-lspconfig
-	url = https://github.com/neovim/nvim-lsp.git
-[submodule "vim/bundle/rust"]
-	path = vim/pack/lang/start/rust
-	url = https://github.com/rust-lang/rust.vim.git
-[submodule "vim/bundle/tmuxline"]
-	path = vim/pack/theme/start/tmuxline
-	url = https://github.com/edkolev/tmuxline.vim.git
-[submodule "vim/bundle/vim-colors-solarized"]
-	path = vim/pack/theme/start/vim-colors-solarized
-	url = https://github.com/altercation/vim-colors-solarized.git
-[submodule "vim/pack/undo/opt/undotree"]
-	path = vim/pack/undo/opt/undotree
-	url = https://github.com/mbbill/undotree.git
-[submodule "vim/pack/todo/start"]
+[submodule "vim/pack/lang/opt/xit.nvim"]
 	path = vim/pack/lang/opt/xit.nvim
 	url = https://github.com/synaptiko/xit.nvim
+[submodule "vim/pack/lang/start/rust"]
+	path = vim/pack/lang/start/rust
+	url = https://github.com/rust-lang/rust.vim.git
+[submodule "vim/pack/lang/start/vim-fish-syntax"]
+	path = vim/pack/lang/start/vim-fish-syntax
+	url = https://github.com/khaveesh/vim-fish-syntax.git
+[submodule "vim/pack/lsp/opt/nvim-lspconfig"]
+	path = vim/pack/lsp/opt/nvim-lspconfig
+	url = https://github.com/neovim/nvim-lsp.git
+[submodule "vim/pack/misc/start/a"]
+	path = vim/pack/misc/start/a
+	url = https://github.com/vim-scripts/a.vim.git
 [submodule "vim/pack/parser/opt/nvim-treesitter"]
 	path = vim/pack/parser/opt/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
 [submodule "vim/pack/parser/opt/tree-sitter-xit"]
 	path = vim/pack/parser/opt/tree-sitter-xit
 	url = https://github.com/synaptiko/tree-sitter-xit.git
-[submodule "vim/pack/lang/vim-fish-syntax"]
-	path = vim/pack/lang/start/vim-fish-syntax
-	url = https://github.com/khaveesh/vim-fish-syntax.git
+[submodule "vim/pack/theme/start/airline"]
+	path = vim/pack/theme/start/airline
+	url = https://github.com/bling/vim-airline.git
+[submodule "vim/pack/theme/start/airline-themes"]
+	path = vim/pack/theme/start/airline-themes
+	url = https://github.com/vim-airline/vim-airline-themes
+[submodule "vim/pack/theme/start/tmuxline"]
+	path = vim/pack/theme/start/tmuxline
+	url = https://github.com/edkolev/tmuxline.vim.git
+[submodule "vim/pack/theme/start/vim-colors-solarized"]
+	path = vim/pack/theme/start/vim-colors-solarized
+	url = https://github.com/altercation/vim-colors-solarized.git
+[submodule "vim/pack/undo/opt/gundo"]
+	path = vim/pack/undo/opt/gundo
+	url = http://github.com/sjl/gundo.vim.git
+[submodule "vim/pack/undo/opt/undotree"]
+	path = vim/pack/undo/opt/undotree
+	url = https://github.com/mbbill/undotree.git
