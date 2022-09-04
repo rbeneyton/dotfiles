@@ -9,6 +9,8 @@ end
 # never ever use universal path
 set --erase --universal fish_user_paths
 
+abbr --global --add bash "NOFISH=1 bash"
+
 # [[[ own installs
 
 function pathadd
