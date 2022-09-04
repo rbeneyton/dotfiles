@@ -488,8 +488,8 @@ debian-install-base:
 	apt-get install git tig build-essential tmux dstat tree cmake pkg-config patchelf
 	# apt-get install conda
 	apt-get install libtool libtool-bin autogen autoconf autoconf-archive automake cmake g++ pkg-config unzip curl
-	apt-get install strace
-	apt-get install firejail
+	apt-get install strace cgroup-tools
+	apt-get install firejail systemd-oomd
 	apt-get install libcurl4-gnutls-dev
 	apt-get install sqlite3
 	apt-get install flex # for gcc (bug 84715 using multilib but not in src tree /o\)
