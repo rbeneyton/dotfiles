@@ -1,7 +1,8 @@
 #!/bin/bash
 #
-# This script reorders and sort git submodule repositories based on their actual paths (after potential moves).
-# .gitmodules file content is then deterministic and allows easy comparison between repo.
+# This script reorders and sorts git submodule repositories based on their actual paths (after potential previous moves).
+# This operation doesn't trigger any effect on repo except updating .gitmodules file, which content is then deterministic and doesn't depend on history.
+# That allows allows easy comparison between repos.
 
 set -o errexit
 set -o nounset
@@ -14,7 +15,7 @@ cp .gitmodules $GMN
 # new layout
 git submodule absorbgitdirs
 
-
+# main loop
 git submodule --quiet foreach '
     if [ "$name" != "$sm_path" ]
     then
@@ -34,13 +35,15 @@ git submodule --quiet foreach '
 # cleaning
 find .git/modules -type d -empty -delete
 
-# ordering + boostrap
+# ordering + replace current list
 cat $GMN |
     tr -s \\n @ |
     sed 's/@\[submodule/\n[submodule/g' |
     sort |
     tr -s @ \\n > .gitmodules
 rm $GMN
+
+# need fresh bootstrap
 git submodule update --init &> /dev/null
 
 echo "Commit .gitmodules now!"

@@ -87,6 +87,7 @@ ulimit -c unlimited
     alias less "less -WsJ -j3 -x2"
     alias lless "less -WsNJ -j3 -x2"
     abbr --global --add l less
+    alias bc "bc -l"
 
     function mkcd
         command mkdir -p $argv
@@ -105,8 +106,8 @@ ulimit -c unlimited
     abbr --global --add style /bin/astyle --indent=spaces=4 --style=linux --max-instatement-indent=40 --min-conditional-indent=2 --pad-oper --pad-header --unpad-paren --break-elseifs --align-pointer=name
 
     abbr --global --add automirror AUTOMIRROR_PRIMARY_DISPLAY=eDP1 AUTOMIRROR_NOTIFY_COMMAND=echo ~/.bash_automirror.sh
-    abbr --global --add fixcursor echo -en "\e]50;CursorShape=0\x7"
-    abbr --global --add fixcursortmux echo -en "\e[0 q"
+    abbr --global --add fixcursor 'echo -en "\e]50;CursorShape=0\x7"'
+    abbr --global --add fixcursortmux 'echo -en "\e[0 q"'
 
     abbr --global --add composekeylist cat /usr/share/X11/locale/en_US.UTF-8/Compose
 
@@ -157,6 +158,9 @@ ulimit -c unlimited
                         -e "/(tmux: client/d" \
                         -e "s@^@$pane_prefix@"
             end
+    end
+    function tmuxpsgrep -d "find the tmux sessions/windows/pane with given process name"
+        tmuxps | grep -v 'grep,' | grep "$argv"
     end
 
 # ]]]
@@ -303,7 +307,8 @@ if status --is-interactive
 
         # bind \t complete-and-search # always search mode (shift+tab) on tab
         bind \cD delete-or-exit # restore usual behavior
-        bind \cU accept-autosuggestion # execute # C-u accept suggestion
+        bind \cE accept-autosuggestion # C-e accept suggestion
+        bind \cY accept-autosuggestion execute # C-y accept suggestion + execute
     end
 
     # ]]]

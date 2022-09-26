@@ -150,6 +150,9 @@ ulimit -c unlimited
                     -e "s@^@$pane_prefix@"
         done < <(tmux list-panes -a -F '#{session_name} #{window_name} #{window_index}.#{pane_index} =#{pane_pid}' | column -t)
     }
+    function tmuxpsgrep {
+        tmuxps | grep -v 'grep,' | grep "$@"
+    }
 
 # ]]]
 # [[[ editor

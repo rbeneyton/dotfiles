@@ -1021,8 +1021,6 @@ if !empty($TMUX)
     let g:slime_dispatch_ipython_pause = 100
 endif
 
-" let g:slimux_select_from_current_window = 1
-
 " ]]]
 " [[[ 'a' module options
 
