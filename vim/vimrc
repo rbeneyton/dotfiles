@@ -9,13 +9,25 @@ if has('nvim')
     " treesitter: always call TSUpdate after up
     packadd nvim-treesitter
 
+    " :lua vim.opt.runtimepath:append("~/.config/nvim/parsers")
 lua << EOF
+    -- XXX set the rtp *before* the setup
+    vim.opt.runtimepath:append("~/.config/nvim/parsers")
     require'nvim-treesitter.configs'.setup {
       parser_install_dir = "~/.config/nvim/parsers",
-      ensure_installed = { "c", "cpp", "lua", "rust" },
+      ensure_installed = { "bash", "c", "comment", "cpp", "cmake", "fish", "json", "latex", "lua", "markdown", "python", "rust", "toml" },
       sync_install = false,
       auto_install = false,
       ignore_install = { "javascript" },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = "gnn",
+          node_incremental = "grn",
+          scope_incremental = "grc",
+          node_decremental = "grm",
+        },
+      },
       highlight = {
         enable = true,
         -- list of language that will be disabled
@@ -25,10 +37,10 @@ lua << EOF
         -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
         -- Using this option may slow down your editor, and you may see some duplicate highlights.
         -- Instead of true it can also be a list of languages
-        additional_vim_regex_highlighting = false,
+        -- additional_vim_regex_highlighting = false,
+        additional_vim_regex_highlighting = {'xit'},
       },
     }
-    vim.opt.runtimepath:append("~/.config/nvim/parsers")
 EOF
 endif
 
@@ -379,18 +391,25 @@ autocmd BufRead quickfix setlocal nobuflisted nowrap number
 
 if has('nvim')
     " xit
-    packadd tree-sitter-xit
     packadd xit.nvim
+    packadd tree-sitter-xit
 
-    augroup xit_filetype
-      autocmd!
-      autocmd BufRead,BufNewFile,BufReadPost *.xit set filetype=xit
-      autocmd FileType xit setlocal shiftwidth=4 softtabstop=4 expandtab
-    augroup END
+lua << EOF
+    local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+    parser_config.xit = {
+      install_info = {
+        url = "~/.dotfiles/vim/pack/parser/opt/tree-sitter-xit",
+        files = {"src/parser.c"},
+        generate_requires_npm = false, -- if stand-alone parser without npm dependencies
+        requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
+      },
+      filetype = "xit", -- if filetype does not match the parser name
+    }
+EOF
 endif
 
 " ]]]
-" [[[ weird (outadted?) options
+" [[[ weird (outdated?) options
 
 let ocaml_noindent_let=1
 let git_diff_spawn_mode=2
