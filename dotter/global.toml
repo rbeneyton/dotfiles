@@ -61,6 +61,8 @@ awesome_network_interface = "eth0"
 [redshift.files]
 # apparmor blocks access to configuration if symlink (#977672), so force copy
 "redshift/redshift.conf" = { target = "~/.config/redshift.conf", type = "template" }
+[redshift.variables]
+redshift_night_temperature = "3400K"
 
 # compose
 [compose.files]
