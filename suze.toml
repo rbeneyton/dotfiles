@@ -1,24 +1,10 @@
 # suze setup
 
 packages = [
-    "alacritty",
-    "awesome",
-    "bash",
-    "bluetooth",
-    "compose",
-    "fish",
-    "fonts",
-    "gdb",
-    "git",
-    "gtk",
+    "base",
     "laptop",
     "mac",
-    "redshift",
-    "starship",
-    "tmux",
-    "vim",
-    "xkb",
-    ]
+]
 
 [variables]
 awesome_network_interface = "ens5"

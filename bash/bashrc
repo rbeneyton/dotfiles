@@ -97,9 +97,12 @@ ulimit -c unlimited
     # FIXME $LANG deps?
     alias composekeylist='cat /usr/share/X11/locale/en_US.UTF-8/Compose'
 
-    set history=50000
-    #set savehist=(10000 merge)
-
+    # history mgmt
+    export HISTSIZE=5000
+    # dump also timestamp
+    export HISTTIMEFORMAT="%F %T "
+    #command starting with '#' aren't recorded
+    export HISTIGNORE="#*:history*:h"
     #command starting with ' ' aren't recorded
     export HISTCONTROL=ignoreboth
     alias h='history'

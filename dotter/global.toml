@@ -12,14 +12,14 @@
 "bash/bash_profile" = "~/.bash_profile"
 "bash/automirror.sh" = "~/.bash_automirror.sh"
 "bash/complete-alias/complete_alias" = "~/.complete_alias"
-[bash.variables]
-# nop
 
 # fish
 [fish.files]
 "fish/config.fish" = "~/.config/fish/config.fish"
-[fish.variables]
-# nop
+
+# top
+[top.files]
+"top/toprc" = { target = "~/.toprc", type = "symbolic" }
 
 # gdb
 [gdb.files]
@@ -108,5 +108,26 @@ awesome_network_interface = "eth0"
 [bluetooth.variables]
 [laptop.variables]
 [mac.variables]
+
+# package group
+[base]
+depends = [
+    "alacritty",
+    "awesome",
+    "bash",
+    "bluetooth",
+    "compose",
+    "fish",
+    "fonts",
+    "gdb",
+    "git",
+    "gtk",
+    "redshift",
+    "starship",
+    "tmux",
+    "top",
+    "vim",
+    "xkb",
+]
 
 # vim: filetype=cfg

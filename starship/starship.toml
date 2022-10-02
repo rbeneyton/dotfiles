@@ -3,7 +3,7 @@
 
 # no newline
 add_newline = false
-# Always time before anything
+# time before anything
 format = "$time$all$directory$cmd_duration$jobs$status$character"
 
 # do not waste a line, so half of the screen!
@@ -56,6 +56,7 @@ disabled = false
 [git_status]
 ahead = ""
 behind = ""
+style = "bold purple"
 
 # bash/fish
 [shell]
@@ -65,6 +66,10 @@ bash_indicator = ""
 
 # no cmake
 [cmake]
+disabled = true
+
+# useless
+[c]
 disabled = true
 
 # vim: filetype=cfg

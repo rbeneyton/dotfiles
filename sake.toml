@@ -1,22 +1,8 @@
 # sake setup
 
 packages = [
-    "alacritty",
-    "awesome",
-    "bash",
-    "bluetooth",
-    "compose",
-    "fish",
-    "fonts",
-    "gdb",
-    "git",
-    "gtk",
-    "redshift",
-    "starship",
-    "tmux",
-    "vim",
-    "xkb",
-    ]
+    "base",
+]
 
 [variables]
 awesome_network_interface = "enp2s0"

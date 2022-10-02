@@ -46,7 +46,7 @@ pathadd $HOME/utils/llvm_install/bin
 manpathadd $HOME/utils/llvm_install/share/man
 if type llvm-symbolizer &> /dev/null
     # FIXME safe which
-    set --global --export ASAN_SYMBOLIZER_PATH=(which llvm-symbolizer)
+    set --global --export ASAN_SYMBOLIZER_PATH (which llvm-symbolizer)
 end
 set --global --export ASAN_OPTIONS abort_on_error=1:detect_leaks=1
 set --global --export LSAN_OPTIONS use_stacks=0:use_registers=0:use_globals=1:use_tls=1
@@ -96,7 +96,9 @@ ulimit -c unlimited
         end
     end
 
-    abbr --global --add f find . -name
+    function f
+        command find . -name $argv
+    end
     function p
         command pstree -ap | less
     end

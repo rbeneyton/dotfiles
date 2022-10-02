@@ -2,6 +2,7 @@
 
 # vim
 *~
+.*.swp
 *.bck
 Session.vim
 
@@ -22,3 +23,9 @@ eggs/
 # rust
 debug/
 target/
+
+# misc
+.syntastic_c_config
+.syntastic_cpp_config
+.cscope.files
+.cscope.out
