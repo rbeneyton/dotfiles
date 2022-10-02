@@ -73,6 +73,9 @@
 [submodule "vim/pack/parser/opt/nvim-treesitter"]
 	path = vim/pack/parser/opt/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
+[submodule "vim/pack/parser/opt/nvim-ts-rainbow"]
+	path = vim/pack/parser/opt/nvim-ts-rainbow
+	url = https://github.com/p00f/nvim-ts-rainbow.git
 [submodule "vim/pack/parser/opt/tree-sitter-xit"]
 	path = vim/pack/parser/opt/tree-sitter-xit
 	url = https://github.com/synaptiko/tree-sitter-xit.git
