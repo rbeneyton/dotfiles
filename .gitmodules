@@ -79,6 +79,9 @@
 [submodule "vim/pack/parser/opt/tree-sitter-xit"]
 	path = vim/pack/parser/opt/tree-sitter-xit
 	url = https://github.com/synaptiko/tree-sitter-xit.git
+[submodule "vim/pack/theme/opt/kanagawa"]
+	path = vim/pack/theme/opt/kanagawa
+	url = https://github.com/rebelot/kanagawa.nvim.git
 [submodule "vim/pack/theme/start/airline"]
 	path = vim/pack/theme/start/airline
 	url = https://github.com/bling/vim-airline.git
