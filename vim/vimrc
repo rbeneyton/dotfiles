@@ -403,11 +403,12 @@ autocmd BufRead quickfix setlocal nobuflisted nowrap number
 
 if has('nvim')
     " xit
-    packadd xit.nvim
+    packadd xit
+
     packadd tree-sitter-xit
 
 lua << EOF
-    local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+    local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
     parser_config.xit = {
       install_info = {
         url = "~/.dotfiles/vim/pack/parser/opt/tree-sitter-xit",
@@ -417,6 +418,13 @@ lua << EOF
       },
       filetype = "xit", -- if filetype does not match the parser name
     }
+    local xit_options = {
+      disable_default_highlights = false,
+      disable_default_mappings = false,
+      default_jump_group = "all", -- possible values: all, open_and_ongoing
+      wrap_jumps = true,
+    }
+    require('xit').setup(xit_options)
 EOF
 endif
 

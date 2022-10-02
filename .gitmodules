@@ -56,7 +56,7 @@
 	path = vim/pack/git/start/gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
 [submodule "vim/pack/lang/opt/xit.nvim"]
-	path = vim/pack/lang/opt/xit.nvim
+	path = vim/pack/lang/opt/xit
 	url = https://github.com/synaptiko/xit.nvim
 [submodule "vim/pack/lang/start/rust"]
 	path = vim/pack/lang/start/rust
