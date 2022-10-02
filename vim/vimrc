@@ -1200,40 +1200,40 @@ EOF
     endif
 
     " python
-    if executable('pyls')
-        " source /opt/conda/etc/profile.d/conda.sh
-        " conda create -p /home/beneyton/conda-envs/pyls python-language-server
-        " pip/conda install python-language-server
-        " au User lsp_setup call lsp#register_server({
-        "             \ 'name': 'pyls',
-        "             \ 'cmd': {server_info->['pyls', '-v', '--log-file', '/home/rbeneyton/pyls.log']},
-        "             \ 'whitelist': ['python'],
-        "             \ })
-        "
-lua << EOF
-        local nvim_lsp = require'lspconfig'
-        nvim_lsp.pyls.setup{
-            name = 'pyls',
-            cmd = { 'pyls' },
-            log_level = { vim.lsp.protocol.MessageType.Log },
-            whitelist = { 'python' },
-            root_dir = function(fname)
-                return nvim_lsp.util.find_git_ancestor(fname) or vim.loop.os_homedir()
-            end;
-            settings = {
-                pyls = {
-                    plugins = {
-                        pycodestyle = {
-                            maxLineLength = 100;
-                        }
-                    }
-                }
-            },
-            on_attach = on_attach
-        }
-EOF
-        " autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
-    endif
+"     if executable('pyls')
+"         " source /opt/conda/etc/profile.d/conda.sh
+"         " conda create -p /home/beneyton/conda-envs/pyls python-language-server
+"         " pip/conda install python-language-server
+"         " au User lsp_setup call lsp#register_server({
+"         "             \ 'name': 'pyls',
+"         "             \ 'cmd': {server_info->['pyls', '-v', '--log-file', '/home/rbeneyton/pyls.log']},
+"         "             \ 'whitelist': ['python'],
+"         "             \ })
+"         "
+" lua << EOF
+"         local nvim_lsp = require'lspconfig'
+"         nvim_lsp.pyls.setup{
+"             name = 'pyls',
+"             cmd = { 'pyls' },
+"             log_level = { vim.lsp.protocol.MessageType.Log },
+"             whitelist = { 'python' },
+"             root_dir = function(fname)
+"                 return nvim_lsp.util.find_git_ancestor(fname) or vim.loop.os_homedir()
+"             end;
+"             settings = {
+"                 pyls = {
+"                     plugins = {
+"                         pycodestyle = {
+"                             maxLineLength = 100;
+"                         }
+"                     }
+"                 }
+"             },
+"             on_attach = on_attach
+"         }
+" EOF
+"         " autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
+"     endif
 
     " C++
     if executable('clangd')
