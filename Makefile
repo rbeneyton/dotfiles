@@ -5,6 +5,7 @@ GNU_MIRROR = https://ftp.igh.cnrs.fr/pub/gnu/
 GNU_MIRROR = https://mirror.ibcp.fr/pub/gnu/
 # use virgin PATH to avoid to be pollute by env (only local git & rust used directly)
 CLEAN_PATH = /usr/local/bin:/usr/bin:/bin
+CARGO = ${HOME}/.cargo/bin/cargo
 
 BIN = ${HOME}/bin
 $(BIN):
@@ -37,7 +38,7 @@ $(DOTTER) : | $(BIN) $(UTILS) rust-update
 	$(eval SRC := $(UTILS)/$(NAME)/)
 	rm -rf $(SRC)
 	git clone https://github.com/SuperCuber/dotter.git $(SRC)
-	cargo build --manifest-path $(SRC)/Cargo.toml --release
+	$(CARGO) build --manifest-path $(SRC)/Cargo.toml --release
 	cp $(SRC)/target/release/$(NAME) $(BIN)/
 	rm -rf $(SRC)
 dotter: $(DOTTER)
@@ -155,7 +156,7 @@ $(NEOVIM_LSP_RUST) : | $(UTILS) rust-update
 	$(eval SRC := $(UTILS)/$(NAME)/)
 	rm -rf $(SRC)
 	git clone --branch release --single-branch --depth 10 https://github.com/rust-analyzer/rust-analyzer.git $(SRC)
-	cargo build --manifest-path $(SRC)/Cargo.toml --release
+	$(CARGO) build --manifest-path $(SRC)/Cargo.toml --release
 	cp $(SRC)/target/release/$(NAME) $(BIN)/
 	rm -rf $(SRC)
 neovim-lsp-rust: $(NEOVIM_LSP_RUST)
@@ -170,7 +171,7 @@ $(ALACRITTY) : | $(BIN) $(UTILS) rust-update
 	rm -rf $(SRC)
 	# git clone --branch master --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
 	git clone --branch v0.10.1 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
-	cargo build --manifest-path $(SRC)/Cargo.toml --release
+	$(CARGO) build --manifest-path $(SRC)/Cargo.toml --release
 	cp $(SRC)/target/release/$(NAME) $(BIN)/
 	rm -rf $(SRC)
 alacritty: $(ALACRITTY)
@@ -467,7 +468,7 @@ misc-user: $(BIN)
 	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/yt-dlp -o $(BIN)/yt-dlp
 	chmod u+x $(BIN)/yt-dlp
 	# starship
-	cargo install starship --locked
+	$(CARGO) install starship --locked
 
 # }}}
 # {{{ debian specific
