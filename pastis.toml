@@ -1,0 +1,11 @@
+# shochu setup
+
+packages = [
+    "base",
+]
+
+[variables]
+awesome_network_interface = "eth1"
+awesome_disk_interface = "sda4" # sdb2 (or use PV label)
+
+# vim: filetype=cfg
