@@ -19,9 +19,11 @@ manpathadd $HOME/utils/fish_install/share/man
 # fish as default shell
 if [[ -n $PS1 ]] && [[ -z $NOFISH ]]
 then
-    exec fish
     # in case of problems…
     # ssh -t localhost 'env NOFISH=1 /bin/bash'
+    if type fish &> /dev/null; then
+        exec fish
+    fi
 fi
 
 pathadd $HOME/utils/git_install/bin
