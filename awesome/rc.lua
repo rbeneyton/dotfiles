@@ -832,7 +832,7 @@ awful.spawn.with_shell("pkill -u $USER nm-applet ; nm-applet &")
 awful.spawn.with_shell("pkill -u $USER diodon ; diodon &")
 
 -- dim the screen after 2 minutes of inactivity, lock the screen 10 seconds later (if no activity) using slock
-awful.spawn.with_shell("xset s 120 130")
+awful.spawn.with_shell("xset s {{awesome_xset_wait_period}} {{awesome_xset_burn_period}}")
 awful.spawn.with_shell("pkill -u $USER xss-lock ; xss-lock -n ~/.config/awesome/dim-screen.sh -- slock &")
 
 {{#if dotter.packages.bluetooth}}

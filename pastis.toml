@@ -7,6 +7,7 @@ packages = [
 [variables]
 awesome_network_interface = "eth1"
 awesome_disk_interface = "sda4" # sdb2 (or use PV label)
+awesome_xset_burn_period = "13000"
 redshift_night_temperature = "5000K" # no big shift to red for pastis
 
 # vim: filetype=cfg

@@ -1,6 +1,5 @@
 NPROC_REAL=$(shell nproc)
-NPROC=$$(($(NPROC_REAL) / 2 + 1)) # safe move
-# NPROC=$$(($(NPROC_REAL) + 1)) # small oversubscribe
+NPROC=$$(($(NPROC_REAL) / 1 + 1)) # small oversubscribe
 GNU_MIRROR = https://ftp.igh.cnrs.fr/pub/gnu/
 GNU_MIRROR = https://mirror.ibcp.fr/pub/gnu/
 # use virgin PATH to avoid to be pollute by env (only local git & rust used directly)
@@ -139,6 +138,8 @@ neovim: $(NEOVIM_INSTALL)
 
 NEOVIM_LSP_PYTHON = $(UTILS)/pyls
 $(NEOVIM_LSP_PYTHON) : | $(BIN) $(UTILS)
+	# apt install python3-pyls
+	# OR
 	# apt-get install conda
 	$(eval CONDA := /opt/conda/bin/conda)
 	$(eval NAME := pyls)
@@ -503,6 +504,7 @@ debian-install-graphic:
 	apt-get install parcellite mesa-utils fonts-dejavu fonts-dejavu-core fonts-dejavu-extra
 	apt-get install redshift redshift-gtk
 	apt-get install diodon xss-lock suckless-tools
+	apt-get install light
 	apt-get install x11-xkb-utils inputplug # xkb + detect/reload
 	apt-get install blueman pulseaudio-module-bluetooth
 	apt-get install pasystray pavucontrol

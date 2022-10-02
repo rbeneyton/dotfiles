@@ -43,6 +43,8 @@
 "awesome/dim-screen.sh" = "~/.config/awesome/dim-screen.sh"
 [awesome.variables]
 awesome_network_interface = "eth0"
+awesome_xset_wait_period = "120"
+awesome_xset_burn_period = "130"
 
 # alacritty
 [alacritty.files]
