@@ -309,7 +309,7 @@ if status --is-interactive
 
         # bind \t complete-and-search # always search mode (shift+tab) on tab
         bind \cD delete-or-exit # restore usual behavior
-        bind \cE accept-autosuggestion # C-e accept suggestion
+        bind \cF accept-autosuggestion # C-f accept suggestion
         bind \cY accept-autosuggestion execute # C-y accept suggestion + execute
     end
 
