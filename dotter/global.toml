@@ -34,11 +34,8 @@
 [awesome.files]
 "awesome/rc.lua"    = "~/.config/awesome/rc.lua"
 "awesome/theme.lua" = "~/.config/awesome/theme.lua"
-"awesome/data" = { target = "~/.config/awesome/data", type = "symbolic" }
-"awesome/awesome-wm-widgets/volume-widget" = { target = "~/.config/awesome/awesome-wm-widgets/volume-widget", type = "symbolic" }
-"awesome/awesome-wm-widgets/batteryarc-widget" = { target = "~/.config/awesome/awesome-wm-widgets/batteryarc-widget", type = "symbolic" }
-"awesome/awesome-wm-widgets/brightness-widget" = { target = "~/.config/awesome/awesome-wm-widgets/brightness-widget", type = "symbolic" }
-"awesome/awesome-wm-widgets/todo-widget" = { target = "~/.config/awesome/awesome-wm-widgets/todo-widget", type = "symbolic" }
+"awesome/data" = { target = "~/.config/awesome/data", type = "symbolic", recurse = false }
+"awesome/awesome-wm-widgets" = { target = "~/.config/awesome/awesome-wm-widgets", type = "symbolic", recurse = false }
 "awesome/json.lua/json.lua" = { target = "~/.config/awesome/json.lua", type = "symbolic" }
 "awesome/dim-screen.sh" = "~/.config/awesome/dim-screen.sh"
 [awesome.variables]
@@ -64,9 +61,9 @@ awesome_xset_burn_period = "130"
 # apparmor blocks access to configuration if symlink (#977672), so force copy
 "redshift/redshift.conf" = { target = "~/.config/redshift.conf", type = "template" }
 [redshift.variables]
-redshift_night_temperature = "3400K"
+redshift_night_temperature = "3800K"
 
-# compose
+# compose key
 [compose.files]
 "compose/XCompose" = "~/.XCompose"
 

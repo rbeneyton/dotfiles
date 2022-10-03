@@ -419,7 +419,7 @@ lua << EOF
       filetype = "xit", -- if filetype does not match the parser name
     }
     local xit_options = {
-      disable_default_highlights = false,
+      disable_default_highlights = true, -- defined at end of this file
       disable_default_mappings = false,
       default_jump_group = "all", -- possible values: all, open_and_ongoing
       wrap_jumps = true,
@@ -1293,6 +1293,30 @@ hi User5 term=inverse,bold ctermfg=DarkYellow ctermbg=Black
 hi User6 term=inverse,bold ctermfg=DarkCyan ctermbg=Black
 hi User7 term=inverse,bold ctermfg=White ctermbg=Black
 
+" xit colors plugin broken when retrieving hi colors from colortheme
+lua << EOF
+    vim.api.nvim_set_hl(0, 'XitHeadline', {link = "TSTitle"}) -- orange
+
+    vim.api.nvim_set_hl(0, 'XitOpenCheckbox', {link = "PreProc"}) -- orange
+    vim.api.nvim_set_hl(0, 'XitOpenTaskMainLine', {link = "PreProc"})
+    vim.api.nvim_set_hl(0, 'XitOpenTaskOtherLine', {link = "PreProc"})
+    vim.api.nvim_set_hl(0, 'XitOpenTaskPriority', {link = "PreProc"})
+
+    vim.api.nvim_set_hl(0, 'XitOngoingCheckbox', {link = "Statement"}) -- green
+    vim.api.nvim_set_hl(0, 'XitOngoingTaskMainLine', {link = "Statement"})
+    vim.api.nvim_set_hl(0, 'XitOngoingTaskOtherLine', {link = "Statement"})
+    vim.api.nvim_set_hl(0, 'XitOngoingTaskPriority', {link = "Statement"})
+
+    vim.api.nvim_set_hl(0, 'XitCheckedCheckbox', {link = "Type"}) -- yellow
+    vim.api.nvim_set_hl(0, 'XitCheckedTaskMainLine', {link = "Type"})
+    vim.api.nvim_set_hl(0, 'XitCheckedTaskOtherLine', {link = "Type"})
+    vim.api.nvim_set_hl(0, 'XitCheckedTaskPriority', {link = "Type"})
+
+    vim.api.nvim_set_hl(0, 'XitObsoleteCheckbox', {link = "Normal"}) -- grey
+    vim.api.nvim_set_hl(0, 'XitObsoleteTaskMainLine', {link = "Normal"})
+    vim.api.nvim_set_hl(0, 'XitObsoleteTaskOtherLine', {link = "Normal"})
+    vim.api.nvim_set_hl(0, 'XitObsoleteTaskPriority', {link = "Normal"})
+EOF
 " ]]]
 
 " dotter/handlebars+fold incompatibility: temporary [ instead of {

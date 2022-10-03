@@ -19,19 +19,11 @@ require("awful.hotkeys_popup.keys")
 -- Load Debian menu entries
 local debian = require("debian.menu")
 
--- local stuff
--- local host = awful.util.pread("hostname"):match('%S*')
--- local host = 'main' --awful.util.pread("hostname"):match('%S*')
+-- local definition
 local host = "{{trim (command_output "hostname")}}"
 local home = "{{trim (command_output "getent passwd \"$USER\" | cut -d : -f 6")}}"
-
--- TODO dotter.root?
-local root_install = "{{trim (command_output "pwd")}}" .. "/awesome"
--- hardcode HOME at template generation, to avoid usage of os.getenv("HOME")
-local config_dir = "{{trim (command_output "realpath ~")}}" .. "/.config/awesome/"
-
--- add this "local" folder in lookup paths
--- package.path = package.path .. ";" .. root_install .. "/data/?.lua"
+-- local home = "{{trim (command_output "realpath ~")}}"
+local config_dir = home .. "/.config/awesome/"
 
 -- [[[ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -133,7 +125,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                     { "&okular", "okular" },
                                     { "&batterry", "plasma-windowed battery" },
                                     { "&wifi", "plasma-windowed org.kde.networkmanagement" },
-                                    { "&vlc", "vlc /home/richard/.vlc/channels.conf" },
+                                    { "&vlc", "vlc " .. home .. "/.vlc/channels.conf" },
                                     -- The next line add our menu (myappmenu)
                                     { "app", myappmenu, beautiful.awesome_icon }
                     },
@@ -811,55 +803,39 @@ end)
 --
 -- ]]]
 -- [[[ Startup
---
-function run_if_not_running(program, arguments)
-   awful.spawn.easy_async_with_shell(
-      "pgrep -f -u $(whoami) " .. program,
-      function(stdout, stderr, reason, exit_code)
-         naughty.notify { text = stdout .. exit_code }
-         -- awful.spawn.with_shell(" echo 'program:" .. program .. " stdout:" .. stdout .. " stderr:" .. stderr .. " reason:" .. reason .. " exit-code:" .. exit_code .. "' >> /tmp/a")
-         if exit_code ~= 0 then
-            awful.spawn(program .. " " .. arguments)
-         end
-   end)
-end
-
--- awful.spawn("kshutdown --init")
--- run_if_not_running("nm-applet", "")
-awful.spawn.with_shell("pkill -u $USER nm-applet ; nm-applet &")
-
--- clipboard management (parcellite drains battery)
-awful.spawn.with_shell("pkill -u $USER diodon ; diodon &")
 
 -- dim the screen after 2 minutes of inactivity, lock the screen 10 seconds later (if no activity) using slock
 awful.spawn.with_shell("xset s {{awesome_xset_wait_period}} {{awesome_xset_burn_period}}")
-awful.spawn.with_shell("pkill -u $USER xss-lock ; xss-lock -n ~/.config/awesome/dim-screen.sh -- slock &")
+awful.spawn.with_shell("pkill -u $USER xss-lock ; xss-lock -n " .. home .. "/.config/awesome/dim-screen.sh -- slock &")
 
-{{#if dotter.packages.bluetooth}}
--- bluetooth (TODO also sake once dongle installed in sake)
-awful.spawn.with_shell("pkill -u $USER blueman ; blueman-applet &")
--- run_if_not_running("pasystray", "")
-awful.spawn.with_shell("pkill -u $USER pasystray ; pasystray &")
-{{/if}}
-
+-- night
 {{#if dotter.packages.redshift}}
 awful.spawn.with_shell("pkill -u $USER redshift ; redshift-gtk &")
 {{/if}}
 
+-- network
+awful.spawn.with_shell("pkill -u $USER nm-applet ; nm-applet &")
+
+-- clipboard (parcellite drains battery)
+awful.spawn.with_shell("pkill -u $USER diodon ; diodon &")
+
+-- sound
+awful.spawn.with_shell("pkill -u $USER pasystray ; pasystray &")
+{{#if dotter.packages.bluetooth}}
+awful.spawn.with_shell("pkill -u $USER blueman ; blueman-applet &")
+{{/if}}
+
+-- keyboard
 {{#if dotter.packages.mac}}
 -- macbook
--- awful.spawn("setxkbmap -layout us -variant mac -option compose:rwin,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch,apple:alupckeys")
+-- awful.spawn("setxkbmap -layout us -variant mac -option compose:ralt,compose:rwin,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch,apple:alupckeys")
 {{else}}
 -- usual keyboard setup
--- awful.spawn("setxkbmap -layout us -option compose:lalt,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch")
+-- awful.spawn("setxkbmap -layout us -option compose:ralt,compose:rwin,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch")
 {{/if}}
--- awful.spawn.with_shell("sleep 1 && xkbcomp -I${HOME}/.config/xkb -R${HOME}/.config/xkb ~/.config/xkb/keymap/keymap.xkb $DISPLAY")
--- run_if_not_running("inputplug", "-0 -c " .. home .. "/.config/xkb/inputplug.sh")
+-- new ~trivial~ method with C-; mapping
 awful.spawn.with_shell("pkill -u $USER inputplug ; sleep 1.1 && inputplug -d -0 -c " .. home .. "/.config/xkb/inputplug.sh &> /tmp/inputplug.log &")
 
---if host == 'sake' or host == 'suze' then
---    run_once("nm-applet")
---end
 -- ]]]
 
 -- dotter/handlebars+fold incompatibility: temporary [ instead of {

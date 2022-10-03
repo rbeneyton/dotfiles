@@ -1,12 +1,7 @@
 default partial modifier_keys
 xkb_symbols "rb" {
     name[Group1]= "English (US, tmux friendly)";
-    // extend g via (both) Alt -> dead_greek
-    // (superseed compose key)
-    // key <AC05> {
-    //     type= "RB_BASE_SHIFT_LALT",
-    //     symbols[Group1]= [ g, G, dead_greek ]
-    // };
+
     // extend ; via Control -> Home
     key <AC10> {
         type= "RB_BASE_SHIFT_CONTROL",

@@ -1,5 +1,5 @@
 // This is equivalent to
-// setxkbmap -layout us -option compose:lalt,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch
+// setxkbmap -layout us -option compose:ralt,compose:rwin,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch
 // + mapping of C^; (ie. CapsLock + ;) to Home (which will be remapped to C^b)
 // + dead_greak
 

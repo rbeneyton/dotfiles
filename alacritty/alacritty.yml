@@ -756,8 +756,9 @@ key_bindings:
   - { key: F11,      mods: Super,   chars: "\x1b[23;3~"                  }
   - { key: F12,      mods: Super,   chars: "\x1b[24;3~"                  }
   - { key: Insert,   mods: Control, action: Paste                        }
-    # map Home (aka C-;) to C-b for tmux
+    # map Home (aka C-; via xkb) to C-b for tmux
   - { key: Home,     mods: Control, chars: "\x02"                        }
+    # direct C-; mapping to C-b for tmux
   - { key: Semicolon, mods: Control, chars: "\x02"                       } #RB tmux
 
 #debug:
