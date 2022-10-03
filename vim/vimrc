@@ -352,7 +352,7 @@ autocmd BufRead,BufNewFile *.conf setf dosini
 " filetype manually (without setf which doesn't overwrite if)
 autocmd BufRead,BufNewFile CMake*.txt setlocal filetype=cmake
 autocmd BufRead,BufNewFile *Mail*.txt setlocal filetype=mail
-autocmd BufRead,BufNewFile COMMIT_EDITMSG setg gitcommit
+autocmd BufRead,BufNewFile COMMIT_EDITMSG setf gitcommit
 
 autocmd FileType actionscript set et sts=4 sw=4
 autocmd FileType actionscript setlocal cindent tw=78 iskeyword+=$ noignorecase ff=dos
@@ -396,7 +396,7 @@ autocmd FileType svn setlocal spell tw=76
 autocmd FileType c,cpp,java,php,asciidoc autocmd BufWritePre <buffer> :%s/\s\+$//e
 autocmd BufWritePre *.py :%s/\s\+$//e
 autocmd BufWritePre *.tex :%s/\s\+$//e
-autocmd BufWritePre COMMIT_EDITMSG :%s/\s\+$//e
+autocmd BufWritePre gitcommit :%s/\s\+$//e
 
 " make error list special
 autocmd BufRead quickfix setlocal nobuflisted nowrap number
