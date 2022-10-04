@@ -11,15 +11,27 @@ if has('nvim')
 
     " treesitter xit
     packadd tree-sitter-xit
+lua << EOF
+    local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+    parser_config.xit = {
+      install_info = {
+        url = "~/.dotfiles/vim/pack/parser/opt/tree-sitter-xit",
+        files = { "src/parser.c" },
+        generate_requires_npm = false, -- if stand-alone parser without npm dependencies
+        requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
+      },
+      filetype = "xit", -- if filetype does not match the parser name
+    }
+EOF
 
     packadd nvim-ts-rainbow
 
     " :lua vim.opt.runtimepath:append("~/.config/nvim/parsers")
 lua << EOF
     -- XXX set the rtp *before* the setup
-    vim.opt.runtimepath:append("~/.config/nvim/parsers")
+    -- vim.opt.runtimepath:append("~/.config/nvim/parsers")
     require('nvim-treesitter.configs').setup {
-      parser_install_dir = "~/.config/nvim/parsers",
+      -- parser_install_dir = "~/.config/nvim/parsers",
       ensure_installed = { "bash", "c", "comment", "cpp", "cmake", "fish", "json", "latex", "lua", "markdown", "python", "rust", "toml", "xit" },
       sync_install = false,
       auto_install = false,
