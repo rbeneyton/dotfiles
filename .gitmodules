@@ -73,6 +73,9 @@
 [submodule "vim/pack/parser/opt/nvim-treesitter"]
 	path = vim/pack/parser/opt/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
+[submodule "vim/pack/parser/opt/nvim-treesitter-playground"]
+	path = vim/pack/parser/opt/nvim-treesitter-playground
+	url = https://github.com/nvim-treesitter/playground.git
 [submodule "vim/pack/parser/opt/nvim-ts-rainbow"]
 	path = vim/pack/parser/opt/nvim-ts-rainbow
 	url = https://github.com/p00f/nvim-ts-rainbow.git
@@ -100,6 +103,3 @@
 [submodule "vim/pack/undo/opt/undotree"]
 	path = vim/pack/undo/opt/undotree
 	url = https://github.com/mbbill/undotree.git
-[submodule "vim/pack/parser/opt/nvim-treesitter-playground"]
-	path = vim/pack/parser/opt/nvim-treesitter-playground
-	url = https://github.com/nvim-treesitter/playground.git
