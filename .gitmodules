@@ -100,3 +100,6 @@
 [submodule "vim/pack/undo/opt/undotree"]
 	path = vim/pack/undo/opt/undotree
 	url = https://github.com/mbbill/undotree.git
+[submodule "vim/pack/parser/opt/nvim-treesitter-playground"]
+	path = vim/pack/parser/opt/nvim-treesitter-playground
+	url = https://github.com/nvim-treesitter/playground.git

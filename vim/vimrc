@@ -6,17 +6,21 @@
 " [[[ treesitter
 
 if has('nvim')
-    " treesitter: always call TSUpdate after up
+    " treesitter: always call TSUpdate after update
     packadd nvim-treesitter
+
+    " treesitter xit
+    packadd tree-sitter-xit
+
     packadd nvim-ts-rainbow
 
     " :lua vim.opt.runtimepath:append("~/.config/nvim/parsers")
 lua << EOF
     -- XXX set the rtp *before* the setup
     vim.opt.runtimepath:append("~/.config/nvim/parsers")
-    require'nvim-treesitter.configs'.setup {
+    require('nvim-treesitter.configs').setup {
       parser_install_dir = "~/.config/nvim/parsers",
-      ensure_installed = { "bash", "c", "comment", "cpp", "cmake", "fish", "json", "latex", "lua", "markdown", "python", "rust", "toml" },
+      ensure_installed = { "bash", "c", "comment", "cpp", "cmake", "fish", "json", "latex", "lua", "markdown", "python", "rust", "toml", "xit" },
       sync_install = false,
       auto_install = false,
       ignore_install = { "help", "javascript" },
@@ -38,8 +42,7 @@ lua << EOF
         -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
         -- Using this option may slow down your editor, and you may see some duplicate highlights.
         -- Instead of true it can also be a list of languages
-        -- additional_vim_regex_highlighting = false,
-        additional_vim_regex_highlighting = {'xit'},
+        additional_vim_regex_highlighting = false,
       },
       indent = {
         enable = true,
@@ -51,6 +54,41 @@ lua << EOF
         max_file_lines = nil, -- Do not enable for files with more than n lines, int
         -- colors = {}, -- table of hex strings
         -- termcolors = {} -- table of colour name strings
+      },
+    }
+EOF
+
+    packadd xit
+lua << EOF
+    require('xit').setup {
+      disable_default_highlights = true, -- broken, defined at end of this file
+      disable_default_mappings = false,
+      default_jump_group = "all", -- possible values: all, open_and_ongoing
+      wrap_jumps = true,
+    }
+EOF
+
+    " to debug treesitter
+    " packadd nvim-treesitter-playground
+lua << EOF
+    require("nvim-treesitter.configs").setup {
+      playground = {
+        enable = true,
+        disable = {},
+        updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+        persist_queries = false, -- Whether the query persists across vim sessions
+        keybindings = {
+          toggle_query_editor = 'o',
+          toggle_hl_groups = 'i',
+          toggle_injected_languages = 't',
+          toggle_anonymous_nodes = 'a',
+          toggle_language_display = 'I',
+          focus_language = 'f',
+          unfocus_language = 'F',
+          update = 'R',
+          goto_node = '<cr>',
+          show_help = '?',
+        },
       }
     }
 EOF
@@ -400,33 +438,6 @@ autocmd BufWritePre gitcommit :%s/\s\+$//e
 
 " make error list special
 autocmd BufRead quickfix setlocal nobuflisted nowrap number
-
-if has('nvim')
-    " xit
-    packadd xit
-
-    packadd tree-sitter-xit
-
-lua << EOF
-    local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-    parser_config.xit = {
-      install_info = {
-        url = "~/.dotfiles/vim/pack/parser/opt/tree-sitter-xit",
-        files = {"src/parser.c"},
-        generate_requires_npm = false, -- if stand-alone parser without npm dependencies
-        requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
-      },
-      filetype = "xit", -- if filetype does not match the parser name
-    }
-    local xit_options = {
-      disable_default_highlights = true, -- defined at end of this file
-      disable_default_mappings = false,
-      default_jump_group = "all", -- possible values: all, open_and_ongoing
-      wrap_jumps = true,
-    }
-    require('xit').setup(xit_options)
-EOF
-endif
 
 " ]]]
 " [[[ weird (outdated?) options
@@ -875,7 +886,7 @@ highlight clear SignColumn
 if has('nvim')
     packadd kanagawa
 lua << EOF
-    require('kanagawa').setup({
+    require('kanagawa').setup {
       undercurl = true,           -- enable undercurls
       commentStyle = { italic = true },
       functionStyle = {},
@@ -892,7 +903,7 @@ lua << EOF
       colors = {},
       overrides = {},
       theme = "default"           -- Load "default" theme or the experimental "light" theme
-    })
+    }
 EOF
     " colorscheme kanagawa
 endif
@@ -1135,9 +1146,10 @@ if has('nvim')
 
     " shortcuts
 lua << EOF
-    local nvim_lsp = require('lspconfig')
+    lsp = require('lspconfig') -- XXX no local, as used later
+    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 
-    -- Use an on_attach function to only map the following keys 
+    -- Use an on_attach function to only map the following keys
     -- after the language server attaches to the current buffer
     local on_attach = function(client, bufnr)
         local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -1168,15 +1180,6 @@ lua << EOF
         buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
         buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
     end
-
-    -- Use a loop to conveniently call 'setup' on multiple servers and
-    -- map buffer local keybindings when the language server attaches
-    -- local servers = { "pyls", "rust_analyzer", "clangd" }
-    -- for _, lsp in ipairs(servers) do
-    --     nvim_lsp[lsp].setup { on_attach = on_attach }
-    -- end
-
-    nvim_lsp.rust_analyzer.setup{ on_attach = on_attach }
 EOF
 
     " rust
@@ -1192,48 +1195,37 @@ EOF
         "             \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
         "             \ 'whitelist': ['rust'],
         "             \ })
-lua << EOF
-        -- local nvim_lsp = require'lspconfig'
-        -- nvim_lsp.rust_analyzer.setup{ on_attach = on_attach }
-EOF
         " autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
+lua << EOF
+    lsp.rust_analyzer.setup {
+        on_attach = on_attach
+    }
+EOF
     endif
 
     " python
-"     if executable('pyls')
-"         " source /opt/conda/etc/profile.d/conda.sh
-"         " conda create -p /home/beneyton/conda-envs/pyls python-language-server
-"         " pip/conda install python-language-server
-"         " au User lsp_setup call lsp#register_server({
-"         "             \ 'name': 'pyls',
-"         "             \ 'cmd': {server_info->['pyls', '-v', '--log-file', '/home/rbeneyton/pyls.log']},
-"         "             \ 'whitelist': ['python'],
-"         "             \ })
-"         "
-" lua << EOF
-"         local nvim_lsp = require'lspconfig'
-"         nvim_lsp.pyls.setup{
-"             name = 'pyls',
-"             cmd = { 'pyls' },
-"             log_level = { vim.lsp.protocol.MessageType.Log },
-"             whitelist = { 'python' },
-"             root_dir = function(fname)
-"                 return nvim_lsp.util.find_git_ancestor(fname) or vim.loop.os_homedir()
-"             end;
-"             settings = {
-"                 pyls = {
-"                     plugins = {
-"                         pycodestyle = {
-"                             maxLineLength = 100;
-"                         }
-"                     }
-"                 }
-"             },
-"             on_attach = on_attach
-"         }
-" EOF
-"         " autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
-"     endif
+    if executable('pylsp')
+lua << EOF
+        lsp.pylsp.setup {
+          whitelist = { 'python' },
+          -- root_dir = function(fname)
+          --     return lsp.util.find_git_ancestor(fname) or vim.loop.os_homedir()
+          -- end;
+          settings = {
+            pylsp = {
+              plugins = {
+                pycodestyle = {
+                  ignore = {'W391', },
+                  maxLineLength = 100
+                }
+              }
+            }
+          },
+          on_attach = on_attach
+        }
+EOF
+        " autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
+    endif
 
     " C++
     if executable('clangd')
@@ -1244,8 +1236,9 @@ EOF
         "             \ 'whitelist': ['c', 'cpp'],
         "             \ })
 lua << EOF
-        local nvim_lsp = require'lspconfig'
-        nvim_lsp.clangd.setup{ on_attach = on_attach }
+        lsp.clangd.setup {
+          on_attach = on_attach
+        }
 EOF
         " autocmd Filetype {c,cpp} setlocal omnifunc=v:lua.vim.lsp.omnifunc
     endif
@@ -1293,30 +1286,28 @@ hi User5 term=inverse,bold ctermfg=DarkYellow ctermbg=Black
 hi User6 term=inverse,bold ctermfg=DarkCyan ctermbg=Black
 hi User7 term=inverse,bold ctermfg=White ctermbg=Black
 
-" xit colors plugin broken when retrieving hi colors from colortheme
-lua << EOF
-    vim.api.nvim_set_hl(0, 'XitHeadline', {link = "TSTitle"}) -- orange
+" xit treesitter colors plugin broken when retrieving hi colors from theme
+hi! link @XitHeadline pandocCitationID " Todo " \o/ meta! \o/ red/pink
 
-    vim.api.nvim_set_hl(0, 'XitOpenCheckbox', {link = "PreProc"}) -- orange
-    vim.api.nvim_set_hl(0, 'XitOpenTaskMainLine', {link = "PreProc"})
-    vim.api.nvim_set_hl(0, 'XitOpenTaskOtherLine', {link = "PreProc"})
-    vim.api.nvim_set_hl(0, 'XitOpenTaskPriority', {link = "PreProc"})
+hi! link @XitOpenCheckbox Type " yellow
+hi! link @XitOpenTaskMainLine Normal
+hi! link @XitOpenTaskOtherLine Normal
+hi! link @XitOpenTaskPriority Error
 
-    vim.api.nvim_set_hl(0, 'XitOngoingCheckbox', {link = "Statement"}) -- green
-    vim.api.nvim_set_hl(0, 'XitOngoingTaskMainLine', {link = "Statement"})
-    vim.api.nvim_set_hl(0, 'XitOngoingTaskOtherLine', {link = "Statement"})
-    vim.api.nvim_set_hl(0, 'XitOngoingTaskPriority', {link = "Statement"})
+hi! link @XitOngoingCheckbox Identifier " blue
+hi! link @XitOngoingTaskMainLine Identifier
+hi! link @XitOngoingTaskOtherLine Identifier
+hi! link @XitOngoingTaskPriority Error
 
-    vim.api.nvim_set_hl(0, 'XitCheckedCheckbox', {link = "Type"}) -- yellow
-    vim.api.nvim_set_hl(0, 'XitCheckedTaskMainLine', {link = "Type"})
-    vim.api.nvim_set_hl(0, 'XitCheckedTaskOtherLine', {link = "Type"})
-    vim.api.nvim_set_hl(0, 'XitCheckedTaskPriority', {link = "Type"})
+hi! link @XitCheckedCheckbox Comment " grey
+hi! link @XitCheckedTaskMainLine Comment
+hi! link @XitCheckedTaskOtherLine Comment
+hi! link @XitCheckedTaskPriority DiagnosticError
 
-    vim.api.nvim_set_hl(0, 'XitObsoleteCheckbox', {link = "Normal"}) -- grey
-    vim.api.nvim_set_hl(0, 'XitObsoleteTaskMainLine', {link = "Normal"})
-    vim.api.nvim_set_hl(0, 'XitObsoleteTaskOtherLine', {link = "Normal"})
-    vim.api.nvim_set_hl(0, 'XitObsoleteTaskPriority', {link = "Normal"})
-EOF
+hi! link @XitObsoleteCheckbox Comment " grey
+hi! link @XitObsoleteTaskMainLine LineNr
+hi! link @XitObsoleteTaskOtherLine LineNr
+hi! link @XitObsoleteTaskPriority DiagnosticInfo
 " ]]]
 
 " dotter/handlebars+fold incompatibility: temporary [ instead of {

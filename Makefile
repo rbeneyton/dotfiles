@@ -136,7 +136,7 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 			rm -rf $(SRC);")
 neovim: $(NEOVIM_INSTALL)
 
-NEOVIM_LSP_PYTHON = $(UTILS)/pyls
+NEOVIM_LSP_PYTHON = $(UTILS)/pylsp
 $(NEOVIM_LSP_PYTHON) : | $(BIN) $(UTILS)
 	# apt install python3-pyls
 	# OR
@@ -145,10 +145,10 @@ $(NEOVIM_LSP_PYTHON) : | $(BIN) $(UTILS)
 	$(eval NAME := pyls)
 	$(eval SRC := $(UTILS)/$(NAME)/)
 	rm -rf $(SRC)
-	$(CONDA) create -y -p $(SRC)
-	$(CONDA) install -y -p $(SRC) -c conda-forge python-language-server
-	rm -f $(BIN)/pyls
-	ln -s $(UTILS)/pyls/bin/pyls $(BIN)/
+	# $(CONDA) creatm -y -p $(SRC) -c conda-forge python-language-server
+	$(CONDA) create -y -p $(SRC) -c conda-forge python-lsp-server
+	rm -f $(BIN)/pylsp
+	ln -s $(SRC)/bin/pylsp $(BIN)/
 neovim-lsp-python: $(NEOVIM_LSP_PYTHON)
 
 NEOVIM_LSP_RUST = $(BIN)/rust-analyzer
