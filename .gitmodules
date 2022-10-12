@@ -13,6 +13,9 @@
 [submodule "gdb/pahole"]
 	path = gdb/pahole
 	url = https://github.com/PhilArmstrong/pahole-gdb.git
+[submodule "gdb/source-highlight"]
+	path = gdb/source-highlight
+	url = https://git.savannah.gnu.org/git/src-highlite.git
 [submodule "vim/pack/extend/start/async"]
 	path = vim/pack/extend/start/async
 	url = https://github.com/prabirshrestha/async.vim.git
@@ -103,6 +106,3 @@
 [submodule "vim/pack/undo/opt/undotree"]
 	path = vim/pack/undo/opt/undotree
 	url = https://github.com/mbbill/undotree.git
-[submodule "gdb/source-highlight"]
-	path = gdb/source-highlight
-	url = https://git.savannah.gnu.org/git/src-highlite.git
