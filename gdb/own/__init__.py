@@ -67,7 +67,6 @@ class HexDumpWidth(gdb.Parameter):
                                             gdb.PARAM_INTEGER)
 
     set_doc = 'Set the number of bytes per line of hexdump'
-
     show_doc = 'The number of bytes per line in hexdump is'
 
 HexDump()

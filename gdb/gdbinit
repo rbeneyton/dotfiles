@@ -55,49 +55,6 @@ set style address background black
 # $ grep function ${SOURCE_HIGHLIGHT_DATADIR}/esc.style
 # function black b; -> function b;
 
-# Comment        xxx ctermfg=239 guifg=#80a0ff
-# Constant       xxx ctermfg=37 guifg=#ffa0a0
-# Special        xxx ctermfg=124 guifg=Orange
-# Statement      xxx ctermfg=64 gui=bold guifg=#ffff60
-# PreProc        xxx ctermfg=166 guifg=#ff80ff
-# Underlined     xxx ctermfg=61 gui=underline guifg=#80a0ff
-# Ignore         xxx guifg=bg
-# Todo           xxx cterm=bold ctermfg=125 guifg=Blue guibg=Yellow
-# Character      xxx links to Constant
-# Boolean        xxx links to Constant
-# Float          xxx links to Number
-# Function       xxx links to Identifier
-# Conditional    xxx links to Statement
-# Repeat         xxx links to Statement
-# Label          xxx links to Statement
-# Keyword        xxx links to Statement
-# Exception      xxx links to Statement
-# Include        xxx links to PreProc
-# Define         xxx links to PreProc
-# Macro          xxx links to PreProc
-# PreCondit      xxx links to PreProc
-# StorageClass   xxx links to Type
-# Structure      xxx links to Type
-# Typedef        xxx links to Type
-# Tag            xxx links to Special
-# SpecialComment xxx links to Special
-# Debug          xxx links to Special
-# VisualNOS      xxx cterm=reverse ctermbg=235
-# vimVar         xxx links to Identifier
-# vimFunc        xxx links to Function
-# vimUserFunc    xxx links to Function
-# helpSpecial    xxx links to Special
-
-# python
-# sys.path.insert(0, '/home/rbeneyton/dotfiles/gdb/pahole-gdb/')
-# import offsets
-# import pahole
-# end
-# to use: (gdb) pahole <name-of-the-struct>
-
-# alias m = make
-
-
 #set prompt \033[31mgdb$ \033[0m
 # If you use the GNU debugger gdb to debug the Python C runtime, you
 # might find some of the following commands useful.  Copy this to your
@@ -136,12 +93,12 @@ end
 define pylocals
     set $_i = 0
     while $_i < f->f_code->co_nlocals
-	if f->f_localsplus + $_i != 0
-	    set $_names = co->co_varnames
-	    set $_name = PyString_AsString(PyTuple_GetItem($_names, $_i))
-	    printf "%s:\n", $_name
+    if f->f_localsplus + $_i != 0
+        set $_names = co->co_varnames
+        set $_name = PyString_AsString(PyTuple_GetItem($_names, $_i))
+        printf "%s:\n", $_name
             pyo f->f_localsplus[$_i]
-	end
+    end
         set $_i = $_i + 1
     end
 end
@@ -252,7 +209,8 @@ end
 
 
 
-# own macro: hexdump
+# own macro
+# hexdump
 python
 import os
 sys.path.insert(0, os.environ["HOME"] + "/.config/gdb/own/")
