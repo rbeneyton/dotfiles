@@ -62,8 +62,8 @@ pathadd $HOME/.cargo/bin
 
 # ]]]
 
-set --global --export LANGUAGE en_US:en
-set --global --export LANG 'C.UTF-8' # never 12H AM/PM date format
+set --global --export LANG 'en_US.utf8'
+set --global --export LC_TIME 'C.UTF-8' # never 12H AM/PM date format
 
 ulimit -c unlimited
 

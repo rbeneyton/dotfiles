@@ -496,6 +496,7 @@ debian-install-base:
 	apt-get install bash-completion
 
 debian-install-net:
+	apt-get install iputils-ping iputils-tracepath
 	apt-get install network-manager-openconnect network-manager-gnome network-manager-openconnect-gnome
 
 debian-install-graphic:
@@ -504,6 +505,7 @@ debian-install-graphic:
 	apt-get install parcellite mesa-utils fonts-dejavu fonts-dejavu-core fonts-dejavu-extra
 	apt-get install redshift redshift-gtk
 	apt-get install diodon xss-lock suckless-tools
+	apt-get install kshutdown
 	apt-get install light
 	apt-get install x11-xkb-utils inputplug # xkb + detect/reload
 	apt-get install blueman pulseaudio-module-bluetooth

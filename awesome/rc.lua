@@ -21,8 +21,7 @@ local debian = require("debian.menu")
 
 -- local definition
 local host = "{{trim (command_output "hostname")}}"
-local home = "{{trim (command_output "getent passwd \"$USER\" | cut -d : -f 6")}}"
--- local home = "{{trim (command_output "realpath ~")}}"
+local home = "{{trim (command_output "realpath ~")}}"
 local config_dir = home .. "/.config/awesome/"
 
 -- [[[ Error handling
@@ -111,21 +110,12 @@ myawesomemenu = {
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    -- { "debian", debian.menu.Debian_menu.Debian },
-                                    { "open terminal", terminal },
-                                    { "&amarok", "amarok" },
+                                    { "open &terminal", terminal },
                                     { "clementine", "clementine" },
                                     { "&chromium", "chromium" },
-                                    { "&dolphin", "dolphin" },
                                     { "&firefox", home .. "/firefox/firefox" },
-                                    { "soundkonverter", "soundkonverter" },
-                                    { "kaffeine", "kaffeine" },
-                                    { "konqueror", "konqueror" },
-                                    { "&kontact", "kontact" },
-                                    { "&okular", "okular" },
-                                    { "&batterry", "plasma-windowed battery" },
-                                    { "&wifi", "plasma-windowed org.kde.networkmanagement" },
-                                    { "&vlc", "vlc " .. home .. "/.vlc/channels.conf" },
+                                    { "&signal", "env LANG=fr_FR.utf-8 LANGUAGE=fr signal-desktop" },
+                                    { "&mail", "sylpheed" },
                                     -- The next line add our menu (myappmenu)
                                     { "app", myappmenu, beautiful.awesome_icon }
                     },
@@ -140,7 +130,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- ]]]
 
 -- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
+-- mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- [[[ Wibar
 
@@ -171,12 +161,14 @@ local cpuicon = wibox.widget.imagebox()
 cpuicon:set_image((beautiful.widget_cpu))
 -- ]]]
 -- [[[ load
+
 local loadwidget = wibox.widget.textbox()
 vicious.register(loadwidget, vicious.widgets.uptime, function (widget, args)
     return string.format("%4.1f/%4.1f/%4.1f", args[4], args[5], args[6])
     end, 3)
 local loadicon = wibox.widget.imagebox()
 loadicon:set_image(beautiful.widget_load)
+
 -- ]]]
 -- [[[ volume
 
@@ -190,85 +182,20 @@ local todo_widget = require("awesome-wm-widgets.todo-widget.todo")
 -- ]]]
 -- [[[ battery
 
+{{#if dotter.packages.laptop}}
 local battery_widget = require('awesome-wm-widgets.batteryarc-widget.batteryarc')
-
---  batterywidget = wibox.widget.textbox()
---  batterytimer = timer({ timeout = 10 })
---  batterytimer:connect_signal("timeout", function()
---      fh = assert(io.popen('ibam --percentbattery | head -n 1 | tr -s "  " " " | cut -d":" -f2 | sed "s/^ //g" | cut -f1 -d" "', "r"))
---      local percent = fh:read("*l")
---      fh:close()
---      if string.match(percent, "100") then
---          batterywidget.set_text()
---      else
---          fh = assert(io.popen('ibam | tail -n 1  | tr -s "  " " " | cut -d":" -f2- | sed "s/^ //g" | cut -f1 -d" "', "r"))
---          batterywidget.set_text(fh:read("*l"))
---          fh:close()
---      end
---  end)
---  batterytimer:start()
-
--- local battery_widget = wibox.widget.textbox()
--- battery_widget:set_text('')
--- local battery_icon = wibox.widget.imagebox()
--- battery_icon:set_image(beautiful.widget_battery_charge)
-
--- local battery_timer = timer({timeout = 60})
--- battery_timer:connect_signal("timeout", function() batteryCheck() end)
--- battery_timer:start()
--- 
--- function batteryInfo(adapter)
---    local fcur = io.open("/sys/class/power_supply/"..adapter.."/energy_now")
---    local fcap = io.open("/sys/class/power_supply/"..adapter.."/energy_full")
---    if fcur and fcap then
---        local cur = fcur:read()
---        local cap = fcap:read()
---        fcur:close()
---        fcap:close()
---        local battery = math.floor(cur * 100 / cap)
---        return battery
---    end
--- end
--- 
--- function batteryCheck()
---     local fsta = io.open("/sys/class/power_supply/AC/online")
---     local bat0 = batteryInfo("BAT0")
---     local bat1 = batteryInfo("BAT1")
---     if fsta and bat0 and bat1 then
---         local sta = fsta:read()
---         fsta:close()
---         local green = '#C0FFC0'
---         local orange = '#FFA848'
---         local color = green
---         if sta:match("1") then
---             battery_icon:set_image(beautiful.widget_battery_charge)
---         else
---             if tonumber(bat0) < 10 or tonumber(bat1) < 10 then
---                 color = orange
---                 battery_icon:set_image(beautiful.widget_battery_low)
---                 naughty.notify({ preset = naughty.config.presets.critical,
---                     title = "Battery Low",
---                     text = " ".. bat0 .. "% & ".. bat1 .. "% left",
---                     timeout = 50,
---                     font = "Liberation 11", })
---             else
---                 battery_icon:set_image(beautiful.widget_battery)
---             end
---         end
---         -- battery_widget:set_text(bat0 .. "%".. bat1 .. "%")
---         local text = string.format('<span color=\"%s\">%2.2d%%/%2.2d%%</span>', 
---                                         color, bat0, bat1)
---         battery_widget:set_markup(text)
---     end
--- end
+{{/if}}
 
 -- ]]]
 -- [[[ brightness
 
+{{#if dotter.packages.laptop}}
 local brightness_widget = require('awesome-wm-widgets.brightness-widget.brightness')
+{{/if}}
 
 -- ]]]
 -- [[[ io
+
 local iowidget = wibox.widget.textbox()
 vicious.register(iowidget, vicious.widgets.dio, function (widget, args)
     return string.format('<span color="#498FE4">R%4.1f</span> <span color="#E48671">W%4.1f</span>', 
@@ -277,12 +204,15 @@ vicious.register(iowidget, vicious.widgets.dio, function (widget, args)
     end, 3)
 local ioicon = wibox.widget.imagebox()
 ioicon:set_image(beautiful.widget_io)
+
 -- ]]]
 -- [[[ date
+
 local datewidget = wibox.widget.textbox()
 vicious.register(datewidget, vicious.widgets.date, '%R %a %d/%m')
 local dateicon = wibox.widget.imagebox()
 dateicon:set_image(beautiful.widget_date)
+
 -- ]]]
 
 -- Create a wibox for each screen and add it
@@ -549,8 +479,8 @@ globalkeys = table_join(
                   awful.spawn("slock") end),
 
     -- shudown
-    -- awful.key({ modkey , "Shift"  }, "BackSpace", function ()
-    --               awful.util.spawn("kshutdown --shutdown now") end),
+    awful.key({ modkey , "Shift"  }, "BackSpace", function ()
+                  awful.util.spawn("kshutdown --hide-ui --shutdown") end),
 
 {{#if dotter.packages.laptop}}
     -- light control
@@ -683,17 +613,13 @@ awful.rules.rules = {
                      placement = awful.placement.no_overlap+awful.placement.no_offscreen
      }
     },
-    { rule = { class = "Kaffeine" }, properties = { screen = 1, tag = "2", switchtotag = true, focus = true } },
-    { rule = { class = "Vlc" }, properties      = { screen = 1, tag = "4", switchtotag = true, focus = true } },
-    { rule = { class = "Firefox" }, properties  = { screen = 1, tag = "5", switchtotag = true, focus = true } },
-    { rule = { class = "Chromium" }, properties = { screen = 1, tag = "7", switchtotag = true, focus = true } },
-    { rule = { class = "Kopete" }, properties   = { screen = 1, tag = "7", switchtotag = true, focus = true } },
-    { rule = { class = "Amarok" }, properties   = { screen = 1, tag = "8", switchtotag = true, focus = true } },
-    { rule = { class = "Kontact" }, properties  = { screen = 1, tag = "9", switchtotag = true, focus = true } },
-    { rule = { class = "Kwalletd" }, properties = { screen = 1, tag = "9", switchtotag = true, focus = true, ontop = true } },
-    { rule = { instance = "plugin-container" }, properties = { floating = true } },
-    { rule = { class = "Exe" }, properties = { floating = true } },
-    { rule = { class = "kshutdown" }, properties = { floating = true } },
+    { rule = { class    = "Vlc" }              , properties = { screen   = 1 , tag = "4" , switchtotag = true , focus = true } } ,
+    { rule = { class    = "Firefox" }          , properties = { screen   = 1 , tag = "5" , switchtotag = true , focus = true } } ,
+    { rule = { class    = "Chromium" }         , properties = { screen   = 1 , tag = "7" , switchtotag = true , focus = true } } ,
+    { rule = { class    = "Signal" }           , properties = { screen   = 1 , tag = "8" , switchtotag = true , focus = true     , floating = false, ontop = false, fullscreen = false } } ,
+    { rule = { class    = "Sylpheed" }         , properties = { screen   = 1 , tag = "9" , switchtotag = true , focus = true } } ,
+    { rule = { instance = "plugin-container" } , properties = { floating = true } } ,
+    { rule = { class    = "Exe" }              , properties = { floating = true } } ,
 
     -- Floating clients.
     { rule_any = {
@@ -705,14 +631,12 @@ awful.rules.rules = {
         class = {
           "Arandr",
           "Gpick",
-          "Kruler",
-          "MessageWin",  -- kalarm.
           "Sxiv",
           "Wpa_gui",
           "pinentry",
           "veromix",
-          "xtightvncviewer"},
-
+          "xtightvncviewer"
+        },
         name = {
           "Event Tester",  -- xev.
         },
@@ -726,10 +650,6 @@ awful.rules.rules = {
     { rule_any = {type = { "normal", "dialog" }
       }, properties = { titlebars_enabled = false }
     },
-
-    -- Set Firefox to always map on the tag named "2" on screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { screen = 1, tag = "2" } },
 }
 -- ]]]
 -- [[[ Signals
