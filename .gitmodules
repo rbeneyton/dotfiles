@@ -103,3 +103,6 @@
 [submodule "vim/pack/undo/opt/undotree"]
 	path = vim/pack/undo/opt/undotree
 	url = https://github.com/mbbill/undotree.git
+[submodule "gdb/source-highlight"]
+	path = gdb/source-highlight
+	url = https://git.savannah.gnu.org/git/src-highlite.git
