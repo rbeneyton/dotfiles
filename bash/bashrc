@@ -58,9 +58,11 @@ pathadd $HOME/.cargo/bin
 
 # ]]]
 
-# export LANGUAGE=en_US:en
 export LANG=en_US.utf8
 export LC_TIME=C.UTF-8 # never 12H AM/PM date format
+
+# gdb fix
+export SOURCE_HIGHLIGHT_DATADIR=${HOME}/.source-highlight
 
 ulimit -c unlimited
 

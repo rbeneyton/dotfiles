@@ -29,6 +29,7 @@
 "gdb/eigengdb/eigengdb" = { target = "~/.config/gdb/eigengdb/eigengdb", type = "symbolic" }
 "gdb/pahole/offsets.py" = { target = "~/.config/gdb/pahole/offsets.py", type = "symbolic" }
 "gdb/pahole/pahole.py" = { target = "~/.config/gdb/pahole/pahole.py", type = "symbolic" }
+"gdb/source-highlight/src" = { target = "~/.source-highlight", type = "symbolic", recurse = false }
 
 # awesome
 [awesome.files]

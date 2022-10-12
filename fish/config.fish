@@ -65,6 +65,9 @@ pathadd $HOME/.cargo/bin
 set --global --export LANG 'en_US.utf8'
 set --global --export LC_TIME 'C.UTF-8' # never 12H AM/PM date format
 
+# gdb fix
+set --global --export SOURCE_HIGHLIGHT_DATADIR $HOME/.source-highlight
+
 ulimit -c unlimited
 
 # [[[ aliases

@@ -1,17 +1,17 @@
 set confirm off
 set print elements 2000
-#entire string
+# entire string
 set print elements 0
 
 set print null-stop
 set print pretty on
-set history filename /home/richard/.gdbhistory
+set history filename {{trim (command_output "realpath ~/.gdbhistory")}}
 set history save on
 set history size 65536
 set history expansion on
-#handle SIGSEGV nostop
-#handle SIGSEGV noprint
-#set follow-fork-mode child
+# handle SIGSEGV nostop
+# handle SIGSEGV noprint
+# set follow-fork-mode child
 
 set tui border-mode normal
 set tui active-border-mode bold-standout
@@ -28,7 +28,7 @@ set print vtbl on
 set print demangle on
 set demangle-style gnu-v3
 set print sevenbit-strings off
-#set python print-stack full
+# set python print-stack full
 
 # colors!
 set style sources on
