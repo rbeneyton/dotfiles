@@ -808,43 +808,8 @@ autocmd CmdwinEnter * set norelativenumber
 autocmd BufWinEnter quickfix set nonumber
 autocmd BufWinEnter quickfix set norelativenumber
 
-" set cinoptions=
-" set cinoptions+=,t0            " type on the line before the functions is not idented
-" set cinoptions+=,:2,=2         " indent case ...: of 2 from the switch {
-" set cinoptions+=,(0,W4         " indent in functions ( ... ) when it breaks
-" set cinoptions+=,g2,h2         " indent C++ scope of 2, and the members from 2 from it
-
 " ]]]
-" [[[ highlights
-
-" hi Comment      cterm=none       ctermfg=blue       ctermbg=none
-" hi Include      cterm=none       ctermfg=darkblue   ctermbg=none
-" hi Define       cterm=none       ctermfg=lightblue  ctermbg=none
-" hi Folded       cterm=none       ctermfg=brown      ctermbg=none
-
-" hi Visual       cterm=reverse    ctermfg=none       ctermbg=none
-" hi IncSearch    cterm=none       ctermfg=lightred   ctermbg=white
-" hi Search       cterm=reverse    ctermfg=lightred   ctermbg=none
-
-" hi StatusLine   cterm=none       ctermfg=white      ctermbg=blue
-" hi StatusLineNc cterm=none       ctermfg=black      ctermbg=white
-" hi WildMenu     cterm=none       ctermfg=white      ctermbg=none
-" hi VertSplit    cterm=none       ctermfg=darkgray   ctermbg=none
-" hi NonText      cterm=none       ctermfg=darkgray   ctermbg=none
-
-" hi MatchParen   cterm=reverse    ctermfg=none       ctermbg=none
-" hi Pmenu        cterm=none       ctermfg=gray       ctermbg=black
-" hi PmenuSel     cterm=none       ctermfg=black      ctermbg=gray
-" hi PmenuSbar    cterm=none       ctermfg=blue       ctermbg=blue
-" hi PmenuThumb   cterm=none       ctermfg=gray       ctermbg=gray
-
-" hi SpellBad     cterm=underline  ctermfg=lightred   ctermbg=none
-" hi SpellCap     cterm=none       ctermfg=lightred   ctermbg=none
-" hi SpellLocal   cterm=underline  ctermfg=darkgreen  ctermbg=none
-" hi SpellRare    cterm=none       ctermfg=none       ctermbg=none
-
-" ]]]
-" [[[ colortheme
+" [[[ cursor
 
 " konsole allows also CustomCursorColor=#ffffd7/#8a8a8a (but disalllow adaptation) and BlinkingCursorEnabled=0/1
 " tmux ack for passing $echo -en "\e]50;CursorShape=0\x7" stuff
@@ -878,6 +843,9 @@ if !exists('$VIMNOCURSOR') && !has('nvim') && (!exists('$KDE_SESSION_VERSION') |
 else
     " TODO neovim cursor behavior is really weird…
 endif
+
+" ]]]
+" [[[ colortheme
 
 let g:solarized_termcolors=256
 set t_Co=256
@@ -915,7 +883,7 @@ lua << EOF
       theme = "default"           -- Load "default" theme or the experimental "light" theme
     }
 EOF
-    " colorscheme kanagawa
+    colorscheme kanagawa
 endif
 
 " ]]]
