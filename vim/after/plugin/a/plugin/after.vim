@@ -1,4 +1,4 @@
-" {{{ richard: disable a.vim weird mapping
+" {{{ RB: disable a.vim weird mapping
 
 " iunmap <Leader>ih
 nunmap <Leader>ih

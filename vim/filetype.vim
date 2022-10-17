@@ -42,7 +42,7 @@ augroup filetypedetect
     setf html
   endfun
 
-"richard
+" RB
   au BufRead,BufNewFile *.blk              setf c
   au BufRead,BufNewFile *.cf               setf javascript
   au BufNewFile,BufRead *.iop              setf d

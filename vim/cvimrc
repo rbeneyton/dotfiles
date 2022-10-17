@@ -1,6 +1,5 @@
 " to put in settings
 " seems buggy see https://github.com/1995eaton/chromium-vim/issues/312
-"let configpath = '/home/richard/.cvimrc'
 "set localconfig
 
 set noautofocus
@@ -21,7 +20,7 @@ set nolinkanimations
 set incsearch
 let scrollstep = 75
 let barposition = "bottom"
-let vimcommand = "konsole -e 'vim'"
+let vimcommand = "alactritty -e 'vim'"
 
 " Mappings
 map <C-R> rootFrame
