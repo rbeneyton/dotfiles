@@ -16,12 +16,12 @@
 [submodule "gdb/source-highlight"]
 	path = gdb/source-highlight
 	url = https://git.savannah.gnu.org/git/src-highlite.git
+[submodule "vim/pack/extend/opt/syntastic"]
+	path = vim/pack/extend/opt/syntastic
+	url = https://github.com/scrooloose/syntastic.git
 [submodule "vim/pack/extend/start/async"]
 	path = vim/pack/extend/start/async
 	url = https://github.com/prabirshrestha/async.vim.git
-[submodule "vim/pack/extend/start/syntastic"]
-	path = vim/pack/extend/start/syntastic
-	url = https://github.com/scrooloose/syntastic.git
 [submodule "vim/pack/extend/start/tabular"]
 	path = vim/pack/extend/start/tabular
 	url = https://github.com/godlygeek/tabular.git
