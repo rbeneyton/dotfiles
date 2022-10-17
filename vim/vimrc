@@ -981,28 +981,23 @@ let g:syntastic_c_compiler = 'gcc'
 let g:syntastic_c_compiler_options = ''
 let g:syntastic_c_compiler_options = "-std=gnu11 -Wall -Wextra -Wpedantic -DLINUX"
 let g:syntastic_c_cflags = ''
-let g:syntastic_c_include_dirs = [ '/home/richard/Python-2.7.11_install/include/python2.7' ]
+" let g:syntastic_c_include_dirs = [ '...' ]
 let g:syntastic_c_remove_include_errors = 0 " to avoid report error about unknown include
 let g:syntastic_c_no_include_search = 1
 let g:syntastic_c_no_default_include_dirs = 1
-"let b:syntastic_c_cflags = "-DLINUX"
+" let b:syntastic_c_cflags = "-DLINUX"
 let g:syntastic_c_check_header = 1
 
 let g:syntastic_cpp_compiler = 'clang++-6.0'
 let g:syntastic_cpp_compiler_options = "-std=c++17 -Wall -Wno-unknown-pragmas -Wextra -Wpedantic -DLINUX"
 let g:syntastic_cpp_include_dirs = [ '/home/beneyton/utils/boost_1_68_0/include/' ]
 let g:syntastic_cpp_check_header = 1
-let g:syntastic_quiet_messages = {
-            \ "file:p":  ['FastDelegate.h'] } " discard report on those files
-let g:syntastic_quiet_messages = {
-            \ "file":  ['/home/rbeneyton/work/libraries/msgpack/include/msgpack/type/nil.hpp'] }
 " let g:syntastic_quiet_messages = {
-"             \ "file:p":  ['nil.hpp'] }
-
+"             \ "file:p":  ['....h'] } " discard report on those files
 " suppress all msgpack related warning/error
-let g:syntastic_quiet_messages = {
-        \ "regex":  ['msgpack\|protobuf'],
-        \ "file:p":  ['msgpack\|protobuf'] }
+" let g:syntastic_quiet_messages = {
+"         \ "regex":  ['...\|...'],
+"         \ "file:p":  ['...\|...'] }
 
 
 let g:syntastic_cpp_remove_include_errors = 0 " to avoid report error about unknown include
@@ -1083,7 +1078,7 @@ let g:alternateExtensions_blk  = "h"
 let g:alternateExtensions_blkk = "h"
 let g:alternateExtensions_h    = "c,cpp,cxx,cc,CC,blk,blkk"
 
-let g:alternateSearchPath = 'sfr:../src,sfr:../../src,sfr:../include,sfr:../include/cruise/,sfr:../include/cruise2/'
+let g:alternateSearchPath = 'sfr:../src,sfr:../../src,sfr:../include'
 
 " ]]]
 " [[[ LSP
