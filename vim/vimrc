@@ -1261,7 +1261,7 @@ hi User7 term=inverse,bold ctermfg=White ctermbg=Black
 
 " xit treesitter colors plugin broken when retrieving hi colors from theme
 if has('nvim')
-  hi! link @XitHeadline pandocCitationID " Todo " \o/ meta! \o/ red/pink
+  hi! link @XitHeadline Todo " \o/ meta! \o/ red/pink
 
   hi! link @XitOpenCheckbox Type " yellow
   hi! link @XitOpenTaskMainLine Normal

@@ -131,22 +131,6 @@
   renameLimit = 10000
   renames = copies
 
-
-[url "ssh://git.corp:29418/"]
-    insteadOf = git.corp:/srv/git
-    insteadOf = ssh://git.corp/srv/git
-    insteadOf = gitolite@git.corp:
-
-[url "ssh://git.corp:29418/platform"]
-    insteadOf = git.corp:/srv/git/qdb
-    insteadOf = ssh://git.corp/srv/git/qdb
-    insteadOf = ssh://git.corp:29418/qdb
-    insteadOf = gitolite@git.corp:qdb
-    insteadOf = git.corp:/srv/git/qrrd
-    insteadOf = ssh://git.corp/srv/git/qrrd
-    insteadOf = ssh://git.corp:29418/qrrd
-    insteadOf = gitolite@git.corp:qrrd
-
 [transfer]
     fsckobjects = true
 [fetch]

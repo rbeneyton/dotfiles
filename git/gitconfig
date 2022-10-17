@@ -1,7 +1,7 @@
 [user]
-  name = Richard Beneyton
-  email = richard.beneyton@gmail.com
+  name = {{git_name}}
+  email = {{git_email}}
 
 [include]
-  path = {{trim (command_output "getent passwd \"$USER\" | cut -d : -f 6")}}/.gitconfig.include
+  path = {{trim (command_output "realpath ~")}}/.gitconfig.include
 

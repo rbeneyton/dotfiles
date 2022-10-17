@@ -2,9 +2,9 @@
 # "src in repo" = "install dst"
 
 # XXX
-# fix handlebars/vim fold market incompatibility in order to use template
-# so use [[[ for all template
-# otherwise explicit via = { target = "DST", type = "symbolic" }
+# fix handlebars/vim fold marker incompatibility in order to use template
+# so use [[[ for all template (+ vim modeline)
+# otherwise explicit via SRC = { target = "DST", type = "symbolic" }
 
 # bash
 [bash.files]
@@ -19,6 +19,7 @@
 
 # top
 [top.files]
+# toprc is invalid UTF8, so force type
 "top/toprc" = { target = "~/.toprc", type = "symbolic" }
 
 # gdb
@@ -95,6 +96,9 @@ redshift_night_temperature = "3800K"
 "git/include.gitconfig" = "~/.gitconfig.include"
 "git/gitignore.main" = "~/.gitignore"
 "git/git-submodule-align" = "~/bin/git-submodule-align"
+[git.variables]
+git_name = "Richard Beneyton"
+git_email = "richard.beneyton@gmail.com"
 
 # tmux
 [tmux.files]
