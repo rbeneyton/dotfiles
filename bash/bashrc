@@ -59,7 +59,7 @@ pathadd $HOME/.cargo/bin
 # ]]]
 
 export LANG=en_US.utf8
-export LC_TIME=C.UTF-8 # never 12H AM/PM date format
+export LC_TIME=fr_FR.UTF-8 # never 12H AM/PM date format
 
 # gdb fix
 export SOURCE_HIGHLIGHT_DATADIR=${HOME}/.source-highlight
@@ -74,6 +74,7 @@ ulimit -c unlimited
     alias ll='ls -lrth'
     alias llo='ls -lh'
     alias lla='ls -lrth -a'
+    alias datefull='date +"%Y/%m/%d %T.%N"'
     alias grep='grep --color=auto'
     alias gr=grep
     alias psu='ps -flwu $USER w f'
@@ -82,7 +83,9 @@ ulimit -c unlimited
     alias trs='tr -s "  " " " | sed -e "s/^\s*//"'
     alias less='/usr/bin/less -WsJ -j3 -x2'
     alias lless='less -WsNJ -j3 -x2'
-    alias l='less '
+    alias l='less'
+    alias bc='bc --quiet --mathlib'
+    alias c='cargo'
 
     function mkcd() {
         mkdir -p -- "$1" && cd -P -- "$1"

@@ -11,6 +11,8 @@ set --erase --universal fish_user_paths
 
 abbr --global --add bash "NOFISH=1 bash"
 
+# XXX no way to delete *all* functions to avoid configuration hysteresis
+
 # [[[ own installs
 
 function pathadd
@@ -63,7 +65,7 @@ pathadd $HOME/.cargo/bin
 # ]]]
 
 set --global --export LANG 'en_US.utf8'
-set --global --export LC_TIME 'C.UTF-8' # never 12H AM/PM date format
+set --global --export LC_TIME 'fr_FR.UTF-8' # never 12H AM/PM date format
 
 # gdb fix
 set --global --export SOURCE_HIGHLIGHT_DATADIR $HOME/.source-highlight
@@ -74,23 +76,23 @@ ulimit -c unlimited
 
 # [[[ misc
 
-    # function/alias aren't replaced when typing, abbrevation are
+    # function/alias aren't replaced when typing, abbrevations are
     alias ls "/bin/ls --color=tty"
     alias ll "ls -lrth"
     alias llo "ls -lh"
     abbr --global --add lla ls -lrth -a
+    alias datefull 'date +"%Y/%m/%d %T.%N"'
     alias grep "grep --color=auto"
     abbr --global --add gr grep
     abbr --global --add psu ps -flwu $USER w f
     abbr --global --add topu top -u $USER
     abbr --global --add cutd cut -d\' \'
-    function trs
-        command tr -s "  " " " | sed -e "s/^\s*//" $argv
-    end
+    alias trs 'tr -s "  " " " | sed -e "s/^\s*//"'
     alias less "less -WsJ -j3 -x2"
     alias lless "less -WsNJ -j3 -x2"
-    abbr --global --add l less
-    alias bc "bc -l"
+    alias l "less"
+    alias bc "bc --quiet --mathlib"
+    alias c "cargo"
 
     function mkcd
         command mkdir -p $argv
