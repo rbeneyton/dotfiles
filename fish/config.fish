@@ -90,9 +90,9 @@ ulimit -c unlimited
     alias trs 'tr -s "  " " " | sed -e "s/^\s*//"'
     alias less "less -WsJ -j3 -x2"
     alias lless "less -WsNJ -j3 -x2"
-    alias l "less"
+    alias l less
     alias bc "bc --quiet --mathlib"
-    alias c "cargo"
+    alias c cargo
 
     function mkcd
         command mkdir -p $argv

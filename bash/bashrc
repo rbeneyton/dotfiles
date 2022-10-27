@@ -83,9 +83,9 @@ ulimit -c unlimited
     alias trs='tr -s "  " " " | sed -e "s/^\s*//"'
     alias less='/usr/bin/less -WsJ -j3 -x2'
     alias lless='less -WsNJ -j3 -x2'
-    alias l='less'
+    alias l=less
     alias bc='bc --quiet --mathlib'
-    alias c='cargo'
+    alias c=cargo
 
     function mkcd() {
         mkdir -p -- "$1" && cd -P -- "$1"
@@ -113,7 +113,7 @@ ulimit -c unlimited
     export HISTIGNORE="#*:history*:h"
     #command starting with ' ' aren't recorded
     export HISTCONTROL=ignoreboth
-    alias h='history'
+    alias h=history
 
     alias i=ipython3
     alias is='PYTHONNOUSERSITE=on ipython3'
