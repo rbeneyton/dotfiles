@@ -1,5 +1,8 @@
 #!/bin/bash
 
+shopt -s expand_aliases
+source ~/.bashrc
+
 # make xkb settings robust/customizable on plug/unplug of keyboard (and triggered by kvm switch)
 # usage: $ inputplug -d -0 -c /.../inputplug.sh
 

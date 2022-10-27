@@ -11,7 +11,7 @@ set --erase --universal fish_user_paths
 
 abbr --global --add bash "NOFISH=1 bash"
 
-# XXX no way to delete *all* functions to avoid configuration hysteresis
+# XXX no way to delete *all* previously registered functions to avoid configuration hysteresis
 
 # [[[ own installs
 
