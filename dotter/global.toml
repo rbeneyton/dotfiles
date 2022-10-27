@@ -4,7 +4,7 @@
 # XXX
 # fix handlebars/vim fold marker incompatibility in order to use template
 # so use [[[ for all template (+ vim modeline)
-# otherwise explicit via SRC = { target = "DST", type = "symbolic" }
+# otherwise explicit via $SRC = { target = "$DST", type = "symbolic" }
 
 # bash
 [bash.files]

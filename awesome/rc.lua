@@ -754,7 +754,7 @@ awful.spawn.with_shell("pkill -u $USER blueman ; blueman-applet &")
 -- awful.spawn("setxkbmap -layout us -option compose:ralt,compose:rwin,ctrl:nocaps,shift:both_capslock_cancel,lv3:menu_switch")
 {{/if}}
 -- new ~trivial~ method with C-; mapping
-awful.spawn.with_shell("pkill -u $USER inputplug ; sleep 1.1 && inputplug -d -0 -c " .. home .. "/.config/xkb/inputplug.sh &> /tmp/inputplug.log &")
+awful.spawn.with_shell("pkill -u $USER inputplug ; sleep 0.5 && inputplug -d -0 -c " .. home .. "/.config/xkb/inputplug.sh &> /tmp/inputplug.log &")
 
 -- ]]]
 
