@@ -484,21 +484,24 @@ debian-install-base:
 	# apt-get install conda
 	apt-get install libtool libtool-bin autogen autoconf autoconf-archive automake cmake g++ pkg-config unzip curl
 	apt-get install firejail
-	apt-get install libcurl4-gnutls-dev
+	# apt-get install libcurl4-gnutls-dev
 	apt-get install sqlite3
 	apt-get install flex # for gcc (bug 84715 using multilib but not in src tree /o\)
 	apt-get install zlib1g-dev # zlib.h
-	apt-get install asciidoc gettext # git
-	apt-get install libncurses-dev # tig
+	apt-get install asciidoc gettext xmlto # git
+	apt-get install docbook-utils libncurses-dev # tig
 	apt-get install texinfo # gdb
 	apt-get install pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3 # alacritty
 	apt-get install libssl-dev # libevent
 	apt-get install bison # tmux
 	apt-get install bash-completion
+	apt-get clean
 
 debian-install-net:
 	apt-get install iputils-ping iputils-tracepath
 	apt-get install network-manager-openconnect network-manager-gnome network-manager-openconnect-gnome
+	apt-get install sylpheed
+	apt-get clean
 
 debian-install-graphic:
 	apt-get install awesome awesome-extra
@@ -516,6 +519,7 @@ debian-install-graphic:
 	# 1) keychron Fn keys
 	echo "options hid_apple fnmode=2" > /etc/modprobe.d/hid_apple.conf
 	update-initramfs -u
+	apt-get clean
 
 debian-install-misc:
 	# signal
@@ -523,6 +527,7 @@ debian-install-misc:
 	echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' > /etc/apt/sources.list.d/signal-xenial.list
 	apt-get update
 	apt-get install signal-desktop
+	apt-get clean
 
 debian-install-kernel-mac:
 	# 1) i915
@@ -542,6 +547,7 @@ debian-install-kernel-mac:
 	# 6) temperature
 	apt-get install lm-sensors
 	# sensors
+	apt-get clean
 
 # }}}
 # {{{ fish

@@ -182,7 +182,7 @@ ulimit -c unlimited
         abbr --global --add vimdiff nvim -d
     else
         set --global --export EDITOR vim
-        set --global --export MANPAGER="/bin/sh -c \"unset PAGER;col -b -x | vim -R -c 'set ft=man nomod nolist nonumber norelativenumber readonly' -c 'map q :q<CR>' -c 'map <SPACE> <C-D>' -\""
+        set --global --export MANPAGER "/bin/sh -c \"unset PAGER;col -b -x | vim -R -c 'set ft=man nomod nolist nonumber norelativenumber readonly' -c 'map q :q<CR>' -c 'map <SPACE> <C-D>' -\""
     end
     function v
         $EDITOR $argv

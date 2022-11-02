@@ -1,0 +1,14 @@
+# masage setup
+
+packages = [
+    "base",
+]
+
+[variables]
+awesome_network_interface = "wlan0"
+awesome_disk_interface = "sda"
+# quite overkill…
+redshift_lat = "45.78"
+redshift_lon = "3.08"
+
+# vim: filetype=cfg
