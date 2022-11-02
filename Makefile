@@ -338,6 +338,7 @@ $(MPC_INSTALL) : | $(GMP_INSTALL) $(MPFR_INSTALL) $(UTILS)
 mpc : $(MPC_INSTALL)
 
 GCC_INSTALL = $(UTILS)/gcc_install
+GCC_INSTALL = /usr
 $(GCC_INSTALL) : | $(MPC_INSTALL) $(GMP_INSTALL) $(MPFR_INSTALL) $(UTILS)
 $(GCC_INSTALL) :
 	# apt-get-install gcc-multilib flex
