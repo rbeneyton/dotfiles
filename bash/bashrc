@@ -81,6 +81,9 @@ ulimit -c unlimited
     alias topu='top -u $USER'
     alias cutd="cut -d' '"
     alias trs='tr -s "  " " " | sed -e "s/^\s*//"'
+    if type starship &> /dev/null; then
+        alias cat=bat
+    fi
     alias less='/usr/bin/less -WsJ -j3 -x2'
     alias lless='less -WsNJ -j3 -x2'
     alias l=less

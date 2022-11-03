@@ -88,6 +88,9 @@ ulimit -c unlimited
     abbr --global --add topu top -u $USER
     abbr --global --add cutd cut -d\' \'
     alias trs 'tr -s "  " " " | sed -e "s/^\s*//"'
+    if type bat &> /dev/null
+        alias cat "bat"
+    end
     alias less "less -WsJ -j3 -x2"
     alias lless "less -WsNJ -j3 -x2"
     alias l less

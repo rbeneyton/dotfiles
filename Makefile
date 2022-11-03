@@ -471,6 +471,8 @@ misc-user: $(BIN)
 	chmod u+x $(BIN)/yt-dlp
 	# starship
 	$(CARGO) install starship --locked
+	# bat
+	$(CARGO) install bat --locked
 
 # }}}
 # {{{ debian specific
