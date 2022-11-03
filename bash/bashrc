@@ -71,9 +71,25 @@ ulimit -c unlimited
 # [[[ misc
 
     alias ls='/bin/ls --color=tty'
-    alias ll='ls -lrth'
-    alias llo='ls -lh'
-    alias lla='ls -lrth -a'
+    if type exa &> /dev/null; then
+        alias e="exa --long --time-style=iso --classify --git --sort newest"
+        alias ea="exa --long --time-style=iso --classify --git --all --sort newest"
+        alias es="exa --long --time-style=iso --classify --git --sort size"
+        alias ee="exa --long --time-style=iso --classify --git --sort ext"
+        alias en="exa --long --time-style=iso --classify --git --sort name"
+        alias et="exa --tree --time-style=iso --classify --git --long"
+        alias et2="exa --tree --time-style=iso --classify --git --long --level=2"
+        alias et3="exa --tree --time-style=iso --classify --git --long --level=3"
+        alias et4="exa --tree --time-style=iso --classify --git --long --level=4"
+        alias ll="e"
+        alias lla="e --all"
+        unset LS_COLORS
+    else
+        export LS_COLORS='no=00:fi=00:di=00;94:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.jpg=00;35:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*.c=00;96:*.h=00;95:*.py=00;92'
+
+        alias ll='ls -lrth'
+        alias lla='ls -lrth -a'
+    fi
     alias datefull='date +"%Y/%m/%d %T.%N"'
     alias grep='grep --color=auto'
     alias gr=grep
@@ -81,7 +97,7 @@ ulimit -c unlimited
     alias topu='top -u $USER'
     alias cutd="cut -d' '"
     alias trs='tr -s "  " " " | sed -e "s/^\s*//"'
-    if type starship &> /dev/null; then
+    if type bat &> /dev/null; then
         alias cat=bat
     fi
     alias less='/usr/bin/less -WsJ -j3 -x2'
@@ -254,8 +270,6 @@ ulimit -c unlimited
 
 if [[ -n $PS1 ]]
 then
-    export LS_COLORS='no=00:fi=00:di=00;94:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.jpg=00;35:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*.c=00;96:*.h=00;95:*.py=00;92'
-
     # activate **
     shopt -s globstar
 

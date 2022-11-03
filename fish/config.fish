@@ -78,18 +78,39 @@ ulimit -c unlimited
 
     # function/alias aren't replaced when typing, abbrevations are
     alias ls "/bin/ls --color=tty"
-    alias ll "ls -lrth"
-    alias llo "ls -lh"
-    abbr --global --add lla ls -lrth -a
+    if type exa &> /dev/null
+        # usefull options at end for easy modification
+        abbr --global --add e "exa --long --time-style=iso --classify --git --sort newest"
+        abbr --global --add ea "exa --long --time-style=iso --classify --git --all --sort newest"
+        abbr --global --add es "exa --long --time-style=iso --classify --git --sort size"
+        abbr --global --add ee "exa --long --time-style=iso --classify --git --sort ext"
+        abbr --global --add en "exa --long --time-style=iso --classify --git --sort name"
+        abbr --global --add et "exa --tree --time-style=iso --classify --git --long"
+        abbr --global --add et2 "exa --tree --time-style=iso --classify --git --long --level=2"
+        abbr --global --add et3 "exa --tree --time-style=iso --classify --git --long --level=3"
+        abbr --global --add et4 "exa --tree --time-style=iso --classify --git --long --level=4"
+        abbr --global --add ll "exa --long --time-style=iso --classify --git --sort newest"
+        abbr --global --add lla "exa --all --long --time-style=iso --classify --git --sort newest"
+        set --global --erase LS_COLORS
+    else
+        set --global --export LS_COLORS 'no=00:fi=00:di=00;94:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.jpg=00;35:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*.c=00;96:*.h=00;95:*.py=00;92'
+
+        alias ll "ls -lrth"
+        abbr --global --add lla ls -lrth -a
+    end
     alias datefull 'date +"%Y/%m/%d %T.%N"'
-    alias grep "grep --color=auto"
+    if type rg &> /dev/null
+        alias grep "rg --engine auto --search-zip"
+    else
+        alias grep "grep --color=auto"
+    end
     abbr --global --add gr grep
     abbr --global --add psu ps -flwu $USER w f
     abbr --global --add topu top -u $USER
     abbr --global --add cutd cut -d\' \'
     alias trs 'tr -s "  " " " | sed -e "s/^\s*//"'
     if type bat &> /dev/null
-        alias cat "bat"
+        abbr --global --add cat "bat"
     end
     alias less "less -WsJ -j3 -x2"
     alias lless "less -WsNJ -j3 -x2"
@@ -282,7 +303,6 @@ ulimit -c unlimited
 # [[[ interactiv only settings
 
 if status --is-interactive
-    set --global --export LS_COLORS 'no=00:fi=00:di=00;94:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.jpg=00;35:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*.c=00;96:*.h=00;95:*.py=00;92'
 
     # [[[ prompt
 

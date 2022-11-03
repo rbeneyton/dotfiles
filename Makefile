@@ -36,7 +36,7 @@ $(DOTTER) : | $(BIN) $(UTILS) rust-update
 	$(eval NAME := dotter)
 	$(eval SRC := $(UTILS)/$(NAME)/)
 	rm -rf $(SRC)
-	git clone https://github.com/SuperCuber/dotter.git $(SRC)
+	git clone --branch master --single-branch --depth 30 https://github.com/SuperCuber/dotter.git $(SRC)
 	$(CARGO) build --manifest-path $(SRC)/Cargo.toml --release
 	cp $(SRC)/target/release/$(NAME) $(BIN)/
 	rm -rf $(SRC)
@@ -460,19 +460,35 @@ rust-install:
 
 rust-update: rust-install
 	${HOME}/.cargo/bin/rustup update
+	rustup component add rustfmt clippy rust-docs rust-std rust-analyzer
 
 # }}}
 # {{{ user tools
 
-misc-user: $(BIN)
+misc-user: $(BIN) rg
 	# yt-dlp
 	rm -f $(BIN)/yt-dlp
 	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/yt-dlp -o $(BIN)/yt-dlp
 	chmod u+x $(BIN)/yt-dlp
-	# starship
-	$(CARGO) install starship --locked
-	# bat
-	$(CARGO) install bat --locked
+	$(CARGO) install --locked starship
+	$(CARGO) install --locked hyperfine
+	$(CARGO) install --locked exa
+	$(CARGO) install --locked bat
+	# $(CARGO) install --locked just
+
+RG = $(BIN)/rg
+$(RG) : | $(BIN) $(UTILS) rust-update
+	$(eval NAME := rg)
+	$(eval SRC := $(UTILS)/$(NAME)/)
+	rm -rf $(SRC)
+	git clone --branch master --single-branch --depth 30 https://github.com/BurntSushi/ripgrep $(SRC)
+	# TODO simd
+	RUSTC_BOOTSTRAP=encoding_rs RUSTFLAGS="-C target-cpu=native" \
+		$(CARGO) build --manifest-path $(SRC)/Cargo.toml \
+		--release --features 'pcre2'
+	cp $(SRC)/target/release/$(NAME) $(BIN)/
+	rm -rf $(SRC)
+rg: $(RG)
 
 # }}}
 # {{{ debian specific
