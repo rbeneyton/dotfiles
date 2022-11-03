@@ -68,6 +68,8 @@ awesome_xset_burn_period = "130"
 "redshift/redshift.conf" = { target = "~/.config/redshift.conf", type = "template" }
 [redshift.variables]
 redshift_night_temperature = "3800K"
+redshift_lat = "48.85"
+redshift_lon = "2.35"
 
 # compose key
 [compose.files]
