@@ -96,6 +96,7 @@ redshift_night_temperature = "3800K"
 "git/include.gitconfig" = "~/.gitconfig.include"
 "git/gitignore.main" = "~/.gitignore"
 "git/git-submodule-align" = "~/bin/git-submodule-align"
+"git/tigrc" = "~/.tigrc"
 [git.variables]
 git_name = "Richard Beneyton"
 git_email = "richard.beneyton@gmail.com"

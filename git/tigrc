@@ -1,0 +1,4 @@
+bind main C ?git cherry-pick -x %(commit)
+set show-notes = true
+bind generic I @sh -c "echo -n %(commit) | xclip -selection primary"
+# TODO put into tmux paste buffer too?
