@@ -1,0 +1,10 @@
+--trace-children=no
+--track-fds=yes
+--child-silent-after-fork=yes
+--read-var-info=yes
+--num-callers=20
+--memcheck:leak-check=full
+--memcheck:leak-resolution=high
+--memcheck:show-reachable=yes
+--memcheck:track-origins=yes
+--vex-iropt-register-updates=allregs-at-mem-access

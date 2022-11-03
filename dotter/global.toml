@@ -32,6 +32,10 @@
 "gdb/pahole/pahole.py" = { target = "~/.config/gdb/pahole/pahole.py", type = "symbolic" }
 "gdb/source-highlight/src" = { target = "~/.source-highlight", type = "symbolic", recurse = false }
 
+# valgrind
+[valgrind.files]
+"valgrind/valgrindrc" = "~/.valgrindrc"
+
 # awesome
 [awesome.files]
 "awesome/rc.lua"    = "~/.config/awesome/rc.lua"
@@ -133,6 +137,7 @@ depends = [
     "starship",
     "tmux",
     "top",
+    "valgrind",
     "vim",
     "xkb",
 ]
