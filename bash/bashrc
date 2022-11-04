@@ -91,7 +91,12 @@ ulimit -c unlimited
         alias lla='ls -lrth -a'
     fi
     alias datefull='date +"%Y/%m/%d %T.%N"'
-    alias grep='grep --color=auto'
+    if type rg &> /dev/null; then
+        alias rg="rg --engine auto --search-zip"
+        alias grep=rg
+    else
+        alias grep="grep --color=auto"
+    fi
     alias gr=grep
     alias psu='ps -flwu $USER w f'
     alias topu='top -u $USER'
