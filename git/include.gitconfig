@@ -109,6 +109,12 @@
 [push]
   default = tracking
 
+[rebase]
+  updateRefs = true
+
+[pull]
+  rebase = true
+
 [notes]
   displayRef = refs/notes/*
 
