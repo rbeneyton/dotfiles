@@ -2,3 +2,10 @@ bind main C ?git cherry-pick -x %(commit)
 set show-notes = true
 bind generic I @sh -c "echo -n %(commit) | xclip -selection primary"
 # TODO put into tmux paste buffer too?
+# set git-colors = no             # Do not read Git's color settings.
+color diff-stat green default # default is blue and unreadable
+#color date 165 235 bold # date in grey
+color date blue black bold # date in grey
+
+# Limit number of commits loaded by default to 1000
+#set main-options = -n 1000
