@@ -4,6 +4,7 @@ GNU_MIRROR = https://ftp.igh.cnrs.fr/pub/gnu/
 GNU_MIRROR = https://mirror.ibcp.fr/pub/gnu/
 # use virgin PATH to avoid to be pollute by env (only local git & rust used directly)
 CLEAN_PATH = /usr/local/bin:/usr/bin:/bin
+CLEAN_LD_LIBRARY_PATH =
 CARGO = ${HOME}/.cargo/bin/cargo
 ENV = env
 
@@ -58,12 +59,12 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	wget https://www.kernel.org/pub/software/scm/git/git-2.38.1.tar.gz -O $(TAR)
 	tar xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
-	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
 			CC=$(GCC_INSTALL)/bin/gcc \
-			CFLAGS='-march=native -flto -O3 -DNDEBUG' \
+			CFLAGS='-march=native -flto -O3' \
 			$(SRC)/configure \
 				--prefix=$(INSTALL) \
 				--with-curl \
@@ -85,13 +86,13 @@ $(TIG_INSTALL) : | $(GCC_INSTALL) $(GIT_INSTALL) $(UTILS)
 	# no out-of-source-tree support
 	rm -rf $(SRC)
 	git clone --branch master --single-branch --depth 30 https://github.com/jonas/tig.git $(SRC)
-	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			./autogen.sh; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
 			CC=$(GCC_INSTALL)/bin/gcc \
-			CFLAGS='-march=native -flto -O3 -DNDEBUG' \
+			CFLAGS='-march=native -flto -O3' \
 			$(SRC)/configure \
 				--prefix=$(INSTALL) \
 				; \
@@ -115,14 +116,14 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	git clone --branch release-0.8 --single-branch --depth 10 https://github.com/rbeneyton/neovim.git $(SRC)
 	rm -rf $(BUILD)
 	mkdir -p $(BUILD)
-	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
 			CC=$(GCC_INSTALL)/bin/gcc \
-			CFLAGS='-march=native -flto -O3 -DNDEBUG' \
+			CFLAGS='-march=native -flto -O3' \
 			CXX=$(GCC_INSTALL)/bin/g++ \
-			CXXFLAGS='-march=native -flto -O3 -DNDEBUG' \
+			CXXFLAGS='-march=native -flto -O3' \
 			LDFLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64' \
 			make -C $(SRC) distclean; \
 			nice -n 20 \
@@ -192,13 +193,13 @@ $(LIBEVENT_INSTALL) : | $(UTILS)
 	wget https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz -O $(TAR)
 	tar xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
-	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
 			CC=$(GCC_INSTALL)/bin/gcc \
-			CFLAGS='-march=native -flto -O3 -DNDEBUG' \
-			CXXFLAGS='-march=native -flto -O3 -DNDEBUG' \
+			CFLAGS='-march=native -flto -O3' \
+			CXXFLAGS='-march=native -flto -O3' \
 			$(SRC)/configure \
 				--prefix=$(INSTALL) \
 				--disable-debug \
@@ -217,14 +218,14 @@ $(TMUX_INSTALL) : | $(UTILS) $(LIBEVENT_INSTALL) $(GCC_INSTALL)
 	$(eval LIBEVENT := $(UTILS)/libevent_install/lib/)
 	rm -rf $(SRC)
 	git clone --branch master --single-branch --depth 300 https://github.com/tmux/tmux.git $(SRC)
-	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			./autogen.sh; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
 			CC=$(GCC_INSTALL)/bin/gcc \
-			CFLAGS='-march=native -flto -O3 -DNDEBUG' \
-			CXXFLAGS='-march=native -flto -O3 -DNDEBUG' \
+			CFLAGS='-march=native -flto -O3' \
+			CXXFLAGS='-march=native -flto -O3' \
 			PKG_CONFIG_PATH=$(LIBEVENT)/pkgconfig/ \
 			$(SRC)/configure \
 				--prefix=$(INSTALL) \
@@ -252,7 +253,7 @@ $(GCC_INSTALL) :
 	git clone --branch releases/gcc-12 --single-branch --depth 10 https://gcc.gnu.org/git/gcc.git $(SRC)
 	mkdir -p $(BUILD)
 	# -disable-multilib --disable-shared # gcc bug 66955
-	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			(cd $(SRC) && ./contrib/download_prerequisites); \
@@ -289,14 +290,14 @@ $(GDB_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	# recursiv make/configure isn't possible with gdb
 	# autoreconf -f -i $(SRC) neither
 	# XXX never ever use make -j
-	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
 			CC=$(GCC_INSTALL)/bin/gcc \
-			CFLAGS='-march=native -flto -O3 -DNDEBUG' \
+			CFLAGS='-march=native -flto -O3' \
 			CXX=$(GCC_INSTALL)/bin/g++ \
-			CXXFLAGS='-march=native -flto -O3 -DNDEBUG' \
+			CXXFLAGS='-march=native -flto -O3' \
 			LDFLAGS='-static-libgcc -static-libstdc++' \
 			$(SRC)/configure \
 				--prefix=$(INSTALL) \
@@ -323,7 +324,7 @@ $(LLVM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	rm -rf $(SRC)
 	git clone --branch release/15.x --single-branch --depth 300 https://github.com/llvm/llvm-project.git $(SRC)
 	mkdir -p $(BUILD)
-	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
@@ -481,14 +482,14 @@ $(FISH_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	wget https://github.com/fish-shell/fish-shell/releases/download/3.5.1/fish-3.5.1.tar.xz -O $(TAR)
 	tar xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
-	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			cmake -G 'Unix Makefiles' \
 				-DCMAKE_C_COMPILER=$(GCC_INSTALL)/bin/gcc \
-				-DCMAKE_C_FLAGS='-march=native -O3 -flto -DNDEBUG' \
+				-DCMAKE_C_FLAGS='-march=native -O3 -flto' \
 				-DCMAKE_CXX_COMPILER=$(GCC_INSTALL)/bin/g++ \
-				-DCMAKE_CXX_FLAGS='-march=native -O3 -flto -DNDEBUG' \
+				-DCMAKE_CXX_FLAGS='-march=native -O3 -flto' \
 				-DCMAKE_CXX_LINK_FLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64 -static-libgcc -static-libstdc++' \
 				-DCMAKE_BUILD_TYPE=Invalid \
 				-DCMAKE_INSTALL_PREFIX=$(INSTALL) \
@@ -514,14 +515,14 @@ $(FREERDP_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	rm -rf $(SRC)
 	git clone --branch master --single-branch --depth 10 https://github.com/FreeRDP/FreeRDP.git $(SRC)
 	mkdir -p $(BUILD)
-	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			cmake -G 'Unix Makefiles' \
 				-DCMAKE_C_COMPILER=$(GCC_INSTALL)/bin/gcc \
-				-DCMAKE_C_FLAGS='-march=native -O3 -flto -DNDEBUG' \
+				-DCMAKE_C_FLAGS='-march=native -O3 -flto' \
 				-DCMAKE_CXX_COMPILER=$(GCC_INSTALL)/bin/g++ \
-				-DCMAKE_CXX_FLAGS='-march=native -O3 -flto -DNDEBUG' \
+				-DCMAKE_CXX_FLAGS='-march=native -O3 -flto' \
 				-DCMAKE_CXX_LINK_FLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64' \
 				-DCMAKE_BUILD_TYPE=Invalid \
 				-DCMAKE_INSTALL_PREFIX=$(INSTALL) \
