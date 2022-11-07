@@ -65,7 +65,7 @@ pathadd $HOME/.cargo/bin
 # ]]]
 
 set --global --export LANG 'en_US.utf8'
-set --global --export LC_TIME 'fr_FR.UTF-8' # never 12H AM/PM date format
+set --global --export LC_TIME 'C.UTF-8' # never 12H AM/PM date format
 
 # gdb fix
 set --global --export SOURCE_HIGHLIGHT_DATADIR $HOME/.source-highlight
@@ -77,8 +77,8 @@ ulimit -c unlimited
 # [[[ misc
 
     # function/alias aren't replaced when typing, abbrevations are
-    alias ls "/bin/ls --color=tty"
     if type exa &> /dev/null
+        alias ls "exa"
         # usefull options at end for easy modification
         abbr --global --add e "exa --long --time-style=iso --classify --git --sort newest"
         abbr --global --add ea "exa --long --time-style=iso --classify --git --all --sort newest"
@@ -95,6 +95,7 @@ ulimit -c unlimited
     else
         set --global --export LS_COLORS 'no=00:fi=00:di=00;94:ln=00;36:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.jpg=00;35:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*.c=00;96:*.h=00;95:*.py=00;92'
 
+        alias ls "/bin/ls --color=tty"
         alias ll "ls -lrth"
         abbr --global --add lla ls -lrth -a
     end

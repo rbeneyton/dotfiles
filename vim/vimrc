@@ -302,6 +302,13 @@ set statusline+=%0*    "switch back to statusline highlight
 " hi User1 term=inverse,bold cterm=inverse,bold ctermfg=lightyellow
 
 " ]]]
+" [[[ fugitive
+
+nnoremap <Leader>gv :Gvdiffsplit!<CR>
+nnoremap <Leader>ga :Git difftool -y<CR>
+nnoremap <Leader>gup :Gcd .<CR>
+
+" ]]]
 " [[[ external tools: diff, make, grep, path…
 
 set diffopt=filler,context:5,iwhite
