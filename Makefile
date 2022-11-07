@@ -310,8 +310,6 @@ $(GDB_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 			rm -rf $(INSTALL); \
 			make -C gdb install; \
 			make -C gdbserver install; \
-			patchelf --set-rpath $(GCC_INSTALL)/lib64 $(INSTALL)/bin/gdb; \
-			patchelf --set-rpath $(GCC_INSTALL)/lib64 $(INSTALL)/bin/gdbserver; \
 			rm -rf $(BUILD) $(SRC);")
 gdb : $(GDB_INSTALL)
 
@@ -333,7 +331,7 @@ $(LLVM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 				-DCMAKE_C_FLAGS='-march=native' \
 				-DCMAKE_CXX_COMPILER=$(GCC_INSTALL)/bin/g++ \
 				-DCMAKE_CXX_FLAGS='-march=native' \
-				-DCMAKE_CXX_LINK_FLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64' \
+				-DCMAKE_CXX_LINK_FLAGS='-static-libgcc -static-libstdc++' \
 				-DLLVM_ENABLE_LTO=ON \
 				-DLLVM_TARGETS_TO_BUILD='WebAssembly;X86' \
 				-DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;lldb;lld' \
@@ -490,7 +488,7 @@ $(FISH_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 				-DCMAKE_C_FLAGS='-march=native -O3 -flto' \
 				-DCMAKE_CXX_COMPILER=$(GCC_INSTALL)/bin/g++ \
 				-DCMAKE_CXX_FLAGS='-march=native -O3 -flto' \
-				-DCMAKE_CXX_LINK_FLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64 -static-libgcc -static-libstdc++' \
+				-DCMAKE_CXX_LINK_FLAGS='-static-libgcc -static-libstdc++' \
 				-DCMAKE_BUILD_TYPE=Invalid \
 				-DCMAKE_INSTALL_PREFIX=$(INSTALL) \
 				$(SRC) \
@@ -523,7 +521,7 @@ $(FREERDP_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 				-DCMAKE_C_FLAGS='-march=native -O3 -flto' \
 				-DCMAKE_CXX_COMPILER=$(GCC_INSTALL)/bin/g++ \
 				-DCMAKE_CXX_FLAGS='-march=native -O3 -flto' \
-				-DCMAKE_CXX_LINK_FLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64' \
+				-DCMAKE_CXX_LINK_FLAGS='-static-libgcc -static-libstdc++' \
 				-DCMAKE_BUILD_TYPE=Invalid \
 				-DCMAKE_INSTALL_PREFIX=$(INSTALL) \
 				$(SRC) \
