@@ -21,7 +21,7 @@ UTILS = ${HOME}/utils
 $(UTILS):
 	mkdir -p $@
 
-utils-install: gdb git tig tmux dotter neovim neovim-lsp-python neovim-lsp-rust fish
+utils-install: gdb git tig tmux dotter neovim neovim-lsp-python fish
 
 # trigger dotter update
 up:
@@ -154,17 +154,6 @@ $(NEOVIM_LSP_PYTHON) : | $(BIN) $(UTILS)
 	rm -f $(BIN)/pylsp
 	ln -s $(SRC)/bin/pylsp $(BIN)/
 neovim-lsp-python: $(NEOVIM_LSP_PYTHON)
-
-NEOVIM_LSP_RUST = $(BIN)/rust-analyzer
-$(NEOVIM_LSP_RUST) : | $(UTILS) rust-update
-	$(eval NAME := rust-analyzer)
-	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
-	rm -rf $(SRC)
-	git clone --branch release --single-branch --depth 10 https://github.com/rust-analyzer/rust-analyzer.git $(SRC)
-	$(CARGO) build --manifest-path $(SRC)/Cargo.toml --release
-	cp $(SRC)/target/release/$(NAME) $(BIN)/
-	rm -rf $(SRC)
-neovim-lsp-rust: $(NEOVIM_LSP_RUST)
 
 # }}}
 # {{{ alacritty
