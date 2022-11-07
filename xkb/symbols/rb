@@ -2,10 +2,10 @@ default partial modifier_keys
 xkb_symbols "rb" {
     name[Group1]= "English (US, tmux friendly)";
 
-    // extend ; via Control -> Home
+    // extend ';' via Control -> Home
     key <AC10> {
         type= "RB_BASE_SHIFT_CONTROL",
-        symbols[Group1]= [ semicolon, colon, KP_Home ]
+        symbols[Group1]= [ semicolon, colon, Home ]
     };
 };
 
