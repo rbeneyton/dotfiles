@@ -5,6 +5,7 @@ GNU_MIRROR = https://mirror.ibcp.fr/pub/gnu/
 # use virgin PATH to avoid to be pollute by env (only local git & rust used directly)
 CLEAN_PATH = /usr/local/bin:/usr/bin:/bin
 CARGO = ${HOME}/.cargo/bin/cargo
+ENV = env
 
 BIN = ${HOME}/bin
 $(BIN):
@@ -57,7 +58,7 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	wget https://www.kernel.org/pub/software/scm/git/git-2.38.1.tar.gz -O $(TAR)
 	tar xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
-	(env -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
@@ -84,7 +85,7 @@ $(TIG_INSTALL) : | $(GCC_INSTALL) $(GIT_INSTALL) $(UTILS)
 	# no out-of-source-tree support
 	rm -rf $(SRC)
 	git clone --branch master --single-branch --depth 30 https://github.com/jonas/tig.git $(SRC)
-	(env -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			./autogen.sh; \
@@ -114,7 +115,7 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	git clone --branch release-0.8 --single-branch --depth 10 https://github.com/rbeneyton/neovim.git $(SRC)
 	rm -rf $(BUILD)
 	mkdir -p $(BUILD)
-	(env -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
@@ -191,7 +192,7 @@ $(LIBEVENT_INSTALL) : | $(UTILS)
 	wget https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/libevent-2.1.12-stable.tar.gz -O $(TAR)
 	tar xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
-	(env -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
@@ -216,7 +217,7 @@ $(TMUX_INSTALL) : | $(UTILS) $(LIBEVENT_INSTALL) $(GCC_INSTALL)
 	$(eval LIBEVENT := $(UTILS)/libevent_install/lib/)
 	rm -rf $(SRC)
 	git clone --branch master --single-branch --depth 300 https://github.com/tmux/tmux.git $(SRC)
-	(env -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			./autogen.sh; \
@@ -251,7 +252,7 @@ $(GCC_INSTALL) :
 	git clone --branch releases/gcc-12 --single-branch --depth 10 https://gcc.gnu.org/git/gcc.git $(SRC)
 	mkdir -p $(BUILD)
 	# -disable-multilib --disable-shared # gcc bug 66955
-	(env -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			(cd $(SRC) && ./contrib/download_prerequisites); \
@@ -288,7 +289,7 @@ $(GDB_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	# recursiv make/configure isn't possible with gdb
 	# autoreconf -f -i $(SRC) neither
 	# XXX never ever use make -j
-	(env -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
@@ -322,7 +323,7 @@ $(LLVM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	rm -rf $(SRC)
 	git clone --branch release/15.x --single-branch --depth 300 https://github.com/llvm/llvm-project.git $(SRC)
 	mkdir -p $(BUILD)
-	(env -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
@@ -480,7 +481,7 @@ $(FISH_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	wget https://github.com/fish-shell/fish-shell/releases/download/3.5.1/fish-3.5.1.tar.xz -O $(TAR)
 	tar xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
-	(env -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			cmake -G 'Unix Makefiles' \
@@ -513,7 +514,7 @@ $(FREERDP_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	rm -rf $(SRC)
 	git clone --branch master --single-branch --depth 10 https://github.com/FreeRDP/FreeRDP.git $(SRC)
 	mkdir -p $(BUILD)
-	(env -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			cmake -G 'Unix Makefiles' \
