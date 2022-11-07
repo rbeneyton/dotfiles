@@ -5,6 +5,8 @@ GNU_MIRROR = https://mirror.ibcp.fr/pub/gnu/
 # use virgin PATH to avoid to be pollute by env (only local git & rust used directly)
 CLEAN_PATH = /usr/local/bin:/usr/bin:/bin
 CLEAN_LD_LIBRARY_PATH =
+# leave empty if /run/user/$(shell id -u) limit reached
+BUILD_TREE = ${XDG_RUNTIME_DIR}/dotfiles
 CARGO = ${HOME}/.cargo/bin/cargo
 ENV = env
 
@@ -36,7 +38,7 @@ upforce:
 DOTTER = $(BIN)/dotter
 $(DOTTER) : | $(BIN) $(UTILS) rust-update
 	$(eval NAME := dotter)
-	$(eval SRC := $(UTILS)/$(NAME)/)
+	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	rm -rf $(SRC)
 	git clone --branch master --single-branch --depth 30 https://github.com/SuperCuber/dotter.git $(SRC)
 	$(CARGO) build --manifest-path $(SRC)/Cargo.toml --release
@@ -50,7 +52,7 @@ dotter: $(DOTTER)
 GIT_INSTALL = $(UTILS)/git_install
 $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval NAME := git)
-	$(eval SRC := $(UTILS)/$(NAME))
+	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	$(eval TAR := $(UTILS)/$(NAME).tar.gz)
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	# no out-of-source-tree support
@@ -81,7 +83,7 @@ git : $(GIT_INSTALL)
 TIG_INSTALL = $(UTILS)/tig_install
 $(TIG_INSTALL) : | $(GCC_INSTALL) $(GIT_INSTALL) $(UTILS)
 	$(eval NAME := tig)
-	$(eval SRC := $(UTILS)/$(NAME))
+	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	# no out-of-source-tree support
 	rm -rf $(SRC)
@@ -109,7 +111,7 @@ tig : $(TIG_INSTALL)
 NEOVIM_INSTALL = $(UTILS)/neovim_install
 $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval NAME := neovim)
-	$(eval SRC := $(UTILS)/$(NAME)/)
+	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	$(eval INSTALL := $(UTILS)/$(NAME)_install/)
 	$(eval BUILD := $(SRC)/build/)
 	rm -rf $(SRC)
@@ -156,7 +158,7 @@ neovim-lsp-python: $(NEOVIM_LSP_PYTHON)
 NEOVIM_LSP_RUST = $(BIN)/rust-analyzer
 $(NEOVIM_LSP_RUST) : | $(UTILS) rust-update
 	$(eval NAME := rust-analyzer)
-	$(eval SRC := $(UTILS)/$(NAME)/)
+	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	rm -rf $(SRC)
 	git clone --branch release --single-branch --depth 10 https://github.com/rust-analyzer/rust-analyzer.git $(SRC)
 	$(CARGO) build --manifest-path $(SRC)/Cargo.toml --release
@@ -170,7 +172,7 @@ neovim-lsp-rust: $(NEOVIM_LSP_RUST)
 ALACRITTY = $(BIN)/alacritty
 $(ALACRITTY) : | $(BIN) $(UTILS) rust-update
 	$(eval NAME := alacritty)
-	$(eval SRC := $(UTILS)/$(NAME)/)
+	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	rm -rf $(SRC)
 	# git clone --branch master --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
 	git clone --branch v0.10.1 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
@@ -185,7 +187,7 @@ alacritty: $(ALACRITTY)
 LIBEVENT_INSTALL = $(UTILS)/libevent_install
 $(LIBEVENT_INSTALL) : | $(UTILS)
 	$(eval NAME := libevent)
-	$(eval SRC := $(UTILS)/$(NAME)/)
+	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	$(eval TAR := $(UTILS)/$(NAME).tar.gz)
 	$(eval INSTALL := $(UTILS)/$(NAME)_install/)
 	rm -rf $(SRC)
@@ -213,9 +215,8 @@ libevent: $(LIBEVENT_INSTALL)
 TMUX_INSTALL = $(UTILS)/tmux_install
 $(TMUX_INSTALL) : | $(UTILS) $(LIBEVENT_INSTALL) $(GCC_INSTALL)
 	$(eval NAME := tmux)
-	$(eval SRC := $(UTILS)/$(NAME)/)
+	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	$(eval INSTALL := $(UTILS)/$(NAME)_install/)
-	$(eval LIBEVENT := $(UTILS)/libevent_install/lib/)
 	rm -rf $(SRC)
 	git clone --branch master --single-branch --depth 300 https://github.com/tmux/tmux.git $(SRC)
 	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
@@ -226,7 +227,7 @@ $(TMUX_INSTALL) : | $(UTILS) $(LIBEVENT_INSTALL) $(GCC_INSTALL)
 			CC=$(GCC_INSTALL)/bin/gcc \
 			CFLAGS='-march=native -flto -O3' \
 			CXXFLAGS='-march=native -flto -O3' \
-			PKG_CONFIG_PATH=$(LIBEVENT)/pkgconfig/ \
+			PKG_CONFIG_PATH=$(LIBEVENT_INSTALL)/pkgconfig/ \
 			$(SRC)/configure \
 				--prefix=$(INSTALL) \
 				--disable-debug \
@@ -234,7 +235,7 @@ $(TMUX_INSTALL) : | $(UTILS) $(LIBEVENT_INSTALL) $(GCC_INSTALL)
 			make -C $(SRC) -j all; \
 			rm -rf $(INSTALL); \
 			make -C $(SRC) install; \
-			patchelf --set-rpath $(LIBEVENT) $(INSTALL)/bin/tmux; \
+			patchelf --set-rpath $(LIBEVENT_INSTALL)/lib $(INSTALL)/bin/tmux; \
 			rm -rf $(SRC);")
 tmux: $(TMUX_INSTALL)
 
@@ -246,7 +247,7 @@ $(GCC_INSTALL) : | $(UTILS)
 $(GCC_INSTALL) :
 	# apt-get-install gcc-multilib flex
 	$(eval NAME := gcc)
-	$(eval SRC := $(UTILS)/$(NAME))
+	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	$(eval BUILD := $(SRC)/build)
 	rm -rf $(SRC)
@@ -277,7 +278,7 @@ gcc : $(GCC_INSTALL)
 GDB_INSTALL = $(UTILS)/gdb_install
 $(GDB_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval NAME := gdb)
-	$(eval SRC := $(UTILS)/$(NAME))
+	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	$(eval TAR := $(UTILS)/$(NAME).tar.xz)
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	$(eval BUILD := $(SRC)/build)
@@ -316,7 +317,7 @@ gdb : $(GDB_INSTALL)
 LLVM_INSTALL = $(UTILS)/llvm_install
 $(LLVM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval NAME := llvm)
-	$(eval SRC := $(UTILS)/$(NAME)/)
+	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	$(eval INSTALL := $(UTILS)/$(NAME)_install/)
 	$(eval BUILD := $(SRC)/build/)
 	rm -rf $(SRC)
@@ -376,7 +377,7 @@ misc-user: $(BIN) rg
 RG = $(BIN)/rg
 $(RG) : | $(BIN) $(UTILS) rust-update
 	$(eval NAME := rg)
-	$(eval SRC := $(UTILS)/$(NAME)/)
+	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	rm -rf $(SRC)
 	git clone --branch master --single-branch --depth 30 https://github.com/BurntSushi/ripgrep $(SRC)
 	# TODO simd
