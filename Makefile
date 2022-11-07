@@ -239,107 +239,8 @@ tmux: $(TMUX_INSTALL)
 # }}}
 # {{{ gcc/gdb/llvm
 
-GMP_INSTALL = $(UTILS)/gmp_install
-$(GMP_INSTALL) : | $(UTILS)
-	$(eval NAME := gmp)
-	$(eval SRC := $(UTILS)/$(NAME))
-	$(eval TAR := $(UTILS)/$(NAME).tar.xz)
-	$(eval INSTALL := $(UTILS)/$(NAME)_install)
-	$(eval BUILD := $(SRC)/build)
-	rm -rf $(SRC)
-	mkdir -p $(SRC)
-	wget $(GNU_MIRROR)/gmp/gmp-6.2.1.tar.xz -O $(TAR)
-	tar xf $(TAR) -C $(SRC) --strip-components 1
-	rm $(TAR)
-	mkdir -p $(BUILD)
-	(env -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
-		bash --noprofile --norc -c " \
-			set -e; \
-			CPP=/usr/bin/cpp \
-			CC=/usr/bin/gcc \
-			CFLAGS='-march=native -O3 -DNDEBUG' \
-			CXX=/usr/bin/g++ \
-			CXXFLAGS='-march=native -O3 -DNDEBUG' \
-			$(SRC)/configure --help; \
-			$(SRC)/configure \
-				--prefix=$(INSTALL) \
-				; \
-			nice -n 20 \
-				make -j $(NPROC); \
-			make check; \
-			rm -rf $(INSTALL); \
-			make install; \
-			rm -rf $(BUILD) $(SRC);")
-gmp : $(GMP_INSTALL)
-
-MPFR_INSTALL = $(UTILS)/mpfr_install
-$(MPFR_INSTALL) : | $(GMP_INSTALL) $(UTILS)
-	$(eval NAME := mpfr)
-	$(eval SRC := $(UTILS)/$(NAME))
-	$(eval TAR := $(UTILS)/$(NAME).tar.xz)
-	$(eval INSTALL := $(UTILS)/$(NAME)_install)
-	$(eval BUILD := $(SRC)/build)
-	rm -rf $(SRC)
-	mkdir -p $(SRC)
-	wget $(GNU_MIRROR)/mpfr/mpfr-4.1.0.tar.xz -O $(TAR)
-	tar xf $(TAR) -C $(SRC) --strip-components 1
-	rm $(TAR)
-	mkdir -p $(BUILD)
-	(env -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
-		bash --noprofile --norc -c " \
-			set -e; \
-			CPP=/usr/bin/cpp \
-			CC=/usr/bin/gcc \
-			CFLAGS='-march=native -O3 -DNDEBUG' \
-			$(SRC)/configure --help; \
-			$(SRC)/configure \
-				--prefix=$(INSTALL) \
-				--with-gmp=$(GMP_INSTALL) \
-				; \
-			nice -n 20 \
-				make -j $(NPROC); \
-			make check; \
-			rm -rf $(INSTALL); \
-			make install; \
-			rm -rf $(BUILD) $(SRC);")
-mpfr : $(MPFR_INSTALL)
-
-MPC_INSTALL = $(UTILS)/mpc_install
-$(MPC_INSTALL) : | $(GMP_INSTALL) $(MPFR_INSTALL) $(UTILS)
-	$(eval NAME := mpc)
-	$(eval SRC := $(UTILS)/$(NAME))
-	$(eval TAR := $(UTILS)/$(NAME).tar.xz)
-	$(eval INSTALL := $(UTILS)/$(NAME)_install)
-	$(eval BUILD := $(SRC)/build)
-	rm -rf $(SRC)
-	mkdir -p $(SRC)
-	wget $(GNU_MIRROR)/mpc/mpc-1.2.1.tar.gz -O $(TAR)
-	tar xf $(TAR) -C $(SRC) --strip-components 1
-	rm $(TAR)
-	mkdir -p $(BUILD)
-	(env -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
-		bash --noprofile --norc -c " \
-			set -e; \
-			CPP=/usr/bin/cpp \
-			CC=/usr/bin/gcc \
-			CFLAGS='-march=native -O3 -DNDEBUG' \
-			$(SRC)/configure --help; \
-			$(SRC)/configure \
-				--prefix=$(INSTALL) \
-				--with-gmp=$(GMP_INSTALL) \
-				--with-mpfr=$(MPFR_INSTALL) \
-				; \
-			nice -n 20 \
-				make -j $(NPROC); \
-			make check; \
-			rm -rf $(INSTALL); \
-			make install; \
-			rm -rf $(BUILD) $(SRC);")
-mpc : $(MPC_INSTALL)
-
 GCC_INSTALL = $(UTILS)/gcc_install
-GCC_INSTALL = /usr
-$(GCC_INSTALL) : | $(MPC_INSTALL) $(GMP_INSTALL) $(MPFR_INSTALL) $(UTILS)
+$(GCC_INSTALL) : | $(UTILS)
 $(GCC_INSTALL) :
 	# apt-get-install gcc-multilib flex
 	$(eval NAME := gcc)
@@ -353,13 +254,11 @@ $(GCC_INSTALL) :
 	(env -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
+			(cd $(SRC) && ./contrib/download_prerequisites); \
 			CC=/usr/bin/gcc \
 			CXX=/usr/bin/g++ \
 			$(SRC)/configure \
 				--prefix=$(INSTALL) \
-				--with-gmp=$(GMP_INSTALL) \
-				--with-mpfr=$(MPFR_INSTALL) \
-				--with-mpc=$(MPC_INSTALL) \
 				--enable-languages=c,c++,lto \
 				--host=x86_64-pc-linux-gnu \
 				--disable-nls \
@@ -374,7 +273,7 @@ $(GCC_INSTALL) :
 gcc : $(GCC_INSTALL)
 
 GDB_INSTALL = $(UTILS)/gdb_install
-$(GDB_INSTALL) : | $(MPC_INSTALL) $(GMP_INSTALL) $(MPFR_INSTALL) $(GCC_INSTALL) $(UTILS)
+$(GDB_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval NAME := gdb)
 	$(eval SRC := $(UTILS)/$(NAME))
 	$(eval TAR := $(UTILS)/$(NAME).tar.xz)
@@ -397,11 +296,9 @@ $(GDB_INSTALL) : | $(MPC_INSTALL) $(GMP_INSTALL) $(MPFR_INSTALL) $(GCC_INSTALL) 
 			CFLAGS='-march=native -flto -O3 -DNDEBUG' \
 			CXX=$(GCC_INSTALL)/bin/g++ \
 			CXXFLAGS='-march=native -flto -O3 -DNDEBUG' \
+			LDFLAGS='-static-libgcc -static-libstdc++' \
 			$(SRC)/configure \
 				--prefix=$(INSTALL) \
-				--with-gmp=$(GMP_INSTALL) \
-				--with-mpfr=$(MPFR_INSTALL) \
-				--with-mpc=$(MPC_INSTALL) \
 				--with-curses \
 				--enable-tui \
 				--enable-lto \
