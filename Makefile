@@ -591,7 +591,7 @@ $(FISH_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 				-DCMAKE_C_FLAGS='-march=native -O3 -flto -DNDEBUG' \
 				-DCMAKE_CXX_COMPILER=$(GCC_INSTALL)/bin/g++ \
 				-DCMAKE_CXX_FLAGS='-march=native -O3 -flto -DNDEBUG' \
-				-DCMAKE_CXX_LINK_FLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64' \
+				-DCMAKE_CXX_LINK_FLAGS='-Wl,-rpath,$(GCC_INSTALL)/lib64 -L$(GCC_INSTALL)/lib64 -static-libgcc -static-libstdc++' \
 				-DCMAKE_BUILD_TYPE=Invalid \
 				-DCMAKE_INSTALL_PREFIX=$(INSTALL) \
 				$(SRC) \
