@@ -40,7 +40,7 @@
 [alias]
   graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
   st = status
-  fm = format-patch --patience
+  fm = format-patch
   ct = commit
   cta = commit --amend
   ctaa = commit -a --amend
@@ -56,8 +56,8 @@
   cp = cherry-pick
   cpx = cherry-pick -x
   cpa = cherry-pick --abort
-  df = diff --patience --full-index
-  dfs = diff --patience --full-index --stat
+  df = diff --full-index
+  dfs = diff --full-index --stat
   e  = !vim `git status --porcelain | grep '^M' | tr -s '  ' ' ' | cut -d' ' -f2`
   es = !vim `git status --porcelain | grep '^M ' | tr -s '  ' ' ' | cut -d' ' -f2`
   em = !vim `git status --porcelain | grep '^ M' | tr -s '  ' ' ' | cut -d' ' -f3`
@@ -65,7 +65,7 @@
   lg = log -p
   who = shortlog -s --
   squash = commit -s --amend -C HEAD
-  dc = diff --patience --cached --full-index
+  dc = diff --cached --full-index
   logp = log --pretty=oneline --decorate=full -15
   lol = log --graph --decorate --pretty=oneline --abbrev-commit
   lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
@@ -136,6 +136,7 @@
 [diff]
   renameLimit = 10000
   renames = copies
+  algorithm = patience
 
 [transfer]
     fsckobjects = true
