@@ -24,6 +24,9 @@ eggs/
 debug/
 target/
 
+# xit
+*.xit
+
 # misc
 .syntastic_c_config
 .syntastic_cpp_config
