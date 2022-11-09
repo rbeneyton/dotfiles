@@ -195,7 +195,7 @@ ulimit -c unlimited
             end
     end
     function tmuxpsgrep -d "find the tmux sessions/windows/pane with given process name"
-        tmuxps | grep -v 'grep,' | grep "$argv"
+        tmuxps | grep -v 'grep,' | /bin/grep "$argv"
     end
 
 # ]]]
@@ -253,13 +253,13 @@ ulimit -c unlimited
 
     # TODO safer method
     function gem -d "open git modified files"
-        $EDITOR $(git status --ignore-submodules --porcelain | grep --color=no "^[ M]M" | trs | cut -d" " -f2)
+        $EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)
     end
     function ges -d "open git staged files"
-        $EDITOR $(git status --ignore-submodules --porcelain | grep --color=no "^M" | trs | cut -d" " -f2)
+        $EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^M" | trs | cut -d" " -f2)
     end
     function ge -d "open git edited files"
-        $EDITOR $(git status --ignore-submodules --porcelain | grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)
+        $EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)
     end
     function gep -d "open patched files of last git commit"
         $EDITOR $(git show --pretty="format:" --name-only)

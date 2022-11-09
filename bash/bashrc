@@ -189,7 +189,7 @@ ulimit -c unlimited
         done < <(tmux list-panes -a -F '#{session_name} #{window_name} #{window_index}.#{pane_index} =#{pane_pid}' | column -t)
     }
     function tmuxpsgrep {
-        tmuxps | grep -v 'grep,' | grep "$@"
+        tmuxps | grep -v 'grep,' | /bin/grep "$@"
     }
 
 # ]]]
@@ -235,9 +235,9 @@ ulimit -c unlimited
     alias g=git
 
     # TODO safer method
-    alias gem='$EDITOR $(git status --ignore-submodules --porcelain | grep --color=no "^[ M]M" | trs | cut -d" " -f2)'
-    alias ges='$EDITOR $(git status --ignore-submodules --porcelain | grep --color=no "^M" | trs | cut -d" " -f2)'
-    alias ge='$EDITOR $(git status --ignore-submodules --porcelain | grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)'
+    alias gem='$EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)'
+    alias ges='$EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^M" | trs | cut -d" " -f2)'
+    alias ge='$EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)'
     alias gep='$EDITOR $(git show --pretty="format:" --name-only)'
 
     alias t='tig --date-order -500'
