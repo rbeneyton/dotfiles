@@ -55,7 +55,7 @@ beautiful.init(config_dir .. "theme.lua")
 -- This is used later as the default terminal and editor to run.
 -- terminal = "konsole"
 terminal = "alacritty"
-editor = "vim"
+editor = "nvim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -114,6 +114,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                     { "clementine", "clementine" },
                                     { "&chromium", "chromium" },
                                     { "&firefox", home .. "/firefox/firefox" },
+                                    { "&discord", home .. "/Downloads/Discord/Discord" },
                                     { "&signal", "env LANG=fr_FR.utf-8 LANGUAGE=fr signal-desktop" },
                                     { "&mail", "sylpheed" },
                                     -- The next line add our menu (myappmenu)

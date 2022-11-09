@@ -20,7 +20,7 @@ set nolinkanimations
 set incsearch
 let scrollstep = 75
 let barposition = "bottom"
-let vimcommand = "alactritty -e 'vim'"
+let vimcommand = "alacritty -e 'vim'"
 
 " Mappings
 map <C-R> rootFrame
