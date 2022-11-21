@@ -175,6 +175,7 @@ ulimit -c unlimited
         end
     end
     alias tmuxl 'tmux ls'
+    alias tc 'clear; tmux clear-history'
     function tmuxd
         tmux select-layout even-vertical &>/dev/null
         tmux split-window

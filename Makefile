@@ -454,6 +454,13 @@ debian-install-kernel-mac:
 	# sensors
 	apt-get clean
 
+debian-up:
+	apt-get update
+	apt-get upgrade
+	apt-get dist-upgrade
+	apt-get -t bullseye-backports dist-upgrade
+	apt-get clean
+
 # }}}
 # {{{ fish
 
