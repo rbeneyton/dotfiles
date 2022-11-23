@@ -205,6 +205,7 @@ set smartcase                   " Do case sensitive matching when search contain
 set incsearch                   " Incremental search
 set hlsearch                    " hilight search
 
+set iskeyword+=-                " consider - as part of word
 set whichwrap=<,>,[,]           "
 set wildchar=<TAB>              " the char used for "expansion" on the command line
                                 " default value is "<C-E>" but I prefer the tab key:
