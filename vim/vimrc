@@ -673,6 +673,15 @@ endfunction
 " command! -nargs=1 Find cscope find g <args>
 " command! -nargs=1 VFind vert rightbelow scscope find g <args>
 
+" indent/deindent: stay in visual mode
+vnoremap < <gv
+vnoremap > >gv
+
+" move text up/down in visual
+vnoremap <S-j> :move '>+1<CR>gv=gv
+vnoremap <S-k> :move '<-2<CR>gv=gv
+
+
 " ]]]
 " [[[ macros
 
