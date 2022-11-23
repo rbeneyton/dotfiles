@@ -6,6 +6,9 @@
   editor = nvim
   excludesfile = ~/.gitignore
 
+[init]
+  defaultBranch = master
+
 [color "diff"]
   meta = bold green
   frag = yellow
@@ -110,6 +113,7 @@
   default = tracking
 
 [rebase]
+  autosquash = true
   updateRefs = true
 
 [pull]
