@@ -909,9 +909,11 @@ lua << EOF
       overrides = {},
       theme = "default"           -- Load "default" theme or the experimental "light" theme
     }
-    vim.opt.winbar = "%=%m %f %n %p%%"
+    -- vim.opt.winbar = "%=%m %f %n %p%%"
 EOF
     colorscheme kanagawa
+    " TODO toggle winbar map
+    ":nnoremap <Leader>wb ...
 endif
 
 " ]]]
@@ -946,7 +948,11 @@ let g:airline_section_b = '
 let g:airline_section_y = '%n' " buffer number, no fileencoding
 let g:airline_theme = "base16"
 " let g:airline_theme='solarized'
-let g:airline#extensions#tabline#enabled = 0
+let g:airline_theme = "base16_tomorrow_night_eighties"
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline#extensions#obsession#enabled = 1
 let g:airline#extensions#obsession#indicator_text = '' " C-vuf413
 
