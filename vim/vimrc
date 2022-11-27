@@ -876,7 +876,7 @@ endif
 colorscheme solarized
 
 " inhibit background of signcolumn for gitgutter
-highlight clear SignColumn
+" highlight clear SignColumn
 
 if has('nvim')
     packadd kanagawa
@@ -934,7 +934,13 @@ endif
 let g:airline_powerline_fonts=1
 let g:airline#extensions#default#layout = [['a','b','c'],['y','x','z','warning']]
 " suppress hunks from line, they're shown by gitgutter
-let g:airline_section_b = '%{airline#util#wrap(airline#extensions#branch#get_head(),0)}'
+" let g:airline_section_b = '%{airline#util#wrap(airline#extensions#branch#get_head(),0)}'
+let g:airline_section_b = '
+    \%{ !empty(get(b:, "gitsigns_head", "")) ? " " : "" }
+    \%{ get(b:, "gitsigns_head", "") }
+    \%{ !empty(get(b:, "gitsigns_head", "")) ? " " : "" }
+    \%{ get(b:, "gitsigns_status", "") }
+    \'
 " let g:airline_section_i = '%{fugitive#head()}' " real git msgs
 " let g:airline_section_x = '%Y'
 let g:airline_section_y = '%n' " buffer number, no fileencoding
@@ -1061,19 +1067,64 @@ let g:ycm_add_preview_to_completeopt = 0
 " ]]]
 " [[[ GitGutter opts
 
-" always sign column, 'cause blinking makes me crazy
-"let g:gitgutter_sign_column_always = 1
+" " always sign column, 'cause blinking makes me crazy
+" "let g:gitgutter_sign_column_always = 1
+" if has('nvim')
+"     set signcolumn=yes
+" else
+"     " TODO
+" endif
+"
+" " CFM white space no policy
+" let g:gitgutter_diff_args = '-w'
+"
+" nnoremap <Leader>hs <Plug>GitGutterStageHunk
+" nnoremap <Leader>hr <Plug>GitGutterRevertHunk
+
 if has('nvim')
-    set signcolumn=yes
-else
-    " TODO
+lua << EOF
+    require('gitsigns').setup{
+        on_attach = function(bufnr)
+            local gs = package.loaded.gitsigns
+
+            local function map(mode, l, r, opts)
+              opts = opts or {}
+              opts.buffer = bufnr
+              vim.keymap.set(mode, l, r, opts)
+            end
+
+            -- Navigation
+            map('n', ']c', function()
+              if vim.wo.diff then return ']c' end
+              vim.schedule(function() gs.next_hunk() end)
+              return '<Ignore>'
+            end, {expr=true})
+
+            map('n', '[c', function()
+              if vim.wo.diff then return '[c' end
+              vim.schedule(function() gs.prev_hunk() end)
+              return '<Ignore>'
+            end, {expr=true})
+
+            -- Actions
+            map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+            map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+            map('n', '<leader>hS', gs.stage_buffer)
+            map('n', '<leader>hu', gs.undo_stage_hunk)
+            map('n', '<leader>hR', gs.reset_buffer)
+            map('n', '<leader>hp', gs.preview_hunk)
+            map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+            map('n', '<leader>tb', gs.toggle_current_line_blame)
+            map('n', '<leader>hd', gs.diffthis)
+            map('n', '<leader>hD', function() gs.diffthis('~') end)
+            map('n', '<leader>td', gs.toggle_deleted)
+
+            -- Text object
+            map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+        end
+    }
+EOF
 endif
-
-" CFM white space no policy
-let g:gitgutter_diff_args = '-w'
-
-nnoremap <Leader>hs <Plug>GitGutterStageHunk
-nnoremap <Leader>hr <Plug>GitGutterRevertHunk
 
 " ]]]
 " [[[ disable paste to avoid bracketed mode
