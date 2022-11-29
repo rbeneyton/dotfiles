@@ -1,6 +1,7 @@
 " [[[ pathogen
 
 " remind: manual ':helptags ALL' after adding new package
+packadd syntastic
 
 " ]]]
 " [[[ treesitter
@@ -649,7 +650,7 @@ endfunction
 " "go to definition / ctags version
 " nnoremap <C-p> <ESC>:tjump <C-R>=expand("<cword>")<CR><CR>
 " vnoremap <C-p> <ESC>:execute ':tjump '.GetVisualSelection()<CR>
-" 
+"
 " "nnoremap <C-\> <ESC>:vert :rightbelow :cstag <C-R>=expand("<cword>")<CR><CR>
 " nnoremap <C-\> <ESC>:vert :rightbelow :scscope find g <C-R>=expand("<cword>")<CR><CR>
 " "vnoremap <C-\> <ESC>:execute ':vert :rightbelow :cstag '.GetVisualSelection()<CR>
