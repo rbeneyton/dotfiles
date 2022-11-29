@@ -80,6 +80,7 @@
   ri = rebase -i
   rec = rebase --continue
   rea = rebase --abort
+  ref = "!f() { GIT_SEQUENCE_EDITOR=true git rebase -i --autostash; }; f"
   rio = rebase -i origin/master
 #  rio = rebase -i origin/qrrd/master
 #  rio = rebase -i origin/qrrd/1.0
