@@ -81,16 +81,16 @@ ulimit -c unlimited
         alias ls "exa"
         # usefull options at end for easy modification
         abbr --global --add e "exa --long --time-style=iso --classify --git --sort newest"
-        abbr --global --add ea "exa --long --time-style=iso --classify --git --all --sort newest"
-        abbr --global --add es "exa --long --time-style=iso --classify --git --sort size"
-        abbr --global --add ee "exa --long --time-style=iso --classify --git --sort ext"
-        abbr --global --add en "exa --long --time-style=iso --classify --git --sort name"
-        abbr --global --add et "exa --tree --time-style=iso --classify --git --long"
+        alias ea "exa --long --time-style=iso --classify --git --all --sort newest"
+        alias es "exa --long --time-style=iso --classify --git --sort size"
+        alias ee "exa --long --time-style=iso --classify --git --sort ext"
+        alias en "exa --long --time-style=iso --classify --git --sort name"
+        alias et "exa --tree --time-style=iso --classify --git --long"
         abbr --global --add et2 "exa --tree --time-style=iso --classify --git --long --level=2"
         abbr --global --add et3 "exa --tree --time-style=iso --classify --git --long --level=3"
         abbr --global --add et4 "exa --tree --time-style=iso --classify --git --long --level=4"
-        abbr --global --add ll "exa --long --time-style=iso --classify --git --sort newest"
-        abbr --global --add lla "exa --all --long --time-style=iso --classify --git --sort newest"
+        alias ll "exa --long --time-style=iso --classify --git --sort newest"
+        alias lla "exa --all --long --time-style=iso --classify --git --sort newest"
         set --global --erase LS_COLORS
         # xit in green on black, underline
         set --global --export EXA_COLORS "*xit=1;32;04"
@@ -99,7 +99,7 @@ ulimit -c unlimited
 
         alias ls "/bin/ls --color=tty"
         alias ll "ls -lrth"
-        abbr --global --add lla ls -lrth -a
+        alias lla "ls -lrth -a"
     end
     alias datefull 'date +"%Y/%m/%d %T.%N"'
     if type rg &> /dev/null
@@ -108,13 +108,13 @@ ulimit -c unlimited
     else
         alias grep "grep --color=auto"
     end
-    abbr --global --add gr grep
-    abbr --global --add psu ps -flwu $USER w f
-    abbr --global --add topu top -u $USER
-    abbr --global --add cutd cut -d\' \'
+    alias gr grep
+    alias psu "ps -flwu $USER w f"
+    alias topu "top -u $USER"
+    alias cutd "cut -d\' \'"
     alias trs 'tr -s "  " " " | sed -e "s/^\s*//"'
     if type bat &> /dev/null
-        abbr --global --add cat "bat"
+        alias cat bat
     end
     alias less "less -WsJ -j3 -x2"
     alias lless "less -WsNJ -j3 -x2"
@@ -135,7 +135,7 @@ ulimit -c unlimited
     function p
         command pstree -ap | less
     end
-    abbr --global --add m make
+    alias m make
     alias gdb "gdb -q"
 
     abbr --global --add style /bin/astyle --indent=spaces=4 --style=linux --max-instatement-indent=40 --min-conditional-indent=2 --pad-oper --pad-header --unpad-paren --break-elseifs --align-pointer=name
@@ -147,10 +147,10 @@ ulimit -c unlimited
     abbr --global --add composekeylist cat /usr/share/X11/locale/en_US.UTF-8/Compose
 
     # command starting with ' ' aren't recorded
-    abbr --global --add h history
+    alias h history
 
-    abbr --global --add i ipython3
-    abbr --global --add is PYTHONNOUSERSITE=on ipython3
+    alias i ipython3
+    alias is "PYTHONNOUSERSITE=on ipython3"
 
     # conda
     abbr --global --add condainit /opt/conda/etc/profile.d/conda.sh
@@ -208,7 +208,7 @@ ulimit -c unlimited
         function vim
             $EDITOR $argv
         end
-        abbr --global --add vimdiff nvim -d
+        alias vimdiff "nvim -d"
     else
         set --global --export EDITOR vim
         set --global --export MANPAGER "/bin/sh -c \"unset PAGER;col -b -x | vim -R -c 'set ft=man nomod nolist nonumber norelativenumber readonly' -c 'map q :q<CR>' -c 'map <SPACE> <C-D>' -\""
@@ -216,8 +216,8 @@ ulimit -c unlimited
     function v
         $EDITOR $argv
     end
-    abbr --global --add va $EDITOR ~/dotfiles/start.txt
-    abbr --global --add vr $EDITOR -R
+    alias va "$EDITOR ~/dotfiles/start.txt"
+    alias vr "$EDITOR -R"
     function vs -d "open closest upper obsession session"
         set --local A $PWD
         while ! string match (dirname $A) $A
@@ -250,7 +250,7 @@ ulimit -c unlimited
 # ]]]
 # [[[ git
 
-    abbr --global --add g git
+    alias g git
 
     # TODO safer method
     function gem -d "open git modified files"
@@ -266,7 +266,8 @@ ulimit -c unlimited
         $EDITOR $(git show --pretty="format:" --name-only)
     end
 
-    abbr --global --add t tig --date-order -500
+    alias t "tig --date-order -500"
+    alias ta "tig --date-order --all -500"
 
     function up -d "go to the upper git repo head"
         set BCK $(pwd)
