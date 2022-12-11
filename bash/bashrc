@@ -121,7 +121,6 @@ ulimit -c unlimited
     alias f='find . -name'
     alias p='pstree -ap | less'
     alias m=make
-    alias gdb='gdb -q'
 
     alias style='~/bin/astyle --indent=spaces=4 --style=linux --max-instatement-indent=40 --min-conditional-indent=2 --pad-oper --pad-header --unpad-paren --break-elseifs --align-pointer=name'
 

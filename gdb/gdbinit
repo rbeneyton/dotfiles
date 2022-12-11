@@ -1,3 +1,4 @@
+set startup-quietly on
 set confirm off
 set print elements 2000
 # entire string

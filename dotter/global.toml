@@ -24,7 +24,7 @@
 
 # gdb
 [gdb.files]
-"gdb/gdbinit" = "~/.gdbinit"
+"gdb/gdbinit" = "~/.config/gdb/gdbinit"
 "gdb/own" = { target = "~/.config/gdb/own/own", type = "symbolic" }
 "gdb/eigengdb/bin" = { target = "~/.config/gdb/eigengdb/bin", type = "symbolic" }
 "gdb/eigengdb/eigengdb" = { target = "~/.config/gdb/eigengdb/eigengdb", type = "symbolic" }
