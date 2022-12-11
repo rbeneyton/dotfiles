@@ -357,11 +357,11 @@ misc-user: $(BIN) rg
 	rm -f $(BIN)/yt-dlp
 	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/yt-dlp -o $(BIN)/yt-dlp
 	chmod u+x $(BIN)/yt-dlp
-	$(CARGO) install --locked starship
-	$(CARGO) install --locked hyperfine
-	$(CARGO) install --locked exa
-	$(CARGO) install --locked bat
-	# $(CARGO) install --locked just
+	$(CARGO) install --force --locked starship
+	$(CARGO) install --force --locked hyperfine
+	$(CARGO) install --force --locked exa
+	$(CARGO) install --force --locked bat
+	$(CARGO) install --force --locked just
 
 RG = $(BIN)/rg
 $(RG) : | $(BIN) $(UTILS) rust-update

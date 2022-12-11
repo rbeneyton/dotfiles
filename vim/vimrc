@@ -129,6 +129,19 @@ set autoread                    " reload unchanged files silentely
 set clipboard=unnamed           " copy/paste to global clipboard
 set hidden                      " allow to cycle and hide modified buffers
 
+let g:clipboard = {
+      \   'name': 'tmuxClipboard',
+      \   'copy': {
+      \      '+': ['tmux', 'load-buffer', '-'],
+      \      '*': ['tmux', 'load-buffer', '-'],
+      \    },
+      \   'paste': {
+      \      '+': ['tmux', 'save-buffer', '-'],
+      \      '*': ['tmux', 'save-buffer', '-'],
+      \   },
+      \   'cache_enabled': 1,
+      \ }
+
 set nobackup                    " Don't keep a backup file
 set nowritebackup
 set backupcopy=auto,breakhardlink " when backup is manually set

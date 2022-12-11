@@ -136,6 +136,7 @@ ulimit -c unlimited
         command pstree -ap | less
     end
     alias m make
+    alias mm "make -j"
 
     abbr --global --add style /bin/astyle --indent=spaces=4 --style=linux --max-instatement-indent=40 --min-conditional-indent=2 --pad-oper --pad-header --unpad-paren --break-elseifs --align-pointer=name
 
