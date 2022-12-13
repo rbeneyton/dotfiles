@@ -132,7 +132,7 @@
   enabled = 1
 
 [mergetool "fugitive"]
-  cmd = vim -f -c \"Gdiff\" \"$MERGED\"
+  cmd = env VIM_NOGITSIGN=1 nvim -f -c 'Gdiffsplit!' \"$MERGED\"
 
 [merge "verify"]
   name = merge and verify driver

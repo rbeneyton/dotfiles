@@ -1101,7 +1101,7 @@ let g:ycm_add_preview_to_completeopt = 0
 " nnoremap <Leader>hs <Plug>GitGutterStageHunk
 " nnoremap <Leader>hr <Plug>GitGutterRevertHunk
 
-if has('nvim')
+if has('nvim') && !exists('$VIM_NOGITSIGN')
 lua << EOF
     require('gitsigns').setup{
         on_attach = function(bufnr)
