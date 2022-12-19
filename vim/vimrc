@@ -695,6 +695,8 @@ vnoremap > >gv
 vnoremap <S-j> :move '>+1<CR>gv=gv
 vnoremap <S-k> :move '<-2<CR>gv=gv
 
+" clean empty lines
+vnoremap <leader>l :g/^$/d<CR>
 
 " ]]]
 " [[[ macros
