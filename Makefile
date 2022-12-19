@@ -357,6 +357,8 @@ misc-user: $(BIN) rg
 	rm -f $(BIN)/yt-dlp
 	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/yt-dlp -o $(BIN)/yt-dlp
 	chmod u+x $(BIN)/yt-dlp
+	$(CARGO) install --force --locked flamegraph
+	$(CARGO) install --force --locked cargo-criterion
 	$(CARGO) install --force --locked starship
 	$(CARGO) install --force --locked hyperfine
 	$(CARGO) install --force --locked exa
@@ -383,6 +385,7 @@ rg: $(RG)
 debian-install: debian-install-base debian-install-net debian-install-graphic
 
 debian-install-base:
+	apt-get install ntp
 	apt-get install make # chicken & egg, here to remember
 	apt-get install nfs-common curl
 	apt-get install git tig build-essential tmux dstat tree cmake pkg-config patchelf
@@ -400,6 +403,7 @@ debian-install-base:
 	apt-get install libssl-dev # libevent
 	apt-get install bison # tmux
 	apt-get install bash-completion
+	apt-get install gnuplot # criterion
 	apt-get clean
 
 debian-install-net:
@@ -419,6 +423,7 @@ debian-install-graphic:
 	apt-get install x11-xkb-utils inputplug # xkb + detect/reload
 	apt-get install blueman pulseaudio-module-bluetooth
 	apt-get install pasystray pavucontrol
+	apt-get install arandr
 	# apt-get install light ibam # laptop only
 	# bluez bluez-utils ?
 	# 1) keychron Fn keys
