@@ -438,6 +438,13 @@ debian-install-misc:
 	apt-get update
 	apt-get install signal-desktop
 	apt-get clean
+	# conda
+	curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > /usr/share/keyrings/conda-archive-keyring.gpg
+	gpg --keyring /usr/share/keyrings/conda-archive-keyring.gpg --no-default-keyring --fingerprint 34161F5BF5EB1D4BFBBB8F0A8AEB4F8B29D82806
+	echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main' > /etc/apt/sources.list.d/conda.list
+	apt-get update
+	apt-get install conda
+	apt-get clean
 
 debian-install-kernel-mac:
 	# 1) i915

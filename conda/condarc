@@ -1,0 +1,9 @@
+# seriously, changing prompt (and appending to bashrc/config.fish) by default…
+changeps1: False
+
+channels:
+    - defaults
+    - bioconda
+    - generic
+
+ssl_verify: True

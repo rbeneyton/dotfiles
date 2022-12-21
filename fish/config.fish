@@ -153,7 +153,10 @@ ulimit -c unlimited
     alias is "PYTHONNOUSERSITE=on ipython3"
 
     # conda
-    abbr --global --add condainit /opt/conda/etc/profile.d/conda.sh
+    pathadd /opt/conda/bin
+    function condainit
+        eval /opt/conda/bin/conda "shell.fish" "hook" $argv | source
+    end
 
 # ]]]
 # [[[ tmux

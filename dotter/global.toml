@@ -117,6 +117,10 @@ git_email = "richard.beneyton@gmail.com"
 "vim" = { target = "~/.vim", type = "symbolic", recurse = false }
 "nvim" = { target = "~/.config/nvim", type = "symbolic", recurse = false }
 
+# conda
+[conda.files]
+"conda/condarc" = "~/.condarc"
+
 # dummy "flag only" packages
 [bluetooth.variables]
 [laptop.variables]
@@ -130,6 +134,7 @@ depends = [
     "bash",
     "bluetooth",
     "compose",
+    "conda",
     "fish",
     "fonts",
     "gdb",
