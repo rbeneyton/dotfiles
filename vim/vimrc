@@ -1344,9 +1344,9 @@ nnoremap <F5> :UndotreeToggle<CR>
 " ]]]
 " [[[ vimwiki
 
-let wiki = {}
-let wiki.nested_syntaxes = {'bash': 'sh', 'python': 'python', 'c++': 'cpp', 'rust': 'rust'}
-let g:vimwiki_list = [wiki]
+" let wiki = {}
+" let wiki.nested_syntaxes = {'bash': 'sh', 'python': 'python', 'c++': 'cpp', 'rust': 'rust'}
+" let g:vimwiki_list = [wiki]
 
 " ]]]
 " [[[ user colors
