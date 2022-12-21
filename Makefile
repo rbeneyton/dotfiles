@@ -424,6 +424,7 @@ debian-install-graphic:
 	apt-get install blueman pulseaudio-module-bluetooth
 	apt-get install pasystray pavucontrol
 	apt-get install arandr
+	apt-get install flameshot
 	# apt-get install light ibam # laptop only
 	# bluez bluez-utils ?
 	# 1) keychron Fn keys
