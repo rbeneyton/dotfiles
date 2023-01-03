@@ -347,7 +347,10 @@ rust-install:
 
 rust-update: rust-install
 	${HOME}/.cargo/bin/rustup update
-	rustup component add rustfmt clippy rust-docs rust-std rust-analyzer
+	rustup component add rustfmt clippy rust-docs rust-std rust-src rust-analyzer
+	# rustup #2411
+	rm -f ~/bin/rust-analyzer
+	ln -s $(shell rustup which --toolchain stable rust-analyzer) ~/bin/rust-analyzer
 
 # }}}
 # {{{ user tools
