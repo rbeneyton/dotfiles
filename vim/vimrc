@@ -500,8 +500,9 @@ let &showbreak='↪ '
 
 if !has('nvim')
     runtime! ftplugin/man.vim      " to get pretty :Man
+    nmap K :Man <C-R>=expand("<cword>")<CR><CR>
 endif
-nmap K :Man <C-R>=expand("<cword>")<CR><CR>
+" default for nvim
 
 " activate matchit
 if has('nvim')
