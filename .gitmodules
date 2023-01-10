@@ -64,6 +64,9 @@
 [submodule "vim/pack/lang/opt/xit"]
 	path = vim/pack/lang/opt/xit
 	url = https://github.com/synaptiko/xit.nvim
+[submodule "vim/pack/lang/start/ron"]
+	path = vim/pack/lang/start/ron
+	url = https://github.com/ron-rs/ron.vim.git
 [submodule "vim/pack/lang/start/rust"]
 	path = vim/pack/lang/start/rust
 	url = https://github.com/rust-lang/rust.vim.git
