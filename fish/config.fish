@@ -158,7 +158,7 @@ ulimit -c unlimited
     # conda
     pathadd /opt/conda/bin
     function condainit
-        eval /opt/conda/bin/conda "shell.fish" "hook" $argv | source
+        eval conda "shell.fish" "hook" $argv | source
     end
 
 # ]]]
