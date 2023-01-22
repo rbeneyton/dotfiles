@@ -117,6 +117,10 @@ git_email = "richard.beneyton@gmail.com"
 "vim" = { target = "~/.vim", type = "symbolic", recurse = false }
 "nvim" = { target = "~/.config/nvim", type = "symbolic", recurse = false }
 
+# rust
+[rust.files]
+"rust/cargo.toml" = "~/.cargo/config.toml"
+
 # conda
 [conda.files]
 "conda/condarc" = "~/.condarc"
@@ -141,6 +145,7 @@ depends = [
     "git",
     "gtk",
     "redshift",
+    "rust",
     "starship",
     "tmux",
     "top",
