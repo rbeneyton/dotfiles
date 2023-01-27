@@ -9,7 +9,7 @@ set -o nounset
 set -o pipefail
 
 [ -f .gitmodules ] || (echo "not at repo root" ; false)
-export GMN=$(pwd)/.gitmodules.new
+GMN=$(pwd)/.gitmodules.new
 cp .gitmodules $GMN
 
 # new layout

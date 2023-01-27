@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# Achtung.
+#
+# This script removes any unreferenced (in .gitmodules) submodule repository.
+# It assumes that all submodule repositories are located on their ~name~ (via
+# git-submodule-align).
+#
+# It is required after many rebase with submodule move operations, to avoid
+# duplicates repositories.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+[ -f .gitmodules ] || (echo "not at repo root" ; false)
+ROOT=$(pwd)
+
+# simply compare known submodules with existing cloned repos
+for dir in $(comm -13                                                      \
+          <(git submodule --quiet foreach 'echo $sm_path'                  \
+              | xargs realpath                                             \
+              | sort)                                                      \
+          <(find .git/modules -type f -name ORIG_HEAD -exec dirname {} \;  \
+              | xargs realpath                                             \
+              | sed 's@.git/modules/@@'                                    \
+              | grep -v modules                                            \
+              | sort))
+do
+    D=${dir/$ROOT/.git/modules}
+    echo "removing $D"
+    [ "$#" -gt 0 ] && rm -rf $D
+done
+[ "$#" -eq 0 ] && echo "put any argument to really remove folders."
