@@ -1183,7 +1183,7 @@ if !empty($TMUX)
     let g:slime_dont_ask_default = 1
     " for ipython set %autoindent to OFF
     let g:slime_python_ipython = 1
-    let g:slime_paste_file = "$HOME/.slime_paste"
+    let g:slime_paste_file = "{{env_var "HOME"}}/.slime_paste"
     let g:slime_dispatch_ipython_pause = 100
 endif
 
