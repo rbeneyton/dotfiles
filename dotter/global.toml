@@ -113,7 +113,7 @@ git_email = "richard.beneyton@gmail.com"
 
 # vim
 [vim.files]
-"vim/vimrc" = { target = "~/.vimrc", type = "template" }
+"vim/vimrc.template" = { target = "~/.vimrc", type = "template" }
 "vim" = { target = "~/.vim", type = "symbolic", recurse = false }
 "nvim" = { target = "~/.config/nvim", type = "symbolic", recurse = false }
 
