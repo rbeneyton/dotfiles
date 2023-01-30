@@ -16,6 +16,8 @@
 # fish
 [fish.files]
 "fish/config.fish" = "~/.config/fish/config.fish"
+"fish/bass/functions/bass.fish" = "~/.config/fish/functions/bass.fish"
+"fish/bass/functions/__bass.py" = "~/.config/fish/functions/__bass.py"
 
 # top
 [top.files]

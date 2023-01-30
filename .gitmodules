@@ -7,6 +7,9 @@
 [submodule "bash/complete-alias"]
 	path = bash/complete-alias
 	url = https://github.com/cykerway/complete-alias.git
+[submodule "fish/bass"]
+	path = fish/bass
+	url = https://github.com/edc/bass.git
 [submodule "gdb/eigengdb"]
 	path = gdb/eigengdb
 	url = https://github.com/dmillard/eigengdb.git
