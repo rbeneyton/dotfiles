@@ -1,2 +1,2 @@
 [build]
-target-dir = "$HOME/.cargo/targets"
+target-dir = "{{env_var "HOME"}}/.cargo/targets"
