@@ -121,6 +121,9 @@ ulimit -c unlimited
     alias l less
     alias bc "bc --quiet --mathlib"
     alias c cargo
+    function rust-gdb
+        command rust-gdb --quiet --ex start --ex 'break rust_panic' $argv
+    end
 
     function mkcd
         command mkdir -p $argv
