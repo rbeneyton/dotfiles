@@ -367,6 +367,7 @@ misc-user: $(BIN) rg
 	$(CARGO) install --force --locked exa
 	$(CARGO) install --force --locked bat
 	$(CARGO) install --force --locked just
+	$(CARGO) install --force --locked cargo-atcoder
 
 RG = $(BIN)/rg
 $(RG) : | $(BIN) $(UTILS) rust-update
