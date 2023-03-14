@@ -26,6 +26,8 @@ end
 
 pathadd $HOME/bin
 
+pathadd $HOME/firefox
+
 pathadd $HOME/utils/git_install/bin
 manpathadd $HOME/utils/git_install/share/man
 

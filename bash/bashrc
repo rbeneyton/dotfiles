@@ -13,6 +13,8 @@ function manpathadd() {
 
 pathadd $HOME/bin
 
+pathadd $HOME/firefox
+
 pathadd $HOME/utils/fish_install/bin
 manpathadd $HOME/utils/fish_install/share/man
 

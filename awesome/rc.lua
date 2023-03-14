@@ -113,7 +113,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                     { "open &terminal", terminal },
                                     { "clementine", "clementine" },
                                     { "&chromium", "chromium" },
-                                    { "&firefox", home .. "/firefox/firefox" },
+                                    { "&firefox", "firefox" },
                                     { "&discord", home .. "/Downloads/Discord/Discord" },
                                     { "&signal", "env LANG=fr_FR.utf-8 LANGUAGE=fr signal-desktop" },
                                     { "&mail", "sylpheed" },
