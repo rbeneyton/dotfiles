@@ -269,6 +269,7 @@ ulimit -c unlimited
     alias gv='git v'
     alias ga='git add'
     alias gap='git add -p'
+    alias gm='git mergetool'
     alias gc='git commit'
     alias ggr='git grep -n'
     alias tempo='git commit -a -m tempo'

@@ -260,27 +260,27 @@ ulimit -c unlimited
 
     # TODO safer method
     function gem -d "open git modified files"
-        $EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)
+        $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)
     end
     function ges -d "open git staged files"
-        $EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^M" | trs | cut -d" " -f2)
+        $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^M" | trs | cut -d" " -f2)
     end
     function ge -d "open git edited files"
-        $EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)
+        $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)
     end
     function gep -d "open patched files of last git commit"
-        $EDITOR $(git show --pretty="format:" --name-only)
+        $EDITOR (git show --pretty="format:" --name-only)
     end
 
     alias t "tig --date-order -500"
     alias ta "tig --date-order --all -500"
 
     function up -d "go to the upper git repo head"
-        set BCK $(pwd)
-        set A $(pwd)
+        set BCK (pwd)
+        set A (pwd)
         while git rev-parse --show-toplevel 1> /dev/null 2> /dev/null
-            set A $(git rev-parse --show-toplevel 2> /dev/null)
-            cd $(dirname $A)
+            set A (git rev-parse --show-toplevel 2> /dev/null)
+            cd (dirname $A)
         end
         cd $A
         set --erase A
@@ -302,6 +302,7 @@ ulimit -c unlimited
     abbr --global --add gv git v
     abbr --global --add ga git add
     abbr --global --add gap git add -p
+    abbr --global --add gm git mergetool
     abbr --global --add gc git commit
     abbr --global --add ggr git grep -n
     abbr --global --add tempo git commit -a -m tempo
