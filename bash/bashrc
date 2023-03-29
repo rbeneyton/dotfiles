@@ -241,10 +241,30 @@ ulimit -c unlimited
     alias g=git
 
     # TODO safer method
-    alias gem='$EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)'
-    alias ges='$EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^M" | trs | cut -d" " -f2)'
-    alias ge='$EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)'
-    alias gep='$EDITOR $(git show --pretty="format:" --name-only)'
+    function gem() {
+        set BCK $(pwd)
+        up
+        $EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)
+        cd $BCK
+    }
+    function ges() {
+        set BCK $(pwd)
+        up
+        $EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^M" | trs | cut -d" " -f2)
+        cd $BCK
+    }
+    function ge() {
+        set BCK $(pwd)
+        up
+        $EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)
+        cd $BCK
+    }
+    function gep() {
+        set BCK $(pwd)
+        up
+        $EDITOR $(git show --pretty="format:" --name-only)
+        cd $BCK
+    }
 
     alias t='tig --date-order -500'
 
