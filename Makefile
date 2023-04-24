@@ -368,6 +368,8 @@ misc-user: $(BIN) rg
 	$(CARGO) install --force --locked bat
 	$(CARGO) install --force --locked just
 	$(CARGO) install --force --locked cargo-atcoder
+	$(CARGO) install --force --locked --git https://github.com/charliermarsh/ruff.git ruff
+	$(CARGO) install --force --locked cargo-expand
 
 RG = $(BIN)/rg
 $(RG) : | $(BIN) $(UTILS) rust-update
@@ -408,6 +410,7 @@ debian-install-base:
 	apt-get install bison # tmux
 	apt-get install bash-completion
 	apt-get install gnuplot # criterion
+	apt-get install source-highlight libsource-highlight-dev # gdb
 	apt-get clean
 
 debian-install-net:
