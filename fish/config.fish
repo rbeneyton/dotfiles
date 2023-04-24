@@ -175,6 +175,8 @@ ulimit -c unlimited
         ssh-agent -a $SSH_AUTH_SOCK
         ssh-add $argv
     end
+
+    abbr tm tmux
     function tmuxa
         if test (count $argv) -gt 0
             tmux new-session -A -D -s $argv

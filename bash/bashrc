@@ -166,6 +166,8 @@ ulimit -c unlimited
         ssh-agent -a $SSH_AUTH_SOCK
         ssh-add "$@"
     }
+
+    alias tm=tmux
     function tmuxa {
         if [[ -n "$1" ]]
         then
