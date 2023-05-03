@@ -11,6 +11,7 @@ Session.vim
 *.a
 *.o
 *.so
+compile_commands.json
 
 # python
 __pycache__/
