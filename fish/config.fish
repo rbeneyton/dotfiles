@@ -105,8 +105,7 @@ ulimit -c unlimited
     end
     alias datefull 'date +"%Y/%m/%d %T.%N"'
     if type rg &> /dev/null
-        alias rg "rg --engine auto --search-zip"
-        alias grep "rg --engine auto --search-zip"
+        alias grep "rg --follow --engine auto --search-zip"
     else
         alias grep "grep --color=auto"
     end
