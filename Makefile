@@ -310,7 +310,7 @@ $(LLVM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval INSTALL := $(UTILS)/$(NAME)_install/)
 	$(eval BUILD := $(SRC)/build/)
 	rm -rf $(SRC)
-	git clone --branch release/15.x --single-branch --depth 300 https://github.com/llvm/llvm-project.git $(SRC)
+	git clone --branch release/16.x --single-branch --depth 300 https://github.com/llvm/llvm-project.git $(SRC)
 	mkdir -p $(BUILD)
 	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
@@ -324,7 +324,7 @@ $(LLVM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 				-DCMAKE_CXX_LINK_FLAGS='-static-libgcc -static-libstdc++' \
 				-DLLVM_ENABLE_LTO=ON \
 				-DLLVM_TARGETS_TO_BUILD='WebAssembly;X86' \
-				-DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;lldb;lld' \
+				-DLLVM_ENABLE_PROJECTS='compiler-rt;clang;clang-tools-extra;lldb;lld' \
 				-DCMAKE_BUILD_TYPE=Release \
 				-DCLANG_TOOLS_EXTRA_INCLUDE_DOCS=ON \
 				-DCLANG_ENABLE_CLANGD=ON \
