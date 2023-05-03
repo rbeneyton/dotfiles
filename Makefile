@@ -58,7 +58,7 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	# no out-of-source-tree support
 	rm -rf $(SRC)
 	mkdir -p $(SRC)
-	wget https://www.kernel.org/pub/software/scm/git/git-2.38.1.tar.gz -O $(TAR)
+	wget https://www.kernel.org/pub/software/scm/git/git-2.40.1.tar.gz -O $(TAR)
 	tar xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
 	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
