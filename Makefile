@@ -265,7 +265,7 @@ $(GCC_INSTALL) :
 gcc : $(GCC_INSTALL)
 
 GDB_INSTALL = $(UTILS)/gdb_install
-$(GDB_INSTALL) : | $(GCC_INSTALL) $(UTILS)
+$(GDB_INSTALL) : | $(UTILS)
 	$(eval NAME := gdb)
 	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	$(eval TAR := $(UTILS)/$(NAME).tar.xz)
@@ -274,24 +274,23 @@ $(GDB_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	rm -rf $(SRC)
 	# git clone --branch gdb-10-branch --single-branch --depth 10 https://sourceware.org/git/binutils-gdb.git $(SRC)
 	mkdir -p $(SRC) $(BUILD)
-	wget $(GNU_MIRROR)/gdb/gdb-12.1.tar.xz -O $(TAR)
+	wget $(GNU_MIRROR)/gdb/gdb-13.1.tar.xz -O $(TAR)
 	tar xf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
 	# recursiv make/configure isn't possible with gdb
 	# autoreconf -f -i $(SRC) neither
 	# XXX never ever use make -j
+	# TODO disable fucking terminal mouse support
+	# TODO own gcc lead to 'error: source highlight is incompatible with -static-libstdc++; either use -disable-source-highlight or --without-static-standard-libraries'
 	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
-			CPP=$(GCC_INSTALL)/bin/cpp \
-			CC=$(GCC_INSTALL)/bin/gcc \
-			CFLAGS='-march=native -flto -O3' \
-			CXX=$(GCC_INSTALL)/bin/g++ \
-			CXXFLAGS='-march=native -flto -O3' \
-			LDFLAGS='-static-libgcc -static-libstdc++' \
+			CFLAGS='-march=native -O3' \
+			CXXFLAGS='-march=native -O3' \
 			$(SRC)/configure \
 				--prefix=$(INSTALL) \
 				--with-curses \
+				--with-python \
 				--enable-tui \
 				--enable-lto \
 				; \
