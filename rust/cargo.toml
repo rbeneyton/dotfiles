@@ -1,2 +1,5 @@
 [build]
 target-dir = "{{env_var "HOME"}}/.cargo/targets"
+
+[http]
+timeout = 1000
