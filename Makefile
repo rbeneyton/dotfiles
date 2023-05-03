@@ -375,13 +375,17 @@ RG = $(BIN)/rg
 $(RG) : | $(BIN) $(UTILS) rust-update
 	$(eval NAME := rg)
 	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
+	$(eval BUILD := $(SRC)/build)
 	rm -rf $(SRC)
 	git clone --branch master --single-branch --depth 30 https://github.com/BurntSushi/ripgrep $(SRC)
 	# TODO simd
 	RUSTC_BOOTSTRAP=encoding_rs RUSTFLAGS="-C target-cpu=native" \
-		$(CARGO) build --manifest-path $(SRC)/Cargo.toml \
-		--release --features 'pcre2'
-	cp $(SRC)/target/release/$(NAME) $(BIN)/
+		$(CARGO) build \
+			--target-dir $(BUILD) \
+			--manifest-path $(SRC)/Cargo.toml \
+			--release \
+			--features 'pcre2'
+	cp $(BUILD)/release/$(NAME) $(BIN)/
 	rm -rf $(SRC)
 rg: $(RG)
 
