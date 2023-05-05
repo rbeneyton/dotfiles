@@ -130,6 +130,10 @@ git_email = "richard.beneyton@gmail.com"
 [conda.files]
 "conda/condarc" = "~/.condarc"
 
+# zathura
+[zathura.files]
+"zathura/config.rc" = "~/.config/zathura/zathurarc"
+
 # dummy "flag only" packages
 [bluetooth.variables]
 [laptop.variables]
@@ -157,6 +161,7 @@ depends = [
     "valgrind",
     "vim",
     "xkb",
+    "zathura",
 ]
 
 # vim: filetype=cfg

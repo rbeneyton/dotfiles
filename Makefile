@@ -442,6 +442,7 @@ debian-install-graphic:
 	apt-get install arandr
 	apt-get install flameshot
 	# apt-get install light ibam # laptop only
+	apt-get install zathura zathura-djvu zathura-pdf-poppler zathura-ps
 	# bluez bluez-utils ?
 	# 1) keychron Fn keys
 	echo "options hid_apple fnmode=2" > /etc/modprobe.d/hid_apple.conf

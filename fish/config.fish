@@ -163,6 +163,9 @@ ulimit -c unlimited
         eval conda "shell.fish" "hook" $argv | source
     end
 
+    # pdf reader of the month
+    alias pdf zathura
+
 # ]]]
 # [[[ tmux
 
