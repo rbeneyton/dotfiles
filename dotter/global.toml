@@ -19,6 +19,7 @@
 "fish/bass/functions/bass.fish" = "~/.config/fish/functions/bass.fish"
 "fish/bass/functions/__bass.py" = "~/.config/fish/functions/__bass.py"
 "fish/completions/conda.fish" = "~/.config/fish/completions/conda.fish"
+"vim/pack/theme/opt/kanagawa/extras/kanagawa.fish" = "~/.config/fish/comf.d/kanagawa.fish"
 
 # top
 [top.files]
