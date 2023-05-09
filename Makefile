@@ -115,7 +115,7 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval INSTALL := $(UTILS)/$(NAME)_install/)
 	$(eval BUILD := $(SRC)/build/)
 	rm -rf $(SRC)
-	git clone --branch release-0.8 --single-branch --depth 10 https://github.com/rbeneyton/neovim.git $(SRC)
+	git clone --branch release-0.9 --single-branch --depth 50 https://github.com/rbeneyton/neovim.git $(SRC)
 	rm -rf $(BUILD)
 	mkdir -p $(BUILD)
 	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
