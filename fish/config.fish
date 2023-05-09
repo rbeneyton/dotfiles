@@ -3,9 +3,8 @@ set --global --export SHELL fish # not done by default
 set --universal fish_greeting # no fish welcome
 
 # purge all universal abbrevations (idempotent init script)
-for a in (abbr --list)
-    abbr --erase $a
-end
+abbr --erase (abbr --list)
+
 # never ever use universal path
 set --erase --universal fish_user_paths
 
