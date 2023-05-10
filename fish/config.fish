@@ -262,27 +262,36 @@ ulimit -c unlimited
 
     # TODO safer method
     function gem -d "open git modified files"
-        set BCK (pwd)
+        set -f BCK (pwd)
         up
         $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)
         cd $BCK
     end
     function ges -d "open git staged files"
-        set BCK (pwd)
+        set -f BCK (pwd)
         up
         $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^M" | trs | cut -d" " -f2)
         cd $BCK
     end
     function ge -d "open git edited files"
-        set BCK (pwd)
+        set -f BCK (pwd)
         up
         $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)
         cd $BCK
     end
-    function gep -d "open patched files of last git commit"
-        set BCK (pwd)
+    function gep -d "open patched files from given commit range (HEAD~[..]HEAD by default)"
+        set -f FROM $argv[1] HEAD~ # fish's default value method
+        set -f FROM $FROM[1]
+        if string match "*..*" $FROM
+            set -f RANGE $FROM
+        else
+            set -f TO $argv[2] HEAD # fish's default value method
+            set -f TO $TO[1]
+            set -f RANGE $FROM..$TO
+        end
+        set -f BCK (pwd)
         up
-        $EDITOR (git show --pretty="format:" --name-only)
+        $EDITOR (git show --pretty="format:" --name-only $RANGE | grep . | sort | uniq)
         cd $BCK
     end
 
