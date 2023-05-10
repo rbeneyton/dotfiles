@@ -13,6 +13,12 @@ if has('nvim')
     " treesitter xit
     packadd tree-sitter-xit
 lua << EOF
+    require("nvim-treesitter.install").compilers = {
+      "{{env_var "HOME"}}/utils/gcc_install/bin/gcc",
+      vim.fn.getenv('CC'),
+      "gcc",
+      "clang"
+    }
     require("nvim-treesitter.parsers").get_parser_configs().xit = {
       install_info = {
         url = "~/.dotfiles/vim/pack/parser/opt/tree-sitter-xit",
@@ -962,7 +968,7 @@ let g:airline_section_y = '%n' " buffer number, no fileencoding
 let g:airline_theme = "base16"
 " let g:airline_theme='solarized'
 let g:airline_theme = "base16_tomorrow_night_eighties"
-let g:airline_theme = "base16_spacemacs"
+" let g:airline_theme = "base16_spacemacs"
 " FIXME use kanagawa's extras/base16-theme.yaml
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#tab_nr_type = 2 " splits and tab number
