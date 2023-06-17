@@ -9,6 +9,9 @@
 [init]
   defaultBranch = master
 
+[status]
+  submoduleSummary = true
+
 [color "diff"]
   meta = bold green
   frag = yellow
