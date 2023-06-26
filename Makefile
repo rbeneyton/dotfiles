@@ -357,7 +357,7 @@ rust-update: rust-install
 misc-user: $(BIN) rg
 	# yt-dlp
 	rm -f $(BIN)/yt-dlp
-	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/yt-dlp -o $(BIN)/yt-dlp
+	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o $(BIN)/yt-dlp
 	chmod u+x $(BIN)/yt-dlp
 	$(CARGO) install --force --locked flamegraph
 	$(CARGO) install --force --locked cargo-criterion
@@ -406,7 +406,7 @@ debian-install-base:
 	apt-get install flex # for gcc (bug 84715 using multilib but not in src tree /o\)
 	apt-get install zlib1g-dev # zlib.h
 	apt-get install asciidoc gettext xmlto # git
-	apt-get install docbook-utils libncurses-dev # tig
+	apt-get install docbook-utils libncurses-dev libpcre2-posix2 # tig
 	apt-get install texinfo # gdb
 	apt-get install pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3 # alacritty
 	apt-get install libssl-dev # libevent
