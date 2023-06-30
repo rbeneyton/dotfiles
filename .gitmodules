@@ -60,7 +60,7 @@
 	url = https://github.com/airblade/vim-gitgutter.git
 [submodule "vim/pack/git/start/fugitive"]
 	path = vim/pack/git/start/fugitive
-	url = http://github.com/tpope/vim-fugitive.git
+	url = https://github.com/tpope/vim-fugitive.git
 [submodule "vim/pack/git/start/gitsigns"]
 	path = vim/pack/git/start/gitsigns
 	url = https://github.com/lewis6991/gitsigns.nvim
@@ -111,7 +111,7 @@
 	url = https://github.com/altercation/vim-colors-solarized.git
 [submodule "vim/pack/undo/opt/gundo"]
 	path = vim/pack/undo/opt/gundo
-	url = http://github.com/sjl/gundo.vim.git
+	url = https://github.com/sjl/gundo.vim.git
 [submodule "vim/pack/undo/opt/undotree"]
 	path = vim/pack/undo/opt/undotree
 	url = https://github.com/mbbill/undotree.git

@@ -145,6 +145,7 @@
   renameLimit = 10000
   renames = copies
   algorithm = patience
+  # submodule = log
 
 [transfer]
     fsckobjects = true
