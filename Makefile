@@ -53,13 +53,13 @@ GIT_INSTALL = $(UTILS)/git_install
 $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval NAME := git)
 	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
-	$(eval TAR := $(UTILS)/$(NAME).tar.gz)
+	$(eval TAR := $(UTILS)/$(NAME).tar.xz)
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	# no out-of-source-tree support
 	rm -rf $(SRC)
 	mkdir -p $(SRC)
-	wget https://www.kernel.org/pub/software/scm/git/git-2.40.1.tar.gz -O $(TAR)
-	tar xvf $(TAR) -C $(SRC) --strip-components 1
+	wget https://www.kernel.org/pub/software/scm/git/git-2.41.0.tar.xz -O $(TAR)
+	tar --xz -xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
 	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
@@ -367,7 +367,7 @@ misc-user: $(BIN) rg
 	$(CARGO) install --force --locked bat
 	$(CARGO) install --force --locked just
 	$(CARGO) install --force --locked cargo-atcoder
-	$(CARGO) install --force --locked --git https://github.com/charliermarsh/ruff.git ruff
+	# $(CARGO) install --force --locked --git https://github.com/charliermarsh/ruff.git ruff
 	$(CARGO) install --force --locked cargo-expand
 
 RG = $(BIN)/rg
