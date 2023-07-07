@@ -1110,17 +1110,14 @@ let g:ycm_add_preview_to_completeopt = 0
 " ]]]
 " [[[ GitGutter opts
 
-" " always sign column, 'cause blinking makes me crazy
-" "let g:gitgutter_sign_column_always = 1
-" if has('nvim')
-"     set signcolumn=yes
-" else
-"     " TODO
-" endif
-"
-" " CFM white space no policy
-" let g:gitgutter_diff_args = '-w'
-"
+" always sign column, 'cause blinking makes me crazy
+"let g:gitgutter_sign_column_always = 1
+if has('nvim')
+    set signcolumn=yes
+else
+    " TODO
+endif
+
 " nnoremap <Leader>hs <Plug>GitGutterStageHunk
 " nnoremap <Leader>hr <Plug>GitGutterRevertHunk
 
