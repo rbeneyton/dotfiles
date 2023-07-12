@@ -111,6 +111,7 @@
   stal = stash list
   pop = stash pop
   human = name-rev --name-only --refs=refs/heads/*
+  pushpr = push -o merge_request.create
 
 [grep]
   lineNumber = true
