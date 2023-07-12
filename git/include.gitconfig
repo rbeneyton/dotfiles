@@ -72,6 +72,8 @@
   who = shortlog -s --
   squash = commit -s --amend -C HEAD
   dc = diff --cached --full-index
+  lfsdiff = -c diff.lfs.textconvert=cat diff diff --full-index
+  lfsdiffdc = -c diff.lfs.textconvert=cat diff diff --cached --full-index
   logp = log --pretty=oneline --decorate=full -15
   lol = log --graph --decorate --pretty=oneline --abbrev-commit
   lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
