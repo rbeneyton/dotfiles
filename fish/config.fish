@@ -103,6 +103,8 @@ ulimit -c unlimited
         alias lla "ls -lrth -a"
     end
     alias datefull 'date +"%Y/%m/%d %T.%N"'
+    alias cal 'ncal -M -b -3'
+    alias caly 'ncal -M -b -y'
     if type rg &> /dev/null
         alias grep "rg --follow --engine auto --search-zip"
     else
