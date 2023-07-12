@@ -52,6 +52,13 @@ lua << EOF
       },
       highlight = {
         enable = true,
+        is_supported = function()
+            if vim.fn.getfsize(vim.fn.expand('%')) > 512 * 1024 then
+                vim.api.nvim_echo({ { vim.fn.expand('%') .. ": disable tree-sitter due to size" } }, true, {})
+                return false
+            end
+            return true
+        end,
         -- list of language that will be disabled
         disable = { "help", },
 
