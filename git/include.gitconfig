@@ -157,4 +157,10 @@
 [receive]
     fsckObjects = true
 
+[git-p4]
+   detectRenames = true
+   detectCopies = true
+   detectCopiesHarder = true
+   metadataDecodingStrategy = fallback
+
 # vim: filetype=dosini
