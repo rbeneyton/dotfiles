@@ -972,6 +972,7 @@ let g:airline_section_b = '
 " let g:airline_section_i = '%{fugitive#head()}' " real git msgs
 " let g:airline_section_x = '%Y'
 let g:airline_section_y = '%n' " buffer number, no fileencoding
+let g:airline_section_z = '%p%% ℅%v' " no line number
 let g:airline_theme = "base16"
 " let g:airline_theme='solarized'
 let g:airline_theme = "base16_tomorrow_night_eighties"
