@@ -113,10 +113,11 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                     { "open &terminal", terminal },
                                     { "clementine", "clementine" },
                                     { "&chromium", "chromium" },
-                                    { "&firefox", "firefox" },
                                     { "&discord", home .. "/Downloads/Discord/Discord" },
-                                    { "&signal", "env LANG=fr_FR.utf-8 LANGUAGE=fr signal-desktop" },
+                                    { "&firefox", "firefox" },
                                     { "&mail", "sylpheed" },
+                                    { "&remmina", "remmina" },
+                                    { "&signal", "env LANG=fr_FR.utf-8 LANGUAGE=fr signal-desktop" },
                                     -- The next line add our menu (myappmenu)
                                     { "app", myappmenu, beautiful.awesome_icon }
                     },
