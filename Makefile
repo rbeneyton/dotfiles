@@ -408,7 +408,8 @@ debian-install-base:
 	apt-get install asciidoc gettext xmlto # git
 	apt-get install docbook-utils libncurses-dev libpcre2-posix2 # tig
 	apt-get install texinfo # gdb
-	apt-get install pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3 # alacritty
+	apt-get install pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3  # alacritty
+	apt-get install python3-pynvim # nvim
 	apt-get install libssl-dev # libevent
 	apt-get install bison # tmux
 	apt-get install bash-completion

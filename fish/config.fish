@@ -158,7 +158,7 @@ ulimit -c unlimited
     alias is "PYTHONNOUSERSITE=on ipython3"
 
     # conda
-    pathadd /opt/conda/bin
+    # pathadd /opt/conda/bin
     function condainit
         eval conda "shell.fish" "hook" $argv | source
     end
