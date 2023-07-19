@@ -71,7 +71,7 @@
 	path = vim/pack/lang/start/ron
 	url = https://github.com/ron-rs/ron.vim.git
 [submodule "vim/pack/lang/start/rust"]
-	path = vim/pack/lang/start/rust
+	path = vim/pack/lang/opt/rust
 	url = https://github.com/rust-lang/rust.vim.git
 [submodule "vim/pack/lang/start/vim-fish-syntax"]
 	path = vim/pack/lang/start/vim-fish-syntax
@@ -127,3 +127,6 @@
 [submodule "vim/pack/extend/opt/nvim-dap-ui"]
 	path = vim/pack/extend/opt/nvim-dap-ui
 	url = https://github.com/rcarriga/nvim-dap-ui.git
+[submodule "vim/pack/lang/start/rust-tools"]
+	path = vim/pack/lang/start/rust-tools
+	url = https://github.com/simrat39/rust-tools.nvim.git

@@ -504,7 +504,7 @@ autocmd BufWritePre gitcommit :%s/\s\+$//e
 " make error list special
 autocmd BufRead quickfix setlocal nobuflisted nowrap number
 
-let g:rustfmt_autosave = 1
+" let g:rustfmt_autosave = 1
 
 " ]]]
 " [[[ weird (outdated?) options
