@@ -7,21 +7,25 @@ packadd syntastic
 " ]]]
 " [[[ mason
 
-packadd mason
-packadd mason-lspconfig
+if has('nvim')
+    packadd mason
+    packadd mason-lspconfig
 lua << EOF
-require("mason").setup({})
-require("mason-lspconfig").setup()
+        require("mason").setup({})
+        require("mason-lspconfig").setup()
 EOF
+endif
 
 " ]]]
 " [[[ dap
 
-packadd nvim-dap
-packadd nvim-dap-ui
+if has('nvim')
+    packadd nvim-dap
+    packadd nvim-dap-ui
 lua << EOF
-require("dapui").setup()
+        require("dapui").setup()
 EOF
+endif
 
 " ]]]
 " [[[ treesitter
@@ -1235,6 +1239,25 @@ let g:alternateSearchPath = 'sfr:../src,sfr:../../src,sfr:../include'
 if has('nvim')
     " native nvim lsp
     packadd nvim-lspconfig
+
+lua << EOF
+    local rt = require("rust-tools")
+
+    rt.setup({
+      server = {
+        on_attach = function(_, bufnr)
+          -- Hover actions
+          vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+          -- Code action groups
+          vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+        end,
+      },
+    })
+
+    -- Enable inlay hints auto update and set them for all the buffers
+    rt.inlay_hints.enable()
+EOF
+
 else
     " FIXME no more editing code using vim, so don't maintain settings
     " packadd vim-lsp
