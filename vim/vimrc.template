@@ -1,3 +1,4 @@
+" remind, after add: :helptags ALL
 " [[[ pathogen
 
 " remind: manual ':helptags ALL' after adding new package
@@ -11,6 +12,15 @@ packadd mason-lspconfig
 lua << EOF
 require("mason").setup({})
 require("mason-lspconfig").setup()
+EOF
+
+" ]]]
+" [[[ dap
+
+packadd nvim-dap
+packadd nvim-dap-ui
+lua << EOF
+require("dapui").setup()
 EOF
 
 " ]]]

@@ -121,3 +121,9 @@
 [submodule "vim/pack/extend/opt/mason-lspconfig"]
 	path = vim/pack/extend/opt/mason-lspconfig
 	url = https://github.com/williamboman/mason-lspconfig.nvim.git
+[submodule "vim/pack/extend/opt/nvim-dap"]
+	path = vim/pack/extend/opt/nvim-dap
+	url = https://github.com/mfussenegger/nvim-dap.git
+[submodule "vim/pack/extend/opt/nvim-dap-ui"]
+	path = vim/pack/extend/opt/nvim-dap-ui
+	url = https://github.com/rcarriga/nvim-dap-ui.git
