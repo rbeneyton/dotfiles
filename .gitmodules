@@ -115,3 +115,9 @@
 [submodule "vim/pack/undo/opt/undotree"]
 	path = vim/pack/undo/opt/undotree
 	url = https://github.com/mbbill/undotree.git
+[submodule "vim/pack/extend/opt/mason"]
+	path = vim/pack/extend/opt/mason
+	url = https://github.com/williamboman/mason.nvim.git
+[submodule "vim/pack/extend/opt/mason-lspconfig"]
+	path = vim/pack/extend/opt/mason-lspconfig
+	url = https://github.com/williamboman/mason-lspconfig.nvim.git

@@ -4,6 +4,16 @@
 packadd syntastic
 
 " ]]]
+" [[[ mason
+
+packadd mason
+packadd mason-lspconfig
+lua << EOF
+require("mason").setup({})
+require("mason-lspconfig").setup()
+EOF
+
+" ]]]
 " [[[ treesitter
 
 if has('nvim')
