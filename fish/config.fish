@@ -335,6 +335,7 @@ ulimit -c unlimited
         command git branch $argv | sed "s/\*//" | sed "s/^\s*//"
     end
 
+    set --export FILTER_BRANCH_SQUELCH_WARNING 1
 # ]]]
 
 # ]]]

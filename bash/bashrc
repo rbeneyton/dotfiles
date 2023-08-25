@@ -303,6 +303,7 @@ ulimit -c unlimited
     # flat list of branches, for using in scripts
     alias gbr='git branch | sed "s/\*//" | sed "s/^\s*//"'
 
+    export FILTER_BRANCH_SQUELCH_WARNING=1
 # ]]]
 
 # ]]]
