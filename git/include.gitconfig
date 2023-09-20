@@ -133,6 +133,7 @@
   verbosity = 1
   conflictstyle = diff3
   tool = fugitive
+  log = 1000
 
 [rerere]
   enabled = 1
@@ -168,5 +169,8 @@
    smudge = git-lfs smudge -- %f
    process = git-lfs filter-process
    required = true
+
+[safe]
+    directory = *
 
 # vim: filetype=dosini
