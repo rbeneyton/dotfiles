@@ -130,3 +130,6 @@
 [submodule "vim/pack/lang/start/rust-tools"]
 	path = vim/pack/lang/start/rust-tools
 	url = https://github.com/simrat39/rust-tools.nvim.git
+[submodule "vim/pack/extend/start/nvim-ocs52"]
+	path = vim/pack/extend/start/nvim-ocs52
+	url = https://github.com/ojroques/nvim-osc52.git
