@@ -42,7 +42,7 @@ $(DOTTER) : | $(BIN) $(UTILS) rust-update
 	rm -rf $(SRC)
 	git clone --branch master --single-branch --depth 30 https://github.com/SuperCuber/dotter.git $(SRC)
 	$(CARGO) build --manifest-path $(SRC)/Cargo.toml --release
-	cp $(SRC)/target/release/$(NAME) $(BIN)/
+	cp -f $$(cargo metadata --manifest-path $(SRC)/Cargo.toml --format-version 1 2>/dev/null | jq -r '.target_directory')/release/$(NAME) $(BIN)/
 	rm -rf $(SRC)
 dotter: $(DOTTER)
 
@@ -162,11 +162,16 @@ ALACRITTY = $(BIN)/alacritty
 $(ALACRITTY) : | $(BIN) $(UTILS) rust-update
 	$(eval NAME := alacritty)
 	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
+	$(eval BUILD := $(SRC)/build)
 	rm -rf $(SRC)
 	# git clone --branch master --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
 	git clone --branch v0.12.2 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
-	$(CARGO) build --manifest-path $(SRC)/Cargo.toml --release
-	cp -f $$(cargo metadata --manifest-path $(SRC)/Cargo.toml --format-version 1 2>/dev/null | jq -r '.target_directory')/release/$(NAME) $(BIN)/
+	RUSTFLAGS="-C target-cpu=native" \
+		$(CARGO) build \
+			--target-dir $(BUILD) \
+			--manifest-path $(SRC)/Cargo.toml \
+			--release
+	cp -f $(BUILD)/release/$(NAME) $(BIN)/
 	rm -rf $(SRC)
 alacritty: $(ALACRITTY)
 
@@ -384,7 +389,7 @@ $(RG) : | $(BIN) $(UTILS) rust-update
 			--manifest-path $(SRC)/Cargo.toml \
 			--release \
 			--features 'pcre2'
-	cp $(BUILD)/release/$(NAME) $(BIN)/
+	cp -f $(BUILD)/release/$(NAME) $(BIN)/
 	rm -rf $(SRC)
 rg: $(RG)
 
