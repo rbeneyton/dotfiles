@@ -20,7 +20,7 @@ require("awful.hotkeys_popup.keys")
 local debian = require("debian.menu")
 
 -- local definition
-local host = "{{trim (command_output "hostname")}}"
+local host = "{{dotter.hostname}}"
 local home = "{{trim (command_output "realpath ~")}}"
 local config_dir = home .. "/.config/awesome/"
 
