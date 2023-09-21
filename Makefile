@@ -58,7 +58,7 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	# no out-of-source-tree support
 	rm -rf $(SRC)
 	mkdir -p $(SRC)
-	wget https://www.kernel.org/pub/software/scm/git/git-2.41.0.tar.xz -O $(TAR)
+	wget https://www.kernel.org/pub/software/scm/git/git-2.42.0.tar.xz -O $(TAR)
 	tar --xz -xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
 	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
@@ -164,9 +164,9 @@ $(ALACRITTY) : | $(BIN) $(UTILS) rust-update
 	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	rm -rf $(SRC)
 	# git clone --branch master --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
-	git clone --branch v0.10.1 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
+	git clone --branch v0.12.2 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
 	$(CARGO) build --manifest-path $(SRC)/Cargo.toml --release
-	cp $(SRC)/target/release/$(NAME) $(BIN)/
+	cp -f $$(cargo metadata --manifest-path $(SRC)/Cargo.toml --format-version 1 2>/dev/null | jq -r '.target_directory')/release/$(NAME) $(BIN)/
 	rm -rf $(SRC)
 alacritty: $(ALACRITTY)
 
@@ -240,7 +240,7 @@ $(GCC_INSTALL) :
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	$(eval BUILD := $(SRC)/build)
 	rm -rf $(SRC)
-	git clone --branch releases/gcc-12 --single-branch --depth 10 https://gcc.gnu.org/git/gcc.git $(SRC)
+	git clone --branch releases/gcc-13 --single-branch --depth 10 https://gcc.gnu.org/git/gcc.git $(SRC)
 	mkdir -p $(BUILD)
 	# -disable-multilib --disable-shared # gcc bug 66955
 	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
@@ -274,7 +274,7 @@ $(GDB_INSTALL) : | $(UTILS)
 	rm -rf $(SRC)
 	# git clone --branch gdb-10-branch --single-branch --depth 10 https://sourceware.org/git/binutils-gdb.git $(SRC)
 	mkdir -p $(SRC) $(BUILD)
-	wget $(GNU_MIRROR)/gdb/gdb-13.1.tar.xz -O $(TAR)
+	wget $(GNU_MIRROR)/gdb/gdb-13.2.tar.xz -O $(TAR)
 	tar xf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
 	# recursiv make/configure isn't possible with gdb
