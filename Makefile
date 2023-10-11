@@ -447,6 +447,8 @@ debian-install-graphic:
 	# 1) keychron Fn keys
 	echo "options hid_apple fnmode=2" > /etc/modprobe.d/hid_apple.conf
 	update-initramfs -u
+	# no bell-sound, ever
+	echo "blacklist pcspkr" > /etc/modprobe.d/blacklist.conf
 	apt-get clean
 
 debian-install-misc:
