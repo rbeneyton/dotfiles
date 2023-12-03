@@ -138,6 +138,10 @@ vim_undodir = "~/.vimundo"
 [zathura.files]
 "zathura/config.rc" = "~/.config/zathura/zathurarc"
 
+# nushell
+[nu.files]
+"nu/config.nu" = "~/.config/nushell/config.nu"
+
 # firefox
 [firefox.files]
 # need post_deploy.sh to propagate to all profiles
@@ -164,6 +168,7 @@ depends = [
     "gdb",
     "git",
     "gtk",
+    "nu",
     "redshift",
     "rust",
     "starship",

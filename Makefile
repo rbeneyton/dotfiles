@@ -375,6 +375,7 @@ misc-user: $(BIN) rg
 	# $(CARGO) install --force --locked --git https://github.com/charliermarsh/ruff.git ruff
 	$(CARGO) install --force --locked cargo-expand
 	$(CARGO) install --force --locked fd-find
+	$(CARGO) install --force --locked --features=dataframe nu
 
 RG = $(BIN)/rg
 $(RG) : | $(BIN) $(UTILS) rust-update
