@@ -134,6 +134,11 @@ git_email = "richard.beneyton@gmail.com"
 [zathura.files]
 "zathura/config.rc" = "~/.config/zathura/zathurarc"
 
+# firefox
+[firefox.files]
+# need link build by pre_deploy.sh
+"firefox/userChrome.css" = "~/.mozilla/firefox/link.default/chrome/userChrome.css"
+
 # dummy "flag only" packages
 [bluetooth.variables]
 [laptop.variables]
@@ -148,6 +153,7 @@ depends = [
     "bluetooth",
     "compose",
     "conda",
+    "firefox",
     "fish",
     "fonts",
     "gdb",
