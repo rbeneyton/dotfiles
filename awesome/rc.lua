@@ -758,6 +758,11 @@ awful.spawn.with_shell("pkill -u $USER blueman ; blueman-applet &")
 -- new ~trivial~ method with C-; mapping
 awful.spawn.with_shell("pkill -u $USER inputplug ; sleep 0.5 && inputplug -d -0 -c " .. home .. "/.config/xkb/inputplug.sh &> /tmp/inputplug.log &")
 
+{{#if dotter.packages.thinkpad}}
+-- dirty "turn off all microphones at login"
+awful.spawn.with_shell('for i in $(pactl list sources | grep Name | grep __source | cut -d: -f2) ; do pactl set-source-mute $i "1" ; done')
+{{/if}}
+
 -- ]]]
 
 -- dotter/handlebars+fold incompatibility: temporary [ instead of {

@@ -3,6 +3,7 @@
 packages = [
     "base",
     "laptop",
+    "thinkpad",
 ]
 
 [variables]
