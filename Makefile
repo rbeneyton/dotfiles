@@ -430,7 +430,7 @@ debian-install-base:
 	apt-get clean
 
 debian-install-net:
-	apt-get install iputils-ping iputils-tracepath
+	apt-get install iputils-ping iputils-tracepath net-tools
 	apt-get install network-manager-openconnect network-manager-gnome network-manager-openconnect-gnome
 	apt-get install tlp tlp-rdw
 	apt-get install sylpheed
