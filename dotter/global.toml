@@ -136,8 +136,8 @@ git_email = "richard.beneyton@gmail.com"
 
 # firefox
 [firefox.files]
-# need link build by pre_deploy.sh
-"firefox/userChrome.css" = "~/.mozilla/firefox/link.default/chrome/userChrome.css"
+# need post_deploy.sh to propagate to all profiles
+"firefox/userChrome.css" = "~/.mozilla/firefox/.dotter/chrome/userChrome.css"
 
 # dummy "flag only" packages
 [bluetooth.variables]
