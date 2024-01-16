@@ -422,6 +422,7 @@ debian-install-base:
 	apt-get install bash-completion
 	apt-get install gnuplot # criterion
 	apt-get install source-highlight libsource-highlight-dev # gdb
+	apt-get install inxi # hardware scan
 	apt-get clean
 
 debian-install-net:
@@ -487,6 +488,11 @@ debian-install-kernel-mac:
 	apt-get install lm-sensors
 	# sensors
 	apt-get clean
+
+debian-install-kernel-p14:
+	# 1) psmouse restart required
+	# psmouse.synaptics_intertouch=1
+	# /etc/default/grub GRUB_CMDLINE_LINUX= + update-grub
 
 debian-up:
 	apt-get update
