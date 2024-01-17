@@ -277,11 +277,11 @@ $(GDB_INSTALL) : | $(UTILS)
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	$(eval BUILD := $(SRC)/build)
 	rm -rf $(SRC)
-	# git clone --branch gdb-10-branch --single-branch --depth 10 https://sourceware.org/git/binutils-gdb.git $(SRC)
+	git clone --branch gdb-14-branch --single-branch --depth 50 https://sourceware.org/git/binutils-gdb.git $(SRC)
 	mkdir -p $(SRC) $(BUILD)
-	wget $(GNU_MIRROR)/gdb/gdb-13.2.tar.xz -O $(TAR)
-	tar xf $(TAR) -C $(SRC) --strip-components 1
-	rm $(TAR)
+	# wget $(GNU_MIRROR)/gdb/gdb-13.2.tar.xz -O $(TAR)
+	# tar xf $(TAR) -C $(SRC) --strip-components 1
+	# rm $(TAR)
 	# recursiv make/configure isn't possible with gdb
 	# autoreconf -f -i $(SRC) neither
 	# XXX never ever use make -j
@@ -300,7 +300,7 @@ $(GDB_INSTALL) : | $(UTILS)
 				--enable-lto \
 				; \
 			nice -n 20 \
-				make -j $(NPROC); \
+				make; \
 			rm -rf $(INSTALL); \
 			make -C gdb install; \
 			make -C gdbserver install; \
@@ -415,6 +415,8 @@ debian-install-base:
 	apt-get install asciidoc gettext xmlto # git
 	apt-get install docbook-utils libncurses-dev libpcre2-posix2 # tig
 	apt-get install texinfo # gdb
+	apt-get install libgmp-dev # gdb
+	apt-get install libmpfr-dev # gdb
 	apt-get install pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3  # alacritty
 	apt-get install python3-pynvim # nvim
 	apt-get install libssl-dev # libevent
