@@ -1,5 +1,7 @@
 set startup-quietly on
 set confirm off
+set tui mouse-events off
+
 set print elements 2000
 # entire string
 set print elements 0
