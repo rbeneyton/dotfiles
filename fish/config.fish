@@ -79,18 +79,17 @@ ulimit -c unlimited
 
     # function/alias aren't replaced when typing, abbrevations are
     if type exa &> /dev/null
-        alias ls "exa"
         # usefull options at end for easy modification
-        abbr --global --add e "exa --long --time-style=iso --classify --git --sort newest"
-        alias ea "exa --long --time-style=iso --classify --git --all --sort newest"
-        alias es "exa --long --time-style=iso --classify --git --sort size"
-        alias ee "exa --long --time-style=iso --classify --git --sort ext"
-        alias en "exa --long --time-style=iso --classify --git --sort name"
+        alias ea "exa -icons --long --time-style=iso --classify --git --all --sort newest"
+        alias es "exa -icons --long --time-style=iso --classify --git --sort size"
+        alias ee "exa -icons --long --time-style=iso --classify --git --sort ext"
+        alias en "exa -icons --long --time-style=iso --classify --git --sort name"
         alias et "exa --tree --time-style=iso --classify --git --long"
         abbr --global --add et2 "exa --tree --time-style=iso --classify --git --long --level=2"
         abbr --global --add et3 "exa --tree --time-style=iso --classify --git --long --level=3"
         abbr --global --add et4 "exa --tree --time-style=iso --classify --git --long --level=4"
-        alias ll "exa --long --time-style=iso --classify --git --sort newest"
+        alias ls "exa --icons --long --time-style=iso --classify --git --sort name"
+        alias ll "exa --icons --long --time-style=iso --classify --git --sort newest"
         alias lla "exa --all --long --time-style=iso --classify --git --sort newest"
         set --global --erase LS_COLORS
         # xit in green on black, underline

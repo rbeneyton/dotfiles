@@ -73,17 +73,16 @@ ulimit -c unlimited
 # [[[ misc
 
     if type exa &> /dev/null; then
-        alias ls="exa"
-        alias e="exa --long --time-style=iso --classify --git --sort newest"
-        alias ea="exa --long --time-style=iso --classify --git --all --sort newest"
-        alias es="exa --long --time-style=iso --classify --git --sort size"
-        alias ee="exa --long --time-style=iso --classify --git --sort ext"
-        alias en="exa --long --time-style=iso --classify --git --sort name"
+        alias ea="exa --icons --long --time-style=iso --classify --git --all --sort newest"
+        alias es="exa --icons --long --time-style=iso --classify --git --sort size"
+        alias ee="exa --icons --long --time-style=iso --classify --git --sort ext"
+        alias en="exa --icons --long --time-style=iso --classify --git --sort name"
         alias et="exa --tree --time-style=iso --classify --git --long"
         alias et2="exa --tree --time-style=iso --classify --git --long --level=2"
         alias et3="exa --tree --time-style=iso --classify --git --long --level=3"
         alias et4="exa --tree --time-style=iso --classify --git --long --level=4"
-        alias ll="e"
+        alias ls="exa --icons --long --time-style=iso --classify --git --sort name"
+        alias ll="exa --icons --long --time-style=iso --classify --git --sort newest"
         alias lla="e --all"
         unset LS_COLORS
         # xit in green on black, underline
