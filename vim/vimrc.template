@@ -1426,6 +1426,9 @@ let g:undotree_SplitWidth=40 " default (30) is too short
 let g:undotree_SetFocusWhenToggle=1 " get focus on toggle
 nnoremap <F5> :UndotreeToggle<CR>
 
+set undofile
+set undodir={{vim_undodir}}
+
 " ]]]
 " [[[ vimwiki
 
