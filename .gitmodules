@@ -133,3 +133,6 @@
 [submodule "vim/pack/extend/start/nvim-ocs52"]
 	path = vim/pack/extend/start/nvim-ocs52
 	url = https://github.com/ojroques/nvim-osc52.git
+[submodule "vim/pack/extend/start/vim-rooter"]
+	path = vim/pack/extend/start/vim-rooter
+	url = https://github.com/airblade/vim-rooter.git
