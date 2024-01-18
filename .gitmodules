@@ -136,3 +136,6 @@
 [submodule "vim/pack/undo/opt/undotree"]
 	path = vim/pack/undo/opt/undotree
 	url = https://github.com/mbbill/undotree.git
+[submodule "vim/pack/lang/start/rustaceanvim"]
+	path = vim/pack/lang/opt/rustaceanvim
+	url = https://github.com/mrcjkb/rustaceanvim.git

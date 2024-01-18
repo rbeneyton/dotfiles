@@ -591,105 +591,105 @@ nnoremap <C-j> <esc>
 " ]]]
 " [[[ tags & cscope
 
-set tags=tags;/,.tags;/,TAGS;/
-
-if !has("nvim") && has("cscope") && has('modify_fname')
-    " use cscope by default
-    set cscopetag
-
-    " use cscope before tags
-    set cscopetagorder=0
-
-    " set cscopequickfix="s-,c-,d-,i-,t-,e"
-
-    " set nocscopeverbose
-    " " add any database in current directory
-    " if filereadable(".cscope.out")
-    "     cscope add .cscope.out
-    "     " else add database pointed to by environment
-    " elseif $CSCOPE_DB != ""
-    "     cscope add $CSCOPE_DB
-    " endif
-    " set cscopeverbose
-
-    "adapted from http://vim.sourceforge.net/scripts/script.php?script_id=157
-
-"TODO make the same auto add/remove for gtags
-"    "==
-"    " windowdir
-"    "  Gets the directory for the file in the current window
-"    "  Or the current working dir if there isn't one for the window.
-"    function! s:windowdir()
-"        return winbufnr(0) == -1 ? getcwd() : fnamemodify(bufname(winbufnr(0)), ':p:h')
-"    endfunction
+" set tags=tags;/,.tags;/,TAGS;/
 "
-"    "==
-"    " Find_in_parent
-"    " find the file argument and returns the path to it.
-"    " Starting with the current working dir, it walks up the parent folders
-"    " until it finds the file, or it hits the stop dir.
-"    " If it doesn't find it, it returns "Nothing"
-"    function! s:Find_in_parent(fln,flsrt,flstp)
-"        let here = a:flsrt
-"        while ( strlen( here) > 0 )
-"            if filereadable( here . "/" . a:fln )
-"                return here
-"            endif
-"            let fr = match(here, "/[^/]*$")
-"            if fr == -1
-"                break
-"            endif
-"            let here = strpart(here, 0, fr)
-"            if here == a:flstp
-"                break
-"            endif
-"        endwhile
-"        return "Nothing"
-"    endfunction
+" if !has("nvim") && has("cscope") && has('modify_fname')
+"     " use cscope by default
+"     set cscopetag
 "
-"    "==
-"    " Cycle_csdb
-"    "  cycle the loaded cscope db.
-"    function! s:Cycle_csdb()
-"        if exists("b:csdbpath") && cscope_connection(3, "out", b:csdbpath)
-"            "it is already loaded. don't try to reload it.
-"            return
-"        endif
-"        let newcsdbpath = s:Find_in_parent(".cscope.out",s:windowdir(),$HOME)
-"        "    echo "Found cscope.out at: " . newcsdbpath
-"        "    echo "Windowdir: " . s:windowdir()
-"        if newcsdbpath != "Nothing"
-"            let b:csdbpath = newcsdbpath
-"            if !cscope_connection(3, "out", b:csdbpath)
-"                let save_csvb = &csverb
-"                set nocscopeverbose
-"                exe "cscope add " . b:csdbpath . "/.cscope.out " . b:csdbpath
-"                set cscopeverbose
-"                let &csverb = save_csvb
-"            endif
-"        endif
-"    endfunction
+"     " use cscope before tags
+"     set cscopetagorder=0
 "
-"    augroup autoload_cscope
-"        au!
-"        autocmd FileType c call <SID>Cycle_csdb()
-"        autocmd FileType cpp call <SID>Cycle_csdb()
-"        "no unload…
-"    augroup END
+"     " set cscopequickfix="s-,c-,d-,i-,t-,e"
 "
-"    " update macro, rely on cs shell alias, so use temporary an interactive
-"    " shell for that
-"    let @u=':wall:set shell=/bin/bash\ -i:! cs:cscope reset:set shell=/bin/bash'
-"    " TODO nvim: use :terminal
-
-    let GtagsCscope_Auto_Load = 1
-    let GtagsCscope_Quiet = 1
-    let GtagsCscope_Absolute_Path = 1
-    "let g:Gtags_Auto_Update = 1 "global -u --file % after each write
-    let @u=':GtagsUpdate:cscope reset'
-    " TODO nvim: use :terminal
-
-endif
+"     " set nocscopeverbose
+"     " " add any database in current directory
+"     " if filereadable(".cscope.out")
+"     "     cscope add .cscope.out
+"     "     " else add database pointed to by environment
+"     " elseif $CSCOPE_DB != ""
+"     "     cscope add $CSCOPE_DB
+"     " endif
+"     " set cscopeverbose
+"
+"     "adapted from http://vim.sourceforge.net/scripts/script.php?script_id=157
+"
+" "TODO make the same auto add/remove for gtags
+" "    "==
+" "    " windowdir
+" "    "  Gets the directory for the file in the current window
+" "    "  Or the current working dir if there isn't one for the window.
+" "    function! s:windowdir()
+" "        return winbufnr(0) == -1 ? getcwd() : fnamemodify(bufname(winbufnr(0)), ':p:h')
+" "    endfunction
+" "
+" "    "==
+" "    " Find_in_parent
+" "    " find the file argument and returns the path to it.
+" "    " Starting with the current working dir, it walks up the parent folders
+" "    " until it finds the file, or it hits the stop dir.
+" "    " If it doesn't find it, it returns "Nothing"
+" "    function! s:Find_in_parent(fln,flsrt,flstp)
+" "        let here = a:flsrt
+" "        while ( strlen( here) > 0 )
+" "            if filereadable( here . "/" . a:fln )
+" "                return here
+" "            endif
+" "            let fr = match(here, "/[^/]*$")
+" "            if fr == -1
+" "                break
+" "            endif
+" "            let here = strpart(here, 0, fr)
+" "            if here == a:flstp
+" "                break
+" "            endif
+" "        endwhile
+" "        return "Nothing"
+" "    endfunction
+" "
+" "    "==
+" "    " Cycle_csdb
+" "    "  cycle the loaded cscope db.
+" "    function! s:Cycle_csdb()
+" "        if exists("b:csdbpath") && cscope_connection(3, "out", b:csdbpath)
+" "            "it is already loaded. don't try to reload it.
+" "            return
+" "        endif
+" "        let newcsdbpath = s:Find_in_parent(".cscope.out",s:windowdir(),$HOME)
+" "        "    echo "Found cscope.out at: " . newcsdbpath
+" "        "    echo "Windowdir: " . s:windowdir()
+" "        if newcsdbpath != "Nothing"
+" "            let b:csdbpath = newcsdbpath
+" "            if !cscope_connection(3, "out", b:csdbpath)
+" "                let save_csvb = &csverb
+" "                set nocscopeverbose
+" "                exe "cscope add " . b:csdbpath . "/.cscope.out " . b:csdbpath
+" "                set cscopeverbose
+" "                let &csverb = save_csvb
+" "            endif
+" "        endif
+" "    endfunction
+" "
+" "    augroup autoload_cscope
+" "        au!
+" "        autocmd FileType c call <SID>Cycle_csdb()
+" "        autocmd FileType cpp call <SID>Cycle_csdb()
+" "        "no unload…
+" "    augroup END
+" "
+" "    " update macro, rely on cs shell alias, so use temporary an interactive
+" "    " shell for that
+" "    let @u=':wall:set shell=/bin/bash\ -i:! cs:cscope reset:set shell=/bin/bash'
+" "    " TODO nvim: use :terminal
+"
+"     let GtagsCscope_Auto_Load = 1
+"     let GtagsCscope_Quiet = 1
+"     let GtagsCscope_Absolute_Path = 1
+"     "let g:Gtags_Auto_Update = 1 "global -u --file % after each write
+"     let @u=':GtagsUpdate:cscope reset'
+"     " TODO nvim: use :terminal
+"
+" endif
 
 " g\ ->open tag of the word under cursor on a new window at right
 " nnoremap g\ <ESC>:vert :rightbelow :scscope <C-R>=expand("<cword>")<CR><CR>
@@ -1271,6 +1271,32 @@ lua << EOF
     rt.inlay_hints.enable()
 EOF
 
+" TODO switch to ustaceanvim AFTER nvim 0.10 for inlay
+" lua << EOF
+" vim.g.rustaceanvim = {
+"   -- Plugin configuration
+"   tools = {
+"   },
+"   -- LSP configuration
+"   server = {
+"     on_attach = function(client, bufnr)
+"       -- Hover actions
+"       vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+"       -- Code action groups
+"       vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+"     end,
+"     settings = {
+"       -- rust-analyzer language server configuration
+"       ['rust-analyzer'] = {
+"       },
+"     },
+"   },
+"   -- DAP configuration
+"   dap = {
+"   },
+" }
+" EOF
+
 else
     " FIXME no more editing code using vim, so don't maintain settings
     " packadd vim-lsp
@@ -1341,26 +1367,26 @@ lua << EOF
     end
 EOF
 
-    " rust
-    if executable('rust-analyzer')
-        " cd /home/rbeneyton/o/tmp && git clone https://github.com/rust-analyzer/rust-analyzer.git && cd rust-analyzer
-        " cargo build --release && cp target/release/rust-analyzer ~/bin/
-        " ou
-        " curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux -o ~/bin/rust-analyzer
-        " if executable('rls')
-        " au User lsp_setup call lsp#register_server({
-        "             \ 'name': 'rls',
-        "             \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-        "             \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-        "             \ 'whitelist': ['rust'],
-        "             \ })
-        " autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
-lua << EOF
-    lsp.rust_analyzer.setup {
-        on_attach = on_attach
-    }
-EOF
-    endif
+"     " rust
+"     if executable('rust-analyzer')
+"         " cd /home/rbeneyton/o/tmp && git clone https://github.com/rust-analyzer/rust-analyzer.git && cd rust-analyzer
+"         " cargo build --release && cp target/release/rust-analyzer ~/bin/
+"         " ou
+"         " curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux -o ~/bin/rust-analyzer
+"         " if executable('rls')
+"         " au User lsp_setup call lsp#register_server({
+"         "             \ 'name': 'rls',
+"         "             \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+"         "             \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
+"         "             \ 'whitelist': ['rust'],
+"         "             \ })
+"         " autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
+" lua << EOF
+"     lsp.rust_analyzer.setup {
+"         on_attach = on_attach
+"     }
+" EOF
+"     endif
 
     " python
     if executable('pylsp')
