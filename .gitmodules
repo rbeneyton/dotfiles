@@ -19,6 +19,18 @@
 [submodule "gdb/source-highlight"]
 	path = gdb/source-highlight
 	url = https://git.savannah.gnu.org/git/src-highlite.git
+[submodule "vim/pack/extend/opt/mason-lspconfig"]
+	path = vim/pack/extend/opt/mason-lspconfig
+	url = https://github.com/williamboman/mason-lspconfig.nvim.git
+[submodule "vim/pack/extend/opt/mason"]
+	path = vim/pack/extend/opt/mason
+	url = https://github.com/williamboman/mason.nvim.git
+[submodule "vim/pack/extend/opt/nvim-dap"]
+	path = vim/pack/extend/opt/nvim-dap
+	url = https://github.com/mfussenegger/nvim-dap.git
+[submodule "vim/pack/extend/opt/nvim-dap-ui"]
+	path = vim/pack/extend/opt/nvim-dap-ui
+	url = https://github.com/rcarriga/nvim-dap-ui.git
 [submodule "vim/pack/extend/opt/syntastic"]
 	path = vim/pack/extend/opt/syntastic
 	url = https://github.com/scrooloose/syntastic.git
@@ -28,6 +40,9 @@
 [submodule "vim/pack/extend/start/async"]
 	path = vim/pack/extend/start/async
 	url = https://github.com/prabirshrestha/async.vim.git
+[submodule "vim/pack/extend/start/nvim-ocs52"]
+	path = vim/pack/extend/start/nvim-ocs52
+	url = https://github.com/ojroques/nvim-osc52.git
 [submodule "vim/pack/extend/start/tabular"]
 	path = vim/pack/extend/start/tabular
 	url = https://github.com/godlygeek/tabular.git
@@ -43,6 +58,9 @@
 [submodule "vim/pack/extend/start/vim-obsession"]
 	path = vim/pack/extend/start/vim-obsession
 	url = https://github.com/tpope/vim-obsession.git
+[submodule "vim/pack/extend/start/vim-rooter"]
+	path = vim/pack/extend/start/vim-rooter
+	url = https://github.com/airblade/vim-rooter.git
 [submodule "vim/pack/extend/start/vim-slime"]
 	path = vim/pack/extend/start/vim-slime
 	url = https://github.com/jpalardy/vim-slime.git
@@ -73,6 +91,9 @@
 [submodule "vim/pack/lang/start/rust"]
 	path = vim/pack/lang/opt/rust
 	url = https://github.com/rust-lang/rust.vim.git
+[submodule "vim/pack/lang/start/rust-tools"]
+	path = vim/pack/lang/start/rust-tools
+	url = https://github.com/simrat39/rust-tools.nvim.git
 [submodule "vim/pack/lang/start/vim-fish-syntax"]
 	path = vim/pack/lang/start/vim-fish-syntax
 	url = https://github.com/khaveesh/vim-fish-syntax.git
@@ -115,24 +136,3 @@
 [submodule "vim/pack/undo/opt/undotree"]
 	path = vim/pack/undo/opt/undotree
 	url = https://github.com/mbbill/undotree.git
-[submodule "vim/pack/extend/opt/mason"]
-	path = vim/pack/extend/opt/mason
-	url = https://github.com/williamboman/mason.nvim.git
-[submodule "vim/pack/extend/opt/mason-lspconfig"]
-	path = vim/pack/extend/opt/mason-lspconfig
-	url = https://github.com/williamboman/mason-lspconfig.nvim.git
-[submodule "vim/pack/extend/opt/nvim-dap"]
-	path = vim/pack/extend/opt/nvim-dap
-	url = https://github.com/mfussenegger/nvim-dap.git
-[submodule "vim/pack/extend/opt/nvim-dap-ui"]
-	path = vim/pack/extend/opt/nvim-dap-ui
-	url = https://github.com/rcarriga/nvim-dap-ui.git
-[submodule "vim/pack/lang/start/rust-tools"]
-	path = vim/pack/lang/start/rust-tools
-	url = https://github.com/simrat39/rust-tools.nvim.git
-[submodule "vim/pack/extend/start/nvim-ocs52"]
-	path = vim/pack/extend/start/nvim-ocs52
-	url = https://github.com/ojroques/nvim-osc52.git
-[submodule "vim/pack/extend/start/vim-rooter"]
-	path = vim/pack/extend/start/vim-rooter
-	url = https://github.com/airblade/vim-rooter.git
