@@ -57,6 +57,8 @@ awesome_xset_burn_period = "130"
 # alacritty
 [alacritty.files]
 "alacritty/alacritty.yml" = "~/.config/alacritty/alacritty.yml"
+[alacritty.variables]
+alacritty_font_size = 10
 
 # xkb
 [xkb.files]
