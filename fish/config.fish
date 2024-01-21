@@ -162,6 +162,11 @@ ulimit -c unlimited
         eval conda "shell.fish" "hook" $argv | source
     end
 
+    # video reader of the month (with true hardware decoding)
+    if type mpv &> /dev/null
+        alias vlc "mpv --hwdec=auto"
+    end
+
     # pdf reader of the month
     alias pdf zathura
 

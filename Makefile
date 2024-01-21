@@ -455,6 +455,9 @@ debian-install-graphic:
 	update-initramfs -u
 	# no bell-sound, ever
 	echo "blacklist pcspkr" > /etc/modprobe.d/blacklist.conf
+	# apt-get install intel-media-va-driver-non-free
+	apt-get install i965-va-driver-shaders intel-gpu-tools
+	apt install vlc mpv
 	apt-get clean
 
 debian-install-misc:
