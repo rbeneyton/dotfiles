@@ -80,10 +80,10 @@ ulimit -c unlimited
     # function/alias aren't replaced when typing, abbrevations are
     if type exa &> /dev/null
         # usefull options at end for easy modification
-        alias ea "exa -icons --long --time-style=iso --classify --git --all --sort newest"
-        alias es "exa -icons --long --time-style=iso --classify --git --sort size"
-        alias ee "exa -icons --long --time-style=iso --classify --git --sort ext"
-        alias en "exa -icons --long --time-style=iso --classify --git --sort name"
+        alias ea "exa --icons --long --time-style=iso --classify --git --all --sort newest"
+        alias es "exa --icons --long --time-style=iso --classify --git --sort size"
+        alias ee "exa --icons --long --time-style=iso --classify --git --sort ext"
+        alias en "exa --icons --long --time-style=iso --classify --git --sort name"
         alias et "exa --tree --time-style=iso --classify --git --long"
         abbr --global --add et2 "exa --tree --time-style=iso --classify --git --long --level=2"
         abbr --global --add et3 "exa --tree --time-style=iso --classify --git --long --level=3"
