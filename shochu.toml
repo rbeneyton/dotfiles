@@ -9,5 +9,6 @@ packages = [
 [variables]
 awesome_network_interface = "enp5s0" # wlp3s0
 awesome_disk_interface = "nvme0n1"
+alacritty_font_size = 8
 
 # vim: filetype=cfg
