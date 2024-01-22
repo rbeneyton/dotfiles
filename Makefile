@@ -432,6 +432,7 @@ debian-install-base:
 debian-install-net:
 	apt-get install iputils-ping iputils-tracepath net-tools
 	apt-get install network-manager-openconnect network-manager-gnome network-manager-openconnect-gnome
+	apt-get install dnsmasq # +edit /etc/NetworkManager/dnsmasq.d/custom-dns & /etc/NetworkManager/NetworkManager.conf
 	apt-get install tlp tlp-rdw
 	apt-get install sylpheed
 	apt-get clean
