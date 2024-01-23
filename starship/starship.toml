@@ -74,4 +74,11 @@ disabled = true
 [c]
 disabled = true
 
+[hg_branch]
+disabled = true
+
+[conda]
+style = "cyan"
+format = "env [$environment]($style) " # no weird symbol
+
 # vim: filetype=cfg

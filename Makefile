@@ -290,7 +290,10 @@ $(GDB_INSTALL) : | $(UTILS)
 	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
+			CPP=$(GCC_INSTALL)/bin/cpp \
+			CC=$(GCC_INSTALL)/bin/gcc \
 			CFLAGS='-march=native -O3' \
+			CXX=$(GCC_INSTALL)/bin/g++ \
 			CXXFLAGS='-march=native -O3' \
 			$(SRC)/configure \
 				--prefix=$(INSTALL) \

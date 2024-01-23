@@ -123,7 +123,7 @@ ulimit -c unlimited
         mkdir -p -- "$1" && cd -P -- "$1"
     }
 
-    alias f='find . -name'
+    alias f='fd . -name'
     alias p='pstree -ap | less'
     alias m=make
     alias mm="make -j"
@@ -274,6 +274,13 @@ ulimit -c unlimited
     }
 
     alias t='tig --date-order -500'
+    alias ta="tig --date-order --all -500"
+    alias tigreflog='git reflog --pretty=raw | tig --pretty=raw'
+
+    # exemple of vim IO (we could have directly call python but we can add commands then)
+    function prettyjson() {
+        vim -es <<< ":%!python -c 'import json, sys; a = sys.stdin.read(); print json.dumps(json.loads(a), indent=4);'" <<< 'write >>> /dev/stdout' $1
+    }
 
     # go to the upper git repo head (returned value is correct)
     function up() {

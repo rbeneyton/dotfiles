@@ -15,7 +15,7 @@ abbr --global --add bash "NOFISH=1 bash"
 # [[[ own installs
 
 function pathadd
-    fish_add_path --global $argv
+    fish_add_path --path $argv
 end
 function manpathadd
     if ! contains $argv $MANPATH
@@ -134,7 +134,7 @@ ulimit -c unlimited
     end
 
     function f
-        command find . -name $argv
+        command fd . -name $argv
     end
     function p
         command pstree -ap | less
@@ -151,7 +151,8 @@ ulimit -c unlimited
     abbr --global --add composekeylist cat /usr/share/X11/locale/en_US.UTF-8/Compose
 
     # command starting with ' ' aren't recorded
-    alias h history
+    # history: correct order, timestamp, pager from bottom
+    alias h 'history --reverse --show-time | bat --language fish --force-colorization --pager "less -R +G" --style plain'
 
     alias i ipython3
     alias is "PYTHONNOUSERSITE=on ipython3"
@@ -306,6 +307,7 @@ ulimit -c unlimited
 
     alias t "tig --date-order -500"
     alias ta "tig --date-order --all -500"
+    alias tigreflog "git reflog --pretty=raw | tig --pretty=raw"
 
     function up -d "go to the upper git repo head"
         set BCK (pwd)
