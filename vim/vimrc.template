@@ -368,8 +368,10 @@ set statusline+=%0*    "switch back to statusline highlight
 " [[[ fugitive
 
 nnoremap <Leader>gv :Gvdiffsplit!<CR>
+nnoremap <Leader>gh :Gvdiff HEAD<CR>
+nnoremap <Leader>go :Gvdiff origin/master<CR>
 nnoremap <Leader>ga :Git difftool -y<CR>
-nnoremap <Leader>gup :Gcd .<CR>
+" nnoremap <Leader>gup :Gcd .<CR>
 
 " ]]]
 " [[[ external tools: diff, make, grep, path…
@@ -948,7 +950,7 @@ colorscheme solarized
 if has('nvim')
     packadd kanagawa
 lua << EOF
-    vim.opt.laststatus = 3
+    vim.opt.laststatus = 2 -- 3(unique statusline) drops info for no gain
     vim.opt.fillchars:append({
         horiz = '━',
         horizup = '┻',
