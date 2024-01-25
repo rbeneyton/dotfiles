@@ -163,6 +163,13 @@ set backspace=indent,eol,start  " more powerful backspacing
 
 set autoindent                  " always set auto-indenting on
 set autoread                    " reload unchanged files silentely
+" restore pre 0.10 swapfile behavior
+" 1:remove silent-but-one-warning-line (displayed even if appropriate callback
+" is defined)
+autocmd! nvim_swapfile
+" 2:force ATTENTION message when swap detected
+autocmd SwapExists * :let v:swapchoice = ''
+
 set clipboard+=unnamedplus      " copy/paste to global clipboard
 set hidden                      " allow to cycle and hide modified buffers
 
