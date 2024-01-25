@@ -1006,7 +1006,7 @@ endif
 " [[[ airline options
 
 let g:airline_powerline_fonts=1
-let g:airline#extensions#default#layout = [['a','b','c'],['y','x','z','warning']]
+let g:airline#extensions#default#layout = [['a','b','c'],['x','y','z','warning']]
 " suppress hunks from line, they're shown by gitgutter
 " let g:airline_section_b = '%{airline#util#wrap(airline#extensions#branch#get_head(),0)}'
 let g:airline_section_b = '
@@ -1016,8 +1016,8 @@ let g:airline_section_b = '
     \%{ get(b:, "gitsigns_status", "") }
     \'
 " let g:airline_section_i = '%{fugitive#head()}' " real git msgs
-" let g:airline_section_x = '%Y'
-let g:airline_section_y = '%n' " buffer number, no fileencoding
+let g:airline_section_x = '%n' " buffer number, will be reset later
+let g:airline_section_y = '%{ObsessionStatus('' '', '''')}%{airline#util#wrap(airline#parts#filetype(),0)}'
 let g:airline_section_z = '%p%% ℅%v' " no line number
 let g:airline_theme = "base16"
 " let g:airline_theme='solarized'
@@ -1057,7 +1057,7 @@ function! AirlineSlime()
   endif
   return bufnr('%') . ' ' . b:slime_config["target_pane"]
 endfunction
-let g:airline_section_y = '%{AirlineSlime()}'
+let g:airline_section_x = '%{AirlineSlime()}'
 
 " ]]]
 " [[[ tmuxline options
