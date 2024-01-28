@@ -139,3 +139,15 @@
 [submodule "vim/pack/lang/start/rustaceanvim"]
 	path = vim/pack/lang/opt/rustaceanvim
 	url = https://github.com/mrcjkb/rustaceanvim.git
+[submodule "vim/pack/misc/plenary"]
+	path = vim/pack/misc/start/plenary
+	url = https://github.com/nvim-lua/plenary.nvim.git
+[submodule "vim/pack/misc/nui"]
+	path = vim/pack/misc/start/nui
+	url = https://github.com/MunifTanjim/nui.nvim.git
+[submodule "vim/pack/misc/nvim-web-devicons"]
+	path = vim/pack/misc/start/nvim-web-devicons
+	url = https://github.com/nvim-tree/nvim-web-devicons.git
+[submodule "vim/pack/misc/neo-tree"]
+	path = vim/pack/misc/start/neo-tree
+	url = https://github.com/nvim-neo-tree/neo-tree.nvim.git

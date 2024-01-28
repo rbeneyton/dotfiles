@@ -1,4 +1,8 @@
 " remind, after add: :helptags ALL
+
+" let mapleader=","
+let mapleader = "\<Space>"
+
 " [[[ pathogen
 
 " remind: manual ':helptags ALL' after adding new package
@@ -12,7 +16,31 @@ if has('nvim')
     packadd mason-lspconfig
 lua << EOF
         require("mason").setup({})
-        require("mason-lspconfig").setup()
+        require("mason-lspconfig").setup({})
+EOF
+endif
+
+" ]]]
+" [[[ neo-tree
+
+if has('nvim')
+lua << EOF
+    -- need plenary
+    require("nvim-web-devicons").setup()
+    require("neo-tree").setup({
+        popup_border_style = "rounded",
+        buffers = {
+            -- When working with sessions, for example, restored but unfocused buffers
+            -- are mark as "unloaded". Turn this on to view these unloaded buffer.
+            show_unloaded = true,
+        },
+    })
+    -- shortcuts
+    vim.cmd([[:nnoremap \ :Neotree toggle current reveal_force_cwd<CR>]])
+    vim.cmd([[:nnoremap \| :Neotree toggle reveal<CR>]])
+    -- vim.cmd([[:nnoremap gd :Neotree float reveal_file=<cfile> reveal_force_cwd<CR>]])
+    vim.cmd([[:nnoremap <Leader>b :Neotree toggle show buffers<CR>]])
+    vim.cmd([[:nnoremap <Leader>s :Neotree toggle git_status<CR>]])
 EOF
 endif
 
@@ -153,9 +181,6 @@ endif
 
 " allow bash aliases in :! commands
 let $BASH_ENV = "~/.config/nvim/bash_env"
-
-" let mapleader=","
-let mapleader = "\<Space>"
 
 set nocompatible                " [vim only]: no vi
 set encoding=utf-8              " [vim only]
@@ -851,8 +876,8 @@ cnoremap <C-j> <C-c>  " really weird that <ESC> do <CR>
 " [[[ macros cont'd
 
 " map to remove trailing spaces
-nnoremap <Leader>b :s/\s\+$//e<CR>
-vnoremap <Leader>b :s/\s\+$//e<CR>
+" nnoremap <Leader>b :s/\s\+$//e<CR>
+" vnoremap <Leader>b :s/\s\+$//e<CR>
 
 " alias M for make
 nnoremap <Leader>m <ESC>:wall<CR>:make<CR>
