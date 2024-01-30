@@ -727,8 +727,14 @@ end)
 -- [[[ Startup
 
 -- dim the screen after 2 minutes of inactivity, lock the screen 10 seconds later (if no activity) using slock
+{{#if dotter.packages.noscreenlock}}
+awful.spawn.with_shell("xset -dpms")
+awful.spawn.with_shell("xset s off")
+awful.spawn.with_shell("xset s noblank")
+{{else}}
 awful.spawn.with_shell("xset s {{awesome_xset_wait_period}} {{awesome_xset_burn_period}}")
 awful.spawn.with_shell("pkill -u $USER xss-lock ; xss-lock -n " .. home .. "/.config/awesome/dim-screen.sh -- slock &")
+{{/if}}
 
 -- night
 {{#if dotter.packages.redshift}}

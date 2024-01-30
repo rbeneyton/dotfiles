@@ -152,6 +152,7 @@ vim_undodir = "~/.vimundo"
 [laptop.variables]
 [mac.variables]
 [thinkpad.variables]
+[noscreenlock.variables]
 
 # package group
 [base]
