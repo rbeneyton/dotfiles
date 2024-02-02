@@ -146,6 +146,7 @@ vim_undodir = "~/.vimundo"
 [firefox.files]
 # need post_deploy.sh to propagate to all profiles
 "firefox/userChrome.css" = "~/.mozilla/firefox/.dotter/chrome/userChrome.css"
+"firefox/include" = "~/.mozilla/firefox/.dotter/chrome/include"
 
 # dummy "flag only" packages
 [bluetooth.variables]
