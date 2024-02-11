@@ -133,9 +133,7 @@ ulimit -c unlimited
         end
     end
 
-    function f
-        command fd $argv
-    end
+    abbr f fd
     function p
         command pstree -ap | less
     end
