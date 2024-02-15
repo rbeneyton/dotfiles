@@ -1,3 +1,6 @@
+BUILD
+build
+.install
 *.old
 
 # vim
