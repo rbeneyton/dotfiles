@@ -131,7 +131,7 @@
 
 [merge]
   verbosity = 1
-  conflictstyle = diff3
+  conflictstyle = zdiff3
   tool = fugitive
   log = 1000
 
