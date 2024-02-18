@@ -113,6 +113,9 @@
   human = name-rev --name-only --refs=refs/heads/*
   pushpr = push -o merge_request.create
 
+[commit]
+  verbose = true
+
 [grep]
   lineNumber = true
 
