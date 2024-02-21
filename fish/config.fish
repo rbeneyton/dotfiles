@@ -269,6 +269,9 @@ ulimit -c unlimited
 # [[[ git
 
     alias g git
+    function gside -d "git with side-by-side diffs"
+        command git -c delta.side-by-side=true $argv
+    end
 
     # TODO safer method
     function gem -d "open git modified files"

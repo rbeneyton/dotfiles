@@ -1,6 +1,10 @@
 bind main C ?git cherry-pick -x %(commit)
 set show-notes = true
-bind generic I @sh -c "echo -n %(commit) | xclip -selection primary"
+
+# exit tig and print current SHA1, also set in tmux buffer
+# (S still stay for status)
+bind generic I <sh -c "tmux set-buffer %(commit) ; echo %(commit) 'saved in tmux buffer'"
+
 # TODO put into tmux paste buffer too?
 # set git-colors = no             # Do not read Git's color settings.
 color diff-stat green default # default is blue and unreadable
@@ -9,3 +13,18 @@ color date blue black bold # date in grey
 
 # Limit number of commits loaded by default to 1000
 #set main-options = -n 1000
+
+# switch to delta diff using 'D' or 'S' for side-by-side
+# FIXME no way to avoid 'Press Enter to continue' for quitting
+# both in fit-one-screen and more-one-screen modes (so ! to >)
+bind generic D !git \
+    -c delta.feature='tig' \
+    -c delta.pager='/bin/less -RKc' \
+    show --patch-with-stat %(commit)
+bind generic S !git \
+    -c delta.feature='tig' \
+    -c delta.pager='/bin/less -RKc' \
+    -c delta.side-by-side=true \
+    show --patch-with-stat %(commit)
+
+# set diff-highlight = "delta --features=raw"

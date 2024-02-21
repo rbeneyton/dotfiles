@@ -5,6 +5,29 @@
 [core]
   editor = nvim
   excludesfile = ~/.gitignore
+  pager = delta
+
+[delta]
+  navigate = true # use n and N to move between diff sections
+  line-numbers = true
+  # keep-plus-minus-markers = true
+  paging = always
+  true-color = always
+  # hunk-header-style = omit # no hunk label
+  hunk-header-decoration-style =
+  # file-style = omit
+  file-decoration-style =
+
+[delta "tig"]
+  side-by-side = true
+  hunk-header-style = u
+  # file-decoration-style = box
+
+[delta "interactive"]
+  color-only = true
+
+[interactive]
+  diffFilter = delta --features=interactive
 
 [init]
   defaultBranch = master
@@ -151,8 +174,9 @@
 [diff]
   renameLimit = 10000
   renames = copies
-  algorithm = patience
+  algorithm = histogram
   # submodule = log
+  colorMoved = default
 
 [transfer]
     fsckobjects = true

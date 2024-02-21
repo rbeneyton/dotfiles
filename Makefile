@@ -87,6 +87,8 @@ $(TIG_INSTALL) : | $(GCC_INSTALL) $(GIT_INSTALL) $(UTILS)
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	# no out-of-source-tree support
 	rm -rf $(SRC)
+	# TODO https://github.com/jonas/tig/pull/1298
+	# git clone --branch ansi-support --single-branch --depth 30 https://github.com/jonas/tig.git $(SRC)
 	git clone --branch master --single-branch --depth 30 https://github.com/jonas/tig.git $(SRC)
 	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
@@ -380,6 +382,9 @@ misc-user: $(BIN) rg
 	$(CARGO) install --force --locked cargo-expand
 	$(CARGO) install --force --locked fd-find
 	$(CARGO) install --force --locked --features=dataframe nu
+	$(CARGO) install --force --locked --git https://github.com/dandavison/delta
+	delta --generate-completion fish > ~/.config/fish/completions/delta.fish
+
 
 RG = $(BIN)/rg
 $(RG) : | $(BIN) $(UTILS) rust-update
