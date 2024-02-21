@@ -109,7 +109,7 @@ redshift_lon = "2.35"
 "git/include.gitconfig" = "~/.gitconfig.include"
 "git/gitignore.main" = "~/.gitignore"
 "git/git-submodule-align" = "~/bin/git-submodule-align"
-"git/tigrc" = "~/.tigrc"
+"git/tigconfig" = "~/.config/tig/config"
 [git.variables]
 git_name = "Richard Beneyton"
 git_email = "richard.beneyton@gmail.com"
