@@ -32,9 +32,6 @@
 [init]
   defaultBranch = master
 
-[status]
-  submoduleSummary = true
-
 [color "diff"]
   meta = bold green
   frag = yellow
@@ -175,8 +172,14 @@
   renameLimit = 10000
   renames = copies
   algorithm = histogram
-  # submodule = log
+  submodule = log
   colorMoved = default
+
+[status]
+  submoduleSummary = true
+
+[submodule]
+  recurse = true
 
 [transfer]
     fsckobjects = true
