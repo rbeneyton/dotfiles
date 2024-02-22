@@ -88,7 +88,7 @@ ulimit -c unlimited
         abbr --global --add et2 "exa --tree --time-style=iso --classify --git --long --level=2"
         abbr --global --add et3 "exa --tree --time-style=iso --classify --git --long --level=3"
         abbr --global --add et4 "exa --tree --time-style=iso --classify --git --long --level=4"
-        alias ls "exa --icons --time-style=iso --classify --git --sort name"
+        alias ls "exa --classify --git --sort name"
         alias ll "exa --icons --long --time-style=iso --classify --git --sort newest"
         alias lla "exa --all --long --time-style=iso --classify --git --sort newest"
         set --global --erase LS_COLORS
