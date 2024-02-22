@@ -277,25 +277,28 @@ ulimit -c unlimited
     function gem -d "open git modified files"
         set -f BCK (pwd)
         up
-        $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)
+        git jump diff
+        # $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)
         cd $BCK
     end
     function ges -d "open git staged files"
         set -f BCK (pwd)
         up
-        $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^M" | trs | cut -d" " -f2)
+        git jump diff --staged
+        # $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^M" | trs | cut -d" " -f2)
         cd $BCK
     end
     function ge -d "open git edited files"
         set -f BCK (pwd)
         up
-        $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)
+        git jump diff HEAD
+        # $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)
         cd $BCK
     end
     function gep -d "open patched files from given commit range (HEAD~[..]HEAD by default)"
         set -f FROM $argv[1] HEAD~ # fish's default value method
         set -f FROM $FROM[1]
-        if string match "*..*" $FROM
+        if string match --quiet "*..*" $FROM
             set -f RANGE $FROM
         else
             set -f TO $argv[2] HEAD # fish's default value method
@@ -304,7 +307,8 @@ ulimit -c unlimited
         end
         set -f BCK (pwd)
         up
-        $EDITOR (git show --pretty="format:" --name-only $RANGE | grep . | sort | uniq)
+        git jump diff $RANGE
+        # $EDITOR (git show --pretty="format:" --name-only $RANGE | grep . | sort | uniq)
         cd $BCK
     end
 

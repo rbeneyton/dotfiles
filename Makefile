@@ -58,7 +58,7 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	# no out-of-source-tree support
 	rm -rf $(SRC)
 	mkdir -p $(SRC)
-	wget https://www.kernel.org/pub/software/scm/git/git-2.42.0.tar.xz -O $(TAR)
+	wget https://www.kernel.org/pub/software/scm/git/git-2.43.2.tar.xz -O $(TAR)
 	tar --xz -xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
 	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
@@ -77,6 +77,11 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 			make doc; \
 			rm -rf $(INSTALL); \
 			make install install-doc; \
+			cp $(SRC)/contrib/contacts/git-contacts $(INSTALL)/bin/; \
+			cp $(SRC)/contrib/git-jump/git-jump $(INSTALL)/bin/; \
+			cp $(SRC)/contrib/git-resurrect.sh $(INSTALL)/bin/; \
+			cp $(SRC)/contrib/rerere-train.sh $(INSTALL)/bin/; \
+			cp $(SRC)/contrib/workdir/git-new-workdir $(INSTALL)/bin/; \
 			rm -rf $(SRC);")
 git : $(GIT_INSTALL)
 
