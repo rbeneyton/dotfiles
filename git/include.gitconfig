@@ -135,6 +135,7 @@
 
 [commit]
   verbose = true
+  cleanup = scissors
 
 [grep]
   lineNumber = true
