@@ -17,6 +17,16 @@
   hunk-header-decoration-style =
   # file-style = omit
   file-decoration-style =
+  # zebra dark
+  minus-style = syntax "#330f0f"
+  minus-emph-style = syntax "#4f1917"
+  plus-style = syntax "#0e2f19"
+  plus-emph-style = syntax "#174525"
+  # map colormoved colors
+  map-styles = \
+    dim magenta => syntax "#330f29", \
+    dim cyan => syntax "#0d3531"
+  zero-style = syntax
 
 [delta "tig"]
   side-by-side = true
@@ -36,8 +46,11 @@
   meta = bold green
   frag = yellow
   old = magenta
+  oldMoved = dim magenta
   new = bold cyan
+  newMoved = dim cyan
   message = bold green
+  whitespace = red reverse
 
 [color "status"]
   header = bold blue
@@ -59,9 +72,6 @@
   interactive = auto
   status = auto
   ui = true
-
-[color "diff"]
-  whitespace = red reverse
 
 [alias]
   graphviz = "!f() { echo 'digraph git {' ; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f][0-9a-f]*/\"&\"/g' ; echo '}'; }; f"
@@ -175,6 +185,7 @@
   algorithm = histogram
   submodule = log
   colorMoved = default
+  colorMovedWS = ignore-space-change
 
 [status]
   submoduleSummary = true
