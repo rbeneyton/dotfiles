@@ -29,9 +29,10 @@
   zero-style = syntax
 
 [delta "tig"]
-  side-by-side = true
-  hunk-header-style = u
-  # file-decoration-style = box
+  paging = always
+  hunk-header-style =
+  file-decoration-style = box
+  file-style = blue
 
 [delta "interactive"]
   color-only = true

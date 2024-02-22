@@ -6,7 +6,9 @@ set tab-size = 4
 
 # exit tig and print current SHA1, also set in tmux buffer
 # (S still stay for status)
-bind generic I <sh -c "tmux set-buffer %(commit) ; echo %(commit) 'saved in tmux buffer'"
+bind generic I <sh -c " \
+    tmux set-buffer %(commit) ; \
+    echo %(commit) 'saved in tmux buffer' "
 
 # TODO put into tmux paste buffer too?
 # set git-colors = no             # Do not read Git's color settings.
@@ -18,16 +20,22 @@ color date blue black bold # date in grey
 #set main-options = -n 1000
 
 # switch to delta diff using 'D' or 'S' for side-by-side
-# FIXME no way to avoid 'Press Enter to continue' for quitting
-# both in fit-one-screen and more-one-screen modes (so ! to >)
-bind generic D !git \
-    -c delta.feature='tig' \
+# XXX delta --paging=always is broken, LESS_IS_MORE circumvents that
+bind generic D >sh -c " \
+    LESS_IS_MORE=1 \
+    git \
+    -c delta.features='tig' \
     -c delta.pager='/bin/less -RKc' \
-    show --patch-with-stat %(commit)
-bind generic S !git \
-    -c delta.feature='tig' \
+    show --patch-with-stat %(commit) "
+bind generic S >sh -c " \
+    LESS_IS_MORE=1 \
+    git \
+    -c delta.features='tig' \
     -c delta.pager='/bin/less -RKc' \
     -c delta.side-by-side=true \
-    show --patch-with-stat %(commit)
+    show --patch-with-stat %(commit) "
 
+# TODO https://github.com/jonas/tig/pull/1298
 # set diff-highlight = "delta --features=raw"
+
+# vim: filetype=fish
