@@ -1,5 +1,8 @@
 bind main C ?git cherry-pick -x %(commit)
 set show-notes = true
+set line-graphics = utf-8
+set truncation-delimiter = utf-8
+set tab-size = 4
 
 # exit tig and print current SHA1, also set in tmux buffer
 # (S still stay for status)
