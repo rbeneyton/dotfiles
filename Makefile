@@ -126,7 +126,9 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	# cp -ar ${HOME}/work/neovim/ $(SRC)
 	rm -rf $(BUILD)
 	mkdir -p $(BUILD)
-	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
+	($(ENV) -C $(BUILD) -i - \
+		HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) \
+		LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
@@ -141,6 +143,9 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 					-j $(NPROC) \
 					CMAKE_BUILD_TYPE=Release \
 					CMAKE_INSTALL_PREFIX=$(INSTALL) \
+					CMAKE_TLS_VERIFY=ON \
+					CMAKE_INACTIVITY_TIMEOUT=1000 \
+					CMAKE_TIMEOUT=1000 \
 				; \
 			rm -rf $(INSTALL); \
 			make -C $(SRC) install; \
