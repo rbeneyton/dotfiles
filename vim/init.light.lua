@@ -150,6 +150,91 @@ require("nvim-treesitter.configs").setup {
 }
 
 -- ]]]
+-- [[[ main settings
+
+-- fish shell might break some features
+if vim.go.shell:match('fish$') then
+    -- as PS1 isn't defined, we don't need NOFISH
+    vim.go.shell = '/bin/bash'
+end
+
+-- allow bash aliases in :! commands
+vim.env.BASH_ENV = "~/.config/nvim/bash_env"
+
+-- technically unrequired by neovim as hardcoded
+vim.api.nvim_set_option('compatible', false)
+vim.api.nvim_set_option('encoding', 'utf-8')
+-- technically unrequired by neovim as default ones
+vim.api.nvim_set_option('backspace', 'indent,eol,start')
+vim.api.nvim_set_option('autoindent', true)
+vim.api.nvim_set_option('autoread', true)
+vim.api.nvim_set_option('hidden', true)
+vim.api.nvim_set_option('backup', false)
+vim.api.nvim_set_option('timeout', true)
+vim.api.nvim_set_option('ttimeout', true)
+vim.api.nvim_set_option('magic', true)
+vim.api.nvim_set_option('modeline', true)
+vim.api.nvim_set_option('modelines', 5)
+vim.api.nvim_set_option('joinspaces', false)
+vim.api.nvim_set_option('showmatch', false) -- (was true)
+vim.api.nvim_set_option('showmode', false)
+vim.api.nvim_set_option_value('textwidth', 0, {buf = 0})
+
+-- own
+vim.api.nvim_set_option('writebackup', false)
+vim.api.nvim_set_option('backupcopy', 'auto,breakhardlink')
+vim.api.nvim_set_option('timeoutlen', 300) -- 300ms after typing for keymap
+vim.api.nvim_set_option('ttimeoutlen', 300) -- 300ms after ESC (was 10)
+vim.api.nvim_set_option_value('list', true, {win = 0}) -- show tabs
+vim.api.nvim_set_option('listchars', 'tab:>-,trail:-,extends:>,precedes:<')
+vim.api.nvim_set_option('lazyredraw', true)
+vim.api.nvim_set_option('report', 0)
+vim.api.nvim_set_option_value('shiftwidth', 4, {buf = 0})
+vim.api.nvim_set_option('scrolloff', 2) -- give context/margin
+vim.api.nvim_set_option('suffixes', '.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc,.cmi,.cmo,.blk.c')
+vim.api.nvim_set_option_value('tabstop', 4, {buf = 0})
+vim.api.nvim_set_option_value('softtabstop', 4, {buf = 0})
+vim.api.nvim_set_option_value('expandtab', true, {buf = 0})
+vim.api.nvim_set_option_value('colorcolumn', '+1', {win = 0})
+vim.api.nvim_set_option('title', true)
+
+-- XXX NOT defaults but will be modified by init.vim
+vim.api.nvim_set_option('laststatus', 0) -- no statusline
+vim.api.nvim_set_option('ruler', false) -- no cursor position
+vim.api.nvim_set_option('showcmd', false) -- no command in lower right
+
+-- XXX restore correct pre 0.10 swapfile behavior with E325 (tmux own-patched)
+-- 1:remove silent-but-one-warning-line (displayed even if appropriate callback is defined!)
+vim.cmd(":autocmd! nvim_swapfile")
+-- 2:force ATTENTION message when swap detected
+vim.cmd(":autocmd SwapExists * :let v:swapchoice = ''")
+
+-- ]]]
+-- [[[ clipboard
+
+vim.opt.clipboard = 'unnamedplus'
+
+-- share clipboard via terminal
+require('osc52').setup {
+  max_length = 0,      -- Maximum length of selection (0 for no limit)
+  silent     = false,  -- Disable message on successful copy
+  trim       = false,  -- Trim surrounding whitespaces before copy
+}
+-- TODO test tmux.nvim plugin
+vim.g.clipboard = {
+  name = 'tmuxClipboard',
+  copy = {
+    ['+'] = {'tmux', 'load-buffer', '-w', '-'},
+    ['*'] = {'tmux', 'load-buffer', '-w', '-'},
+  },
+  paste = {
+    ['+'] = {'tmux', 'save-buffer', '-'},
+    ['*'] = {'tmux', 'save-buffer', '-'},
+  },
+  cache_enabled = true,
+}
+
+-- ]]]
 
 -- dotter/handlebars+fold incompatibility: temporary [ instead of {
 -- vim: foldmarker=[[[,]]]
