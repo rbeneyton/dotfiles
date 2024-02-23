@@ -395,8 +395,9 @@ misc-user: $(BIN) rg
 	# install completions
 	fd --gen-completions=fish > ~/.config/fish/completions/fd.fish
 	$(CARGO) install --force --locked --features=dataframe nu
-	$(CARGO) install --force --locked --git https://github.com/dandavison/delta
+	$(CARGO) install --force --locked --git https://github.com/dandavison/delta.git
 	delta --generate-completion fish > ~/.config/fish/completions/delta.fish
+	$(CARGO) install --force --locked --git https://github.com/I60R/page.git
 
 
 RG = $(BIN)/rg
