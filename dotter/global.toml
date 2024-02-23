@@ -123,6 +123,7 @@ git_email = "richard.beneyton@gmail.com"
 
 # vim
 [vim.files]
+"vim/init.light.lua" = { target = "~/.config/page/init.lua", type = "template" }
 "vim/vimrc.template" = { target = "~/.vimrc", type = "template" }
 "vim" = { target = "~/.vim", type = "symbolic", recurse = false }
 "nvim" = { target = "~/.config/nvim", type = "symbolic", recurse = false }
