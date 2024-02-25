@@ -10,62 +10,17 @@
 :lua vim.api.nvim_set_option('laststatus', 2)
 :lua vim.api.nvim_set_option('ruler', true)
 :lua vim.api.nvim_set_option('showcmd', true)
+:lua vim.api.nvim_set_option('shadafile', "")
 
 " ]]]
 " [[[ main settings cont'd
 
-" nvim: let the editor chose the viminfo filename (so avoid option "n~/.viminfo" at the end
-set viminfo='1000,/1000,:1000,<1000,@1000
-set history=1000
-                                " What info to store from an editing session
-                                " in the viminfo file;  can be used at next session.
-set sessionoptions=buffers,folds,localoptions,options,tabpages,help
-set sessionoptions-=blank       " for syntastic
-
-"set ignorecase                  " Do case insensitive matching
-set smartcase                   " Do case sensitive matching when search contains capital
-set incsearch                   " Incremental search
-set hlsearch                    " hilight search
-
-set iskeyword+=-                " consider - as part of word
-set whichwrap=<,>,[,]           "
-set wildchar=<TAB>              " the char used for "expansion" on the command line
-                                " default value is "<C-E>" but I prefer the tab key:
-set wildmenu                    " Completion on the command line shows a menu
-set wildmode=longest,list,full
-set winminheight=0              " Minimum height of VIM's windows opened
-"set mouse=a
-"set mousefocus
-set wrapmargin=1
-set foldmethod=marker
-set foldlevelstart=20
-
-set tildeop
-
-set cinoptions=
-set cinoptions+=L0.5s          " align labels at 0.5 shiftwidth
-set cinoptions+=:0.5s,=0.5s    " same for case labels and code following a label
-set cinoptions+=g0.5s,h0.5s    " same for c++ stuff
-set cinoptions+=t0             " type on the line before the functions is not idented
-set cinoptions+=(0,Ws          " indent in functions ( ... ) when it breaks
-set cinoptions+=m1             " aligh the closing ) properly
-set cinoptions+=j1             " java/javscript -> fixes blocks
-"set cinoptions+=l0.5s          " align code after label ignoring braces.
-
-set nowrapscan                 " stop search at end of buffer
+" old options dropped during lua convertion
+" set sessionoptions=buffers,folds,localoptions,options,tabpages,help
+" set sessionoptions-=blank       " for syntastic
 
 " ]]]
 " [[[ main settins cont'dd
-
-set autochdir
-set virtualedit=onemore        " allow to be on \n
-set spelllang=en_us,fr
-set pumheight=16
-
-" make <enter> work in popup
-inoremap <cr> <C-R>=pumvisible() ? "\<lt>C-Y>" : "\<lt>cr>"<cr>
-
-" autocmd BufEnter * :lcd %:p:h
 
 " allow to loop via Tab in C-X lists
 function! CleverTab()
@@ -80,72 +35,49 @@ inoremap <Tab> <C-R>=CleverTab()<CR>
 " ]]]
 " [[[ statusline
 
-" with remaining cursor/letter index
-"set statusline=%<%f\ %m%1*%r%0*\ %1*%n%0*%=%-10(%l,%02c\ %1*%02p%%%0*%)\ %-16(c:%o,l:%03b(%02B)%)
-"set statusline=%<%f\ %m%1*%r%0*\ %1*%n%0*%=%-10(%l,%02c\ %1*%02p%%%0*%)
-"set statusline=%<%f\ %m%1*%r%0*\ %1*%n%0*%=%#warningmsg#%{SyntasticStatuslineFlag()}%*\ %-10(%l,%02c\ %1*%02p%%%0*%)
-set statusline=        "start
-set statusline+=%<
-set statusline+=%4*    "switch to User highlight
-set statusline+=%f     "filename
-set statusline+=\      "space
-set statusline+=%5*    "switch to User highlight
-set statusline+=%Y     "filetype
-set statusline+=\      "space
-set statusline+=%1*    "switch to User highlight
-if exists('g:loaded_fugitive')
-    set statusline+=%{fugitive#head()}     "modified
-endif
-" set statusline+=\      "space (not required?)
-set statusline+=%2*    "switch to User highlight
-set statusline+=%M     "modified
-set statusline+=%R     "readonly flag
-set statusline+=\      "space
-set statusline+=%6*    "switch to User highlight
-set statusline+=%n     "buffer number
-set statusline+=\      "space
-set statusline+=%0*    "switch back to statusline highlight
-set statusline+=%=     "left/right separator
-set statusline+=%#warningmsg# "switch to warningmsg highlight
-if exists('g:loaded_syntastic_plugin')
-    set statusline+=%{SyntasticStatuslineFlag()} "put syntastic message
-endif
-set statusline+=%*     "switch back to normal statusline highlight
-set statusline+=\      "space
-" set statusline+=%-10(  "start a group left aligned of 10 characters
-set statusline+=%7*    "switch to User highlight
-set statusline+=%l     "line number
-set statusline+=,      "comma
-set statusline+=%02c   "column number, zero padded
-set statusline+=\      "space
-set statusline+=%6*    "switch to User highlight, aka inverse bold for me
-set statusline+=%02p%% "percentage inside the file, zero padded, with %
-set statusline+=%0*    "switch back to statusline highlight
-" set statusline+=%)     "end of the group
-" hi User1 term=inverse,bold cterm=inverse,bold ctermfg=lightyellow
-
-" ]]]
-" [[[ fugitive
-
-nnoremap <Leader>gv :Gvdiffsplit!<CR>
-nnoremap <Leader>gh :Gvdiff HEAD<CR>
-nnoremap <Leader>go :Gvdiff origin/master<CR>
-nnoremap <Leader>ga :Git difftool -y<CR>
-" nnoremap <Leader>gup :Gcd .<CR>
-
-" ]]]
-" [[[ external tools: diff, make, grep, path…
-
-set diffopt=filler,context:5,iwhite
-set fillchars+=diff:\ ,vert:\│
-
-set makeprg=LC_ALL=C\ make\ MONOCHROME=1\ L=1
-" set grepprg=egrep\ --exclude='*~' -n\ $*\ /dev/null
-
-" exe "set path=." . system("echo | cpp -v 2>&1 | grep '^ .*/include' | tr -d \"\n\" | tr \" \" \",\"")
-set path+=.;/
-set path+=./include
-set path+=./../include
+" " with remaining cursor/letter index
+" "set statusline=%<%f\ %m%1*%r%0*\ %1*%n%0*%=%-10(%l,%02c\ %1*%02p%%%0*%)\ %-16(c:%o,l:%03b(%02B)%)
+" "set statusline=%<%f\ %m%1*%r%0*\ %1*%n%0*%=%-10(%l,%02c\ %1*%02p%%%0*%)
+" "set statusline=%<%f\ %m%1*%r%0*\ %1*%n%0*%=%#warningmsg#%{SyntasticStatuslineFlag()}%*\ %-10(%l,%02c\ %1*%02p%%%0*%)
+" set statusline=        "start
+" set statusline+=%<
+" set statusline+=%4*    "switch to User highlight
+" set statusline+=%f     "filename
+" set statusline+=\      "space
+" set statusline+=%5*    "switch to User highlight
+" set statusline+=%Y     "filetype
+" set statusline+=\      "space
+" set statusline+=%1*    "switch to User highlight
+" if exists('g:loaded_fugitive')
+"     set statusline+=%{fugitive#head()}     "modified
+" endif
+" " set statusline+=\      "space (not required?)
+" set statusline+=%2*    "switch to User highlight
+" set statusline+=%M     "modified
+" set statusline+=%R     "readonly flag
+" set statusline+=\      "space
+" set statusline+=%6*    "switch to User highlight
+" set statusline+=%n     "buffer number
+" set statusline+=\      "space
+" set statusline+=%0*    "switch back to statusline highlight
+" set statusline+=%=     "left/right separator
+" set statusline+=%#warningmsg# "switch to warningmsg highlight
+" if exists('g:loaded_syntastic_plugin')
+"     set statusline+=%{SyntasticStatuslineFlag()} "put syntastic message
+" endif
+" set statusline+=%*     "switch back to normal statusline highlight
+" set statusline+=\      "space
+" " set statusline+=%-10(  "start a group left aligned of 10 characters
+" set statusline+=%7*    "switch to User highlight
+" set statusline+=%l     "line number
+" set statusline+=,      "comma
+" set statusline+=%02c   "column number, zero padded
+" set statusline+=\      "space
+" set statusline+=%6*    "switch to User highlight, aka inverse bold for me
+" set statusline+=%02p%% "percentage inside the file, zero padded, with %
+" set statusline+=%0*    "switch back to statusline highlight
+" " set statusline+=%)     "end of the group
+" " hi User1 term=inverse,bold cterm=inverse,bold ctermfg=lightyellow
 
 " ]]]
 " [[[ Mappings
@@ -762,6 +694,7 @@ endif
 " ]]]
 " [[[ airline options
 
+" XXX disable laststatus for minimal config
 let g:airline_powerline_fonts=1
 let g:airline#extensions#default#layout = [['a','b','c'],['x','y','z','warning']]
 " suppress hunks from line, they're shown by gitgutter
