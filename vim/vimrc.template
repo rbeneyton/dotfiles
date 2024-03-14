@@ -15,6 +15,7 @@ packadd syntastic
 " [[[ mason
 
 if has('nvim')
+    packadd nvim-lspconfig
     packadd mason
     packadd mason-lspconfig
 lua << EOF
@@ -124,7 +125,7 @@ lua << EOF
         additional_vim_regex_highlighting = false,
       },
       indent = {
-        enable = true,
+        enable = false,
       },
       rainbow = {
         enable = true,
@@ -494,7 +495,11 @@ autocmd BufReadPost *
 " // VIM: let b:syntastic_c_cflags = "-DMACRO_XXX=2"
 runtime! plugin/let-modeline.vim
 autocmd BufNewFile * let b:this_is_new_buffer=1
-autocmd BufReadPost * call FirstModeLine()
+
+if 0
+    packadd modeline
+    autocmd BufReadPost * call FirstModeLine()
+endif
 
 " always backup session (reopen via vl alias)
 autocmd VimLeave * mksession! ~/.cache/session.vim
@@ -1251,10 +1256,10 @@ endif
 " ]]]
 " [[[ disable paste to avoid bracketed mode
 
-augroup disable_paste
-    au!
-    au InsertLeave * set nopaste
-augroup END
+" augroup disable_paste
+"     au!
+"     au InsertLeave * set nopaste
+" augroup END
 
 " ]]]
 " [[[ Slime opts
@@ -1287,9 +1292,6 @@ let g:alternateSearchPath = 'sfr:../src,sfr:../../src,sfr:../include'
 " [[[ LSP
 
 if has('nvim')
-    " native nvim lsp
-    packadd nvim-lspconfig
-
     " rust
     packadd rustaceanvim
 " lua << EOF
@@ -1402,70 +1404,39 @@ lua << EOF
         buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
         buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
         buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-        buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+        buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
     end
-EOF
 
-"     " rust
-"     if executable('rust-analyzer')
-"         " cd /home/rbeneyton/o/tmp && git clone https://github.com/rust-analyzer/rust-analyzer.git && cd rust-analyzer
-"         " cargo build --release && cp target/release/rust-analyzer ~/bin/
-"         " ou
-"         " curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-linux -o ~/bin/rust-analyzer
-"         " if executable('rls')
-"         " au User lsp_setup call lsp#register_server({
-"         "             \ 'name': 'rls',
-"         "             \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-"         "             \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-"         "             \ 'whitelist': ['rust'],
-"         "             \ })
-"         " autocmd Filetype rust setlocal omnifunc=v:lua.vim.lsp.omnifunc
-" lua << EOF
-"     lsp.rust_analyzer.setup {
-"         on_attach = on_attach
-"     }
-" EOF
-"     endif
+    -- rust
+    lsp.rust_analyzer.setup {
+        on_attach = on_attach
+    }
 
-    " python
-    if executable('pylsp')
-lua << EOF
-        lsp.pylsp.setup {
-          whitelist = { 'python' },
-          -- root_dir = function(fname)
-          --     return lsp.util.find_git_ancestor(fname) or vim.loop.os_homedir()
-          -- end;
-          settings = {
-            pylsp = {
-              plugins = {
-                pycodestyle = {
-                  ignore = {'W391', },
-                  maxLineLength = 100
-                }
-              }
+    -- python
+    lsp.pylsp.setup {
+      whitelist = { 'python' },
+      -- root_dir = function(fname)
+      --     return lsp.util.find_git_ancestor(fname) or vim.loop.os_homedir()
+      -- end;
+      settings = {
+        pylsp = {
+          plugins = {
+            pycodestyle = {
+              ignore = {'W391', },
+              maxLineLength = 100
             }
-          },
-          on_attach = on_attach
+          }
         }
-EOF
-        " autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
-    endif
+      },
+      on_attach = on_attach
+    }
 
-    " C++
-    if executable('clangd')
-        " llvm 9 + cfe + clang-tools-extra
-        " au User lsp_setup call lsp#register_server({
-        "             \ 'name': 'clangd',
-        "             \ 'cmd': {server_info->['clangd']},
-        "             \ 'whitelist': ['c', 'cpp'],
-        "             \ })
-lua << EOF
-        lsp.clangd.setup {
-          on_attach = on_attach
-        }
+    -- C++
+    lsp.clangd.setup {
+      on_attach = on_attach
+    }
 EOF
-        " autocmd Filetype {c,cpp} setlocal omnifunc=v:lua.vim.lsp.omnifunc
-    endif
+    " autocmd Filetype {c,cpp} setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
     " default shortcut, only for source code
     " autocmd Filetype rust,python,c,cpp setl omnifunc=v:lua.vim.lsp.omnifunc
