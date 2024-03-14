@@ -448,12 +448,14 @@ debian-install-base:
 	apt-get install libmpfr-dev # gdb
 	apt-get install pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3  # alacritty
 	apt-get install python3-pynvim # nvim
+	apt-get install python3-venv # nvim Mason
 	apt-get install libssl-dev # libevent
 	apt-get install bison # tmux
 	apt-get install bash-completion
 	apt-get install gnuplot # criterion
 	apt-get install source-highlight libsource-highlight-dev # gdb
 	apt-get install inxi # hardware scan
+	apt-get install xserver-xorg-input-synaptics xinput # touchpad
 	apt-get clean
 
 debian-install-net:
@@ -470,13 +472,13 @@ debian-install-graphic:
 	apt-get install parcellite mesa-utils fonts-dejavu fonts-dejavu-core fonts-dejavu-extra
 	apt-get install redshift redshift-gtk
 	apt-get install diodon xss-lock suckless-tools
-	apt-get install kshutdown
+	# apt-get install kshutdown # no 400MB for one utility
 	apt-get install light
 	apt-get install x11-xkb-utils inputplug # xkb + detect/reload
 	apt-get install blueman pulseaudio-module-bluetooth
 	apt-get install pasystray pavucontrol
 	apt-get install arandr
-	apt-get install flameshot
+	# apt-get install flameshot
 	# apt-get install light ibam # laptop only
 	apt-get install zathura zathura-djvu zathura-pdf-poppler zathura-ps
 	# bluez bluez-utils ?

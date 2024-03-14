@@ -127,7 +127,8 @@ ulimit -c unlimited
     alias bc "bc --quiet --mathlib"
     alias c cargo
     function rust-gdb
-        RUST_GDB=/usr/bin/gdb command rust-gdb --quiet --ex start --ex 'break rust_panic' $argv
+        #RUST_GDB=/usr/bin/gdb command rust-gdb --quiet --ex start --ex 'break rust_panic' $argv
+        command rust-gdb --quiet --ex start --ex 'break rust_panic' $argv
     end
 
     function mkcd
