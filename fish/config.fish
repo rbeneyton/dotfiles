@@ -405,6 +405,13 @@ if status --is-interactive
     end
 
     # ]]]
+    # [[[ history
+
+    if type atuin &> /dev/null
+        atuin init fish | source
+    end
+
+    # ]]]
 end
 
 # ]]]

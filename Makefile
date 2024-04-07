@@ -398,6 +398,7 @@ misc-user: $(BIN) rg
 	$(CARGO) install --force --locked --git https://github.com/dandavison/delta.git
 	delta --generate-completion fish > ~/.config/fish/completions/delta.fish
 	$(CARGO) install --force --locked --git https://github.com/I60R/page.git
+	$(CARGO) install --force --locked atuin
 
 
 RG = $(BIN)/rg
