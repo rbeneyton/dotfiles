@@ -399,6 +399,7 @@ misc-user: $(BIN) rg
 	delta --generate-completion fish > ~/.config/fish/completions/delta.fish
 	$(CARGO) install --force --locked --git https://github.com/I60R/page.git
 	$(CARGO) install --force --locked atuin
+	atuin gen-completions --shell fish > ~/.config/fish/completions/atuin.fish
 
 
 RG = $(BIN)/rg

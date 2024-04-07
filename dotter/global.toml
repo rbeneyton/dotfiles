@@ -152,6 +152,10 @@ vim_undodir = "~/.vimundo"
 "firefox/userChrome.css" = "~/.mozilla/firefox/.dotter/chrome/userChrome.css"
 "firefox/include" = "~/.mozilla/firefox/.dotter/chrome/include"
 
+# atuin
+[atuin.files]
+"atuin/config.toml" = "~/.config/atuin/config.toml"
+
 # dummy "flag only" packages
 [bluetooth.variables]
 [laptop.variables]
@@ -163,6 +167,7 @@ vim_undodir = "~/.vimundo"
 [base]
 depends = [
     "alacritty",
+    "atuin",
     "awesome",
     "bash",
     "bluetooth",
