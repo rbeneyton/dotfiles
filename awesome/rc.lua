@@ -147,12 +147,9 @@ local neticon = wibox.widget.imagebox()
 neticon:set_image(beautiful.widget_net)
 -- ]]]
 -- [[[ memory
-local memwidget = wibox.widget.textbox()
-vicious.register(memwidget, vicious.widgets.mem, function (widget, args)
-    return string.format("%2.f%%", args[1])
-    end, 3)
-local memicon = wibox.widget.imagebox()
-memicon:set_image(beautiful.widget_mem)
+
+local ram_widget = require("awesome-wm-widgets.ram-widget.ram-widget")
+
 -- ]]]
 -- [[[ cpu
 
@@ -336,8 +333,11 @@ awful.screen.connect_for_each_screen(function(s)
                 step_spacing = 0,
                 color = '#434c5e'
             }),
-            memicon,
-            memwidget,
+            ram_widget({
+                color_used = 'grey',
+                color_free = 'green',
+                color_buf = 'orange',
+            }),
             loadicon,
             loadwidget,
             ioicon,
