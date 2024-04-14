@@ -212,6 +212,18 @@ vicious.register(datewidget, vicious.widgets.date, '%R %a %d/%m')
 local dateicon = wibox.widget.imagebox()
 dateicon:set_image(beautiful.widget_date)
 
+local calendar_widget = require('awesome-wm-widgets.calendar-widget.calendar')
+local cw = calendar_widget({
+    theme = 'nord',
+    placement = 'top center',
+    previous_month_button = 1,
+    next_month_button = 3,
+})
+datewidget:connect_signal("button::press",
+    function(_, _, _, button)
+        if button == 1 then cw.toggle() end
+    end)
+
 -- ]]]
 
 -- Create a wibox for each screen and add it
