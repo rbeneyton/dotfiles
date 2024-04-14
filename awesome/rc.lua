@@ -155,12 +155,9 @@ local memicon = wibox.widget.imagebox()
 memicon:set_image(beautiful.widget_mem)
 -- ]]]
 -- [[[ cpu
-local cpuwidget = wibox.widget.textbox()
-vicious.register(cpuwidget, vicious.widgets.cpu, function (widget, args)
-    return string.format("%3.f%%", args[1])
-    end, 3)
-local cpuicon = wibox.widget.imagebox()
-cpuicon:set_image((beautiful.widget_cpu))
+
+local cpu_widget = require('awesome-wm-widgets.cpu-widget.cpu-widget')
+
 -- ]]]
 -- [[[ load
 
@@ -321,8 +318,12 @@ awful.screen.connect_for_each_screen(function(s)
             s.mytaglist,
             s.mypromptbox,
             mykeyboardlayout,
-            cpuicon,
-            cpuwidget,
+            cpu_widget({
+                width = 50,
+                step_width = 1,
+                step_spacing = 0,
+                color = '#434c5e'
+            }),
             memicon,
             memwidget,
             loadicon,
