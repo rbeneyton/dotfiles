@@ -1,0 +1,53 @@
+#!/usr/bin/env fish
+
+# Simple script to build a new repos concateting n ones, keeping origin
+# histories, aligning them on common tags in a new master branch, with all of
+# them in their own folder.
+# We assume lexicography ordered tags, filter them if not (but it should still
+# work, giving weirdly ordered history).
+
+set -gx DIR /tmp/workdir
+rm -rf $DIR
+mkdir -p $DIR
+# generate toy projects with tags
+set REPOS liba libb libc
+for i in $REPOS
+    cd $DIR
+    git init $i
+    cd $i
+    git commit --allow-empty -m "initial $i"
+    for j in (seq 0 50)
+        echo $j >> file.$i
+        git add file.$i
+        git commit -a -m "do $i-$j"
+        if test (math $j % 10) -eq 0 >/dev/null
+            git tag $i-$j
+        end
+    end
+end
+# create new repo
+cd $DIR
+rm -rf all
+git init all
+cd all
+for i in $REPOS
+    git remote add -f --tags $i $DIR/$i/.git
+    # git lfs fetch --all
+end
+# rebuild history
+git commit -m initial --allow-empty
+set CUR (git rev-list -n 1 HEAD)
+for v in (git tag -l | cut -d- -f2 | sort | uniq)
+    set PARENTS '-p' $CUR
+    for i in $REPOS
+        echo 040000 (git cat-file commit $i-$v | grep tree)\t$i
+        set -a PARENTS '-p' (git rev-list -n 1 $i-$v)
+    end | git mktree | read TREE
+    git commit-tree $PARENTS -m $v $TREE | read CUR
+    git tag all-$v $CUR
+end
+git reset --hard $CUR
+# push then after checks
+
+# vim: ft=fish
+# vim: tw=80
