@@ -315,6 +315,8 @@ ulimit -c unlimited
 
     alias t "tig --date-order -500"
     alias ta "tig --date-order --all -500"
+    alias topo "tig --topo-order -500"
+    alias topoa "tig --topo-order --all -500"
     alias tigreflog "git reflog --pretty=raw | tig --pretty=raw"
 
     function up -d "go to the upper git repo head"

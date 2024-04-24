@@ -275,6 +275,8 @@ ulimit -c unlimited
 
     alias t='tig --date-order -500'
     alias ta="tig --date-order --all -500"
+    alias topo="tig --topo-order -500"
+    alias topoa="tig --topo-order --all -500"
     alias tigreflog='git reflog --pretty=raw | tig --pretty=raw'
 
     # exemple of vim IO (we could have directly call python but we can add commands then)
