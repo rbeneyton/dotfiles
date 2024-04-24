@@ -225,7 +225,8 @@ $(TMUX_INSTALL) : | $(UTILS) $(LIBEVENT_INSTALL) $(GCC_INSTALL)
 	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	$(eval INSTALL := $(UTILS)/$(NAME)_install/)
 	rm -rf $(SRC)
-	git clone --branch master --single-branch --depth 300 https://github.com/tmux/tmux.git $(SRC)
+	# git clone --branch master --single-branch --depth 300 https://github.com/tmux/tmux.git $(SRC)
+	git clone --branch 3.4 --single-branch --depth 300 https://github.com/tmux/tmux.git $(SRC)
 	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
