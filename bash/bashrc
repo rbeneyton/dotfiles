@@ -83,7 +83,7 @@ ulimit -c unlimited
         alias et4="exa --tree --time-style=iso --classify --git --long --level=4"
         alias ls="exa --classify --git --sort name"
         alias ll="exa --icons --long --time-style=iso --classify --git --sort newest"
-        alias lla="e --all"
+        alias lla="exa --icons --long --time-style=iso --classify --git --sort newest --all"
         unset LS_COLORS
         # xit in green on black, underline
         export EXA_COLORS="*xit=32;40;04"
