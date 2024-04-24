@@ -5,7 +5,9 @@ packages = [
 ]
 
 [variables]
-awesome_network_interface = "enp2s0"
+awesome_network_interface = "enp5s0"
 awesome_disk_interface = "sda"
+gtk_font_size = "12"
+awesome_height = "30"
 
 # vim: filetype=cfg

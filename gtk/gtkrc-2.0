@@ -6,7 +6,7 @@ gtk-button-images=1
 gtk-cursor-theme-size=24
 gtk-cursor-theme-name="breeze_cursors"
 gtk-icon-theme-name="breeze"
-gtk-font-name="DejaVu Sans,  8"
+gtk-font-name="DejaVu Sans,  {{gtk_font_size}}"
 # created by KDE, Thu Dec 10 11:07:05 2015
 #
 # If you do not want KDE to override your GTK settings, select

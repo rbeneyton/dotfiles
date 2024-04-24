@@ -53,6 +53,7 @@
 awesome_network_interface = "eth0"
 awesome_xset_wait_period = "120"
 awesome_xset_burn_period = "130"
+awesome_height = "20"
 
 # alacritty
 [alacritty.files]
@@ -86,6 +87,8 @@ redshift_lon = "2.35"
 [gtk.files]
 "gtk/settings.ini" = "~/.config/gtk-3.0/settings.ini"
 "gtk/gtkrc-2.0" = "~/.gtkrc-2.0"
+[gtk.variables]
+gtk_font_size = "8"
 
 # fonts
 [fonts.files]
