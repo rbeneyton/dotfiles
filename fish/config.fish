@@ -272,6 +272,9 @@ ulimit -c unlimited
     function gside -d "git with side-by-side diffs"
         command git -c delta.side-by-side=true $argv
     end
+    function ganonrebase -d "git rebase without updating committer"
+        command git -c rebase.instructionFormat='%s%nexec GIT_COMMITTER_DATE="%cI" GIT_COMMITTER_NAME="%cN" GIT_COMMITTER_EMAIL="%cE" git commit --amend --no-edit%n' rebase -i $argv
+    end
 
     # TODO safer method
     function gem -d "open git modified files"
