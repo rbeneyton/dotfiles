@@ -1,4 +1,4 @@
-# shochu setup
+# pastis setup
 
 packages = [
     "base",
@@ -9,7 +9,9 @@ packages = [
 awesome_network_interface = "eth1"
 awesome_disk_interface = "dm-2" # sdb2 (or use PV label)
 awesome_xset_burn_period = "13000"
-redshift_night_temperature = "5000K" # no big shift to red for pastis
+gtk_font_size = "12"
+awesome_height = "30"
 alacritty_font_size = 18
+redshift_night_temperature = "5000K" # no big shift to red for pastis
 
 # vim: filetype=cfg
