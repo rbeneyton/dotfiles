@@ -248,6 +248,11 @@ ulimit -c unlimited
     function vl -d "open latest saved vim session"
         command $EDITOR -S ~/.cache/session.vim
     end
+
+    function vrg -d "rg then pipe results into nvim"
+        command $EDITOR -c "/$argv[1]" -q (rg --vimgrep $argv | psub)
+    end
+
     # sun mgmt
     function theme_light
         # universal makes sense here
