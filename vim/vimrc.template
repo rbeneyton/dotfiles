@@ -20,225 +20,132 @@
 " set sessionoptions-=blank       " for syntastic
 
 " ]]]
-" [[[ main settins cont'dd
-
-" allow to loop via Tab in C-X lists
-function! CleverTab()
-    if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
-        return "\<Tab>"
-    else
-        return "\<C-F>" " C-N cannot be used
-    endif
-endfunction
-inoremap <Tab> <C-R>=CleverTab()<CR>
-
-" ]]]
-" [[[ statusline
-
-" " with remaining cursor/letter index
-" "set statusline=%<%f\ %m%1*%r%0*\ %1*%n%0*%=%-10(%l,%02c\ %1*%02p%%%0*%)\ %-16(c:%o,l:%03b(%02B)%)
-" "set statusline=%<%f\ %m%1*%r%0*\ %1*%n%0*%=%-10(%l,%02c\ %1*%02p%%%0*%)
-" "set statusline=%<%f\ %m%1*%r%0*\ %1*%n%0*%=%#warningmsg#%{SyntasticStatuslineFlag()}%*\ %-10(%l,%02c\ %1*%02p%%%0*%)
-" set statusline=        "start
-" set statusline+=%<
-" set statusline+=%4*    "switch to User highlight
-" set statusline+=%f     "filename
-" set statusline+=\      "space
-" set statusline+=%5*    "switch to User highlight
-" set statusline+=%Y     "filetype
-" set statusline+=\      "space
-" set statusline+=%1*    "switch to User highlight
-" if exists('g:loaded_fugitive')
-"     set statusline+=%{fugitive#head()}     "modified
-" endif
-" " set statusline+=\      "space (not required?)
-" set statusline+=%2*    "switch to User highlight
-" set statusline+=%M     "modified
-" set statusline+=%R     "readonly flag
-" set statusline+=\      "space
-" set statusline+=%6*    "switch to User highlight
-" set statusline+=%n     "buffer number
-" set statusline+=\      "space
-" set statusline+=%0*    "switch back to statusline highlight
-" set statusline+=%=     "left/right separator
-" set statusline+=%#warningmsg# "switch to warningmsg highlight
-" if exists('g:loaded_syntastic_plugin')
-"     set statusline+=%{SyntasticStatuslineFlag()} "put syntastic message
-" endif
-" set statusline+=%*     "switch back to normal statusline highlight
-" set statusline+=\      "space
-" " set statusline+=%-10(  "start a group left aligned of 10 characters
-" set statusline+=%7*    "switch to User highlight
-" set statusline+=%l     "line number
-" set statusline+=,      "comma
-" set statusline+=%02c   "column number, zero padded
-" set statusline+=\      "space
-" set statusline+=%6*    "switch to User highlight, aka inverse bold for me
-" set statusline+=%02p%% "percentage inside the file, zero padded, with %
-" set statusline+=%0*    "switch back to statusline highlight
-" " set statusline+=%)     "end of the group
-" " hi User1 term=inverse,bold cterm=inverse,bold ctermfg=lightyellow
-
-" ]]]
 " [[[ Mappings
 
-nnoremap <C-PageDown> :bnext<cr>
-nnoremap <C-PageUp> :bprevious<cr>
+:lua vim.api.nvim_set_keymap('n', '<C-PageDown>', ':bnext<cr>', { noremap = true })
+:lua vim.api.nvim_set_keymap('n', '<C-PageUp>', ':bprevious<cr>', { noremap = true })
 
-map + :cnext<cr>zv<cr>
-map _ :cprevious<cr>zv<cr>
-map - :cprevious<cr>zv<cr>
-" map = :botright :cwindow 25<cr>
-map <kPlus> :cnext<cr>zv<cr>
-map <kMinus> :cprevious<cr>zv<cr>
-if has("autocmd")
-    " disable number / relativenumber for big files, to avoid to read to count lines
-    augroup LargeFile
-        autocmd BufReadPre *
-          \ let f=expand("<afile>")           |
-          \ if getfsize(f) > 20 * 1024 * 1024 |
-          \     set eventignore+=FileType     |
-          \     setlocal ft=large             |
-          \     setlocal noswapfile           |
-          \     setlocal bufhidden=unload     |
-          \     setlocal foldmethod=manual    |
-          \     setlocal nofoldenable         |
-          \     setlocal nobackup             |
-          \     setlocal nowritebackup        |
-          \     setlocal undolevels=-1        |
-          \     setlocal nonumber             |
-          \     setlocal norelativenumber     |
-          \ else                              |
-          \     set eventignore-=FileType     |
-          \ endif
-    augroup END
-    " autocmd Filetype * if getfsize(@%) > 1000000 | setlocal syntax=OFF | endif
+:lua vim.api.nvim_set_keymap('n', '<kPlus>', ':cnext<CR>zv<CR>', { noremap = true })
+:lua vim.api.nvim_set_keymap('n', '+', ':cnext<CR>zv<CR>', { noremap = true })
+:lua vim.api.nvim_set_keymap('n', '<kMinus>', ':cprevious<CR>zv<CR>', { noremap = true })
+:lua vim.api.nvim_set_keymap('n', '_', ':cprevious<CR>zv<CR>', { noremap = true })
+:lua vim.api.nvim_set_keymap('n', '-', ':cprevious<CR>zv<CR>', { noremap = true })
 
-    " open the quick list window after make
-    autocmd QuickFixCmdPost [^l]* nested botright cwindow 10
-    autocmd FileType quickfix setlocal scrolloff=0
-    autocmd BufWinEnter quickfix exe "normal! zt"
-endif
+" disable number / relativenumber for big files, to avoid to read to count lines
+:lua << LUA
+vim.api.nvim_create_autocmd('BufReadPre', {                     
+	pattern = '*',                                               
+	callback = function(args)                                    
+		-- local cur_buf = vim.api.nvim_get_current_buf()           
+		-- local cur_name = vim.api.nvim_buf_get_name(cur_buf)          
+		-- local cur_sz = vim.fn.getfsize(cur_name)                     
+		local cur_sz = vim.fn.getfsize(args.file)                     
+		if cur_sz > 20 * 1024 * 1024 then                        
+			vim.bo.ft = large                            
+			vim.bo.swapfile = false                      
+			vim.bo.bufhidden = unload                    
+			vim.bo.undolevels = -1                       
+			vim.wo.foldmethod = manual                   
+			vim.wo.foldenable = false                    
+			vim.wo.number = false                        
+			vim.wo.relativenumber = false                
+			vim.opt_local.backup = false                       
+			vim.opt_local.writebackup = false                  
+			vim.opt_local.eventignore:append('FileType')        
+		else                                                 
+			vim.opt_local.eventignore:remove('FileType')        
+		end                                                  
+	end                                                          
+	})
+    -- autocmd Filetype * if getfsize(@%) > 1000000 | setlocal syntax=OFF | endif
 
-" map C-h to get cursor position
-nnoremap <C-H> :call HighlightNearCursor()<CR>
-function HighlightNearCursor()
-  if !exists("s:highlightcursor")
-    match Todo /\k*\%#\k*/
-    let s:highlightcursor=1
-    set cursorline
-  else
-    match None
-    unlet s:highlightcursor
-    set nocursorline
-  endif
-endfunction
+    -- open the quick list window after make
+    -- autocmd QuickFixCmdPost [^l]* nested botright cwindow 10
+    -- TODO really required?
+vim.api.nvim_create_autocmd('QuickFixCmdPost', {                     
+	pattern = '[^l]*',                                               
+	nested = true,
+	command = "botright cwindow 10"
+	})
+	
+-- quickfix: jump on top, disable line numbers
+-- autocmd BufWinEnter quickfix exe "normal! zt"
+-- autocmd BufWinEnter quickfix set nonumber
+-- autocmd BufWinEnter quickfix set norelativenumber
+vim.api.nvim_create_autocmd({ 'VimEnter', 'WinEnter', 'BufWinEnter'}, {
+  pattern = '*',
+  callback = function()
+    if vim.bo.filetype == 'quickfix' then
+	vim.cmd('exe "normal! zt"')
+	vim.wo.number = false                        
+	vim.wo.relativenumber = false                
+    end
+  end,
+})
 
-" ]]]
-" [[[ filetypes
+-- map C-h to get cursor position by toggle cursorlines
+vim.keymap.set('n', '<C-H>', function()
+	vim.wo.cursorline = not(vim.wo.cursorline)
+	vim.wo.cursorcolumn = not(vim.wo.cursorcolumn)
+end, { noremap = true })
 
-filetype plugin indent on
-syntax on
+-- ]]]
+-- [[[ filetypes
 
-autocmd Syntax {cpp,c,javascript} runtime syntax/doxygen.vim
+-- allow to use :let per buffer, when adding on first/last lines stuff like:
+-- // VIM: let b:syntastic_c_cflags = "-DMACRO_XXX=2"
+-- autocmd BufNewFile * let b:this_is_new_buffer=1
+vim.api.nvim_create_autocmd({ 'BufNewFile'}, {
+  pattern = '*',
+  callback = function()
+     vim.cmd('let b:this_is_new_buffer=1')
+  end,
+})
+vim.api.nvim_create_autocmd({ 'BufEnter'}, {
+  pattern = '*',
+  callback = function()
+     vim.cmd('call FirstModeLine()')
+  end,
+})
 
-autocmd BufReadPost *
-            \ if line("'\"") > 0 && line("'\"") <= line("$") |
-            \   exe "normal g`\"" |
-            \ endif
+-- always backup session (reopen via vl alias)
+-- autocmd VimLeave * mksession! ~/.cache/session.vim
+vim.api.nvim_create_autocmd({ 'VimLeave'}, {
+  pattern = '*',
+  callback = function()
+     vim.cmd('mksession! ~/.cache/session.vim')
+  end,
+})
 
-" allow tu use :let per buffer, when adding on first/last lines stuff like:
-" // VIM: let b:syntastic_c_cflags = "-DMACRO_XXX=2"
-runtime! plugin/let-modeline.vim
-autocmd BufNewFile * let b:this_is_new_buffer=1
-
-if 0
-    packadd modeline
-    autocmd BufReadPost * call FirstModeLine()
-endif
-
-" always backup session (reopen via vl alias)
-autocmd VimLeave * mksession! ~/.cache/session.vim
-
-autocmd BufRead,BufNewFile *.adoc setf asciidoc
-autocmd BufRead,BufNewFile *.md setf markdown
-autocmd BufRead,BufNewFile *.pck setf sql
-autocmd BufRead,BufNewFile *.conf setf dosini
-" txt have been previously selected for *.txt, so we need to force new
-" filetype manually (without setf which doesn't overwrite if)
-autocmd BufRead,BufNewFile CMake*.txt setlocal filetype=cmake
-autocmd BufRead,BufNewFile *Mail*.txt setlocal filetype=mail
-autocmd BufRead,BufNewFile COMMIT_EDITMSG setf gitcommit
-
-autocmd FileType actionscript set et sts=4 sw=4
-autocmd FileType actionscript setlocal cindent tw=78 iskeyword+=$ noignorecase ff=dos
-autocmd FileType asciidoc set tw=78
-autocmd FileType asciidoc setlocal spell spelllang=en_us
-autocmd FileType asciidoc setlocal syntax off
-autocmd FileType c,cpp set et sts=4 sw=4
-autocmd FileType c,cpp setlocal tw=78 "fo-=ro
-autocmd FileType css set et sts=4 sw=4
-autocmd FileType debchangelog normal zO
-autocmd FileType diff setlocal nofoldenable
-autocmd FileType git set syntax=diff
-autocmd FileType git setlocal spell tw=76
-autocmd FileType gitcommit set spell spelllang=en_us tw=72
-autocmd FileType haxe setlocal tw=78 noignorecase cin ai
-autocmd FileType html set et sts=4 sw=4 syntax=php
-autocmd FileType html,xhtml,xml setlocal sw=2
-autocmd FileType html,xhtml,xml setlocal sw=2 syntax=smarty
-autocmd FileType java set et sts=4 sw=4
-autocmd FileType javascript set et sts=4 sw=4
-autocmd FileType javascript setlocal cindent tw=78 iskeyword+=$
-autocmd FileType mail hi clear SpellBad
-autocmd FileType mail hi clear SpellCap
-autocmd FileType mail hi clear SpellLocal
-autocmd FileType mail hi clear SpellRare
-autocmd FileType mail hi SpellBad cterm=underline
-autocmd FileType mail hi SpellCap cterm=underline
-autocmd FileType mail hi SpellLocal cterm=underline
-autocmd FileType mail hi SpellRare cterm=underline
-autocmd FileType mail setlocal noet iskeyword+=- tw=72 " RFC 3676
-autocmd FileType mail setlocal spell spelllang=en_us
-autocmd FileType ocaml,acute,omlet setlocal sw=2 sts=2 tw=78
-autocmd FileType php setlocal et fo+=ro tw=78 indentexpr= cin
-autocmd FileType php set et sts=4 sw=4
-autocmd FileType python setlocal foldmethod=marker foldnestmax=20
-let python_highlight_all=1
-autocmd FileType sql set et sts=4 sw=4
-autocmd FileType svn setlocal spell tw=76
-
-" remove trailing whitespace at write
-autocmd FileType c,cpp,java,php,asciidoc autocmd BufWritePre <buffer> :%s/\s\+$//e
-autocmd BufWritePre *.py :%s/\s\+$//e
-autocmd BufWritePre *.tex :%s/\s\+$//e
-autocmd BufWritePre gitcommit :%s/\s\+$//e
-
-" make error list special
-autocmd BufRead quickfix setlocal nobuflisted nowrap number
-
-" let g:rustfmt_autosave = 1
+-- remove trailing whitespace at write
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+  pattern = '*',
+  callback = function()
+    if vim.bo.filetype == 'c'
+    or vim.bo.filetype == 'cpp'
+    or vim.bo.filetype == 'mail'
+    or vim.bo.filetype == 'asciidoc'
+    or vim.bo.filetype == 'python'
+    or vim.bo.filetype == 'gitcommit'
+    or vim.bo.filetype == 'rust'
+    then
+      vim.cmd[[ :%s/\s\+$//e ]]
+    end
+  end,
+})
+LUA
 
 " ]]]
 " [[[ weird (outdated?) options
 
-let ocaml_noindent_let=1
 let git_diff_spawn_mode=2
 let git_diff_opts = "--no-renames --summary -C -M"
 let c_gnu=1
 let c_space_errors=1
 let c_no_curly_error=1
 
-let g:bufExplorerFindActive=0
-let g:bufExplorerSplitOutPathName=1
-let g:bufExplorerShowRelativePath=0
-let g:bufExplorerSortBy='fullpath'
-
 let g:is_bash=1
 let g:sh_fold_enabled=1
-
-let g:debchangelog_fold_enable = 1
-let g:debcontrol_fold_enable = 1
 
 " String to put at the start of lines that have been wrapped
 let &showbreak='↪ '
@@ -258,27 +165,6 @@ if has('nvim')
 endif
 
 " ]]]
-" [[[ netrw
-
-let g:netrw_sort_sequence = '[\/]$'
-let g:netrw_sort_sequence += ',\.h$|\.c$|\.cpp$'
-let g:netrw_sort_sequence += ',\.py$'
-let g:netrw_sort_sequence += ',^Makefile$'
-let g:netrw_sort_sequence += ',*'
-let g:netrw_sort_sequence += ',\.json$'
-let g:netrw_sort_sequence += ',\.o$'
-let g:netrw_sort_sequence += ',\.obj$'
-let g:netrw_sort_sequence += ',\.git'
-let g:netrw_sort_sequence += ',\.info$'
-let g:netrw_sort_sequence += ',\.swp$'
-let g:netrw_sort_sequence += ',\.bak$'
-" \@! after will force no match
-" let g:netrw_sort_sequence += ',\.*[\/]\@!$'
-let g:netrw_sort_sequence += ',\~$'
-
-let g:netrw_special_syntax = 1
-
-" ]]]
 " [[[ misc map
 
 " ESC with CTR-j
@@ -288,106 +174,6 @@ nnoremap <C-j> <esc>
 
 " ]]]
 " [[[ tags & cscope
-
-" set tags=tags;/,.tags;/,TAGS;/
-"
-" if !has("nvim") && has("cscope") && has('modify_fname')
-"     " use cscope by default
-"     set cscopetag
-"
-"     " use cscope before tags
-"     set cscopetagorder=0
-"
-"     " set cscopequickfix="s-,c-,d-,i-,t-,e"
-"
-"     " set nocscopeverbose
-"     " " add any database in current directory
-"     " if filereadable(".cscope.out")
-"     "     cscope add .cscope.out
-"     "     " else add database pointed to by environment
-"     " elseif $CSCOPE_DB != ""
-"     "     cscope add $CSCOPE_DB
-"     " endif
-"     " set cscopeverbose
-"
-"     "adapted from http://vim.sourceforge.net/scripts/script.php?script_id=157
-"
-" "TODO make the same auto add/remove for gtags
-" "    "==
-" "    " windowdir
-" "    "  Gets the directory for the file in the current window
-" "    "  Or the current working dir if there isn't one for the window.
-" "    function! s:windowdir()
-" "        return winbufnr(0) == -1 ? getcwd() : fnamemodify(bufname(winbufnr(0)), ':p:h')
-" "    endfunction
-" "
-" "    "==
-" "    " Find_in_parent
-" "    " find the file argument and returns the path to it.
-" "    " Starting with the current working dir, it walks up the parent folders
-" "    " until it finds the file, or it hits the stop dir.
-" "    " If it doesn't find it, it returns "Nothing"
-" "    function! s:Find_in_parent(fln,flsrt,flstp)
-" "        let here = a:flsrt
-" "        while ( strlen( here) > 0 )
-" "            if filereadable( here . "/" . a:fln )
-" "                return here
-" "            endif
-" "            let fr = match(here, "/[^/]*$")
-" "            if fr == -1
-" "                break
-" "            endif
-" "            let here = strpart(here, 0, fr)
-" "            if here == a:flstp
-" "                break
-" "            endif
-" "        endwhile
-" "        return "Nothing"
-" "    endfunction
-" "
-" "    "==
-" "    " Cycle_csdb
-" "    "  cycle the loaded cscope db.
-" "    function! s:Cycle_csdb()
-" "        if exists("b:csdbpath") && cscope_connection(3, "out", b:csdbpath)
-" "            "it is already loaded. don't try to reload it.
-" "            return
-" "        endif
-" "        let newcsdbpath = s:Find_in_parent(".cscope.out",s:windowdir(),$HOME)
-" "        "    echo "Found cscope.out at: " . newcsdbpath
-" "        "    echo "Windowdir: " . s:windowdir()
-" "        if newcsdbpath != "Nothing"
-" "            let b:csdbpath = newcsdbpath
-" "            if !cscope_connection(3, "out", b:csdbpath)
-" "                let save_csvb = &csverb
-" "                set nocscopeverbose
-" "                exe "cscope add " . b:csdbpath . "/.cscope.out " . b:csdbpath
-" "                set cscopeverbose
-" "                let &csverb = save_csvb
-" "            endif
-" "        endif
-" "    endfunction
-" "
-" "    augroup autoload_cscope
-" "        au!
-" "        autocmd FileType c call <SID>Cycle_csdb()
-" "        autocmd FileType cpp call <SID>Cycle_csdb()
-" "        "no unload…
-" "    augroup END
-" "
-" "    " update macro, rely on cs shell alias, so use temporary an interactive
-" "    " shell for that
-" "    let @u=':wall:set shell=/bin/bash\ -i:! cs:cscope reset:set shell=/bin/bash'
-" "    " TODO nvim: use :terminal
-"
-"     let GtagsCscope_Auto_Load = 1
-"     let GtagsCscope_Quiet = 1
-"     let GtagsCscope_Absolute_Path = 1
-"     "let g:Gtags_Auto_Update = 1 "global -u --file % after each write
-"     let @u=':GtagsUpdate:cscope reset'
-"     " TODO nvim: use :terminal
-"
-" endif
 
 " g\ ->open tag of the word under cursor on a new window at right
 " nnoremap g\ <ESC>:vert :rightbelow :scscope <C-R>=expand("<cword>")<CR><CR>
@@ -453,10 +239,6 @@ vnoremap <leader>l :g/^$/d<CR>
 " tt is command to align on space
 cab tt Tabularize /\S\+;
 
-"" Toggle number
-nnoremap <F12> :tabdo :windo :set nonumber!<CR>:tabdo :windo :set norelativenumber!<CR>
-inoremap <F12> :tabdo :windo :set nonumber!<CR>:tabdo :windo :set norelativenumber!<CR>
-
 "" Toggle &virtualedit
 function! Toggle_virtualedit_()
   if &virtualedit == 'all'
@@ -470,6 +252,19 @@ function! Toggle_virtualedit_()
   endif
 endfunction
 map <F7> <ESC>:call Toggle_virtualedit_()<CR>:set virtualedit?<CR>
+
+:lua << LUA
+-- map C-h to get cursor position by toggle cursorlines
+vim.keymap.set({'i', 'n'}, '<F7>', function()
+	if vim.opt.virtualedit == 'onemore'
+	then
+		vim.wo.virtualedit = 'all'
+		return
+	end
+	vim.wo.virtualedit = 'onemore'
+end,
+	{ noremap = true })
+LUA
 
 " C macro management (iCTRL-vCTRL-m to insert real <CR>)
 let @l=':set virtualedit =allgv:s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj'
@@ -585,10 +380,6 @@ autocmd CmdwinEnter * nnoremap <buffer> <C-j> :q<CR>
 " Disable line numbers in command line window
 autocmd CmdwinEnter * set nonumber
 autocmd CmdwinEnter * set norelativenumber
-
-" Disable line numbers in quickfix
-autocmd BufWinEnter quickfix set nonumber
-autocmd BufWinEnter quickfix set norelativenumber
 
 " ]]]
 " [[[ cursor
