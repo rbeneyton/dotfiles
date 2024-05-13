@@ -130,8 +130,6 @@ git_email = "richard.beneyton@gmail.com"
 "vim/vimrc.template" = { target = "~/.vimrc", type = "template" }
 "vim" = { target = "~/.vim", type = "symbolic", recurse = false }
 "nvim" = { target = "~/.config/nvim", type = "symbolic", recurse = false }
-[vim.variables]
-vim_undodir = "~/.vimundo"
 
 # rust
 [rust.files]
