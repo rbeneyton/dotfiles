@@ -79,15 +79,40 @@ vim.api.nvim_create_autocmd({ 'VimEnter', 'WinEnter', 'BufWinEnter'}, {
 	vim.cmd('exe "normal! zt"')
 	vim.wo.number = false                        
 	vim.wo.relativenumber = false                
+	vim.wo.signcolumn = 'no'
     end
+  end,
+})
+
+-- Have <esc> or mine C-j leave cmdline-window
+-- Disable line numbers in command line window
+vim.api.nvim_create_autocmd('CmdWinEnter', {
+  callback = function()
+    vim.keymap.set('n', '<ESC>', ':q<CR>', { noremap = true })
+    vim.keymap.set('n', '<C-j>', ':q<CR>', { noremap = true })
+    vim.wo.number = false
+    vim.wo.relativenumber = false
+    vim.wo.signcolumn = 'no'
+  end,
+})
+-- restore mapping when leaving
+vim.api.nvim_create_autocmd('CmdWinLeave', {
+  callback = function()
+    vim.keymap.del('n', '<ESC>')
+    vim.keymap.del('n', '<C-j>')
   end,
 })
 
 -- map C-h to get cursor position by toggle cursorlines
 vim.keymap.set('n', '<C-H>', function()
-	vim.wo.cursorline = not(vim.wo.cursorline)
-	vim.wo.cursorcolumn = not(vim.wo.cursorcolumn)
+  vim.wo.cursorline = not(vim.wo.cursorline)
+  vim.wo.cursorcolumn = not(vim.wo.cursorcolumn)
 end, { noremap = true })
+
+-- highlight yanked text
+vim.api.nvim_create_autocmd('TextYankPost', {
+  command = 'silent! lua vim.highlight.on_yank({ timeout = 500 })'
+})
 
 -- ]]]
 -- [[[ filetypes
@@ -242,33 +267,33 @@ cab tt Tabularize /\S\+;
 "" Toggle &virtualedit
 function! Toggle_virtualedit_()
   if &virtualedit == 'all'
-    if version >= 700
-      set virtualedit=onemore " be on ending \n
-    else
-      set virtualedit=
-    endif
+    set virtualedit=onemore " be on ending \n
   else
     set virtualedit=all
   endif
 endfunction
-map <F7> <ESC>:call Toggle_virtualedit_()<CR>:set virtualedit?<CR>
+" map <F7> <ESC>:call Toggle_virtualedit_()<CR>:set virtualedit?<CR>
 
 :lua << LUA
 -- map C-h to get cursor position by toggle cursorlines
 vim.keymap.set({'i', 'n'}, '<F7>', function()
-	if vim.opt.virtualedit == 'onemore'
+	if vim.wo.virtualedit == 'onemore'
 	then
 		vim.wo.virtualedit = 'all'
-		return
+		print('virtualedit on')
+	else
+		vim.wo.virtualedit = 'onemore'
+		print('virtualedit off')
 	end
-	vim.wo.virtualedit = 'onemore'
 end,
 	{ noremap = true })
 LUA
 
-" C macro management (iCTRL-vCTRL-m to insert real <CR>)
+" C preprocessor macro management (iCTRL-vCTRL-m to insert real <CR>)
 let @l=':set virtualedit =allgv:s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj'
+" vim.fn.setreg('l', ':set virtualedit =allgv:s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj')
 let @m=':set virtualedit =all?#definev}kk:''<,''>s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj'
+" vim.fn.setreg('m', ':set virtualedit =all?#definev}kk:''<,''>s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj')
 
 " when solving a git conflict, extract next hunk and open 2 tabs with diff of ancestor vs. new branch and ancestor vs. current HEAD
 " reg f = name of HEAD
@@ -294,200 +319,141 @@ let @c=':tabonly0/HEAD"fy$$j0ma/|||||||W"ey$0k$mb0j/=======k$mc0j/>>>>>>>W
 " [[[ maps
 
 " disable arrow keys
-noremap   <up>     <nop>
-noremap   <down>   <nop>
-noremap   <left>   <nop>
-noremap   <right>  <nop>
-inoremap  <up>     <nop>
-inoremap  <down>   <nop>
-inoremap  <left>   <nop>
-inoremap  <right>  <nop>
+:lua << LUA
+vim.keymap.set({'n', 'i'}, '<up>', '<nop>', { noremap = true })
+vim.keymap.set({'n', 'i'}, '<down>', '<nop>', { noremap = true })
+vim.keymap.set({'n', 'i'}, '<left>', '<nop>', { noremap = true })
+vim.keymap.set({'n', 'i'}, '<right>', '<nop>', { noremap = true })
+LUA
 
 " use real line movement when used without <count>
 noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
 noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
 
-" inverse ; and : in normal+visual+select mode
-" temporary diable due to
-" http://stackoverflow.com/questions/19519589/remapping-semicolon-to-colon-in-vim-breaks-ls
-nnoremap <leader>; :
-" nnoremap ; :
-" nnoremap : ;
-noremap q; q:
+:lua << LUA
+-- open command-line window directly
+-- nnoremap <leader>; :
+vim.keymap.set('n', '<leader>;', ':', { noremap = true })
+-- open command-line window with history 
+-- noremap q; q:
+vim.keymap.set('n', 'q;', 'q:', { noremap = true })
+-- note that q/ or q? open search-line window with history
 
-" in insert mode, C-o do completion previous and C-n do a normal command
-inoremap <C-o> <C-n>
-inoremap <C-n> <C-o>
+-- in insert mode, C-o do completion previous and C-n do a normal command
+vim.keymap.set('i', '<C-o>', '<C-n>', { noremap = true })
+vim.keymap.set('i', '<C-n>', '<C-o>', { noremap = true })
 
-" command line navigation exactly as own bash navigation
-" remind that C-f pop up command line window
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
-"cnoremap <C-p> <Up>
-cnoremap <C-o> <Down>
-cnoremap <C-v> <Right>
-cnoremap <C-n> <Left>
-cnoremap <C-g> <Del>
-cnoremap <C-h> <backspace>
-cnoremap <C-j> <C-c>  " really weird that <ESC> do <CR>
+-- command line mode: navigation exactly as own bash navigation
+-- remind that C-f pop up command line window
+vim.keymap.set('c', '<C-a>', '<Home>', { noremap = true })
+vim.keymap.set('c', '<C-e>', '<End>', { noremap = true })
+vim.keymap.set('c', '<C-o>', '<Down>', { noremap = true })
+vim.keymap.set('c', '<C-v>', '<Right>', { noremap = true })
+vim.keymap.set('c', '<C-n>', '<Left>', { noremap = true })
+vim.keymap.set('c', '<C-g>', '<Del>', { noremap = true })
+vim.keymap.set('c', '<C-h>', '<BackSpace>', { noremap = true })
+vim.keymap.set('c', '<C-j>', '<C-c>', { noremap = true })
 
-" ]]]
-" [[[ macros cont'd
+-- ]]]
+-- [[[ macros cont'd
 
-" map to remove trailing spaces
-" nnoremap <Leader>b :s/\s\+$//e<CR>
-" vnoremap <Leader>b :s/\s\+$//e<CR>
+-- map to remove trailing spaces
+-- nnoremap <Leader>b :s/\s\+$//e<CR>
+-- vnoremap <Leader>b :s/\s\+$//e<CR>
 
-" alias M for make
-nnoremap <Leader>m <ESC>:wall<CR>:make<CR>
-nnoremap <Leader>M <ESC>:wall<CR>:set shell=/bin/bash\ -i<CR>:! mn<CR>:set shell=/bin/bash<CR>'
-"let @m=':wall:set shell=/bin/bash\ -i:! mn M=1:set shell=/bin/bash' command! M make
+-- alias M for make
+vim.keymap.set('n', '<Leader>m', '<ESC>:wall<CR>:make<CR>', { noremap = true })
+-- vim.keymap.set('n', '<Leader>M', '<ESC>:wall<CR>:set shell=/bin/bash\ -i<CR>:! mn<CR>:set shell=/bin/bash<CR>', { noremap = true })
 
-" alias x for :x
-nnoremap <Leader>x :xa<CR>
+-- alias x for :x
+vim.keymap.set('n', '<Leader>x', '<ESC>:xa<CR>', { noremap = true })
 
-" map to append a gerrit's changeId
-function! Append_gen_changid()
-  " grep -m40 -ao '[0-9a-f]' /dev/urandom | head -n40 | paste -sd '' do the job
-  :read !LANG=C grep -m40 -ao -P '[\x30-\x39\x61-\x66]' /dev/urandom | head -n40 | paste -sd ''
-endfunction
-nnoremap <Leader>C <ESC>oChange-Id: I<ESC>:call Append_gen_changid()<CR>kJx<ESC>
+-- " map to append a gerrit's changeId
+-- function! Append_gen_changid()
+--   " grep -m40 -ao '[0-9a-f]' /dev/urandom | head -n40 | paste -sd '' do the job
+--   :read !LANG=C grep -m40 -ao -P '[\x30-\x39\x61-\x66]' /dev/urandom | head -n40 | paste -sd ''
+-- endfunction
+-- nnoremap <Leader>C <ESC>oChange-Id: I<ESC>:call Append_gen_changid()<CR>kJx<ESC>
 
-" clear the search register -> like :noh
-nnoremap <silent> <Leader>/ :let@/=""<CR>
+-- clear the search register -> like :noh
+vim.keymap.set('n', '<Leader>/', ':let@/=""<CR>', { silent = true, noremap = true })
 
-" the grep operator
-" let g:grep_operator = 'git grep'
-" nmap <leader><leader>g <Plug>GrepOperatorOnCurrentDirectory
-" vmap <leader><leader>g <Plug>GrepOperatorOnCurrentDirectory
-" nmap <leader>g <Plug>GrepOperatorWithFilenamePrompt
-" vmap <leader>g <Plug>GrepOperatorWithFilenamePrompt
-" nmap <leader>g <Plug>GrepOperatorOnCurrentDirectory
-" vmap <leader>g <Plug>GrepOperatorOnCurrentDirectory
-" nmap <leader><leader>g <Plug>GrepOperatorWithFilenamePrompt
-" vmap <leader><leader>g <Plug>GrepOperatorWithFilenamePrompt
+-- git grep on current word
+vim.keymap.set('n', '<Leader>g', '<ESC>:Ggrep <C-R>=expand("<cword>")<CR><CR>', { noremap = true })
+vim.keymap.set('v', '<Leader>g', '<ESC>:execute \':Ggrep \'.GetVisualSelection()<CR>', { noremap = true })
+-- FIXME broken
+-- version with prompt before executing
+-- nnoremap <Leader>G <ESC>:Ggrep <C-R>=expand("<cword>")<CR>
+-- vim.keymap.set('n', '<Leader>G', '<ESC>:Ggrep <C-R>=expand("<cword>")<CR>', { noremap = true })
+-- vnoremap <Leader>G <ESC>:execute ':Ggrep '.GetVisualSelection()
+-- vim.keymap.set('v', '<Leader>G', '<ESC>:execute \':Ggrep \'.GetVisualSelection()<CR>', { noremap = true })
 
-" git grep on current word
-nnoremap <leader>g <ESC>:Ggrep <C-R>=expand("<cword>")<CR><CR>
-vnoremap <leader>g <ESC>:execute ':Ggrep '.GetVisualSelection()<CR>
-" version with prompt
-nnoremap <leader>G <ESC>:Ggrep <C-R>=expand("<cword>")<CR>
-vnoremap <leader>G <ESC>:execute ':Ggrep '.GetVisualSelection()
+-- ]]]
+-- [[[ colortheme
 
-" Have <esc> or mine C-j leave cmdline-window
-autocmd CmdwinEnter * nnoremap <buffer> <esc> :q<CR>
-autocmd CmdwinEnter * nnoremap <buffer> <C-j> :q<CR>
-" Disable line numbers in command line window
-autocmd CmdwinEnter * set nonumber
-autocmd CmdwinEnter * set norelativenumber
-
-" ]]]
-" [[[ cursor
-
-" konsole allows also CustomCursorColor=#ffffd7/#8a8a8a (but disalllow adaptation) and BlinkingCursorEnabled=0/1
-" tmux ack for passing $echo -en "\e]50;CursorShape=0\x7" stuff
-" kde 5 breaks its API for switching cursor
-if !exists('$VIMNOCURSOR') && !has('nvim') && (!exists('$KDE_SESSION_VERSION') || $KDE_SESSION_VERSION != "5")
-    if exists('$TMUX') || exists('$TMUX_PANE')
-        " for konsole via tmux
-        " with configuration set -g terminal-overrides ',*:Ss=\E]50;CursorShape=%?%p1%{3}%<%t%{0}%e%p1%{2}%-%;%d\007'
-        let &t_SI = "\<Esc>[3 q"
-        let &t_EI = "\<Esc>[1 q"
-        autocmd VimLeave * silent !let &t_EI = "\<Esc>[0 q"
-
-        " cygwin64
-        " let &t_SI = "\<Esc>[6 q"
-        " let &t_EI = "\<Esc>[0 q"
-        " autocmd VimLeave * silent !let &t_EI = "\<Esc>[0 q"
-    else
-        " konsole
-        " Vertical bar in insert mode
-        let &t_SI = "\<Esc>]50;CursorShape=1;\x7"
-        " Block in normal mode
-        let &t_EI = "\<Esc>]50;CursorShape=0;\x7"
-        " Clean at exit
-        autocmd VimLeave * silent !let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-
-        " cygwin64
-        " let &t_SI = "\<Esc>[6 q"
-        " let &t_EI = "\<Esc>[0 q"
-        " autocmd VimLeave * silent !let &t_EI = "\<Esc>[0 q"
-    endif
+-- switch light/dark via env variable theme
+if vim.env.theme == 'light'
+then
+  vim.opt.background="light"
 else
-    " TODO neovim cursor behavior is really weird…
-endif
+  vim.opt.background="dark"
+end
 
-" ]]]
-" [[[ colortheme
+vim.cmd("packadd kanagawa")
+vim.opt.laststatus = 2 -- 3(unique statusline) drops info for no gain
+vim.opt.fillchars:append({
+    horiz = '━',
+    horizup = '┻',
+    horizdown = '┳',
+    vert = '┃',
+    vertleft = '┨',
+    vertright = '┣',
+    verthoriz = '╋',
+})
+require('kanagawa').setup {
+  undercurl = true,           -- enable undercurls
+  commentStyle = { italic = true },
+  functionStyle = {},
+  keywordStyle = { italic = true},
+  statementStyle = { bold = true },
+  typeStyle = {},
+  transparent = false,        -- do not set background color
+  dimInactive = true,        -- dim inactive window `:h hl-NormalNC`
+  globalStatus = true,        -- adjust window separators highlight for laststatus=3
+  terminalColors = true,      -- define vim.g.terminal_color_{0,17}
+  colors = {},
+  theme = "default"           -- Load "default" theme or the experimental "light" theme
+}
+-- vim.opt.winbar = "%=%m %f %n %p%%"
+vim.cmd.colorscheme("kanagawa")
 
-let g:solarized_termcolors=256
-set t_Co=256
-syntax enable
-" switch light/dark via env variable theme
-if !empty($theme) && $theme == 'light'
-    set background=light
-else
-    set background=dark
-endif
-colorscheme solarized
+-- ]]]
+-- [[[ neovim specific
 
-" inhibit background of signcolumn for gitgutter
-" highlight clear SignColumn
+-- neovim default is 'nvi', which is unusable and inhibit ~normal~ copy/paste
+vim.opt.mouse = ""
 
-if has('nvim')
-    packadd kanagawa
-lua << EOF
-    vim.opt.laststatus = 2 -- 3(unique statusline) drops info for no gain
-    vim.opt.fillchars:append({
-        horiz = '━',
-        horizup = '┻',
-        horizdown = '┳',
-        vert = '┃',
-        vertleft = '┨',
-        vertright = '┣',
-        verthoriz = '╋',
-    })
-    require('kanagawa').setup {
-      undercurl = true,           -- enable undercurls
-      commentStyle = { italic = true },
-      functionStyle = {},
-      keywordStyle = { italic = true},
-      statementStyle = { bold = true },
-      typeStyle = {},
-      transparent = false,        -- do not set background color
-      dimInactive = true,        -- dim inactive window `:h hl-NormalNC`
-      globalStatus = true,        -- adjust window separators highlight for laststatus=3
-      terminalColors = true,      -- define vim.g.terminal_color_{0,17}
-      colors = {},
-      theme = "default"           -- Load "default" theme or the experimental "light" theme
-    }
-    -- vim.opt.winbar = "%=%m %f %n %p%%"
-EOF
-    colorscheme kanagawa
-    " TODO toggle winbar map
-    ":nnoremap <Leader>wb ...
-endif
+-- exit from term with alt space (not binding by any shell or tool IMHO)
+-- tnoremap <A-Space> <C-\><C-n>
+vim.keymap.set('t', '<A-Space>', '<C-\\><C-n>', { noremap = true })
 
-" ]]]
-" [[[ neovim specific
+-- same history lenght than tmux
+vim.cmd[[
+let g:terminal_scrollback_buffer_size=99999
+]]
 
-if has('nvim')
-    " neovim default is 'a', which is unusable and inhibit ~normal~ copy/paste
-    set mouse=
+-- ]]]
+-- [[[ airline options
 
-    " exit from term with alt space (not binding by any shell or tool IMHO)
-    tnoremap <A-Space> <C-\><C-n>
+-- XXX disable laststatus for minimal config
 
-    " same history lenght than tmux
-    let g:terminal_scrollback_buffer_size=99999
-endif
+-- FIXME find a clean nvim successor of airline
+LUA
+:lua << LUA
+vim.cmd([[
 
-" ]]]
-" [[[ airline options
-
-" XXX disable laststatus for minimal config
 let g:airline_powerline_fonts=1
-let g:airline#extensions#default#layout = [['a','b','c'],['x','y','z','warning']]
+let g:airline#extensions#default#layout = [ ['a','b','c'], ['x','y','z','warning'] ]
 " suppress hunks from line, they're shown by gitgutter
 " let g:airline_section_b = '%{airline#util#wrap(airline#extensions#branch#get_head(),0)}'
 let g:airline_section_b = '
@@ -540,8 +506,16 @@ function! AirlineSlime()
 endfunction
 let g:airline_section_x = '%{AirlineSlime()}'
 
-" ]]]
-" [[[ tmuxline options
+]])
+LUA
+:lua << LUA
+
+-- ]]]
+-- [[[ tmuxline options
+
+LUA
+:lua << LUA
+vim.cmd([[
 
 let g:airline#extensions#tmuxline#enabled = 1
 let g:airline#extensions#tmuxline#color_template = 'visual'
@@ -563,13 +537,23 @@ let g:tmuxline_separators = {
       \ 'space' : ''}
 let g:tmuxline_powerline_separators = 1
 
-" ]]]
-" [[[ syntastic options
+]])
+LUA
+:lua << LUA
+
+-- ]]]
+-- [[[ syntastic options
+
+LUA
+:lua << LUA
+vim.cmd([[
+
+" TODO drop syntastic once LSP works
 
 " XXX Syntastic fails to find your header files? Try 'make syntastic' in the
 "     root directory of your repository.
 
-"syntastic sign on one char, not two
+" syntastic sign on one char, not two
 let g:syntastic_error_symbol = "✗"
 let g:syntastic_warning_symbol = "⚠"
 let g:syntastic_style_error_symbol = 'S'
@@ -587,6 +571,11 @@ let g:syntastic_check_on_open=0
 let g:syntastic_silent_make=0
 let g:syntastic_loc_list_height=3
 let g:syntastic_debug=0
+
+]])
+LUA
+:lua << LUA
+vim.cmd([[
 
 let g:syntastic_c_compiler = 'clang'
 let g:syntastic_c_compiler = 'gcc'
@@ -642,276 +631,219 @@ let g:ycm_add_preview_to_completeopt = 0
 "let g:syntastic_debug = 0
 "let g:syntastic_debug_file = '/tmp/syntastic.log'
 
-" ]]]
-" [[[ GitGutter opts
+]])
+LUA
+:lua << LUA
 
-" always sign column, 'cause blinking makes me crazy
-"let g:gitgutter_sign_column_always = 1
-if has('nvim')
-    set signcolumn=yes
-else
-    " TODO
-endif
+-- ]]]
+-- [[[ GitGutter opts
 
-" nnoremap <Leader>hs <Plug>GitGutterStageHunk
-" nnoremap <Leader>hr <Plug>GitGutterRevertHunk
+vim.wo.signcolumn = "yes"
 
-if has('nvim') && !exists('$VIM_NOGITSIGN')
-lua << EOF
-    require('gitsigns').setup{
-        on_attach = function(bufnr)
-            local gs = package.loaded.gitsigns
+-- nnoremap <Leader>hs <Plug>GitGutterStageHunk
+-- nnoremap <Leader>hr <Plug>GitGutterRevertHunk
 
-            local function map(mode, l, r, opts)
-              opts = opts or {}
-              opts.buffer = bufnr
-              vim.keymap.set(mode, l, r, opts)
-            end
+LUA
+:lua << LUA
 
-            -- Navigation
-            map('n', ']c', function()
-              if vim.wo.diff then return ']c' end
-              vim.schedule(function() gs.next_hunk() end)
-              return '<Ignore>'
-            end, {expr=true})
+require('gitsigns').setup{
+on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
 
-            map('n', '[c', function()
-              if vim.wo.diff then return '[c' end
-              vim.schedule(function() gs.prev_hunk() end)
-              return '<Ignore>'
-            end, {expr=true})
-
-            -- Actions
-            map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
-            map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
-            map('n', '<leader>hS', gs.stage_buffer)
-            map('n', '<leader>hu', gs.undo_stage_hunk)
-            map('n', '<leader>hR', gs.reset_buffer)
-            map('n', '<leader>hp', gs.preview_hunk)
-            map('n', '<leader>hb', function() gs.blame_line{full=true} end)
-            map('n', '<leader>tb', gs.toggle_current_line_blame)
-            map('n', '<leader>hd', gs.diffthis)
-            map('n', '<leader>hD', function() gs.diffthis('~') end)
-            map('n', '<leader>td', gs.toggle_deleted)
-
-            -- Text object
-            map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
-        end
-    }
-EOF
-endif
-
-" ]]]
-" [[[ disable paste to avoid bracketed mode
-
-" augroup disable_paste
-"     au!
-"     au InsertLeave * set nopaste
-" augroup END
-
-" ]]]
-" [[[ Slime opts
-
-if !empty($TMUX)
-    " XXX C-c might be intercepted if timeoutlen is too low
-    let g:slime_target = "tmux"
-    let g:slime_default_config = {"socket_name": get(split($TMUX, ","), 0), "target_pane": ":.1"}
-    let g:slime_dont_ask_default = 1
-    " for ipython set %autoindent to OFF
-    let g:slime_python_ipython = 1
-    let g:slime_paste_file = "{{env_var "HOME"}}/.slime_paste"
-    let g:slime_dispatch_ipython_pause = 100
-    "
-    let g:slime_bracketed_paste = 1
-endif
-
-" ]]]
-" [[[ 'a' module options
-
-" a.vim
-let g:alternateRelativeFiles   = 1
-let g:alternateExtensions_blk  = "h"
-let g:alternateExtensions_blkk = "h"
-let g:alternateExtensions_h    = "c,cpp,cxx,cc,CC,blk,blkk"
-
-let g:alternateSearchPath = 'sfr:../src,sfr:../../src,sfr:../include'
-
-" ]]]
-" [[[ LSP
-
-if has('nvim')
-    " rust
-    packadd rustaceanvim
-" lua << EOF
-"     local rt = require("rust-tools")
-"
-"     rt.setup({
-"       server = {
-"         on_attach = function(_, bufnr)
-"           -- Hover actions
-"           vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-"           -- Code action groups
-"           vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-"         end,
-"       },
-"     })
-"
-"     -- Enable inlay hints auto update and set them for all the buffers
-"     rt.inlay_hints.enable()
-" EOF
-
-" TODO switch to ustaceanvim AFTER nvim 0.10 for inlay
-" lua << EOF
-" vim.g.rustaceanvim = {
-"   -- Plugin configuration
-"   tools = {
-"   },
-"   -- LSP configuration
-"   server = {
-"     on_attach = function(client, bufnr)
-"       -- Hover actions
-"       vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-"       -- Code action groups
-"       vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-"     end,
-"     settings = {
-"       -- rust-analyzer language server configuration
-"       ['rust-analyzer'] = {
-"       },
-"     },
-"   },
-"   -- DAP configuration
-"   dap = {
-"   },
-" }
-" EOF
-
-else
-    " FIXME no more editing code using vim, so don't maintain settings
-    " packadd vim-lsp
-endif
-
-" Required for operations modifying multiple buffers like rename.
-set hidden
-
-" let g:LanguageClient_serverCommands = {
-"     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-"     \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-"     \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-"     \ 'python': ['/usr/local/bin/pyls'],
-"     \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
-"     \ }
-" let g:LanguageClient_serverCommands = {
-"     \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-"     \ }
-"
-" let $LANGUAGECLIENT_DEBUG=1
-" let g:LanguageClient_loggingLevel='DEBUG'
-" let g:LanguageClient_autoStart=0
-
-
-
-
-
-" LSP using builtin neovim
-if has('nvim')
-    let g:airline#extensions#nvimlsp#enabled = 1
-
-    " shortcuts
-lua << EOF
-    lsp = require('lspconfig') -- XXX no local, as used later
-    vim.lsp.set_log_level('off')
-    -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-
-    -- Use an on_attach function to only map the following keys
-    -- after the language server attaches to the current buffer
-    local on_attach = function(client, bufnr)
-        local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-        local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-        --Enable completion triggered by <c-x><c-o>
-        buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-        -- Mappings.
-        local opts = { noremap=true, silent=true }
-
-        -- See `:help vim.lsp.*` for documentation on any of the below functions
-        buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-        buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-        buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-        buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-        buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-        buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-        buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-        buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-        buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-        buf_set_keymap('n', '<space>r', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-        buf_set_keymap('n', '<space>c', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-        buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-        buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-        buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-        buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-        buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-        buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
     end
 
-    -- rust
-    lsp.rust_analyzer.setup {
-        on_attach = on_attach
-    }
+    -- Navigation
+    map('n', ']c', function()
+      if vim.wo.diff then return ']c' end
+      vim.schedule(function() gs.next_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
 
-    -- python
-    lsp.pylsp.setup {
-      whitelist = { 'python' },
-      -- root_dir = function(fname)
-      --     return lsp.util.find_git_ancestor(fname) or vim.loop.os_homedir()
-      -- end;
-      settings = {
-        pylsp = {
-          plugins = {
-            pycodestyle = {
-              ignore = {'W391', },
-              maxLineLength = 100
-            }
-          }
-        }
+    map('n', '[c', function()
+      if vim.wo.diff then return '[c' end
+      vim.schedule(function() gs.prev_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    -- Actions
+    map({'n', 'v'}, '<leader>hs', ':Gitsigns stage_hunk<CR>')
+    map({'n', 'v'}, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+    map('n', '<leader>hS', gs.stage_buffer)
+    map('n', '<leader>hu', gs.undo_stage_hunk)
+    map('n', '<leader>hR', gs.reset_buffer)
+    map('n', '<leader>hp', gs.preview_hunk)
+    map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+    map('n', '<leader>tb', gs.toggle_current_line_blame)
+    map('n', '<leader>hd', gs.diffthis)
+    map('n', '<leader>hD', function() gs.diffthis('~') end)
+    map('n', '<leader>td', gs.toggle_deleted)
+
+    -- Text object
+    map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+end
+}
+
+LUA
+:lua << LUA
+
+-- ]]]
+-- [[[ Slime opts
+
+if vim.env.TMUX
+then
+  -- XXX C-c might be intercepted if timeoutlen is too low
+  vim.g.slime_target = "tmux"
+  local socket_name = vim.fn.split(vim.env.TMUX, ",")[1]
+  vim.g.slime_default_config = {
+  	socket_name = socket_name,
+  	target_pane = "{last}", -- ":.1"
+	}
+  vim.g.slime_dont_ask_default = 1
+  -- for ipython set %autoindent to OFF
+  vim.g.slime_python_ipython = 1
+  vim.g.slime_paste_file = "{{env_var "HOME"}}/.slime_paste"
+  vim.g.slime_dispatch_ipython_pause = 100
+  vim.g.slime_bracketed_paste = 1
+end
+
+-- ]]]
+-- [[[ 'a' module options
+
+-- a.vim
+vim.g.alternateRelativeFiles   = 1
+vim.g.alternateExtensions_blk  = "h"
+vim.g.alternateExtensions_blkk = "h"
+vim.g.alternateExtensions_h    = "c,cpp,cxx,cc,CC,blk,blkk"
+vim.g.alternateSearchPath = 'sfr:../src,sfr:../../src,sfr:../include'
+
+-- ]]]
+-- [[[ LSP
+
+-- rust
+local rt = require("rust-tools")
+rt.setup({
+  server = {
+    on_attach = function(_, bufnr)
+      -- Hover actions
+      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+      -- Code action groups
+      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+    end,
+  },
+})
+
+-- Enable inlay hints auto update and set them for all the buffers
+rt.inlay_hints.enable()
+
+vim.cmd("packadd rustaceanvim")
+vim.g.rustaceanvim = {
+  -- Plugin configuration
+  tools = {
+  },
+  -- LSP configuration
+  server = {
+    on_attach = function(client, bufnr)
+      -- Hover actions
+      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+      -- Code action groups
+      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+    end,
+    settings = {
+      -- rust-analyzer language server configuration
+      ['rust-analyzer'] = {
       },
-      on_attach = on_attach
+    },
+  },
+  -- DAP configuration
+  dap = {
+  },
+}
+
+-- LSP using builtin neovim
+vim.g['airline#extensions#nvimlsp#enabled'] = 1
+
+-- LSP shortcuts
+lsp = require('lspconfig') -- XXX no local, as used later
+vim.lsp.set_log_level('off')
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+    --Enable completion triggered by <c-x><c-o>
+    buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+    -- Mappings.
+    local opts = { noremap=true, silent=true }
+
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+    buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+    buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+    buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+    buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+    buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+    buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+    buf_set_keymap('n', '<space>r', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    buf_set_keymap('n', '<space>c', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+    buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+    buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+    buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+    buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+    buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+    buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
+
+-- rust
+lsp.rust_analyzer.setup {
+    on_attach = on_attach
+}
+
+-- python
+lsp.pylsp.setup {
+  whitelist = { 'python' },
+  -- root_dir = function(fname)
+  --     return lsp.util.find_git_ancestor(fname) or vim.loop.os_homedir()
+  -- end;
+  settings = {
+    pylsp = {
+      plugins = {
+        pycodestyle = {
+          ignore = {'W391', },
+          maxLineLength = 100
+        }
+      }
     }
+  },
+  on_attach = on_attach
+}
 
-    -- C++
-    lsp.clangd.setup {
-      on_attach = on_attach
-    }
-EOF
-    " autocmd Filetype {c,cpp} setlocal omnifunc=v:lua.vim.lsp.omnifunc
+-- C++
+lsp.clangd.setup {
+  on_attach = on_attach
+}
 
-    " default shortcut, only for source code
-    " autocmd Filetype rust,python,c,cpp setl omnifunc=v:lua.vim.lsp.omnifunc
-    " autocmd Filetype rust,python,c,cpp nmap <buffer><silent>gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-    " autocmd Filetype rust,python,c,cpp nmap <buffer><silent><C-]> <cmd>lua vim.lsp.buf.definition()<CR>
-    " autocmd Filetype rust,python,c,cpp nmap <buffer><silent>K     <cmd>lua vim.lsp.buf.hover()<CR>
-    " autocmd Filetype rust,python,c,cpp nmap <buffer><silent>gi    <cmd>lua vim.lsp.buf.implementation()<CR>
-    " autocmd Filetype rust,python,c,cpp nmap <buffer><silent><C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-    " autocmd Filetype rust,python,c,cpp nmap <buffer><silent>1gc   <cmd>lua vim.lsp.buf.type_definition()<CR>
+-- ]]]
+-- [[[ gundo/mundo/undotree
 
-endif
+vim.cmd("packadd undotree")
+vim.g.undotree_WindowLayout = 2 -- full width diff
+vim.g.undotree_SplitWidth = 40 -- default (30) is too short
+vim.g.undotree_SetFocusWhenToggle = 1 -- get focus on toggle
+vim.api.nvim_set_keymap('n', '<F5>', ':UndotreeToggle<CR>', { noremap = true })
 
-" ]]]
-" [[[ gundo/mundo/undotree
+vim.opt.undofile = true
 
-" packadd gundo
-" let g:gundo_prefer_python3 = 1 " no more python2 installed
-" nnoremap <F5> :GundoToggle<CR>
-
-packadd undotree
-let g:undotree_WindowLayout=2 " full width diff
-let g:undotree_SplitWidth=40 " default (30) is too short
-let g:undotree_SetFocusWhenToggle=1 " get focus on toggle
-nnoremap <F5> :UndotreeToggle<CR>
-
-set undofile
-set undodir={{vim_undodir}}
+LUA
 
 " ]]]
 " [[[ vimwiki
