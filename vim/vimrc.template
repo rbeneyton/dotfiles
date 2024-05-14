@@ -843,17 +843,18 @@ vim.api.nvim_set_keymap('n', '<F5>', ':UndotreeToggle<CR>', { noremap = true })
 
 vim.opt.undofile = true
 
+-- ]]]
+-- [[[ vimwiki
+
+vim.cmd("packadd vimwiki")
+-- let wiki = {}
+-- let wiki.nested_syntaxes = {'bash': 'sh', 'python': 'python', 'c++': 'cpp', 'rust': 'rust'}
+-- let g:vimwiki_list = [wiki]
+
+-- ]]]
+-- [[[ user colors
+
 LUA
-
-" ]]]
-" [[[ vimwiki
-
-" let wiki = {}
-" let wiki.nested_syntaxes = {'bash': 'sh', 'python': 'python', 'c++': 'cpp', 'rust': 'rust'}
-" let g:vimwiki_list = [wiki]
-
-" ]]]
-" [[[ user colors
 
 " define at end as all plugin try to clear colors
 hi User1 term=inverse,bold ctermfg=DarkBlue ctermbg=Black
