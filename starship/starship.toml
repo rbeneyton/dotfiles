@@ -31,10 +31,6 @@ time_format = '%R'
 [python]
 disabled = true
 
-# pollution
-[lua]
-disabled = true
-
 # 20ms to get version that we don't care of
 [rust]
 disabled = true
@@ -70,9 +66,20 @@ style = 'red bold'
 [cmake]
 disabled = true
 
-# useless
+# useless and waste time
 [c]
 disabled = true
+[php]
+disabled = true
+[java]
+disabled = true
+[lua]
+disabled = true
+[perl]
+disabled = true
+[scala]
+disabled = true
+
 
 [hg_branch]
 disabled = true
