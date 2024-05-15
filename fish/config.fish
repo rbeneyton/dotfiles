@@ -256,6 +256,9 @@ ulimit -c unlimited
     function vrg -d "rg then pipe results into nvim"
         command $EDITOR -c "/$argv[1]" -q (rg --vimgrep $argv | psub)
     end
+    function vgrg -d "rg (no submodule) then pipe results into nvim"
+        command $EDITOR -c "/$argv[1]" -q (grg --vimgrep $argv | psub)
+    end
 
     # sun mgmt
     function theme_light
