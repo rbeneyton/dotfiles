@@ -408,7 +408,9 @@ $(RG) : | $(BIN) $(UTILS) rust-update
 	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	$(eval BUILD := $(SRC)/build)
 	rm -rf $(SRC)
-	git clone --branch master --single-branch --depth 30 https://github.com/BurntSushi/ripgrep $(SRC)
+	# git clone --branch master --single-branch --depth 30 https://github.com/BurntSushi/ripgrep $(SRC)
+	# version with 'no submodule' option
+	git clone --branch ignoreNestedRepos --single-branch --depth 30 https://github.com/zaneduffield/ripgrep.git $(SRC)
 	# TODO simd
 	RUSTC_BOOTSTRAP=encoding_rs RUSTFLAGS="-C target-cpu=native" \
 		$(CARGO) build \

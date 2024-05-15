@@ -104,10 +104,14 @@ ulimit -c unlimited
     alias datefull 'date +"%Y/%m/%d %T.%N"'
     alias cal 'ncal -M -b -3'
     alias caly 'ncal -M -b -y'
-    if type rg &> /dev/null
-        alias grep "rg --follow --engine auto --search-zip"
+    if test -f $HOME/bin/rg
+        function rg
+            $HOME/bin/rg --follow --engine auto --search-zip $argv
+        end
+        alias grg "rg --ignore-nested-git"
     else
-        alias grep "grep --color=auto"
+        alias grep "command grep --color=auto"
+        alias grg "git grep"
     end
     alias gr grep
     alias psu "ps -flwu $USER w f"
