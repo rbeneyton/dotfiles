@@ -37,14 +37,28 @@ end
 # rebuild history
 git commit -m initial --allow-empty
 set CUR (git rev-list -n 1 HEAD)
+set TTMP $DIR/tmp
 for v in (git tag -l | cut -d- -f2 | sort | uniq)
     set PARENTS '-p' $CUR
+    # build dummy move commits
+    rm -f $TTMP
     for i in $REPOS
-        echo 040000 (git cat-file commit $i-$v | grep tree)\t$i
-        set -a PARENTS '-p' (git rev-list -n 1 $i-$v)
-    end | git mktree | read TREE
+        set TREE "040000 "(git cat-file commit $i-$v | grep ^tree)\t$i
+        echo $TREE >> $TTMP
+        echo $TREE | git mktree | read TREE
+        git commit-tree -p (git rev-list -n 1 $i-$v) -m "move "$v $TREE | read COMMIT
+        git tag $i-$v-moved $COMMIT
+        set -a PARENTS '-p' $COMMIT
+    end
+    cat $TTMP | git mktree | read TREE
     git commit-tree $PARENTS -m $v $TREE | read CUR
     git tag all-$v $CUR
+    # for i in $REPOS
+    #     echo 040000 (git cat-file commit $i-$v | grep ^tree)\t$i
+    #     set -a PARENTS '-p' (git rev-list -n 1 $i-$v)
+    # end | git mktree | read TREE
+    # git commit-tree $PARENTS -m $v $TREE | read CUR
+    # git tag all-$v $CUR
 end
 git reset --hard $CUR
 # push then after checks
