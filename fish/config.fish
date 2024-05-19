@@ -415,7 +415,7 @@ if status --is-interactive
     # [[[ history
 
     if type atuin &> /dev/null
-        atuin init fish --disable-up-arrow | source
+        atuin init --disable-up-arrow fish | source
     end
 
     # ]]]

@@ -154,6 +154,7 @@ vim_undodir = "~/.vimundo"
 
 # atuin
 [atuin.files]
+# TODO atuin creates its default config file when running so break upgrade by dotter
 "atuin/config.toml" = "~/.config/atuin/config.toml"
 
 # dummy "flag only" packages
