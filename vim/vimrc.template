@@ -854,8 +854,7 @@ vim.cmd("packadd vimwiki")
 -- ]]]
 -- [[[ user colors
 
-LUA
-
+vim.cmd([[
 " define at end as all plugin try to clear colors
 hi User1 term=inverse,bold ctermfg=DarkBlue ctermbg=Black
 hi User2 term=inverse,bold ctermfg=DarkRed ctermbg=Black
@@ -866,30 +865,30 @@ hi User6 term=inverse,bold ctermfg=DarkCyan ctermbg=Black
 hi User7 term=inverse,bold ctermfg=White ctermbg=Black
 
 " xit treesitter colors plugin broken when retrieving hi colors from theme
-if has('nvim')
-  hi! link @XitHeadline Todo " \o/ meta! \o/ red/pink
+hi! link @XitHeadline Todo " \o/ meta! \o/ red/pink
 
-  hi! link @XitOpenCheckbox Type " yellow
-  hi! link @XitOpenTaskMainLine Normal
-  hi! link @XitOpenTaskOtherLine Normal
-  hi! link @XitOpenTaskPriority Error
+hi! link @XitOpenCheckbox Type " yellow
+hi! link @XitOpenTaskMainLine Normal
+hi! link @XitOpenTaskOtherLine Normal
+hi! link @XitOpenTaskPriority Error
 
-  hi! link @XitOngoingCheckbox Identifier " blue
-  hi! link @XitOngoingTaskMainLine Identifier
-  hi! link @XitOngoingTaskOtherLine Identifier
-  hi! link @XitOngoingTaskPriority Error
+hi! link @XitOngoingCheckbox Identifier " blue
+hi! link @XitOngoingTaskMainLine Identifier
+hi! link @XitOngoingTaskOtherLine Identifier
+hi! link @XitOngoingTaskPriority Error
 
-  hi! link @XitCheckedCheckbox Comment " grey
-  hi! link @XitCheckedTaskMainLine Comment
-  hi! link @XitCheckedTaskOtherLine Comment
-  hi! link @XitCheckedTaskPriority DiagnosticError
+hi! link @XitCheckedCheckbox Comment " grey
+hi! link @XitCheckedTaskMainLine Comment
+hi! link @XitCheckedTaskOtherLine Comment
+hi! link @XitCheckedTaskPriority DiagnosticError
 
-  hi! link @XitObsoleteCheckbox Comment " grey
-  hi! link @XitObsoleteTaskMainLine LineNr
-  hi! link @XitObsoleteTaskOtherLine LineNr
-  hi! link @XitObsoleteTaskPriority DiagnosticInfo
-endif
-" ]]]
+hi! link @XitObsoleteCheckbox Comment " grey
+hi! link @XitObsoleteTaskMainLine LineNr
+hi! link @XitObsoleteTaskOtherLine LineNr
+hi! link @XitObsoleteTaskPriority DiagnosticInfo
+
+]])
+LUA
 
 " dotter/handlebars+fold incompatibility: temporary [ instead of {
 " vim: foldmarker=[[[,]]]
