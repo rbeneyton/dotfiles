@@ -1,118 +1,119 @@
 " remind, after add: :helptags ALL
 
-" load setings common to 'page'
-" :luafile ~/.nvim.light.init.lua
-:lua require("init-light")
-
-" [[[ main settings
-
-:lua vim.api.nvim_set_option_value('number', true, {win = 0})
-:lua vim.api.nvim_set_option_value('relativenumber', true, {win = 0})
-:lua vim.api.nvim_set_option('laststatus', 2)
-:lua vim.api.nvim_set_option('ruler', true)
-:lua vim.api.nvim_set_option('showcmd', true)
-:lua vim.api.nvim_set_option('shadafile', "")
-
-" ]]]
-" [[[ main settings cont'd
-
-" old options dropped during lua convertion
-" set sessionoptions=buffers,folds,localoptions,options,tabpages,help
-" set sessionoptions-=blank       " for syntastic
-
-" ]]]
-" [[[ Mappings
-
-:lua vim.api.nvim_set_keymap('n', '<C-PageDown>', ':bnext<cr>', { noremap = true })
-:lua vim.api.nvim_set_keymap('n', '<C-PageUp>', ':bprevious<cr>', { noremap = true })
-
-:lua vim.api.nvim_set_keymap('n', '<kPlus>', ':cnext<CR>zv<CR>', { noremap = true })
-:lua vim.api.nvim_set_keymap('n', '+', ':cnext<CR>zv<CR>', { noremap = true })
-:lua vim.api.nvim_set_keymap('n', '<kMinus>', ':cprevious<CR>zv<CR>', { noremap = true })
-:lua vim.api.nvim_set_keymap('n', '_', ':cprevious<CR>zv<CR>', { noremap = true })
-:lua vim.api.nvim_set_keymap('n', '-', ':cprevious<CR>zv<CR>', { noremap = true })
-
-" disable number / relativenumber for big files, to avoid to read to count lines
 :lua << LUA
-vim.api.nvim_create_autocmd('BufReadPre', {                     
-	pattern = '*',                                               
-	callback = function(args)                                    
-		-- local cur_buf = vim.api.nvim_get_current_buf()           
-		-- local cur_name = vim.api.nvim_buf_get_name(cur_buf)          
-		-- local cur_sz = vim.fn.getfsize(cur_name)                     
-		local cur_sz = vim.fn.getfsize(args.file)                     
-		if cur_sz > 20 * 1024 * 1024 then                        
-			vim.bo.ft = large                            
-			vim.bo.swapfile = false                      
-			vim.bo.bufhidden = unload                    
-			vim.bo.undolevels = -1                       
-			vim.wo.foldmethod = manual                   
-			vim.wo.foldenable = false                    
-			vim.wo.number = false                        
-			vim.wo.relativenumber = false                
-			vim.opt_local.backup = false                       
-			vim.opt_local.writebackup = false                  
-			vim.opt_local.eventignore:append('FileType')        
-		else                                                 
-			vim.opt_local.eventignore:remove('FileType')        
-		end                                                  
-	end                                                          
-	})
-    -- autocmd Filetype * if getfsize(@%) > 1000000 | setlocal syntax=OFF | endif
 
-    -- open the quick list window after make
-    -- autocmd QuickFixCmdPost [^l]* nested botright cwindow 10
-    -- TODO really required?
-vim.api.nvim_create_autocmd('QuickFixCmdPost', {                     
-	pattern = '[^l]*',                                               
-	nested = true,
-	command = "botright cwindow 10"
-	})
-	
+-- load setings common to 'page'
+-- :luafile ~/.nvim.light.init.lua
+require("init-light")
+
+-- [[[ main settings
+
+vim.api.nvim_set_option_value('number', true, {win = 0})
+vim.api.nvim_set_option_value('relativenumber', true, {win = 0})
+vim.api.nvim_set_option('laststatus', 2)
+vim.api.nvim_set_option('ruler', true)
+vim.api.nvim_set_option('showcmd', true)
+vim.api.nvim_set_option('shadafile', "")
+
+-- ]]]
+-- [[[ main settings cont'd
+
+-- old options dropped during lua convertion
+-- set sessionoptions=buffers,folds,localoptions,options,tabpages,help
+-- set sessionoptions-=blank       " for syntastic
+
+-- ]]]
+-- [[[ Mappings
+
+vim.api.nvim_set_keymap('n', '<C-PageDown>', ':bnext<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-PageUp>', ':bprevious<cr>', { noremap = true })
+
+vim.api.nvim_set_keymap('n', '<kPlus>', ':cnext<CR>zv<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '+', ':cnext<CR>zv<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<kMinus>', ':cprevious<CR>zv<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '_', ':cprevious<CR>zv<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '-', ':cprevious<CR>zv<CR>', { noremap = true })
+
+-- disable number / relativenumber for big files, to avoid to read to count lines
+vim.api.nvim_create_autocmd('BufReadPre', {
+    pattern = '*',
+    callback = function(args)
+        -- local cur_buf = vim.api.nvim_get_current_buf()
+        -- local cur_name = vim.api.nvim_buf_get_name(cur_buf)
+        -- local cur_sz = vim.fn.getfsize(cur_name)
+        local cur_sz = vim.fn.getfsize(args.file)
+        if cur_sz > 20 * 1024 * 1024 then
+            vim.bo.ft = large
+            vim.bo.swapfile = false
+            vim.bo.bufhidden = unload
+            vim.bo.undolevels = -1
+            vim.wo.foldmethod = manual
+            vim.wo.foldenable = false
+            vim.wo.number = false
+            vim.wo.relativenumber = false
+            vim.opt_local.backup = false
+            vim.opt_local.writebackup = false
+            vim.opt_local.eventignore:append('FileType')
+        else
+            vim.opt_local.eventignore:remove('FileType')
+        end
+    end
+})
+-- autocmd Filetype * if getfsize(@%) > 1000000 | setlocal syntax=OFF | endif
+
+-- open the quick list window after make
+-- autocmd QuickFixCmdPost [^l]* nested botright cwindow 10
+-- TODO really required?
+vim.api.nvim_create_autocmd('QuickFixCmdPost', {
+    pattern = '[^l]*',
+    nested = true,
+    command = "botright cwindow 10"
+})
+
 -- quickfix: jump on top, disable line numbers
 -- autocmd BufWinEnter quickfix exe "normal! zt"
 -- autocmd BufWinEnter quickfix set nonumber
 -- autocmd BufWinEnter quickfix set norelativenumber
 vim.api.nvim_create_autocmd({ 'VimEnter', 'WinEnter', 'BufWinEnter'}, {
-  pattern = '*',
-  callback = function()
-    if vim.bo.filetype == 'quickfix' then
-	vim.cmd('exe "normal! zt"')
-	vim.wo.number = false                        
-	vim.wo.relativenumber = false                
-	vim.wo.signcolumn = 'no'
-    end
-  end,
+    pattern = '*',
+    callback = function()
+        if vim.bo.filetype == 'quickfix' then
+        vim.cmd('exe "normal! zt"')
+        vim.wo.number = false
+        vim.wo.relativenumber = false
+        vim.wo.signcolumn = 'no'
+        end
+    end,
 })
 
 -- Have <esc> or mine C-j leave cmdline-window
 -- Disable line numbers in command line window
 vim.api.nvim_create_autocmd('CmdWinEnter', {
-  callback = function()
-    vim.keymap.set('n', '<ESC>', ':q<CR>', { noremap = true })
-    vim.keymap.set('n', '<C-j>', ':q<CR>', { noremap = true })
-    vim.wo.number = false
-    vim.wo.relativenumber = false
-    vim.wo.signcolumn = 'no'
-  end,
+    callback = function()
+        vim.keymap.set('n', '<ESC>', ':q<CR>', { noremap = true })
+        vim.keymap.set('n', '<C-j>', ':q<CR>', { noremap = true })
+        vim.wo.number = false
+        vim.wo.relativenumber = false
+        vim.wo.signcolumn = 'no'
+    end,
 })
 -- restore mapping when leaving
 vim.api.nvim_create_autocmd('CmdWinLeave', {
-  callback = function()
-    vim.keymap.del('n', '<ESC>')
-    vim.keymap.del('n', '<C-j>')
-  end,
+    callback = function()
+        vim.keymap.del('n', '<ESC>')
+        vim.keymap.del('n', '<C-j>')
+    end,
 })
 
 -- map C-h to get cursor position by toggle cursorlines
 vim.keymap.set('n', '<C-H>', function()
-  vim.wo.cursorline = not(vim.wo.cursorline)
-  vim.wo.cursorcolumn = not(vim.wo.cursorcolumn)
+    vim.wo.cursorline = not(vim.wo.cursorline)
+    vim.wo.cursorcolumn = not(vim.wo.cursorcolumn)
 end, { noremap = true })
 
 -- highlight yanked text
 vim.api.nvim_create_autocmd('TextYankPost', {
-  command = 'silent! lua vim.highlight.on_yank({ timeout = 500 })'
+    command = 'silent! lua vim.highlight.on_yank({ timeout = 500 })'
 })
 
 -- ]]]
@@ -122,89 +123,67 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- // VIM: let b:syntastic_c_cflags = "-DMACRO_XXX=2"
 -- autocmd BufNewFile * let b:this_is_new_buffer=1
 vim.api.nvim_create_autocmd({ 'BufNewFile'}, {
-  pattern = '*',
-  callback = function()
-     vim.cmd('let b:this_is_new_buffer=1')
-  end,
+    pattern = '*',
+    callback = function()
+        vim.cmd('let b:this_is_new_buffer=1')
+    end,
 })
 vim.api.nvim_create_autocmd({ 'BufEnter'}, {
-  pattern = '*',
-  callback = function()
-     vim.cmd('call FirstModeLine()')
-  end,
+    pattern = '*',
+    callback = function()
+        vim.cmd('call FirstModeLine()')
+    end,
 })
 
 -- always backup session (reopen via vl alias)
 -- autocmd VimLeave * mksession! ~/.cache/session.vim
 vim.api.nvim_create_autocmd({ 'VimLeave'}, {
-  pattern = '*',
-  callback = function()
-     vim.cmd('mksession! ~/.cache/session.vim')
-  end,
+    pattern = '*',
+    callback = function()
+        vim.cmd('mksession! ~/.cache/session.vim')
+    end,
 })
 
 -- remove trailing whitespace at write
 vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-  pattern = '*',
-  callback = function()
-    if vim.bo.filetype == 'c'
-    or vim.bo.filetype == 'cpp'
-    or vim.bo.filetype == 'mail'
-    or vim.bo.filetype == 'asciidoc'
-    or vim.bo.filetype == 'python'
-    or vim.bo.filetype == 'gitcommit'
-    or vim.bo.filetype == 'rust'
-    then
-      vim.cmd[[ :%s/\s\+$//e ]]
-    end
-  end,
+    pattern = '*',
+    callback = function()
+        if vim.bo.filetype == 'c'
+        or vim.bo.filetype == 'cpp'
+        or vim.bo.filetype == 'mail'
+        or vim.bo.filetype == 'asciidoc'
+        or vim.bo.filetype == 'python'
+        or vim.bo.filetype == 'gitcommit'
+        or vim.bo.filetype == 'rust'
+        then
+            vim.cmd[[ :%s/\s\+$//e ]]
+        end
+    end,
 })
-LUA
 
-" ]]]
-" [[[ weird (outdated?) options
+-- ]]]
+-- [[[ weird (outdated?) options
 
-let git_diff_spawn_mode=2
-let git_diff_opts = "--no-renames --summary -C -M"
-let c_gnu=1
-let c_space_errors=1
-let c_no_curly_error=1
+-- String to put at the start of lines that have been wrapped
+vim.o.showbreak = '↪ '
 
-let g:is_bash=1
-let g:sh_fold_enabled=1
+-- ]]]
+-- [[[ misc map
 
-" String to put at the start of lines that have been wrapped
-let &showbreak='↪ '
+-- ESC with CTR-j
+vim.api.nvim_set_keymap('i', '<C-j>', '<esc>l', { noremap = true })
+vim.api.nvim_set_keymap('v', '<C-j>', '<esc>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<C-j>', '<esc>', { noremap = true })
 
-" ]]]
-" [[[ man plugin
+-- ]]]
+-- [[[ tags & cscope
 
-if !has('nvim')
-    runtime! ftplugin/man.vim      " to get pretty :Man
-    nmap K :Man <C-R>=expand("<cword>")<CR><CR>
-endif
-" default for nvim
+-- TODO via lsp
+-- g\ ->open tag of the word under cursor on a new window at right
+-- nnoremap g\ <ESC>:vert :rightbelow :scscope <C-R>=expand("<cword>")<CR><CR>
+-- nnoremap <C-\> <ESC>:vert :rightbelow :split :cstag <C-R>=expand("<cword>")<CR><CR>
 
-" activate matchit
-if has('nvim')
-   let loaded_matchit = 1
-endif
-
-" ]]]
-" [[[ misc map
-
-" ESC with CTR-j
-inoremap <C-j> <esc>l
-vnoremap <C-j> <esc>
-nnoremap <C-j> <esc>
-
-" ]]]
-" [[[ tags & cscope
-
-" g\ ->open tag of the word under cursor on a new window at right
-" nnoremap g\ <ESC>:vert :rightbelow :scscope <C-R>=expand("<cword>")<CR><CR>
-" nnoremap <C-\> <ESC>:vert :rightbelow :split :cstag <C-R>=expand("<cword>")<CR><CR>
-
+vim.cmd([[
 function! GetVisualSelection()
     let [s:lnum1, s:col1] = getpos("'<")[1:2]
     let [s:lnum2, s:col2] = getpos("'>")[1:2]
@@ -213,57 +192,62 @@ function! GetVisualSelection()
     let s:lines[0] = s:lines[0][s:col1 - 1:]
     return join(s:lines, ' ')
 endfunction
+]])
 
-" "all symbol
-" nnoremap <leader>s <ESC>:vert :rightbelow :scscope find s <C-R>=expand("<cword>")<CR><CR>
-" vnoremap <leader>s <ESC>:execute ':vert :rightbelow :scscope find s '.GetVisualSelection()<CR>
-" "go to definition
-" "nnoremap <C-]> <ESC>:cstag <C-R>=expand("<cword>")<CR><CR>
-" nnoremap <C-]> <ESC>:scscope find g <C-R>=expand("<cword>")<CR><CR>
-" vnoremap <C-]> <ESC>:execute ':cstag '.GetVisualSelection()<CR>
-" "go to definition / ctags version
-" nnoremap <C-p> <ESC>:tjump <C-R>=expand("<cword>")<CR><CR>
-" vnoremap <C-p> <ESC>:execute ':tjump '.GetVisualSelection()<CR>
-"
-" "nnoremap <C-\> <ESC>:vert :rightbelow :cstag <C-R>=expand("<cword>")<CR><CR>
-" nnoremap <C-\> <ESC>:vert :rightbelow :scscope find g <C-R>=expand("<cword>")<CR><CR>
-" "vnoremap <C-\> <ESC>:execute ':vert :rightbelow :cstag '.GetVisualSelection()<CR>
-" vnoremap <C-\> <ESC>:execute ':vert :rightbelow :scscope find g '.GetVisualSelection()<CR>
-" "calling this function
-" nnoremap <leader>c <ESC>:vert :rightbelow :scscope find c <C-R>=expand("<cword>")<CR><CR>
-" vnoremap <leader>c <ESC>:execute ':vert :rightbelow :scscope find c '.GetVisualSelection()<CR>
-" "go to definition (cscope shortcut are weird)
-" nnoremap <leader>d <ESC>:vert :rightbelow :scscope find g <C-R>=expand("<cword>")<CR><CR>
-" vnoremap <leader>d <ESC>:execute ':vert :rightbelow :scscope find g '.GetVisualSelection()<CR>
-" "including this file
-" nnoremap <leader>i <ESC>:vert :rightbelow :scscope find i <C-R>=expand("<cword>")<CR><CR>
-" vnoremap <leader>i <ESC>:execute ':vert :rightbelow :scscope find i '.GetVisualSelection()<CR>
-" "find this text (avoid Ggrep)
-" nnoremap <leader>t <ESC>:vert :rightbelow :scscope find t <C-R>=expand("<cword>")<CR><CR>
-" vnoremap <leader>t <ESC>:execute ':vert :rightbelow :scscope find t '.GetVisualSelection()<CR>
-" nnoremap <C-t> <ESC>:cscope find t <C-R>=expand("<cword>")<CR><CR>
-" vnoremap <C-t> <ESC>:execute ':cscope find t '.GetVisualSelection()<CR>
-"
-" "manual jumpt to <args>
-" command! -nargs=1 Find cscope find g <args>
-" command! -nargs=1 VFind vert rightbelow scscope find g <args>
+-- "all symbol
+-- nnoremap <leader>s <ESC>:vert :rightbelow :scscope find s <C-R>=expand("<cword>")<CR><CR>
+-- vnoremap <leader>s <ESC>:execute ':vert :rightbelow :scscope find s '.GetVisualSelection()<CR>
+-- "go to definition
+-- "nnoremap <C-]> <ESC>:cstag <C-R>=expand("<cword>")<CR><CR>
+-- nnoremap <C-]> <ESC>:scscope find g <C-R>=expand("<cword>")<CR><CR>
+-- vnoremap <C-]> <ESC>:execute ':cstag '.GetVisualSelection()<CR>
+-- "go to definition / ctags version
+-- nnoremap <C-p> <ESC>:tjump <C-R>=expand("<cword>")<CR><CR>
+-- vnoremap <C-p> <ESC>:execute ':tjump '.GetVisualSelection()<CR>
+--
+-- "nnoremap <C-\> <ESC>:vert :rightbelow :cstag <C-R>=expand("<cword>")<CR><CR>
+-- nnoremap <C-\> <ESC>:vert :rightbelow :scscope find g <C-R>=expand("<cword>")<CR><CR>
+-- "vnoremap <C-\> <ESC>:execute ':vert :rightbelow :cstag '.GetVisualSelection()<CR>
+-- vnoremap <C-\> <ESC>:execute ':vert :rightbelow :scscope find g '.GetVisualSelection()<CR>
+-- "calling this function
+-- nnoremap <leader>c <ESC>:vert :rightbelow :scscope find c <C-R>=expand("<cword>")<CR><CR>
+-- vnoremap <leader>c <ESC>:execute ':vert :rightbelow :scscope find c '.GetVisualSelection()<CR>
+-- "go to definition (cscope shortcut are weird)
+-- nnoremap <leader>d <ESC>:vert :rightbelow :scscope find g <C-R>=expand("<cword>")<CR><CR>
+-- vnoremap <leader>d <ESC>:execute ':vert :rightbelow :scscope find g '.GetVisualSelection()<CR>
+-- "including this file
+-- nnoremap <leader>i <ESC>:vert :rightbelow :scscope find i <C-R>=expand("<cword>")<CR><CR>
+-- vnoremap <leader>i <ESC>:execute ':vert :rightbelow :scscope find i '.GetVisualSelection()<CR>
+-- "find this text (avoid Ggrep)
+-- nnoremap <leader>t <ESC>:vert :rightbelow :scscope find t <C-R>=expand("<cword>")<CR><CR>
+-- vnoremap <leader>t <ESC>:execute ':vert :rightbelow :scscope find t '.GetVisualSelection()<CR>
+-- nnoremap <C-t> <ESC>:cscope find t <C-R>=expand("<cword>")<CR><CR>
+-- vnoremap <C-t> <ESC>:execute ':cscope find t '.GetVisualSelection()<CR>
+--
+-- "manual jumpt to <args>
+-- command! -nargs=1 Find cscope find g <args>
+-- command! -nargs=1 VFind vert rightbelow scscope find g <args>
 
-" indent/deindent: stay in visual mode
-vnoremap < <gv
-vnoremap > >gv
+-- indent/deindent: stay in visual mode
+vim.api.nvim_set_keymap('v', '<', '<gv', { noremap = true })
+vim.api.nvim_set_keymap('v', '>', '>gv', { noremap = true })
 
-" move text up/down in visual
-vnoremap <S-j> :move '>+1<CR>gv=gv
-vnoremap <S-k> :move '<-2<CR>gv=gv
+-- move text up/down in visual
+vim.api.nvim_set_keymap('v', '<S-j>', ':move >+1<CR>gv=gv<', { noremap = true })
+vim.api.nvim_set_keymap('v', '<S-k>', ':move >-2<CR>gv=gv<', { noremap = true })
 
-" clean empty lines
-vnoremap <leader>l :g/^$/d<CR>
+-- clean empty lines
+vim.api.nvim_set_keymap('v', '<leader>l', ':g/^$/d<CR>', { noremap = true })
 
-" ]]]
-" [[[ macros
+-- ]]]
+-- [[[ macros
 
-" tt is command to align on space
+-- tt is command to align on space
+vim.cmd([[
 cab tt Tabularize /\S\+;
+]])
+
+LUA
 
 "" Toggle &virtualedit
 function! Toggle_virtualedit_()
@@ -893,4 +877,4 @@ LUA
 
 " dotter/handlebars+fold incompatibility: temporary [ instead of {
 " vim: foldmarker=[[[,]]]
-" vim: filetype=vim
+" vim: filetype=lua
