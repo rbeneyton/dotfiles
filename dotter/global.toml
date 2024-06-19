@@ -125,8 +125,8 @@ git_email = "richard.beneyton@gmail.com"
 [vim.files]
 # XXX nvim is a symlink to vim, and dotter doesn't allow double deploy
 # so we use either vim or nvim for double deploy
-"vim/init.light.lua" = { target = "~/.config/page/init.lua", type = "template" }
-"nvim/init.light.lua" = { target = "~/.nvim.light.init.lua", type = "template" }
+"vim/lua/init-light.lua.template" = { target = "~/.config/page/init.lua", type = "template" }
+"nvim/lua/init-light.lua.template" = { target = "~/.config/nvim/lua/init-light.lua", type = "template" }
 "vim/vimrc.template" = { target = "~/.vimrc", type = "template" }
 "vim" = { target = "~/.vim", type = "symbolic", recurse = false }
 "nvim" = { target = "~/.config/nvim", type = "symbolic", recurse = false }

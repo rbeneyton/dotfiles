@@ -1,7 +1,8 @@
 " remind, after add: :helptags ALL
 
 " load setings common to 'page'
-:luafile ~/.nvim.light.init.lua
+" :luafile ~/.nvim.light.init.lua
+:lua require("init-light")
 
 " [[[ main settings
 
