@@ -127,8 +127,7 @@ git_email = "richard.beneyton@gmail.com"
 # so we use either vim or nvim for double deploy
 "vim/lua/init-light.lua.template" = { target = "~/.config/page/init.lua", type = "template" }
 "nvim/lua/init-light.lua.template" = { target = "~/.config/nvim/lua/init-light.lua", type = "template" }
-"vim/lua/vimrc.template" = { target = "~/.vimrc", type = "template" }
-"vim" = { target = "~/.vim", type = "symbolic", recurse = false }
+"nvim/init.lua.template" = { target = "~/.config/nvim/init.lua", type = "template" }
 "nvim" = { target = "~/.config/nvim", type = "symbolic", recurse = false }
 
 # rust
