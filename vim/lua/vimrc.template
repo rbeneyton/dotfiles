@@ -247,9 +247,8 @@ vim.cmd([[
 cab tt Tabularize /\S\+;
 ]])
 
-LUA
-
-"" Toggle &virtualedit
+-- Toggle &virtualedit
+vim.cmd([[
 function! Toggle_virtualedit_()
   if &virtualedit == 'all'
     set virtualedit=onemore " be on ending \n
@@ -257,58 +256,37 @@ function! Toggle_virtualedit_()
     set virtualedit=all
   endif
 endfunction
-" map <F7> <ESC>:call Toggle_virtualedit_()<CR>:set virtualedit?<CR>
+]])
+-- map <F7> <ESC>:call Toggle_virtualedit_()<CR>:set virtualedit?<CR>
 
-:lua << LUA
 -- map C-h to get cursor position by toggle cursorlines
 vim.keymap.set({'i', 'n'}, '<F7>', function()
-	if vim.wo.virtualedit == 'onemore'
-	then
-		vim.wo.virtualedit = 'all'
-		print('virtualedit on')
-	else
-		vim.wo.virtualedit = 'onemore'
-		print('virtualedit off')
-	end
+    if vim.wo.virtualedit == 'onemore'
+    then
+        vim.wo.virtualedit = 'all'
+        print('virtualedit on')
+    else
+        vim.wo.virtualedit = 'onemore'
+        print('virtualedit off')
+    end
 end,
-	{ noremap = true })
-LUA
+    { noremap = true }
+)
 
-" C preprocessor macro management (iCTRL-vCTRL-m to insert real <CR>)
-let @l=':set virtualedit =allgv:s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj'
-" vim.fn.setreg('l', ':set virtualedit =allgv:s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj')
-let @m=':set virtualedit =all?#definev}kk:''<,''>s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj'
-" vim.fn.setreg('m', ':set virtualedit =all?#definev}kk:''<,''>s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj')
+-- TODO find a way to define macros with
+-- special character in lua
+-- see lua/macros.lua.TODO
+-- require("macros")
 
-" when solving a git conflict, extract next hunk and open 2 tabs with diff of ancestor vs. new branch and ancestor vs. current HEAD
-" reg f = name of HEAD
-" reg e = name of common ancestor branch
-" reg d = name of the new branch
-" reg x = HEAD
-" reg y = common ancestor branch
-" reg z = new branch
-" marks:
-" <<<<<<< HEADa
-" 1
-" 1b
-" ||||||| merged common ancestors
-" 2
-" 2c
-" =======
-" 3
-" 3d
-" >>>>>>> new branch
-let @c=':tabonly0/HEAD"fy$$j0ma/|||||||W"ey$0k$mb0j/=======k$mc0j/>>>>>>>W"dy$0k$md0j`a"xy`b`b0jj"yy`c`c0jj"zy`d`a:tabnew"yP:diffthis:noswapfile :file /tmp/=substitute(@e,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:vert :rightb :new"zP:diffthis:noswapfile :file /tmp/=substitute(@d,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:tabnew"yP:diffthis:noswapfile :file /tmp/=substitute(@e,"[ /]","_","g").2:setlocal buftype=nofile nomodified bufhidden=wipe:vert :rightb :new"xP:diffthis:noswapfile :file /tmp/=substitute(@f,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:tabprevious:let@/="HEAD"'
+-- ]]]
+-- [[[ maps
 
-" ]]]
-" [[[ maps
-
-" disable arrow keys
-:lua << LUA
+-- disable arrow keys
 vim.keymap.set({'n', 'i'}, '<up>', '<nop>', { noremap = true })
 vim.keymap.set({'n', 'i'}, '<down>', '<nop>', { noremap = true })
 vim.keymap.set({'n', 'i'}, '<left>', '<nop>', { noremap = true })
 vim.keymap.set({'n', 'i'}, '<right>', '<nop>', { noremap = true })
+
 LUA
 
 " use real line movement when used without <count>

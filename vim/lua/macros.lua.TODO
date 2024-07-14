@@ -1,0 +1,30 @@
+-- FIXME: find a way to set those register using lua api
+-- C preprocessor macro management (iCTRL-vCTRL-m to insert real <CR>)
+-- TODO vim.fn.setreg('m', [[…
+-- vim.cmd([[
+-- @l: align/put trailing 
+-- let @l=':set virtualedit =allgv:s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj'
+-- @m: align C/C++ #define macros trailing 
+-- let @m=':set virtualedit =all?#definev}kk:''<,''>s/\(\s\|\\\)\+$//gegv:norm 78|C\:call Toggle_virtualedit_():nohlsearchgvj'
+-- ]])
+
+-- when solving a git conflict, extract next hunk and open 2 tabs with diff of ancestor vs. new branch and ancestor vs. current HEAD
+-- reg f = name of HEAD
+-- reg e = name of common ancestor branch
+-- reg d = name of the new branch
+-- reg x = HEAD
+-- reg y = common ancestor branch
+-- reg z = new branch
+-- marks:
+-- <<<<<<< HEADa
+-- 1
+-- 1b
+-- ||||||| merged common ancestors
+-- 2
+-- 2c
+-- =======
+-- 3
+-- 3d
+-- >>>>>>> new branch
+-- let @c=':tabonly0/HEAD"fy$$j0ma/|||||||W"ey$0k$mb0j/=======k$mc0j/>>>>>>>W"dy$0k$md0j`a"xy`b`b0jj"yy`c`c0jj"zy`d`a:tabnew"yP:diffthis:noswapfile :file /tmp/=substitute(@e,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:vert :rightb :new"zP:diffthis:noswapfile :file /tmp/=substitute(@d,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:tabnew"yP:diffthis:noswapfile :file /tmp/=substitute(@e,"[ /]","_","g").2:setlocal buftype=nofile nomodified bufhidden=wipe:vert :rightb :new"xP:diffthis:noswapfile :file /tmp/=substitute(@f,"[ /]","_","g"):setlocal buftype=nofile nomodified bufhidden=wipe:tabprevious:let@/="HEAD"'
+
