@@ -119,10 +119,10 @@
 	path = vim/pack/theme/opt/kanagawa
 	url = https://github.com/rebelot/kanagawa.nvim.git
 [submodule "vim/pack/theme/start/airline"]
-	path = vim/pack/theme/start/airline
+	path = vim/pack/theme/opt/airline
 	url = https://github.com/bling/vim-airline.git
 [submodule "vim/pack/theme/start/airline-themes"]
-	path = vim/pack/theme/start/airline-themes
+	path = vim/pack/theme/opt/airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
 [submodule "vim/pack/theme/start/tmuxline"]
 	path = vim/pack/theme/start/tmuxline
