@@ -478,6 +478,7 @@ debian-install-graphic:
 	apt-get install light
 	apt-get install x11-xkb-utils inputplug # xkb + detect/reload
 	apt-get install blueman pulseaudio-module-bluetooth
+	apt-get install pipewire easyeffects mda-lv2
 	apt-get install pasystray pavucontrol
 	apt-get install arandr
 	# apt-get install flameshot
