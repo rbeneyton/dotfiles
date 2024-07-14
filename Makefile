@@ -457,6 +457,7 @@ debian-install-base:
 	apt-get install source-highlight libsource-highlight-dev # gdb
 	apt-get install inxi # hardware scan
 	apt-get install xserver-xorg-input-synaptics xinput # touchpad
+	apt-get install protobuf-compiler # atuin
 	apt-get clean
 
 debian-install-net:
