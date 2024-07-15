@@ -413,69 +413,7 @@ let g:terminal_scrollback_buffer_size=99999
 ]]
 
 -- ]]]
--- [[[ airline options
-
--- XXX disable laststatus for minimal config
-
--- FIXME find a clean nvim successor of airline
--- vim.cmd("packadd airline")
--- vim.cmd([[
---
--- let g:airline_powerline_fonts=1
--- let g:airline#extensions#default#layout = [ ['a','b','c'], ['x','y','z','warning'] ]
--- " suppress hunks from line, they're shown by gitgutter
--- " let g:airline_section_b = '%{airline#util#wrap(airline#extensions#branch#get_head(),0)}'
--- let g:airline_section_b = '
---     \%{ !empty(get(b:, "gitsigns_head", "")) ? " " : "" }
---     \%{ get(b:, "gitsigns_head", "") }
---     \%{ !empty(get(b:, "gitsigns_head", "")) ? " " : "" }
---     \%{ get(b:, "gitsigns_status", "") }
---     \'
--- " let g:airline_section_i = '%{fugitive#head()}' " real git msgs
--- let g:airline_section_x = '%n' " buffer number, will be reset later
--- let g:airline_section_y = '%{ObsessionStatus('' '', '''')}%{airline#util#wrap(airline#parts#filetype(),0)}'
--- let g:airline_section_z = '%p%% ℅%v' " no line number
--- let g:airline_theme = "base16"
--- " let g:airline_theme='solarized'
--- let g:airline_theme = "base16_tomorrow_night_eighties"
--- " let g:airline_theme = "base16_spacemacs"
--- " FIXME use kanagawa's extras/base16-theme.yaml
--- let g:airline#extensions#tabline#enabled = 1
--- let g:airline#extensions#tabline#tab_nr_type = 2 " splits and tab number
--- let g:airline#extensions#tabline#left_sep = ' '
--- let g:airline#extensions#tabline#left_alt_sep = '|'
--- let g:airline#extensions#tabline#buffer_nr_show = 1
--- let g:airline#extensions#tabline#buffer_idx_mode = 1
--- nmap <leader>1 <Plug>AirlineSelectTab1
--- nmap <leader>2 <Plug>AirlineSelectTab2
--- nmap <leader>3 <Plug>AirlineSelectTab3
--- nmap <leader>4 <Plug>AirlineSelectTab4
--- nmap <leader>5 <Plug>AirlineSelectTab5
--- nmap <leader>6 <Plug>AirlineSelectTab6
--- nmap <leader>7 <Plug>AirlineSelectTab7
--- nmap <leader>8 <Plug>AirlineSelectTab8
--- nmap <leader>9 <Plug>AirlineSelectTab9
--- nmap <leader>0 <Plug>AirlineSelectTab0
--- nmap <leader>- <Plug>AirlineSelectPrevTab
--- nmap <leader>= <Plug>AirlineSelectNextTab
--- let g:airline#extensions#tabline#formatter = 'unique_tail'
--- let g:airline#extensions#tabline#show_close_button = 0
--- let g:airline#extensions#obsession#enabled = 1
--- let g:airline#extensions#obsession#indicator_text = '' " C-vuf413
---
--- " display slime tmux target next to buffer number
--- function! lualineslime()
---   if !exists('b:slime_config["target_pane"]')
---     return bufnr('%')
---   " drop useless :. prefix
---   elseif b:slime_config["target_pane"][0:1] == ':.'
---     return bufnr('%') . ' ' . b:slime_config["target_pane"][2:]
---   endif
---   return bufnr('%') . ' ' . b:slime_config["target_pane"]
--- endfunction
--- let g:airline_section_x = '%{lualineslime()}'
---
--- ]])
+-- [[[ lualine options
 
 vim.cmd("packadd lualine")
 local function lualine_slime()
@@ -549,32 +487,17 @@ require('lualine').setup {
 }
 vim.opt.showtabline = 1 -- disable tabs if only one
 
--- ]]]
--- [[[ tmuxline options
-
-vim.cmd([[
-
-let g:airline#extensions#tmuxline#enabled = 1
-let g:airline#extensions#tmuxline#color_template = 'visual'
-let g:airline#extensions#tmuxline#color_template = 'normal'
-let g:airline#extensions#tmuxline#snapshot_file = "~/.config/tmux/tmuxline.cf"
-let g:tmuxline_preset = {
-  \'a'    : '#S',
-  \'win'  : '#I #W #F',
-  \'cwin' : '#I #W #F',
-  \'x'    : '#(cut -d " " -f 1-4 /proc/loadavg) ',
-  \'y'    : '%Y-%m-%d %H:%M:%S ',
-  \'z'    : '#H',
-  \'options' : {'status-justify' : 'left'}}
-let g:tmuxline_separators = {
-      \ 'left' : '',
-      \ 'left_alt': '>',
-      \ 'right' : '',
-      \ 'right_alt' : '<',
-      \ 'space' : ''}
-let g:tmuxline_powerline_separators = 1
-
-]])
+-- quick switch tab
+vim.api.nvim_set_keymap('n', '<leader>1', ':1tabnext<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>2', ':2tabnext<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>3', ':3tabnext<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>4', ':4tabnext<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>5', ':5tabnext<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>6', ':6tabnext<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>7', ':7tabnext<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>8', ':8tabnext<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>9', ':9tabnext<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>-', ':tabnext #<cr>', { noremap = true })
 
 -- ]]]
 -- [[[ syntastic options
