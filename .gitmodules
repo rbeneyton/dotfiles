@@ -125,7 +125,7 @@
 	path = vim/pack/theme/opt/airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
 [submodule "vim/pack/theme/start/tmuxline"]
-	path = vim/pack/theme/start/tmuxline
+	path = vim/pack/theme/opt/tmuxline
 	url = https://github.com/edkolev/tmuxline.vim.git
 [submodule "vim/pack/theme/start/vim-colors-solarized"]
 	path = vim/pack/theme/start/vim-colors-solarized
