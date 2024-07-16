@@ -637,6 +637,16 @@ end
 }
 
 -- ]]]
+-- [[[ tmux integration
+
+vim.cmd("packadd tmux")
+require('tmux')
+vim.api.nvim_set_keymap("n", "<C-w>h", [[<cmd>lua require('tmux').move_left()<cr>]], { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-w>j", [[<cmd>lua require('tmux').move_down()<cr>]], { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-w>k", [[<cmd>lua require('tmux').move_up()<cr>]], { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-w>l", [[<cmd>lua require('tmux').move_right()<cr>]], { noremap = true })
+
+-- ]]]
 -- [[[ Slime opts
 
 if vim.env.TMUX

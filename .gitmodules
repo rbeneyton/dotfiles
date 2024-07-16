@@ -157,3 +157,6 @@
 [submodule "vim/pack/theme/opt/lualine"]
 	path = vim/pack/theme/opt/lualine
 	url = https://github.com/nvim-lualine/lualine.nvim.git
+[submodule "vim/pack/extend/opt/tmux"]
+	path = vim/pack/extend/opt/tmux
+	url = git@github.com:nathom/tmux.nvim.git
