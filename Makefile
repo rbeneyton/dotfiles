@@ -178,7 +178,8 @@ $(ALACRITTY) : | $(BIN) $(UTILS) rust-update
 	$(eval BUILD := $(SRC)/build)
 	rm -rf $(SRC)
 	# git clone --branch master --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
-	git clone --branch v0.12.2 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
+	# git clone --branch v0.12.2 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
+	git clone --branch v0.13 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
 	RUSTFLAGS="-C target-cpu=native" \
 		$(CARGO) build \
 			--target-dir $(BUILD) \
