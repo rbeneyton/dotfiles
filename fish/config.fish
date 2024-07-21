@@ -330,7 +330,7 @@ ulimit -c unlimited
     alias ta "tig --date-order --all -500"
     alias topo "tig --topo-order -500"
     alias topoa "tig --topo-order --all -500"
-    alias tigreflog "git reflog --pretty=raw | tig --pretty=raw"
+    alias tigreflog "git reflog --format=raw --decorate=full | tig --pretty=raw"
 
     function up -d "go to the upper git repo head"
         set BCK (pwd)

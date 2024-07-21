@@ -113,7 +113,7 @@
   lol = log --graph --decorate --pretty=oneline --abbrev-commit
   lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
   lag = log --all --grep
-  reflogp = reflog show --pretty=oneline --decorate=full
+  reflogp = reflog show --format='%C(auto)%h %<|(17)%gd %C(blue)%ci%C(reset) %C(green)%(decorate)%C(reset) %s' --decorate=full
   ls = ls-files
   gr = grep -n
   re = rebase
