@@ -8,7 +8,6 @@ require("init-light")
 
 vim.api.nvim_set_option_value('number', true, {win = 0})
 vim.api.nvim_set_option_value('relativenumber', true, {win = 0})
-vim.api.nvim_set_option('laststatus', 2)
 vim.api.nvim_set_option('ruler', true)
 vim.api.nvim_set_option('showcmd', true)
 vim.api.nvim_set_option('shadafile', "")
