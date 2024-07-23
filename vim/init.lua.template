@@ -20,6 +20,26 @@ vim.api.nvim_set_option('shadafile', "")
 -- set sessionoptions-=blank       " for syntastic
 
 -- ]]]
+-- [[[ neo-tree
+
+-- need plenary dependency
+require("nvim-web-devicons").setup()
+require("neo-tree").setup({
+    popup_border_style = "rounded",
+    buffers = {
+        -- When working with sessions, for example, restored but unfocused buffers
+        -- are mark as "unloaded". Turn this on to view these unloaded buffer.
+        show_unloaded = true,
+    },
+})
+-- shortcuts
+-- XXX why not? vim.api.nvim_set_keymap("n", "\", ":Neotree toggle current reveal_force_cwd<CR>", { noremap = true})
+vim.cmd([[:nnoremap \ :Neotree toggle current reveal_force_cwd<CR>]])
+vim.cmd([[:nnoremap \| :Neotree toggle current buffers<CR>]])
+-- vim.cmd([[:nnoremap gd :Neotree float reveal_file=<cfile> reveal_force_cwd<CR>]])
+vim.cmd([[:nnoremap <Leader>s :Neotree toggle git_status<CR>]])
+
+-- ]]]
 -- [[[ Mappings
 
 vim.api.nvim_set_keymap('n', '<C-PageDown>', ':bnext<cr>', { noremap = true })
