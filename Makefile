@@ -387,7 +387,7 @@ misc-user: $(BIN) rg
 	$(CARGO) install --force --locked cargo-criterion
 	$(CARGO) install --force --locked starship
 	$(CARGO) install --force --locked hyperfine
-	$(CARGO) install --force --locked exa
+	$(CARGO) install --force --locked eza
 	$(CARGO) install --force --locked bat
 	$(CARGO) install --force --locked just
 	$(CARGO) install --force --locked cargo-atcoder
