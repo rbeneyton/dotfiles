@@ -48,6 +48,15 @@ require("neo-tree").setup({
         -- are mark as "unloaded". Turn this on to view these unloaded buffer.
         show_unloaded = true,
     },
+    event_handlers = {
+	{
+		event = "neo_tree_buffer_enter",
+		handler = function()
+			vim.cmd 'highlight! Cursor blend=100'
+			vim.cmd 'setlocal relativenumber'
+		end,
+	}
+    },
 })
 -- shortcuts
 -- XXX why not? vim.api.nvim_set_keymap("n", "\", ":Neotree toggle current reveal_force_cwd<CR>", { noremap = true})
