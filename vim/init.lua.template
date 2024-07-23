@@ -13,6 +13,23 @@ vim.api.nvim_set_option('showcmd', true)
 vim.api.nvim_set_option('shadafile', "")
 
 -- ]]]
+-- [[[ mason
+
+vim.cmd(":packadd nvim-lspconfig")
+vim.cmd(":packadd mason")
+vim.cmd(":packadd mason-lspconfig")
+
+require("mason").setup({})
+require("mason-lspconfig").setup({})
+
+-- ]]]
+-- [[[ dap
+
+vim.cmd(":packadd nvim-dap")
+vim.cmd(":packadd nvim-dap-ui")
+require("dapui").setup()
+
+-- ]]]
 -- [[[ main settings cont'd
 
 -- old options dropped during lua convertion

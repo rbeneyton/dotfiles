@@ -5,23 +5,6 @@ vim.g.mapleader = " " -- XXX "<Space>" don't work
 -- as soon as possible
 vim.cmd(":packadd syntastic")
 
--- [[[ mason
-
-vim.cmd(":packadd nvim-lspconfig")
-vim.cmd(":packadd mason")
-vim.cmd(":packadd mason-lspconfig")
-
-require("mason").setup({})
-require("mason-lspconfig").setup({})
-
--- ]]]
--- [[[ dap
-
-vim.cmd(":packadd nvim-dap")
-vim.cmd(":packadd nvim-dap-ui")
-require("dapui").setup()
-
--- ]]]
 -- [[[ treesitter
 
 -- treesitter: always call TSUpdate after update
