@@ -73,9 +73,6 @@
 [submodule "vim/pack/extend/start/vim-visual-star-search"]
 	path = vim/pack/extend/start/vim-visual-star-search
 	url = https://github.com/nelstrom/vim-visual-star-search.git
-[submodule "vim/pack/git/opt/gitgutter"]
-	path = vim/pack/git/opt/gitgutter
-	url = https://github.com/airblade/vim-gitgutter.git
 [submodule "vim/pack/git/start/fugitive"]
 	path = vim/pack/git/start/fugitive
 	url = https://github.com/tpope/vim-fugitive.git

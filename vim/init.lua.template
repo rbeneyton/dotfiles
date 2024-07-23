@@ -628,9 +628,6 @@ let g:ycm_add_preview_to_completeopt = 0
 
 vim.wo.signcolumn = "yes"
 
--- nnoremap <Leader>hs <Plug>GitGutterStageHunk
--- nnoremap <Leader>hr <Plug>GitGutterRevertHunk
-
 require('gitsigns').setup{
 on_attach = function(bufnr)
     local gs = package.loaded.gitsigns
