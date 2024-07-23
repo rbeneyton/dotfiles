@@ -151,9 +151,6 @@
 [submodule "vim/pack/misc/neo-tree"]
 	path = vim/pack/misc/start/neo-tree
 	url = https://github.com/nvim-neo-tree/neo-tree.nvim.git
-[submodule "vim/pack/theme/lualine"]
-	path = vim/pack/theme/lualine
-	url = https://github.com/nvim-lualine/lualine.nvim.git
 [submodule "vim/pack/theme/opt/lualine"]
 	path = vim/pack/theme/opt/lualine
 	url = https://github.com/nvim-lualine/lualine.nvim.git
