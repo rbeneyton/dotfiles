@@ -41,8 +41,8 @@
   diffFilter = delta --features=interactive
 
 [pager]
-  log = delta | page -WC -q 90000 -z 90000
-  diff = delta | page -WC -q 90000 -z 90000
+  log = delta # | page -WC -q 90000 -z 90000
+  diff = delta # | page -WC -q 90000 -z 90000
 
 [init]
   defaultBranch = master
