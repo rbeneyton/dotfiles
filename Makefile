@@ -472,7 +472,7 @@ debian-install-net:
 debian-install-graphic:
 	apt-get install awesome awesome-extra
 	# libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3
-	apt-get install parcellite mesa-utils fonts-dejavu fonts-dejavu-core fonts-dejavu-extra
+	apt-get install parcellite mesa-utils
 	apt-get install redshift redshift-gtk
 	apt-get install diodon xss-lock suckless-tools
 	# apt-get install kshutdown # no 400MB for one utility
