@@ -92,14 +92,7 @@ gtk_font_size = "8"
 
 # fonts
 [fonts.files]
-"fonts/DejaVu Sans Mono Bold Nerd Font Complete Mono.ttf" = { target = "~/.fonts/DejaVu Sans Mono Bold Nerd Font Complete Mono.ttf", type = "symbolic" }
-"fonts/DejaVu Sans Mono Bold Nerd Font Complete.ttf" = { target = "~/.fonts/DejaVu Sans Mono Bold Nerd Font Complete.ttf", type = "symbolic" }
-"fonts/DejaVu Sans Mono Bold Oblique Nerd Font Complete Mono.ttf" = { target = "~/.fonts/DejaVu Sans Mono Bold Oblique Nerd Font Complete Mono.ttf", type = "symbolic" }
-"fonts/DejaVu Sans Mono Bold Oblique Nerd Font Complete.ttf" = { target = "~/.fonts/DejaVu Sans Mono Bold Oblique Nerd Font Complete.ttf", type = "symbolic" }
-"fonts/DejaVu Sans Mono Nerd Font Complete Mono.ttf" = { target = "~/.fonts/DejaVu Sans Mono Nerd Font Complete Mono.ttf", type = "symbolic" }
-"fonts/DejaVu Sans Mono Nerd Font Complete.ttf" = { target = "~/.fonts/DejaVu Sans Mono Nerd Font Complete.ttf", type = "symbolic" }
-"fonts/DejaVu Sans Mono Oblique Nerd Font Complete Mono.ttf" = { target = "~/.fonts/DejaVu Sans Mono Oblique Nerd Font Complete Mono.ttf", type = "symbolic" }
-"fonts/DejaVu Sans Mono Oblique Nerd Font Complete.ttf" = { target = "~/.fonts/DejaVu Sans Mono Oblique Nerd Font Complete.ttf", type = "symbolic" }
+"fonts" = { target = "~/.local/share/fonts", type = "symbolic", recurse = false }
 # TODO post_deploy.sh to call fc-cache -fv
 
 # starship
