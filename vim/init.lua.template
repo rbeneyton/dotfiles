@@ -547,6 +547,7 @@ vim.api.nvim_set_keymap('n', '<leader>-', ':tabnext #<cr>', { noremap = true })
 -- ]]]
 -- [[[ syntastic options
 
+vim.cmd(":packadd syntastic")
 vim.cmd([[
 
 " TODO drop syntastic once LSP works
