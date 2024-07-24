@@ -1,4 +1,6 @@
 bind main C ?git cherry-pick -x %(commit)
+set main-view-id = true
+set main-view-date-local = true
 set show-notes = true
 set line-graphics = utf-8
 set truncation-delimiter = utf-8
