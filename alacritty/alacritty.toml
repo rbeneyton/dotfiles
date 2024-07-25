@@ -569,13 +569,13 @@ mods = "Control"
 
 #rb map C-Home (aka C-; via xkb) to C-b for tmux
 [[keyboard.bindings]]
-chars = "\x02"
+chars = "\u0002"
 key = "Home"
 mods = "Control"
 
 #rb direct C-; mapping to C-b for tmux
 [[keyboard.bindings]]
-chars = "\x02"
+chars = "\u0002"
 key = "Semicolon"
 mods = "Control"
 

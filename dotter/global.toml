@@ -57,7 +57,7 @@ awesome_height = "20"
 
 # alacritty
 [alacritty.files]
-"alacritty/alacritty.yml" = "~/.config/alacritty/alacritty.yml"
+"alacritty/alacritty.toml" = "~/.config/alacritty/alacritty.toml"
 [alacritty.variables]
 alacritty_font_size = 10
 
