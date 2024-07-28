@@ -20,137 +20,137 @@
 	path = gdb/source-highlight
 	url = https://git.savannah.gnu.org/git/src-highlite.git
 [submodule "vim/pack/extend/opt/mason-lspconfig"]
-	path = vim/pack/extend/opt/mason-lspconfig
+	path = nvim/pack/extend/opt/mason-lspconfig
 	url = https://github.com/williamboman/mason-lspconfig.nvim.git
 [submodule "vim/pack/extend/opt/mason"]
-	path = vim/pack/extend/opt/mason
+	path = nvim/pack/extend/opt/mason
 	url = https://github.com/williamboman/mason.nvim.git
 [submodule "vim/pack/extend/opt/nvim-dap"]
-	path = vim/pack/extend/opt/nvim-dap
+	path = nvim/pack/extend/opt/nvim-dap
 	url = https://github.com/mfussenegger/nvim-dap.git
 [submodule "vim/pack/extend/opt/nvim-dap-ui"]
-	path = vim/pack/extend/opt/nvim-dap-ui
+	path = nvim/pack/extend/opt/nvim-dap-ui
 	url = https://github.com/rcarriga/nvim-dap-ui.git
 [submodule "vim/pack/extend/opt/syntastic"]
-	path = vim/pack/extend/opt/syntastic
+	path = nvim/pack/extend/opt/syntastic
 	url = https://github.com/scrooloose/syntastic.git
 [submodule "vim/pack/extend/opt/vimwiki"]
-	path = vim/pack/extend/opt/vimwiki
+	path = nvim/pack/extend/opt/vimwiki
 	url = https://github.com/vimwiki/vimwiki.git
 [submodule "vim/pack/extend/start/async"]
-	path = vim/pack/extend/start/async
+	path = nvim/pack/extend/start/async
 	url = https://github.com/prabirshrestha/async.vim.git
 [submodule "vim/pack/extend/start/nvim-ocs52"]
-	path = vim/pack/extend/start/nvim-ocs52
+	path = nvim/pack/extend/start/nvim-ocs52
 	url = https://github.com/ojroques/nvim-osc52.git
 [submodule "vim/pack/extend/start/tabular"]
-	path = vim/pack/extend/start/tabular
+	path = nvim/pack/extend/start/tabular
 	url = https://github.com/godlygeek/tabular.git
 [submodule "vim/pack/extend/start/tcomment-vim"]
-	path = vim/pack/extend/start/tcomment-vim
+	path = nvim/pack/extend/start/tcomment-vim
 	url = https://github.com/tomtom/tcomment_vim.git
 [submodule "vim/pack/extend/start/vim-commentary"]
-	path = vim/pack/extend/start/vim-commentary
+	path = nvim/pack/extend/start/vim-commentary
 	url = https://github.com/tpope/vim-commentary.git
 [submodule "vim/pack/extend/start/vim-grep-operator"]
-	path = vim/pack/extend/start/vim-grep-operator
+	path = nvim/pack/extend/start/vim-grep-operator
 	url = https://github.com/inside/vim-grep-operator.git
 [submodule "vim/pack/extend/start/vim-obsession"]
-	path = vim/pack/extend/start/vim-obsession
+	path = nvim/pack/extend/start/vim-obsession
 	url = https://github.com/tpope/vim-obsession.git
 [submodule "vim/pack/extend/start/vim-rooter"]
-	path = vim/pack/extend/start/vim-rooter
+	path = nvim/pack/extend/start/vim-rooter
 	url = https://github.com/airblade/vim-rooter.git
 [submodule "vim/pack/extend/start/vim-slime"]
-	path = vim/pack/extend/start/vim-slime
+	path = nvim/pack/extend/start/vim-slime
 	url = https://github.com/jpalardy/vim-slime.git
 [submodule "vim/pack/extend/start/vim-surround"]
-	path = vim/pack/extend/start/vim-surround
+	path = nvim/pack/extend/start/vim-surround
 	url = https://github.com/tpope/vim-surround.git
 [submodule "vim/pack/extend/start/vim-unimpaired"]
-	path = vim/pack/extend/start/vim-unimpaired
+	path = nvim/pack/extend/start/vim-unimpaired
 	url = https://github.com/tpope/vim-unimpaired.git
 [submodule "vim/pack/extend/start/vim-visual-star-search"]
-	path = vim/pack/extend/start/vim-visual-star-search
+	path = nvim/pack/extend/start/vim-visual-star-search
 	url = https://github.com/nelstrom/vim-visual-star-search.git
 [submodule "vim/pack/git/start/fugitive"]
-	path = vim/pack/git/start/fugitive
+	path = nvim/pack/git/start/fugitive
 	url = https://github.com/tpope/vim-fugitive.git
 [submodule "vim/pack/git/start/gitsigns"]
-	path = vim/pack/git/start/gitsigns
+	path = nvim/pack/git/start/gitsigns
 	url = https://github.com/lewis6991/gitsigns.nvim
 [submodule "vim/pack/lang/opt/xit"]
-	path = vim/pack/lang/opt/xit
+	path = nvim/pack/lang/opt/xit
 	url = https://github.com/synaptiko/xit.nvim
 [submodule "vim/pack/lang/start/ron"]
-	path = vim/pack/lang/start/ron
+	path = nvim/pack/lang/start/ron
 	url = https://github.com/ron-rs/ron.vim.git
 [submodule "vim/pack/lang/start/rust"]
-	path = vim/pack/lang/opt/rust
+	path = nvim/pack/lang/opt/rust
 	url = https://github.com/rust-lang/rust.vim.git
 [submodule "vim/pack/lang/start/rust-tools"]
-	path = vim/pack/lang/start/rust-tools
+	path = nvim/pack/lang/start/rust-tools
 	url = https://github.com/simrat39/rust-tools.nvim.git
 [submodule "vim/pack/lang/start/vim-fish-syntax"]
-	path = vim/pack/lang/start/vim-fish-syntax
+	path = nvim/pack/lang/start/vim-fish-syntax
 	url = https://github.com/khaveesh/vim-fish-syntax.git
 [submodule "vim/pack/lsp/opt/nvim-lspconfig"]
-	path = vim/pack/lsp/opt/nvim-lspconfig
+	path = nvim/pack/lsp/opt/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lsp.git
 [submodule "vim/pack/misc/start/a"]
-	path = vim/pack/misc/start/a
+	path = nvim/pack/misc/start/a
 	url = https://github.com/vim-scripts/a.vim.git
 [submodule "vim/pack/parser/opt/nvim-treesitter"]
-	path = vim/pack/parser/opt/nvim-treesitter
+	path = nvim/pack/parser/opt/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
 [submodule "vim/pack/parser/opt/nvim-treesitter-playground"]
-	path = vim/pack/parser/opt/nvim-treesitter-playground
+	path = nvim/pack/parser/opt/nvim-treesitter-playground
 	url = https://github.com/nvim-treesitter/playground.git
 [submodule "vim/pack/parser/opt/nvim-ts-rainbow"]
-	path = vim/pack/parser/opt/nvim-ts-rainbow
+	path = nvim/pack/parser/opt/nvim-ts-rainbow
 	url = https://github.com/p00f/nvim-ts-rainbow.git
 [submodule "vim/pack/parser/opt/tree-sitter-xit"]
-	path = vim/pack/parser/opt/tree-sitter-xit
+	path = nvim/pack/parser/opt/tree-sitter-xit
 	url = https://github.com/synaptiko/tree-sitter-xit.git
 [submodule "vim/pack/theme/opt/kanagawa"]
-	path = vim/pack/theme/opt/kanagawa
+	path = nvim/pack/theme/opt/kanagawa
 	url = https://github.com/rebelot/kanagawa.nvim.git
 [submodule "vim/pack/theme/start/airline"]
-	path = vim/pack/theme/opt/airline
+	path = nvim/pack/theme/opt/airline
 	url = https://github.com/bling/vim-airline.git
 [submodule "vim/pack/theme/start/airline-themes"]
-	path = vim/pack/theme/opt/airline-themes
+	path = nvim/pack/theme/opt/airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
 [submodule "vim/pack/theme/start/tmuxline"]
-	path = vim/pack/theme/opt/tmuxline
+	path = nvim/pack/theme/opt/tmuxline
 	url = https://github.com/edkolev/tmuxline.vim.git
 [submodule "vim/pack/theme/start/vim-colors-solarized"]
-	path = vim/pack/theme/start/vim-colors-solarized
+	path = nvim/pack/theme/start/vim-colors-solarized
 	url = https://github.com/altercation/vim-colors-solarized.git
 [submodule "vim/pack/undo/opt/gundo"]
-	path = vim/pack/undo/opt/gundo
+	path = nvim/pack/undo/opt/gundo
 	url = https://github.com/sjl/gundo.vim.git
 [submodule "vim/pack/undo/opt/undotree"]
-	path = vim/pack/undo/opt/undotree
+	path = nvim/pack/undo/opt/undotree
 	url = https://github.com/mbbill/undotree.git
 [submodule "vim/pack/lang/start/rustaceanvim"]
-	path = vim/pack/lang/opt/rustaceanvim
+	path = nvim/pack/lang/opt/rustaceanvim
 	url = https://github.com/mrcjkb/rustaceanvim.git
 [submodule "vim/pack/misc/plenary"]
-	path = vim/pack/misc/start/plenary
+	path = nvim/pack/misc/start/plenary
 	url = https://github.com/nvim-lua/plenary.nvim.git
 [submodule "vim/pack/misc/nui"]
-	path = vim/pack/misc/start/nui
+	path = nvim/pack/misc/start/nui
 	url = https://github.com/MunifTanjim/nui.nvim.git
 [submodule "vim/pack/misc/nvim-web-devicons"]
-	path = vim/pack/misc/start/nvim-web-devicons
+	path = nvim/pack/misc/start/nvim-web-devicons
 	url = https://github.com/nvim-tree/nvim-web-devicons.git
 [submodule "vim/pack/misc/neo-tree"]
-	path = vim/pack/misc/start/neo-tree
+	path = nvim/pack/misc/start/neo-tree
 	url = https://github.com/nvim-neo-tree/neo-tree.nvim.git
 [submodule "vim/pack/theme/opt/lualine"]
-	path = vim/pack/theme/opt/lualine
+	path = nvim/pack/theme/opt/lualine
 	url = https://github.com/nvim-lualine/lualine.nvim.git
 [submodule "vim/pack/extend/opt/tmux"]
-	path = vim/pack/extend/opt/tmux
+	path = nvim/pack/extend/opt/tmux
 	url = https://github.com/nathom/tmux.nvim.git

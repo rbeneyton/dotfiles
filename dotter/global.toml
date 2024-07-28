@@ -19,7 +19,7 @@
 "fish/bass/functions/bass.fish" = "~/.config/fish/functions/bass.fish"
 "fish/bass/functions/__bass.py" = "~/.config/fish/functions/__bass.py"
 "fish/completions/conda.fish" = "~/.config/fish/completions/conda.fish"
-"vim/pack/theme/opt/kanagawa/extras/kanagawa.fish" = "~/.config/fish/conf.d/kanagawa.fish"
+"nvim/pack/theme/opt/kanagawa/extras/kanagawa.fish" = "~/.config/fish/conf.d/kanagawa.fish"
 
 # top
 [top.files]
@@ -116,10 +116,10 @@ git_email = "richard.beneyton@gmail.com"
 "tmux/tmuxline.cf" = "~/.config/tmux/tmuxline.cf"
 
 # vim
-[vim.files]
-# XXX nvim is a symlink to vim, and dotter doesn't allow double deploy
-# so we use either vim or nvim for double deploy
-"vim/lua/init-light.lua.template" = { target = "~/.config/page/init.lua", type = "template" }
+[nvim.files]
+# XXX page is a symlink to nvim, and dotter doesn't allow double deploy
+# so we use either nvim or page for double deploy
+"page/lua/init-light.lua.template" = { target = "~/.config/page/init.lua", type = "template" }
 "nvim/lua/init-light.lua.template" = { target = "~/.config/nvim/lua/init-light.lua", type = "template" }
 "nvim/init.lua.template" = { target = "~/.config/nvim/init.lua", type = "template" }
 "nvim" = { target = "~/.config/nvim", type = "symbolic", recurse = false }
@@ -175,13 +175,13 @@ depends = [
     "git",
     "gtk",
     "nu",
+    "nvim",
     "redshift",
     "rust",
     "starship",
     "tmux",
     "top",
     "valgrind",
-    "vim",
     "xkb",
     "zathura",
 ]
