@@ -89,7 +89,7 @@
 	path = nvim/pack/lang/opt/rust
 	url = https://github.com/rust-lang/rust.vim.git
 [submodule "vim/pack/lang/start/rust-tools"]
-	path = nvim/pack/lang/start/rust-tools
+	path = nvim/pack/lang/opt/rust-tools
 	url = https://github.com/simrat39/rust-tools.nvim.git
 [submodule "vim/pack/lang/start/vim-fish-syntax"]
 	path = nvim/pack/lang/start/vim-fish-syntax

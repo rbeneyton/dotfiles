@@ -19,8 +19,12 @@ vim.cmd(":packadd nvim-lspconfig")
 vim.cmd(":packadd mason")
 vim.cmd(":packadd mason-lspconfig")
 
-require("mason").setup({})
+require('mason-lspconfig').setup_handlers {
+    -- rustaceanvim will manage its conf
+    ['rust_analyzer'] = function() end,
+}
 require("mason-lspconfig").setup({})
+require("mason").setup({})
 
 -- ]]]
 -- [[[ dap
@@ -723,22 +727,10 @@ vim.g.alternateSearchPath = 'sfr:../src,sfr:../../src,sfr:../include'
 -- [[[ LSP
 
 -- rust
-local rt = require("rust-tools")
-rt.setup({
-  server = {
-    on_attach = function(_, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-    end,
-  },
-})
+vim.cmd(":packadd rustaceanvim")
+-- main conf in vim.g.rustaceanvim
+-- conf via after/ftplugin/rust.lua
 
--- Enable inlay hints auto update and set them for all the buffers
-rt.inlay_hints.enable()
-
-vim.cmd("packadd rustaceanvim")
 vim.g.rustaceanvim = {
   -- Plugin configuration
   tools = {
@@ -746,12 +738,9 @@ vim.g.rustaceanvim = {
   -- LSP configuration
   server = {
     on_attach = function(client, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+      -- you can also put keymaps in here
     end,
-    settings = {
+    default_settings = {
       -- rust-analyzer language server configuration
       ['rust-analyzer'] = {
       },
@@ -802,10 +791,10 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
--- rust
-lsp.rust_analyzer.setup {
-    on_attach = on_attach
-}
+-- manage by rustaceanvim
+lsp.rust_analyzer = function()
+  return true
+end
 
 -- python
 lsp.pylsp.setup {
