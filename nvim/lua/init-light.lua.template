@@ -1,6 +1,8 @@
 -- remind, ':helptags ALL' after adding any package
 
+vim.keymap.set("n", "<Space>", "<Nop>", { silent = true })
 vim.g.mapleader = " " -- XXX "<Space>" don't work
+vim.opt.vb = true -- no bip
 
 -- [[[ treesitter
 
@@ -244,6 +246,7 @@ vim.keymap.set('n', '<Leader>ga', '<CMD>Git difftool -y<CR>')
 
 -- ]]]
 
+vim.keymap.set('n', ';', ':')
 
 -- dotter/handlebars+fold incompatibility: temporary [ instead of {
 -- vim: foldmarker=[[[,]]]
