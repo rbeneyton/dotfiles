@@ -120,8 +120,7 @@ require("neo-tree").setup({
 -- shortcuts
 -- XXX why not? vim.api.nvim_set_keymap("n", "\", ":Neotree toggle current reveal_force_cwd<CR>", { noremap = true})
 vim.cmd([[:nnoremap \ :Neotree toggle current reveal_force_cwd<CR>]])
-vim.cmd([[:nnoremap \| :Neotree toggle current buffers<CR>]])
--- vim.cmd([[:nnoremap gd :Neotree float reveal_file=<cfile> reveal_force_cwd<CR>]])
+vim.cmd([[:nnoremap \| :Neotree toggle reveal current buffers dir=/<CR>]])
 vim.cmd([[:nnoremap <Leader>s :Neotree toggle git_status<CR>]])
 
 -- ]]]
