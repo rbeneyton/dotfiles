@@ -549,18 +549,34 @@ require('lualine').setup {
   },
   sections = {
     lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff'},
+    lualine_b = {
+        {'branch', cond = function()
+            return vim.api.nvim_win_get_width(0) > 70
+        end,},
+        'diff',
+    },
     lualine_c = {'filename'},
     lualine_x = {
-      lualine_slime,
-      '%{ObsessionStatus("", "")}',
-      'searchcount',
-      'filetype'},
+        lualine_slime,
+        '%{ObsessionStatus("", "")}',
+        'searchcount',
+        {'filetype', cond = function()
+            return vim.api.nvim_win_get_width(0) > 90
+        end,},
+    },
     lualine_y = {
-      'progress',
-      '%n', -- always buffer number
-      'diagnostics'},
-    lualine_z = {'location'}
+        '%n', -- always buffer number
+        'diagnostics'
+    },
+    lualine_z = {
+        -- progress without fancy Top/Bot labels
+        function()
+            local cur = vim.fn.line('.')
+            local total = vim.fn.line('$')
+            return string.format('%2d%%%%', math.floor(cur / total * 100))
+        end,
+        'location'
+    },
   },
   inactive_sections = {
     lualine_a = {},
