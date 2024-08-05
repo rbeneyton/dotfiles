@@ -86,9 +86,6 @@ require('xit').setup {
   wrap_jumps = true,
 }
 
--- to debug treesitter
--- vim.cmd(":packadd nvim-treesitter-playground")
-
 require("nvim-treesitter.configs").setup {
   playground = {
     enable = true,

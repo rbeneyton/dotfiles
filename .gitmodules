@@ -103,9 +103,6 @@
 [submodule "vim/pack/parser/opt/nvim-treesitter"]
 	path = nvim/pack/parser/opt/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
-[submodule "vim/pack/parser/opt/nvim-treesitter-playground"]
-	path = nvim/pack/parser/opt/nvim-treesitter-playground
-	url = https://github.com/nvim-treesitter/playground.git
 [submodule "vim/pack/parser/opt/nvim-ts-rainbow"]
 	path = nvim/pack/parser/opt/nvim-ts-rainbow
 	url = https://github.com/p00f/nvim-ts-rainbow.git
