@@ -17,7 +17,7 @@ require("nvim-treesitter.install").compilers = {
   "gcc",
   "clang"
 }
-require("nvim-treesitter.parsers").get_parser_configs().xit = {
+require("nvim-treesitter.parsers").xit = {
   install_info = {
     url = "~/.dotfiles/vim/pack/parser/opt/tree-sitter-xit",
     files = { "src/parser.c" },
@@ -31,7 +31,7 @@ vim.cmd(":packadd nvim-ts-rainbow")
 
 -- " :lua vim.opt.runtimepath:append("~/.config/nvim/parsers")
 
-require('nvim-treesitter.configs').setup {
+require("nvim-treesitter.config").setup {
   ensure_installed = { "bash", "c", "comment", "cpp", "cmake",
                        "fish", "json", "latex", "lua", "markdown",
                        "python", "rust", "toml", "xit" },
@@ -79,14 +79,15 @@ require('nvim-treesitter.configs').setup {
 }
 
 vim.cmd(":packadd xit")
-require('xit').setup {
-  disable_default_highlights = true, -- broken, defined at end of this file
-  disable_default_mappings = false,
-  default_jump_group = "all", -- possible values: all, open_and_ongoing
-  wrap_jumps = true,
-}
+-- TODO broken treesitter-xit
+-- require('xit').setup {
+--   disable_default_highlights = true, -- broken, defined at end of this file
+--   disable_default_mappings = false,
+--   default_jump_group = "all", -- possible values: all, open_and_ongoing
+--   wrap_jumps = true,
+-- }
 
-require("nvim-treesitter.configs").setup {
+require("nvim-treesitter.config").setup {
   playground = {
     enable = true,
     disable = {},
