@@ -148,3 +148,6 @@
 [submodule "vim/pack/extend/opt/tmux"]
 	path = nvim/pack/extend/opt/tmux
 	url = https://github.com/nathom/tmux.nvim.git
+[submodule "nvim/pack/parser/opt/rainbow-delimiters"]
+	path = nvim/pack/parser/opt/rainbow-delimiters
+	url = https://github.com/HiPhish/rainbow-delimiters.nvim.git
