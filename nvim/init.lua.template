@@ -835,9 +835,11 @@ lsp.ruff.setup {
 }
 
 -- C++
-lsp.clangd.setup {}
---   on_attach = on_attach
--- }
+lsp.clangd.setup {
+  on_attach = vim.schedule_wrap(function()
+    vim.keymap.set("n", "<leader>h", "<cmd>ClangdSwitchSourceHeader<CR>")
+  end),
+}
 
 -- ]]]
 -- [[[ gundo/mundo/undotree
