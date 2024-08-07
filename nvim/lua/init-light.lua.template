@@ -17,9 +17,10 @@ require("nvim-treesitter.install").compilers = {
   "gcc",
   "clang"
 }
-require("nvim-treesitter.parsers").xit = {
+local parser_config = require("nvim-treesitter.parsers")
+parser_config.xit = {
   install_info = {
-    url = "~/.dotfiles/vim/pack/parser/opt/tree-sitter-xit",
+    url = "~/.dotfiles/nvim/pack/parser/opt/tree-sitter-xit",
     files = { "src/parser.c" },
     generate_requires_npm = false, -- if stand-alone parser without npm dependencies
     requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
@@ -29,7 +30,7 @@ require("nvim-treesitter.parsers").xit = {
 
 -- " :lua vim.opt.runtimepath:append("~/.config/nvim/parsers")
 
-require("nvim-treesitter.config").setup {
+require("nvim-treesitter.configs").setup {
   ensure_installed = { "bash", "c", "comment", "cpp", "cmake",
                        "fish", "json", "latex", "lua", "markdown",
                        "python", "rust", "toml", "xit" },
