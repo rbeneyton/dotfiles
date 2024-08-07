@@ -96,13 +96,36 @@ vim.g.rainbow_delimiters = {
 }
 
 vim.cmd(":packadd xit")
--- TODO broken treesitter-xit
--- require('xit').setup {
---   disable_default_highlights = true, -- broken, defined at end of this file
---   disable_default_mappings = false,
---   default_jump_group = "all", -- possible values: all, open_and_ongoing
---   wrap_jumps = true,
--- }
+require('xit').setup {
+  disable_default_highlights = true, -- broken, defined at end of this file
+  disable_default_mappings = false,
+  default_jump_group = "all", -- possible values: all, open_and_ongoing
+  wrap_jumps = true,
+}
+vim.cmd([[
+" xit treesitter colors plugin broken when retrieving hi colors from theme
+hi! link @XitHeadline Todo " \o/ meta! \o/ red/pink
+
+hi! link @XitOpenCheckbox Type " yellow
+hi! link @XitOpenTaskMainLine Normal
+hi! link @XitOpenTaskOtherLine Normal
+hi! link @XitOpenTaskPriority Error
+
+hi! link @XitOngoingCheckbox Identifier " blue
+hi! link @XitOngoingTaskMainLine Identifier
+hi! link @XitOngoingTaskOtherLine Identifier
+hi! link @XitOngoingTaskPriority Error
+
+hi! link @XitCheckedCheckbox Comment " grey
+hi! link @XitCheckedTaskMainLine Comment
+hi! link @XitCheckedTaskOtherLine Comment
+hi! link @XitCheckedTaskPriority DiagnosticError
+
+hi! link @XitObsoleteCheckbox Comment " grey
+hi! link @XitObsoleteTaskMainLine LineNr
+hi! link @XitObsoleteTaskOtherLine LineNr
+hi! link @XitObsoleteTaskPriority DiagnosticInfo
+]])
 
 -- ]]]
 -- [[[ main settings
