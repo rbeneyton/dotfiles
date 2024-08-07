@@ -97,9 +97,6 @@
 [submodule "vim/pack/lsp/opt/nvim-lspconfig"]
 	path = nvim/pack/lsp/opt/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lsp.git
-[submodule "vim/pack/misc/start/a"]
-	path = nvim/pack/misc/start/a
-	url = https://github.com/vim-scripts/a.vim.git
 [submodule "vim/pack/parser/opt/nvim-treesitter"]
 	path = nvim/pack/parser/opt/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
