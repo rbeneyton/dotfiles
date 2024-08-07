@@ -148,3 +148,6 @@
 [submodule "nvim/pack/parser/opt/rainbow-delimiters"]
 	path = nvim/pack/parser/opt/rainbow-delimiters
 	url = https://github.com/HiPhish/rainbow-delimiters.nvim.git
+[submodule "nvim/pack/extend/start/leap"]
+	path = nvim/pack/extend/start/leap
+	url = https://github.com/ggandor/leap.nvim.git

@@ -262,6 +262,11 @@ vim.keymap.set('n', '<Leader>go', '<CMD>Gvdiff origin/master<CR>')
 vim.keymap.set('n', '<Leader>ga', '<CMD>Git difftool -y<CR>')
 
 -- ]]]
+-- [[[ leap
+
+require('leap').create_default_mappings()
+
+-- ]]]
 
 vim.keymap.set('n', ';', ':')
 
