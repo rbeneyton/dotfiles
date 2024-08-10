@@ -785,5 +785,6 @@ awful.spawn.with_shell('for i in $(pactl list sources | grep Name | grep __sourc
 -- ]]]
 
 -- dotter/handlebars+fold incompatibility: temporary [ instead of {
+-- vim: foldmethod=marker
 -- vim: foldmarker=[[[,]]]
 -- vim: filetype=lua

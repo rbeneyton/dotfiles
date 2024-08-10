@@ -425,4 +425,5 @@ end
 # ]]]
 
 # dotter/handlebars+fold incompatibility: temporary [[[ / ]]]]
+# vim: foldmethod=marker
 # vim: foldmarker=[[[,]]]

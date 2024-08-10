@@ -450,15 +450,12 @@ vim.keymap.set('n', '<Leader>x', '<ESC>:xa<CR>', { noremap = true })
 -- clear the search register -> like :noh
 vim.keymap.set('n', '<Leader>/', ':let@/=""<CR>', { silent = true, noremap = true })
 
--- git grep on current word
-vim.keymap.set('n', '<Leader>g', '<ESC>:Ggrep <C-R>=expand("<cword>")<CR><CR>', { noremap = true })
-vim.keymap.set('v', '<Leader>g', '<ESC>:execute \':Ggrep \'.GetVisualSelection()<CR>', { noremap = true })
--- FIXME broken
+-- grep on current word FIXME no quote
+vim.keymap.set('n', '<Leader>g', '<ESC>:grep \"<C-R>=expand("<cword>")<CR>\"<CR>', { noremap = true })
+vim.keymap.set('v', '<Leader>g', '<ESC>:execute \':grep \'.GetVisualSelection()<CR>', { noremap = true })
 -- version with prompt before executing
--- nnoremap <Leader>G <ESC>:Ggrep <C-R>=expand("<cword>")<CR>
--- vim.keymap.set('n', '<Leader>G', '<ESC>:Ggrep <C-R>=expand("<cword>")<CR>', { noremap = true })
--- vnoremap <Leader>G <ESC>:execute ':Ggrep '.GetVisualSelection()
--- vim.keymap.set('v', '<Leader>G', '<ESC>:execute \':Ggrep \'.GetVisualSelection()<CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>G', '<ESC>:grep <C-R>=expand("<cword>")<CR>', { noremap = true })
+vim.keymap.set('v', '<Leader>G', '<ESC>:execute \':grep \'.GetVisualSelection()', { noremap = true })
 
 -- ]]]
 -- [[[ colortheme
@@ -875,5 +872,6 @@ hi User7 term=inverse,bold ctermfg=White ctermbg=Black
 ]])
 
 -- dotter/handlebars+fold incompatibility: temporary [ instead of {
+-- vim: foldmethod=marker
 -- vim: foldmarker=[[[,]]]
 -- vim: filetype=lua

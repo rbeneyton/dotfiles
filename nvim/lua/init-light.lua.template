@@ -186,6 +186,7 @@ vim.opt.iskeyword = vim.opt.iskeyword + '-' -- consider - as part of word
 vim.opt.whichwrap = '' -- was "<,>,[,]" so left and right but I unmap them
 vim.opt.wildmode = 'longest,list,full'
 vim.opt_local.foldmethod = 'marker'
+vim.opt.foldenable = true -- in case someone reset it
 vim.opt.foldlevelstart = 2 -- was 20
 vim.opt.tildeop = true
 -- default statuline
@@ -209,7 +210,7 @@ vim.cmd([[:inoremap <cr> <C-R>=pumvisible() ? "\<lt>C-Y>" : "\<lt>cr>"<cr>]])
 
 vim.opt.diffopt = 'internal,filler,closeoff,context:5,iwhite,vertical,algorithm:histogram'
 vim.opt.makeprg = 'LC_ALL=C make MONOCHROME=1 L=1'
-vim.opt.grepprg = 'rg --no-heading --vimgrep'
+vim.opt.grepprg = 'rg --no-heading --ignore-nested-git --vimgrep'
 vim.opt.grepformat = '%f:%l:%c:%m'
 vim.opt.path = '.,./include,./../include'
 
@@ -271,5 +272,6 @@ require('leap').create_default_mappings()
 vim.keymap.set('n', ';', ':')
 
 -- dotter/handlebars+fold incompatibility: temporary [ instead of {
+-- vim: foldmethod=marker
 -- vim: foldmarker=[[[,]]]
 -- vim: filetype=lua
