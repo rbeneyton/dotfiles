@@ -510,6 +510,11 @@ debian-install-misc:
 	apt-get update
 	apt-get install conda
 	apt-get clean
+	# misc
+	# sound
+	# switch to sink on bluetooth connect
+	mkdir -p /etc/pipewire/pipewire-pulse.conf.d
+	cp root/pipewire_switch-on-connect.conf /etc/pipewire/pipewire-pulse.conf.d/switch-on-connect.conf
 
 debian-install-kernel-mac:
 	# 1) i915
