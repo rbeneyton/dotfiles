@@ -151,3 +151,18 @@
 [submodule "nvim/pack/extend/start/leap"]
 	path = nvim/pack/extend/start/leap
 	url = https://github.com/ggandor/leap.nvim.git
+[submodule "nvim/pack/cmp/opt/cmp-nvim-lsp"]
+	path = nvim/pack/cmp/opt/cmp-nvim-lsp
+	url = https://github.com/hrsh7th/cmp-nvim-lsp.git
+[submodule "nvim/pack/cmp/opt/cmp-buffer"]
+	path = nvim/pack/cmp/opt/cmp-buffer
+	url = https://github.com/hrsh7th/cmp-buffer.git
+[submodule "nvim/pack/cmp/opt/cmp-path"]
+	path = nvim/pack/cmp/opt/cmp-path
+	url = https://github.com/hrsh7th/cmp-path.git
+[submodule "nvim/pack/cmp/opt/cmp-cmdline"]
+	path = nvim/pack/cmp/opt/cmp-cmdline
+	url = https://github.com/hrsh7th/cmp-cmdline.git
+[submodule "nvim/pack/cmp/opt/nvim-cmp"]
+	path = nvim/pack/cmp/opt/nvim-cmp
+	url = https://github.com/hrsh7th/nvim-cmp.git
