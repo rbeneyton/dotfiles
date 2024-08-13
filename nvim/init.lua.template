@@ -85,6 +85,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 vim.cmd(":packadd cmp-buffer")
 vim.cmd(":packadd cmp-cmdline")
+vim.cmd(":packadd cmp-cmdline-history")
 vim.cmd(":packadd cmp-nvim-lsp")
 vim.cmd(":packadd cmp-path")
 vim.cmd(":packadd nvim-cmp")
@@ -132,6 +133,8 @@ cmp.setup.cmdline(':', {
         { name = 'path' }
     }, {
         { name = 'cmdline' }
+    }, {
+        { name = 'cmdline_history' },
     }),
     matching = { disallow_symbol_nonprefix_matching = false }
 })

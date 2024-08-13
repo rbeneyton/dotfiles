@@ -166,3 +166,6 @@
 [submodule "nvim/pack/cmp/opt/nvim-cmp"]
 	path = nvim/pack/cmp/opt/nvim-cmp
 	url = https://github.com/hrsh7th/nvim-cmp.git
+[submodule "nvim/pack/cmp/opt/cmp-cmdline-history"]
+	path = nvim/pack/cmp/opt/cmp-cmdline-history
+	url = https://github.com/dmitmel/cmp-cmdline-history.git
