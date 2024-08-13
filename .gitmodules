@@ -169,3 +169,6 @@
 [submodule "nvim/pack/cmp/opt/cmp-cmdline-history"]
 	path = nvim/pack/cmp/opt/cmp-cmdline-history
 	url = https://github.com/dmitmel/cmp-cmdline-history.git
+[submodule "nvim/pack/lsp/opt/lsp_signature"]
+	path = nvim/pack/lsp/opt/lsp_signature
+	url = https://github.com/ray-x/lsp_signature.nvim.git
