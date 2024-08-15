@@ -156,7 +156,16 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 -- FIXME automatic list all lsp servers
 require('lspconfig')['clangd'].setup { capabilities = capabilities }
 require('lspconfig')['cmake'].setup { capabilities = capabilities }
-require('lspconfig')['lua_ls'].setup { capabilities = capabilities }
+require('lspconfig')['lua_ls'].setup {
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = {'vim'}, -- avoid 'Undefined global `vim`' when editin here
+      },
+    }
+  },
+  capabilities = capabilities
+}
 require('lspconfig')['ruff'].setup { capabilities = capabilities }
 
 -- ]]]
