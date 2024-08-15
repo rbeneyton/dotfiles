@@ -927,6 +927,18 @@ lsp.lua_ls.setup {
 
 -- python
 lsp.basedpyright.setup {
+  settings = {
+    basedpyright = {
+      typeCheckingMode = "off",
+      disableOrganizeImports = true, -- using ruff
+    },
+    python = {
+      analysis = {
+        ignore = { '*' }, -- using only ruff for linting
+      },
+    },
+  },
+  capabilities = capabilities,
 }
 lsp.ruff.setup {
   init_options = {
