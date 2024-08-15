@@ -46,6 +46,23 @@ vim.keymap.set('n', '<leader>e', function()
     vim.diagnostic.open_float(nil, { focus = false, scope = 'cursor' })
 end, { desc = 'Toggle Diagnostics' })
 
+vim.cmd(":packadd lsp_signature")
+require("lsp_signature").setup({
+    doc_lines = 0,
+    handler_opts = {
+        border = "none"
+    }
+})
+
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+  vim.lsp.handlers.signature_help, {
+    float = {
+      focusable = false,
+      close_events = { 'CursorMoved', 'BufHidden', 'InsertCharPre' },
+    }
+  }
+)
+
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
     callback = function(ev)
@@ -57,9 +74,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
         local opts = { buffer = ev.buf }
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
         vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+        vim.keymap.set('n', 'K', function()
+            vim.lsp.buf.hover()
+        end, { silent = true, noremap = true, buffer = ev.buf })
         vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+        vim.keymap.set('n', '<C-k>', function()
+            -- vim.lsp.buf.signature_help()
+            require('lsp_signature').toggle_float_win()
+        end, { silent = true, noremap = true, buffer = ev.buf })
         vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
         vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
         vim.keymap.set('n', '<leader>wl', function()
@@ -78,14 +100,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(), opts)
         end, opts)
     end
-})
-
-vim.cmd(":packadd lsp_signature")
-require("lsp_signature").setup({
-    doc_lines = 0,
-    handler_opts = {
-        border = "none"
-    }
 })
 
 -- ]]]
