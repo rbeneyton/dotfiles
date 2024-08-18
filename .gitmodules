@@ -116,7 +116,7 @@
 	path = nvim/pack/theme/opt/tmuxline
 	url = https://github.com/edkolev/tmuxline.vim.git
 [submodule "nvim/pack/theme/start/vim-colors-solarized"]
-	path = nvim/pack/theme/start/vim-colors-solarized
+	path = nvim/pack/theme/opt/vim-colors-solarized
 	url = https://github.com/altercation/vim-colors-solarized.git
 [submodule "nvim/pack/undo/opt/gundo"]
 	path = nvim/pack/undo/opt/gundo
