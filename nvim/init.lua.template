@@ -230,11 +230,11 @@ vim.api.nvim_create_autocmd('BufReadPre', {
         -- local cur_sz = vim.fn.getfsize(cur_name)
         local cur_sz = vim.fn.getfsize(args.file)
         if cur_sz > 20 * 1024 * 1024 then
-            vim.bo.ft = large
+            vim.bo.ft = 'large'
             vim.bo.swapfile = false
-            vim.bo.bufhidden = unload
+            vim.bo.bufhidden = 'unload'
             vim.bo.undolevels = -1
-            vim.wo.foldmethod = manual
+            vim.wo.foldmethod = 'manual'
             vim.wo.foldenable = false
             vim.wo.number = false
             vim.wo.relativenumber = false
@@ -517,8 +517,7 @@ vim.keymap.set('c', '<C-j>', '<C-c>', { noremap = true })
 -- [[[ macros cont'd
 
 -- map to remove trailing spaces
--- nnoremap <Leader>b :s/\s\+$//e<CR>
--- vnoremap <Leader>b :s/\s\+$//e<CR>
+vim.keymap.set({'n', 'v'}, '<Leader>b', '<ESC>:%s/\\s\\+$//e<CR>', { desc = "remove all trailing spaces", noremap = true })
 
 -- alias M for make
 vim.keymap.set('n', '<Leader>m', '<ESC>:wall<CR>:make<CR>', { noremap = true })
