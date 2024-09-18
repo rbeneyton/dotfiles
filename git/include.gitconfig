@@ -1,7 +1,3 @@
-[instaweb]
-#  local = true
-#  port = 8080
-
 [core]
   editor = nvim
   excludesfile = ~/.gitignore
@@ -110,26 +106,19 @@
   lfsdiff = -c diff.lfs.textconv=cat diff --full-index
   lfsdiffc = -c diff.lfs.textconv=cat diff --cached --full-index
   logp = log --pretty=oneline --decorate=full -15
-  lol = log --graph --decorate --pretty=oneline --abbrev-commit
-  lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
-  lag = log --all --grep
   reflogp = reflog show --format='%C(auto)%h %<|(17)%gd %C(blue)%ci%C(reset) %C(green)%(decorate)%C(reset) %s' --decorate=full
   ls = ls-files
-  gr = grep -n
   re = rebase
   ri = rebase -i
   rec = rebase --continue
   rea = rebase --abort
   ref = "!f() { GIT_SEQUENCE_EDITOR=true git rebase -i --autostash; }; f"
   rio = rebase -i origin/master
-#  rio = rebase -i origin/qrrd/master
-#  rio = rebase -i origin/qrrd/1.0
   rese = reset HEAD~1
   resa = reset --hard HEAD
   fe = fetch
   fea = fetch --all
   s = status
-  sh = show
   sub = submodule
   subi = submodule init
   subu = submodule update
