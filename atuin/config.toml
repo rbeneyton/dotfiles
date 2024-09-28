@@ -225,6 +225,7 @@ records = true
 ## auto: length of the selected command.
 ## static: length of the longest command stored in the history.
 # strategy = "auto"
+strategy = "static"
 
 [daemon]
 ## Enables using the daemon to sync. Requires the daemon to be running in the background. Start it with `atuin daemon`
