@@ -1,0 +1,7 @@
+---
+BasedOnStyle: Chromium
+AccessModifierOffset: -2
+BreakBeforeBraces: Allman
+IndentGotoLabels: false
+IndentWidth: 4
+SortIncludes: Never

@@ -172,3 +172,6 @@
 [submodule "nvim/pack/lsp/opt/lsp_signature"]
 	path = nvim/pack/lsp/opt/lsp_signature
 	url = https://github.com/ray-x/lsp_signature.nvim.git
+[submodule "nvim/pack/extend/opt/conform.nvim"]
+	path = nvim/pack/extend/opt/conform.nvim
+	url = https://github.com/stevearc/conform.nvim.git
