@@ -11,12 +11,12 @@ function manpathadd() {
     fi
 }
 
-pathadd $HOME/bin
+pathadd "$HOME"/bin
 
-pathadd $HOME/firefox
+pathadd "$HOME"/firefox
 
-pathadd $HOME/utils/fish_install/bin
-manpathadd $HOME/utils/fish_install/share/man
+pathadd "$HOME"/utils/fish_install/bin
+manpathadd "$HOME"/utils/fish_install/share/man
 
 # fish as default shell
 if [[ -n $PS1 ]] && [[ -z $NOFISH ]]
@@ -28,26 +28,26 @@ then
     fi
 fi
 
-pathadd $HOME/utils/git_install/bin
-manpathadd $HOME/utils/git_install/share/man
+pathadd "$HOME"/utils/git_install/bin
+manpathadd "$HOME"/utils/git_install/share/man
 
-pathadd $HOME/utils/tig_install/bin
-manpathadd $HOME/utils/tig_install/share/man
+pathadd "$HOME"/utils/tig_install/bin
+manpathadd "$HOME"/utils/tig_install/share/man
 
-pathadd $HOME/utils/gcc_install/bin
-manpathadd $HOME/utils/gcc_install/share/man
+pathadd "$HOME"/utils/gcc_install/bin
+manpathadd "$HOME"/utils/gcc_install/share/man
 
-pathadd $HOME/utils/gdb_install/bin
-manpathadd $HOME/utils/gdb_install/share/man
+pathadd "$HOME"/utils/gdb_install/bin
+manpathadd "$HOME"/utils/gdb_install/share/man
 
-pathadd $HOME/utils/neovim_install/bin
-manpathadd $HOME/utils/neovim_install/share/man
+pathadd "$HOME"/utils/neovim_install/bin
+manpathadd "$HOME"/utils/neovim_install/share/man
 
-pathadd $HOME/utils/tmux_install/bin
-manpathadd $HOME/utils/tmux_install/share/man
+pathadd "$HOME"/utils/tmux_install/bin
+manpathadd "$HOME"/utils/tmux_install/share/man
 
-pathadd $HOME/utils/llvm_install/bin
-manpathadd $HOME/utils/llvm_install/share/man
+pathadd "$HOME"/utils/llvm_install/bin
+manpathadd "$HOME"/utils/llvm_install/share/man
 if type llvm-symbolizer &> /dev/null; then
     # FIXME safe which
     export ASAN_SYMBOLIZER_PATH="$(which llvm-symbolizer)"
@@ -56,7 +56,7 @@ export ASAN_OPTIONS=abort_on_error=1:detect_leaks=1
 export LSAN_OPTIONS=use_stacks=0:use_registers=0:use_globals=1:use_tls=1
 
 # rust
-pathadd $HOME/.cargo/bin
+pathadd "$HOME"/.cargo/bin
 
 # ]]]
 
@@ -116,11 +116,11 @@ ulimit -c unlimited
     alias bc='bc --quiet --mathlib'
     alias c=cargo
     function rust-gdb() {
-        RUST_GDB=/usr/bin/gdb command rust-gdb --quiet --ex start --ex 'break rust_panic' $argv
+        RUST_GDB=/usr/bin/gdb command rust-gdb --quiet --ex start --ex 'break rust_panic' "$argv"
     }
 
     function mkcd() {
-        mkdir -p -- "$1" && cd -P -- "$1"
+        mkdir -p -- "$1" && cd -P -- "$1" || exit
     }
 
     alias f='fd'
@@ -164,9 +164,9 @@ ulimit -c unlimited
     export SSH_AUTH_SOCK=$SOCK
     # pass key as optional argument
     function tmuxssh-add() {
-        rm -f $SSH_AUTH_SOCK
-        pkill -U $USER --signal SIGKILL ssh-agent
-        ssh-agent -a $SSH_AUTH_SOCK
+        rm -f "$SSH_AUTH_SOCK"
+        pkill -U "$USER" --signal SIGKILL ssh-agent
+        ssh-agent -a "$SSH_AUTH_SOCK"
         ssh-add "$@"
     }
 
@@ -174,7 +174,7 @@ ulimit -c unlimited
     function tmuxa {
         if [[ -n "$1" ]]
         then
-            tmux new-session -A -D -s $1
+            tmux new-session -A -D -s "$1"
         else
             tmux attach\; choose-tree
         fi
@@ -192,7 +192,7 @@ ulimit -c unlimited
     function tmuxps {
         while IFS='=' read -r pane_prefix pane_pid
         do
-            pstree -a -l --hide-threads -U -p $pane_pid |
+            pstree -a -l --hide-threads -U -p "$pane_pid" |
                 sed -e "/,$pane_pid/d" \
                     -e "/pstree,/d" \
                     -e "/sed,/d" \
@@ -221,15 +221,15 @@ ulimit -c unlimited
     alias vr='$EDITOR -R'
     # open closest upper obsession session
     function vs() {
-        A=$(pwd)
-        while [ "$(dirname $A)" != "$A" ]
+        A=$PWD
+        while [ "$(dirname "$A")" != "$A" ]
         do
             if [[ -r $A/Session.vim ]]
             then
-                $EDITOR -S $A/Session.vim
+                "$EDITOR" -S "$A"/Session.vim
                 return
             fi
-            A=$(dirname $A)
+            A=$(dirname "$A")
         done
         false
     }
@@ -247,30 +247,30 @@ ulimit -c unlimited
 
     # TODO safer method
     function gem() {
-        local BCK=$(pwd)
+        local BCK=$PWD
         up
-        $EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)
-        cd $BCK
+        "$EDITOR" "$(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)"
+        cd "$BCK" || exit
     }
     function ges() {
-        local BCK=$(pwd)
+        local BCK=$PWD
         up
-        $EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^M" | trs | cut -d" " -f2)
-        cd $BCK
+        "$EDITOR" "$(git status --ignore-submodules --porcelain | /bin/grep --color=no "^M" | trs | cut -d" " -f2)"
+        cd "$BCK" || exit
     }
     function ge() {
-        local BCK=$(pwd)
+        local BCK=$PWD
         up
-        $EDITOR $(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)
-        cd $BCK
+        "$EDITOR" "$(git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)"
+        cd "$BCK" || exit
     }
     function gep() {
         local FROM=${1:-HEAD~}
         local TO=${2:-HEAD}
-        local BCK=$(pwd)
+        local BCK=$PWD
         up
-        $EDITOR $(git show --pretty="format:" --name-only $FROM..$TO | grep . | sort | uniq)
-        cd $BCK
+        "$EDITOR" "$(git show --pretty="format:" --name-only "$FROM..$TO" | grep . | sort | uniq)"
+        cd "$BCK" || exit
     }
 
     alias t='tig --date-order -500'
@@ -281,21 +281,21 @@ ulimit -c unlimited
 
     # exemple of vim IO (we could have directly call python but we can add commands then)
     function prettyjson() {
-        vim -es <<< ":%!python -c 'import json, sys; a = sys.stdin.read(); print json.dumps(json.loads(a), indent=4);'" <<< 'write >>> /dev/stdout' $1
+        vim -es <<< ":%!python -c 'import json, sys; a = sys.stdin.read(); print json.dumps(json.loads(a), indent=4);'" <<< 'write >>> /dev/stdout' "$1"
     }
 
     # go to the upper git repo head (returned value is correct)
     function up() {
-        local B=$(pwd)
-        local A=$(pwd)
+        local B=$PWD
+        local A=$PWD
         while git rev-parse --show-toplevel 1> /dev/null 2> /dev/null
         do
             A=$(git rev-parse --show-toplevel 2> /dev/null)
-            cd $(dirname $A)
+            cd "$(dirname "$A")" || exit
         done
-        cd $A
+        cd "$A" || exit
         # fail is outside a git repo
-        git rev-parse --show-toplevel &> /dev/null || (cd $B ; false)
+        git rev-parse --show-toplevel &> /dev/null || (cd "$B" || exit ; false)
     }
 
     alias gl='git logp -10'
@@ -365,7 +365,7 @@ then
              vimlight    \
              manlight
     do
-        complete -F _complete_alias $a
+        complete -F _complete_alias "$a"
     done
 
     # ]]]
@@ -383,8 +383,8 @@ then
         # returns text to add to bash PS1 prompt (includes branch name)
         __gitdir ()
         {
-        if [ -z "${1-}" ]; then
-            if [ -n "${__git_dir-}" ]; then
+        if [ "${1-}" = "" ]; then
+            if [ "${__git_dir-}" != "" ]; then
                 echo "$__git_dir"
             elif [ -d .git ]; then
                 echo .git
@@ -400,7 +400,7 @@ then
         __git_ps1 ()
         {
         local g="$(__gitdir)"
-        if [ -n "$g" ]; then
+        if [ "$g" != "" ]; then
             local r
             local b
             if [ -f "$g/rebase-merge/interactive" ]; then
@@ -457,7 +457,7 @@ then
                 b="GIT_DIR!"
             fi
             elif [ "true" = "$(git rev-parse --is-inside-work-tree 2>/dev/null)" ]; then
-            if [ -n "${GIT_PS1_SHOWDIRTYSTATE-}" ]; then
+            if [ "${GIT_PS1_SHOWDIRTYSTATE-}" != "" ]; then
                 if [ "$(git config --bool bash.showDirtyState)" != "false" ]; then
                     git diff --no-ext-diff --ignore-submodules \
                     --quiet --exit-code || w=" *"
@@ -469,18 +469,18 @@ then
                     fi
                 fi
             fi
-            if [ -n "${GIT_PS1_SHOWSTASHSTATE-}" ]; then
+            if [ "${GIT_PS1_SHOWSTASHSTATE-}" != "" ]; then
                 git rev-parse --verify refs/stash >/dev/null 2>&1 && s=" S"
             fi
 
-            if [ -n "${GIT_PS1_SHOWUNTRACKEDFILES-}" ]; then
-                if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+            if [ "${GIT_PS1_SHOWUNTRACKEDFILES-}" != "" ]; then
+                if [ "$(git ls-files --others --exclude-standard)" != "" ]; then
                     u=" U"
                 fi
             fi
             fi
 
-            if [ -n "${1-}" ]; then
+            if [ "${1-}" != "" ]; then
                 printf "$1" "$c${b##refs/heads/}$w$i$s$u$r"
             else
                 printf " (%s)" "$c${b##refs/heads/}$w$i$s$u$r"
@@ -498,7 +498,7 @@ then
         export PROMPT_COMMAND=__exit_status
         function __exit_status() {
             local EXIT="$?"
-            if [ $EXIT != 0 ]; then
+            if [ "$EXIT" != 0 ]; then
                 export PS1_EXIT_E="${EXIT} $"
                 export PS1_EXIT=""
             else
