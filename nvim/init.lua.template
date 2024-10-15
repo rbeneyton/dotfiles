@@ -122,71 +122,43 @@ require("conform").setup({
 vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 
 -- ]]]
--- [[[ cmp
+-- [[[ blink
 
-vim.cmd(":packadd cmp-buffer")
-vim.cmd(":packadd cmp-cmdline")
-vim.cmd(":packadd cmp-cmdline-history")
-vim.cmd(":packadd cmp-nvim-lsp")
-vim.cmd(":packadd cmp-path")
-vim.cmd(":packadd nvim-cmp")
+vim.cmd(":packadd blink.cmp")
+require("blink.cmp").setup({
+  -- for keymap, all values may be string | string[]
+  -- use an empty table to disable a keymap
+  keymap = {
+    show = "<C-space>",
+    hide = "<C-e>",
+    accept = "<Tab>",
+    select_prev = { "<C-p>" },
+    select_next = { "<C-n>" },
 
-vim.cmd("set completeopt=menu,menuone,noselect")
-local cmp = require("cmp")
-cmp.setup({
-  snippet = {
-    -- REQUIRED - you must specify a snippet engine
-    expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-    end,
+    show_documentation = "<C-space>",
+    hide_documentation = "<C-space>",
+    scroll_documentation_up = "<C-b>",
+    scroll_documentation_down = "<C-f>",
+
+    snippet_forward = "<Tab>",
+    snippet_backward = "<S-Tab>",
   },
-  window = {
-    -- completion = cmp.config.window.bordered(),
-    -- documentation = cmp.config.window.bordered(),
+
+  trigger = {
+    signature_help = {
+      enabled = true,
+    },
   },
-  mapping = cmp.mapping.preset.insert({
-    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-Space>"] = cmp.mapping.complete(),
-    ["<C-e>"] = cmp.mapping.abort(),
-    ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-  }),
-  sources = cmp.config.sources({
-    { name = "nvim_lsp" },
-    { name = "vsnip" }, -- For vsnip users.
-  }, {
-    { name = "buffer" },
-  }),
-  experimental = {
-    ghost_text = true,
+
+  fuzzy = {
+    prebuiltBinaries = {
+      -- Whether or not to automatically download a prebuilt binary from github. If this is set to `false`
+      -- you will need to manually build the fuzzy binary dependencies by running `cargo build --release`
+      download = false,
+    },
   },
 })
 
--- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline({ "/", "?" }, {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = "buffer" },
-  },
-})
-
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = "path" },
-  }, {
-    { name = "cmdline" },
-  }, {
-    { name = "cmdline_history" },
-  }),
-  matching = { disallow_symbol_nonprefix_matching = false },
-})
-
--- variable to bind cmp to lspa (used later)
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
--- ]]]
 -- [[[ dap
 
 vim.cmd(":packadd nvim-dap")

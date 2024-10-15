@@ -175,3 +175,6 @@
 [submodule "nvim/pack/extend/opt/conform.nvim"]
 	path = nvim/pack/extend/opt/conform.nvim
 	url = https://github.com/stevearc/conform.nvim.git
+[submodule "nvim/pack/extend/opt/blink.cmp"]
+	path = nvim/pack/extend/opt/blink.cmp
+	url = https://github.com/Saghen/blink.cmp.git
