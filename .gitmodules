@@ -178,3 +178,6 @@
 [submodule "nvim/pack/extend/opt/blink.cmp"]
 	path = nvim/pack/extend/opt/blink.cmp
 	url = https://github.com/Saghen/blink.cmp.git
+[submodule "vim/pack/theme/opt/lualine"]
+	path = vim/pack/theme/opt/lualine
+	url = https://github.com/nvim-lualine/lualine.nvim.git
