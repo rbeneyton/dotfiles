@@ -121,7 +121,7 @@ git_email = "richard.beneyton@gmail.com"
 # so we use either nvim or page for double deploy
 "page/lua/init-light.lua.template" = { target = "~/.config/page/init.lua", type = "template" }
 "nvim/lua/init-light.lua.template" = { target = "~/.config/nvim/lua/init-light.lua", type = "template" }
-"nvim/init.lua.template" = { target = "~/.config/nvim/init.lua", type = "template" }
+"nvim/init.lua.template" = { target = "nvim/init.lua", type = "template" }
 "nvim/syntax/.clang-format" = "~/.clang-format"
 "nvim" = { target = "~/.config/nvim", type = "symbolic", recurse = false }
 
