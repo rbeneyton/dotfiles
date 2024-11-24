@@ -17,9 +17,10 @@ $(BIN):
 toto:
 	echo $(NPROC)
 
-UTILS = ${HOME}/utils
+UTILS = ${HOME}/utils.$(shell hostname -s)
 $(UTILS):
 	mkdir -p $@
+utils : $(UTILS)
 
 utils-install: gdb git tig tmux dotter neovim neovim-lsp-python fish
 

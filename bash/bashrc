@@ -15,8 +15,10 @@ pathadd "$HOME"/bin
 
 pathadd "$HOME"/firefox
 
-pathadd "$HOME"/utils/fish_install/bin
-manpathadd "$HOME"/utils/fish_install/share/man
+export UTILS="$HOME/utils.$(hostname -s)"
+
+pathadd "$UTILS"/fish_install/bin
+manpathadd "$UTILS"/fish_install/share/man
 
 # fish as default shell
 if [[ -n $PS1 ]] && [[ -z $NOFISH ]]
@@ -28,26 +30,26 @@ then
     fi
 fi
 
-pathadd "$HOME"/utils/git_install/bin
-manpathadd "$HOME"/utils/git_install/share/man
+pathadd "$UTILS"/git_install/bin
+manpathadd "$UTILS"/git_install/share/man
 
-pathadd "$HOME"/utils/tig_install/bin
-manpathadd "$HOME"/utils/tig_install/share/man
+pathadd "$UTILS"/tig_install/bin
+manpathadd "$UTILS"/tig_install/share/man
 
-pathadd "$HOME"/utils/gcc_install/bin
-manpathadd "$HOME"/utils/gcc_install/share/man
+pathadd "$UTILS"/gcc_install/bin
+manpathadd "$UTILS"/gcc_install/share/man
 
-pathadd "$HOME"/utils/gdb_install/bin
-manpathadd "$HOME"/utils/gdb_install/share/man
+pathadd "$UTILS"/gdb_install/bin
+manpathadd "$UTILS"/gdb_install/share/man
 
-pathadd "$HOME"/utils/neovim_install/bin
-manpathadd "$HOME"/utils/neovim_install/share/man
+pathadd "$UTILS"/neovim_install/bin
+manpathadd "$UTILS"/neovim_install/share/man
 
-pathadd "$HOME"/utils/tmux_install/bin
-manpathadd "$HOME"/utils/tmux_install/share/man
+pathadd "$UTILS"/tmux_install/bin
+manpathadd "$UTILS"/tmux_install/share/man
 
-pathadd "$HOME"/utils/llvm_install/bin
-manpathadd "$HOME"/utils/llvm_install/share/man
+pathadd "$UTILS"/llvm_install/bin
+manpathadd "$UTILS"/llvm_install/share/man
 if type llvm-symbolizer &> /dev/null; then
     # FIXME safe which
     export ASAN_SYMBOLIZER_PATH="$(which llvm-symbolizer)"
@@ -206,9 +208,9 @@ ulimit -c unlimited
 # ]]]
 # [[[ editor
 
-    if [[ -r "${HOME}/utils/neovim_install/bin/nvim" ]]
+    if [[ -r "${UTILS}/neovim_install/bin/nvim" ]]
     then
-        export EDITOR=${HOME}/utils/neovim_install/bin/nvim
+        export EDITOR=${UTILS}/neovim_install/bin/nvim
         export MANPAGER='nvim +Man!'
         alias vim='$EDITOR'
         alias vimdiff='nvim -d'

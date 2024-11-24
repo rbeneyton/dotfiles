@@ -27,26 +27,28 @@ pathadd $HOME/bin
 
 pathadd $HOME/firefox
 
-pathadd $HOME/utils/git_install/bin
-manpathadd $HOME/utils/git_install/share/man
+set --global --export UTILS $HOME/utils.(hostname -s)
 
-pathadd $HOME/utils/tig_install/bin
-manpathadd $HOME/utils/tig_install/share/man
+pathadd $UTILS/git_install/bin
+manpathadd $UTILS/git_install/share/man
 
-pathadd $HOME/utils/gcc_install/bin
-manpathadd $HOME/utils/gcc_install/share/man
+pathadd $UTILS/tig_install/bin
+manpathadd $UTILS/tig_install/share/man
 
-pathadd $HOME/utils/gdb_install/bin
-manpathadd $HOME/utils/gdb_install/share/man
+pathadd $UTILS/gcc_install/bin
+manpathadd $UTILS/gcc_install/share/man
 
-pathadd $HOME/utils/neovim_install/bin
-manpathadd $HOME/utils/neovim_install/share/man
+pathadd $UTILS/gdb_install/bin
+manpathadd $UTILS/gdb_install/share/man
 
-pathadd $HOME/utils/tmux_install/bin
-manpathadd $HOME/utils/tmux_install/share/man
+pathadd $UTILS/neovim_install/bin
+manpathadd $UTILS/neovim_install/share/man
 
-pathadd $HOME/utils/llvm_install/bin
-manpathadd $HOME/utils/llvm_install/share/man
+pathadd $UTILS/tmux_install/bin
+manpathadd $UTILS/tmux_install/share/man
+
+pathadd $UTILS/llvm_install/bin
+manpathadd $UTILS/llvm_install/share/man
 if type llvm-symbolizer &>/dev/null
     # FIXME safe which
     set --global --export ASAN_SYMBOLIZER_PATH (which llvm-symbolizer)
@@ -54,8 +56,8 @@ end
 set --global --export ASAN_OPTIONS abort_on_error=1:detect_leaks=1
 set --global --export LSAN_OPTIONS use_stacks=0:use_registers=0:use_globals=1:use_tls=1
 
-pathadd $HOME/utils/fish_install/bin
-manpathadd $HOME/utils/fish_install/share/man
+pathadd $UTILS/fish_install/bin
+manpathadd $UTILS/fish_install/share/man
 
 # XXX fish MANPATH bug #2090
 manpathadd ":"
@@ -223,8 +225,8 @@ end
 # ]]]
 # [[[ editor
 
-if test -r "$HOME/utils/neovim_install/bin/nvim"
-    set --global --export EDITOR $HOME/utils/neovim_install/bin/nvim
+if test -r "$UTILS/neovim_install/bin/nvim"
+    set --global --export EDITOR $UTILS/neovim_install/bin/nvim
     set --global --export MANPAGER 'nvim +Man!'
     function vim
         $EDITOR $argv
