@@ -46,13 +46,13 @@ vim.keymap.set("n", "<leader>e", function()
   vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
 end, { desc = "Toggle Diagnostics" })
 
-vim.cmd(":packadd lsp_signature")
-require("lsp_signature").setup({
-  doc_lines = 0,
-  handler_opts = {
-    border = "none",
-  },
-})
+-- vim.cmd(":packadd lsp_signature")
+-- require("lsp_signature").setup({
+--   doc_lines = 0,
+--   handler_opts = {
+--     border = "none",
+--   },
+-- })
 
 vim.lsp.handlers["textDocument/signatureHelp"] =
   vim.lsp.with(vim.lsp.handlers.signature_help, {
@@ -189,21 +189,7 @@ vim.cmd(":packadd blink.cmp")
 require("blink.cmp").setup({
   -- for keymap, all values may be string | string[]
   -- use an empty table to disable a keymap
-  keymap = {
-    show = "<C-space>",
-    hide = "<C-e>",
-    accept = "<Tab>",
-    select_prev = { "<C-p>" },
-    select_next = { "<C-n>" },
-
-    show_documentation = "<C-space>",
-    hide_documentation = "<C-space>",
-    scroll_documentation_up = "<C-b>",
-    scroll_documentation_down = "<C-f>",
-
-    snippet_forward = "<Tab>",
-    snippet_backward = "<S-Tab>",
-  },
+  keymap = "default",
 
   trigger = {
     signature_help = {
@@ -212,9 +198,12 @@ require("blink.cmp").setup({
   },
 
   fuzzy = {
-    prebuiltBinaries = {
+    prebuilt_binaries = {
       -- Whether or not to automatically download a prebuilt binary from github. If this is set to `false`
       -- you will need to manually build the fuzzy binary dependencies by running `cargo build --release`
+      -- cd nvim/pack/extend/opt/blink.cmp
+      -- unpatch ~/.cargo/config.toml
+      -- c b --release
       download = false,
     },
   },
@@ -996,6 +985,8 @@ vim.g.rustaceanvim = {
 -- LSP shortcuts
 vim.lsp.set_log_level("off")
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+
+capabilities = require("blink.cmp").get_lsp_capabilities()
 
 -- cmake
 lsp.cmake.setup({
