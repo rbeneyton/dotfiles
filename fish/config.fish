@@ -341,17 +341,17 @@ alias tigreflog "git reflog --format=raw --decorate=full | tig --pretty=raw"
 function up -d "go to the upper git repo head"
     set BCK (pwd)
     set A (pwd)
-    while git rev-parse --show-toplevel 1>/dev/null 2>/dev/null
+    while git rev-parse --show-toplevel &>/dev/null
         set A (git rev-parse --show-toplevel 2> /dev/null)
         cd (dirname $A)
     end
-    cd $A
-    set --erase A
-    # fail is outside a git repo
-    if git rev-parse --show-toplevel &>/dev/null
+    cd $BCK # keep `cd -` expected behavior
+    if git -C $A rev-parse --show-toplevel &>/dev/null
+        cd $A
+        set --erase A
         true
     else
-        cd $BCK
+        set --erase A
         false
     end
 end
