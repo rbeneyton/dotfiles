@@ -5,6 +5,7 @@ set show-notes = true
 set line-graphics = utf-8
 set truncation-delimiter = utf-8
 set tab-size = 4
+set reference-format = ⁅HEAD⁆
 
 # exit tig and print current SHA1, also set in tmux buffer
 # (S still stay for status)
@@ -18,6 +19,8 @@ bind generic I <sh -c " \
 color diff-stat green default # default is blue and unreadable
 #color date 165 235 bold # date in grey
 color date blue black bold # date in grey
+# allow to spot HEAD easily
+color main-head red default bold
 
 # Limit number of commits loaded by default to 1000
 #set main-options = -n 1000
