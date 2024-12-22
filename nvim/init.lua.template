@@ -1028,6 +1028,12 @@ if vim.env.TMUX then
 
   vim.g.slime_dispatch_ipython_pause = 100
   vim.g.slime_bracketed_paste = 1
+  -- easy markdown exec
+  vim.cmd([[
+  function SlimeOverride_EscapeText_markdown(text)
+      return system("rg -v '```'", a:text)
+  endfunction
+  ]])
 end
 
 -- ]]]
