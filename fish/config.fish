@@ -406,13 +406,14 @@ if status --is-interactive
         bind \cO history-prefix-search-forward # C-o
         bind \cD kill-word
         #personal mapping:
-        # w[<-EATW]         u[OK] i[TAB] o[HIST-] p[HIST-]
-        # d[EATW->] f[word->] g[eat->] h[<-eat] j[<-word]
+        # q[K->] w[<-EATW]         u[OK] i[TAB] o[HIST-] p[HIST-]
+        # d[EATW->] f[word->] g[eat->] h[<-eat] j[<-word] k[accept]
         #                v[->]              n[<-]  m[ENTER]
 
         # bind \t complete-and-search # always search mode (shift+tab) on tab
         bind \cD delete-or-exit # restore usual behavior
-        bind \cF accept-autosuggestion # C-f accept suggestion
+        bind \cK accept-autosuggestion # C-k accept suggestion
+        bind \cQ kill-line # C-q kill-line (usually C-k)
         bind \cY accept-autosuggestion execute # C-y accept suggestion + execute
     end
 
