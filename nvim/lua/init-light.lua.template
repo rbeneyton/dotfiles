@@ -12,7 +12,9 @@ vim.cmd(":packadd nvim-treesitter")
 -- treesitter xit
 vim.cmd(":packadd tree-sitter-xit")
 require("nvim-treesitter.install").compilers = {
+  -- stylua: ignore start
   "{{env_var "HOME"}}/utils/gcc_install/bin/gcc",
+  -- stylua: ignore end
   vim.fn.getenv('CC'),
   "gcc",
   "clang"
