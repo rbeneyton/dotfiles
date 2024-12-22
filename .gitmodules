@@ -181,3 +181,6 @@
 [submodule "vim/pack/theme/opt/lualine"]
 	path = vim/pack/theme/opt/lualine
 	url = https://github.com/nvim-lualine/lualine.nvim.git
+[submodule "nvim/pack/extend/opt/mason-tool-installer"]
+	path = nvim/pack/extend/opt/mason-tool-installer
+	url = https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim.git

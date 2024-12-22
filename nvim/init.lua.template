@@ -18,16 +18,61 @@ vim.api.nvim_set_option("shadafile", "")
 vim.cmd(":packadd mason")
 require("mason").setup()
 
+vim.cmd(":packadd mason-tool-installer")
+require("mason-tool-installer").setup({
+  ensure_installed = {
+    -- run :MasonToolsUpdateSync to force all
+
+    -- C++
+    { "clang-format", version = "19.1.5" },
+    { "clangd", version = "19.1.2" },
+
+    -- python
+    { "ruff", auto_update = true },
+    "basedpyright",
+
+    -- rust
+    -- XXX managed by rustaceanvim
+
+    -- lua
+    "stylua",
+    "lua-language-server",
+
+    -- cmake
+    "cmake-language-server",
+    "gersemi",
+
+    -- markdown
+    "mdformat",
+
+    -- yaml
+    "yamlfix",
+
+    -- fish
+    -- directly via embedded fish_indent
+
+    -- other shells
+    "shellharden",
+    "shellcheck",
+  },
+  auto_update = false,
+  run_on_start = true,
+  start_delay = 3000,
+  debounce_hours = 48,
+  integrations = {
+    ["mason-lspconfig"] = true,
+    ["mason-null-ls"] = false,
+    ["mason-nvim-dap"] = false,
+  },
+})
+
 vim.cmd(":packadd mason-lspconfig")
 require("mason-lspconfig").setup({
-  -- FIXME how to force ruff ???
-  ensure_installed = { "clangd", "cmake", "lua_ls", "ruff", "basedpyright" },
+  ensure_installed = {},
 })
 require("mason-lspconfig").setup_handlers({
   -- rustaceanvim will manage its conf
   ["rust_analyzer"] = function() end,
-  -- ruff have its own server now
-  -- ['ruff-lsp'] = function() end,
 })
 
 vim.cmd(":packadd nvim-lspconfig")
@@ -940,9 +985,11 @@ if vim.env.TMUX then
   vim.g.slime_dont_ask_default = 1
   -- for ipython set %autoindent to OFF
   vim.g.slime_python_ipython = 1
+
   -- stylua: ignore start
   vim.g.slime_paste_file = "{{env_var "HOME"}}/.slime_paste"
-  -- stylua: ignore stop
+  -- stylua: ignore end
+
   vim.g.slime_dispatch_ipython_pause = 100
   vim.g.slime_bracketed_paste = 1
 end
