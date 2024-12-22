@@ -119,12 +119,17 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
     vim.keymap.set("n", "K", function()
-      vim.lsp.buf.hover()
-    end, { silent = true, noremap = true, buffer = ev.buf })
+      -- map also 'K' to close hover window (so K(display) then K(into) then K(close))
+      if vim.api.nvim_win_get_config(0).relative == "win" then
+        vim.api.nvim_win_close(0, false)
+      else
+        vim.lsp.buf.hover()
+      end
+    end, { silent = true, noremap = true })
     vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
     vim.keymap.set("n", "<C-k>", function()
-      -- vim.lsp.buf.signature_help()
-      require("lsp_signature").toggle_float_win()
+      vim.lsp.buf.signature_help()
+      -- require("lsp_signature").toggle_float_win()
     end, { silent = true, noremap = true, buffer = ev.buf })
     vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
     vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
