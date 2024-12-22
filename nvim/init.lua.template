@@ -234,12 +234,43 @@ vim.cmd(":packadd blink.cmp")
 require("blink.cmp").setup({
   -- for keymap, all values may be string | string[]
   -- use an empty table to disable a keymap
-  keymap = "default",
+  keymap = {
+    ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+    ["<C-h>"] = { "hide" },
+    ["<C-y>"] = { "select_and_accept" },
+    ["<C-p>"] = { "select_prev", "fallback" },
+    ["<C-n>"] = { "select_next", "fallback" },
+    ["<C-b>"] = { "scroll_documentation_up", "fallback" },
+    ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+  },
 
-  trigger = {
-    signature_help = {
-      enabled = true,
+  completion = {
+    keyword = { range = "full" },
+    menu = {
+      draw = {
+        columns = {
+          { "label", "label_description", gap = 1 },
+          { "kind_icon", "kind" },
+        },
+      },
     },
+    ghost_text = { enabled = true },
+  },
+
+  sources = {
+    -- no snippet
+    default = { "lsp", "path", "buffer" },
+    -- no snippet NEVER
+    transform_items = function(_, items)
+      return vim.tbl_filter(function(item)
+        return item.kind
+          ~= require("blink.cmp.types").CompletionItemKind.Snippet
+      end, items)
+    end,
+  },
+
+  signature = {
+    enabled = true,
   },
 
   fuzzy = {
@@ -1033,7 +1064,20 @@ vim.g.rustaceanvim = {
 vim.lsp.set_log_level("off")
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 
-capabilities = require("blink.cmp").get_lsp_capabilities()
+local capabilities = require("blink.cmp").get_lsp_capabilities({
+  textDocument = {
+    completion = { completionItem = { snippetSupport = false } },
+  },
+})
+
+-- rust-analyzer
+-- lsp["rust-analyzer"].setup({
+--   completion = {
+--     capable = {
+--       snippets = "add_parenthesis",
+--     },
+--   },
+-- })
 
 -- cmake
 lsp.cmake.setup({
