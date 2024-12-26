@@ -12,6 +12,8 @@ vim.api.nvim_set_option("ruler", true)
 vim.api.nvim_set_option("showcmd", true)
 vim.api.nvim_set_option("shadafile", "")
 
+vim.cmd(":packadd tcomment-vim")
+
 -- ]]]
 -- [[[ mason/lsp
 
