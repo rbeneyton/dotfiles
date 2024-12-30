@@ -190,6 +190,27 @@ $(ALACRITTY) : | $(BIN) $(UTILS) rust-update
 alacritty: $(ALACRITTY)
 
 # }}}
+# {{{ wezterm
+
+WEZTERM = $(BIN)/wezterm
+$(WEZTERM) : | $(BIN) $(UTILS) rust-update
+	$(eval NAME := wezterm)
+	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
+	$(eval BUILD := $(SRC)/build)
+	rm -rf $(SRC)
+	git clone --depth=1 --branch=main --recursive https://github.com/wez/wezterm.git
+	$(CARGO) build \
+		--target-dir $(BUILD) \
+		--manifest-path $(SRC)/Cargo.toml \
+		--no-default-features \
+		--features vendored-fonts \
+		--release
+	cp -f $(BUILD)/release/$(NAME) $(BIN)/
+	cp -f $(BUILD)/release/$(NAME)-gui $(BIN)/
+	rm -rf $(SRC)
+wezterm: $(WEZTERM)
+
+# }}}
 # {{{ tmux
 
 LIBEVENT_INSTALL = $(UTILS)/libevent_install
@@ -494,6 +515,8 @@ debian-install-graphic:
 	# apt-get install intel-media-va-driver-non-free
 	apt-get install i965-va-driver-shaders intel-gpu-tools
 	apt install vlc mpv
+	# wezterm build deps
+	apt install -t bookworm-backports libx11-xcb-dev libxcb-ewmh-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-render0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev xorg-dev libxcb-util-dev
 	apt-get clean
 
 debian-install-misc:

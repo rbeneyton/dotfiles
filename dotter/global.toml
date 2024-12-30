@@ -61,6 +61,12 @@ awesome_height = "20"
 [alacritty.variables]
 alacritty_font_size = 10
 
+# wezterm
+[wezterm.files]
+"wezterm/wezterm.lua" = "~/.config/wezterm/wezterm.lua"
+[wezterm.variables]
+wezterm_font_size = 12
+
 # xkb
 [xkb.files]
 # sadly defining all in a unique keymap main file seems unsupported
@@ -184,6 +190,7 @@ depends = [
     "top",
     "valgrind",
     "xkb",
+    "wezterm",
     "zathura",
 ]
 
