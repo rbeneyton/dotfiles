@@ -181,11 +181,10 @@ $(ALACRITTY) : | $(BIN) $(UTILS) rust-update
 	# git clone --branch master --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
 	# git clone --branch v0.12.2 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
 	git clone --branch v0.13 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
-	RUSTFLAGS="-C target-cpu=native" \
-		$(CARGO) build \
-			--target-dir $(BUILD) \
-			--manifest-path $(SRC)/Cargo.toml \
-			--release
+	$(CARGO) build \
+		--target-dir $(BUILD) \
+		--manifest-path $(SRC)/Cargo.toml \
+		--release
 	cp -f $(BUILD)/release/$(NAME) $(BIN)/
 	rm -rf $(SRC)
 alacritty: $(ALACRITTY)
@@ -415,7 +414,7 @@ $(RG) : | $(BIN) $(UTILS) rust-update
 	# version with 'no submodule' option
 	git clone --branch ignoreNestedRepos --single-branch --depth 30 https://github.com/zaneduffield/ripgrep.git $(SRC)
 	# TODO simd
-	RUSTC_BOOTSTRAP=encoding_rs RUSTFLAGS="-C target-cpu=native" \
+	RUSTC_BOOTSTRAP=encoding_rs \
 		$(CARGO) build \
 			--target-dir $(BUILD) \
 			--manifest-path $(SRC)/Cargo.toml \

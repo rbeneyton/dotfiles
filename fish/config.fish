@@ -74,6 +74,8 @@ set --global --export LC_TIME 'C.UTF-8' # never 12H AM/PM date format
 # gdb fix
 set --global --export SOURCE_HIGHLIGHT_DATADIR $HOME/.source-highlight
 
+set --global --export RUSTFLAGS "-C target-cpu=native"
+
 ulimit -c unlimited
 
 # ]]]
