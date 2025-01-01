@@ -1,7 +1,7 @@
 local wezterm = require("wezterm")
 local config = {}
 
-config.font = wezterm.font("DejaVuSansM Nerd Font Mono", { weight = "Bold" })
+config.font = wezterm.font("DejaVuSansM Nerd Font Mono", { weight = "Medium" })
 
 -- stylua: ignore start
 config.font_size = {{ wezterm_font_size }}

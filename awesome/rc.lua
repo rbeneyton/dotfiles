@@ -54,7 +54,7 @@ beautiful.init(config_dir .. "theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 -- terminal = "konsole"
-terminal = "alacritty"
+terminal = "wezterm"
 editor = "nvim"
 editor_cmd = terminal .. " -e " .. editor
 
