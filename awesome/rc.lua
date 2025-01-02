@@ -21,7 +21,7 @@ local debian = require("debian.menu")
 
 -- local definition
 local host = "{{dotter.hostname}}"
-local home = "{{trim (command_output "realpath ~")}}"
+local home = '{{trim (command_output "realpath ~")}}'
 local config_dir = home .. "/.config/awesome/"
 
 -- [[[ Error handling
@@ -54,7 +54,8 @@ beautiful.init(config_dir .. "theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 -- terminal = "konsole"
-terminal = "wezterm"
+-- terminal = "wezterm"
+terminal = "alacritty"
 editor = "nvim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -101,7 +102,7 @@ end
 -- ]]]
 -- [[[ Menu
 -- Create a launcher widget and a main menu
-myawesomemenu = {
+local myawesomemenu = {
    { "hotkeys", function() return false, hotkeys_popup.show_help end},
    { "manual", terminal .. " -e man awesome" },
    { "edit config", editor_cmd .. " " .. awesome.conffile },
