@@ -12,17 +12,18 @@ vim.cmd(":packadd nvim-treesitter")
 -- treesitter xit
 vim.cmd(":packadd tree-sitter-xit")
 require("nvim-treesitter.install").compilers = {
-  -- stylua: ignore start
-  "{{env_var "HOME"}}/utils/gcc_install/bin/gcc",
-  -- stylua: ignore end
-  vim.fn.getenv('CC'),
+
+  -- stylua: ignore
+  '{{env_var "HOME"}}/utils/gcc_install/bin/gcc',
+
+  vim.fn.getenv("CC"),
   "gcc",
-  "clang"
+  "clang",
 }
 local parser_config = require("nvim-treesitter.parsers")
 parser_config.xit = {
   install_info = {
-    url = "{{env_var "HOME"}}/.dotfiles/nvim/pack/parser/opt/tree-sitter-xit",
+    url = '{{env_var "HOME"}}/.dotfiles/nvim/pack/parser/opt/tree-sitter-xit',
     files = { "src/parser.c" },
     generate_requires_npm = false, -- if stand-alone parser without npm dependencies
     requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
@@ -32,10 +33,22 @@ parser_config.xit = {
 
 -- " :lua vim.opt.runtimepath:append("~/.config/nvim/parsers")
 
-require("nvim-treesitter.configs").setup {
-  ensure_installed = { "bash", "c", "comment", "cpp", "cmake",
-                       "fish", "json", "lua", "markdown",
-                       "python", "rust", "toml", "xit" },
+require("nvim-treesitter.configs").setup({
+  ensure_installed = {
+    "bash",
+    "c",
+    "comment",
+    "cpp",
+    "cmake",
+    "fish",
+    "json",
+    "lua",
+    "markdown",
+    "python",
+    "rust",
+    "toml",
+    "xit",
+  },
   sync_install = false,
   auto_install = false,
   ignore_install = { "help", "javascript" },
@@ -51,14 +64,18 @@ require("nvim-treesitter.configs").setup {
   highlight = {
     enable = true,
     is_supported = function()
-        if vim.fn.getfsize(vim.fn.expand('%')) > 512 * 1024 then
-            vim.api.nvim_echo({ { vim.fn.expand('%') .. ": disable tree-sitter due to size" } }, true, {})
-            return false
-        end
-        return true
+      if vim.fn.getfsize(vim.fn.expand("%")) > 512 * 1024 then
+        vim.api.nvim_echo(
+          { { vim.fn.expand("%") .. ": disable tree-sitter due to size" } },
+          true,
+          {}
+        )
+        return false
+      end
+      return true
     end,
     -- list of language that will be disabled
-    disable = { "help", },
+    disable = { "help" },
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
@@ -69,41 +86,41 @@ require("nvim-treesitter.configs").setup {
   indent = {
     enable = false,
   },
-}
+})
 
 vim.cmd(":packadd rainbow-delimiters")
-local rainbow_delimiters = require 'rainbow-delimiters'
+local rainbow_delimiters = require("rainbow-delimiters")
 vim.g.rainbow_delimiters = {
-    strategy = {
-        [''] = rainbow_delimiters.strategy['global'],
-        vim = rainbow_delimiters.strategy['local'],
-    },
-    query = {
-        [''] = 'rainbow-delimiters',
-        lua = 'rainbow-blocks',
-    },
-    priority = {
-        [''] = 110,
-        lua = 210,
-    },
-    highlight = {
-        'RainbowDelimiterRed',
-        'RainbowDelimiterYellow',
-        'RainbowDelimiterBlue',
-        'RainbowDelimiterOrange',
-        'RainbowDelimiterGreen',
-        'RainbowDelimiterViolet',
-        'RainbowDelimiterCyan',
-    },
+  strategy = {
+    [""] = rainbow_delimiters.strategy["global"],
+    vim = rainbow_delimiters.strategy["local"],
+  },
+  query = {
+    [""] = "rainbow-delimiters",
+    lua = "rainbow-blocks",
+  },
+  priority = {
+    [""] = 110,
+    lua = 210,
+  },
+  highlight = {
+    "RainbowDelimiterRed",
+    "RainbowDelimiterYellow",
+    "RainbowDelimiterBlue",
+    "RainbowDelimiterOrange",
+    "RainbowDelimiterGreen",
+    "RainbowDelimiterViolet",
+    "RainbowDelimiterCyan",
+  },
 }
 
 vim.cmd(":packadd xit")
-require('xit').setup {
+require("xit").setup({
   disable_default_highlights = true, -- broken, defined at end of this file
   disable_default_mappings = false,
   default_jump_group = "all", -- possible values: all, open_and_ongoing
   wrap_jumps = true,
-}
+})
 vim.cmd([[
 " xit treesitter colors plugin broken when retrieving hi colors from theme
 hi! link @XitHeadline Todo " \o/ meta! \o/ red/pink
@@ -133,9 +150,9 @@ hi! link @XitObsoleteTaskPriority DiagnosticInfo
 -- [[[ main settings
 
 -- fish shell might break some features
-if vim.go.shell:match('fish$') then
-    -- as PS1 isn't defined, we don't need NOFISH
-    vim.go.shell = '/bin/bash'
+if vim.go.shell:match("fish$") then
+  -- as PS1 isn't defined, we don't need NOFISH
+  vim.go.shell = "/bin/bash"
 end
 
 -- allow bash aliases in :! commands
@@ -143,9 +160,9 @@ vim.env.BASH_ENV = "~/.config/nvim/bash_env"
 
 -- technically unrequired by neovim as hardcoded
 vim.opt.compatible = false
-vim.opt.encoding = 'utf-8'
+vim.opt.encoding = "utf-8"
 -- technically unrequired by neovim as default ones now
-vim.opt.backspace = 'indent,eol,start'
+vim.opt.backspace = "indent,eol,start"
 vim.opt.autoindent = true
 vim.opt.autoread = true
 vim.opt.hidden = true
@@ -161,60 +178,63 @@ vim.opt.showmode = false
 vim.opt_local.textwidth = 0
 vim.opt.incsearch = true
 vim.opt.hlsearch = true
-vim.opt.wildchar = ('\t'):byte() -- funny way to type <Tab>
+vim.opt.wildchar = ("\t"):byte() -- funny way to type <Tab>
 vim.opt.wildmenu = true
 
 -- own
 vim.opt.writebackup = false
-vim.opt.backupcopy = 'auto,breakhardlink'
+vim.opt.backupcopy = "auto,breakhardlink"
 vim.opt.timeoutlen = 300 -- 300ms after typing for keymap
 vim.opt.ttimeoutlen = 300 -- 300ms after ESC (was 10
 vim.opt_local.list = true -- show tabs
-vim.opt.listchars = 'tab:>-,trail:-,extends:>,precedes:<'
+vim.opt.listchars = "tab:>-,trail:-,extends:>,precedes:<"
 vim.opt.lazyredraw = true
 vim.opt.report = 0
 vim.opt_local.shiftwidth = 4
 vim.opt.scrolloff = 2 -- give context/margin
-vim.opt.suffixes = '.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc,.cmi,.cmo,.blk.c'
+vim.opt.suffixes =
+  ".bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc,.cmi,.cmo,.blk.c"
 vim.opt_local.tabstop = 4
 vim.opt_local.softtabstop = 4
 vim.opt_local.expandtab = true
-vim.opt_local.colorcolumn = '+1'
+vim.opt_local.colorcolumn = "+1"
 vim.opt.title = true
 vim.opt.shada = "'1000,/1000,:1000,<1000,@1000,h"
 vim.opt.ignorecase = true
 vim.opt.smartcase = true -- case sensitive when search contains capital
-vim.opt.iskeyword = vim.opt.iskeyword + '-' -- consider - as part of word
-vim.opt.whichwrap = '' -- was "<,>,[,]" so left and right but I unmap them
-vim.opt.wildmode = 'longest,list,full'
-vim.opt_local.foldmethod = 'marker'
+vim.opt.iskeyword = vim.opt.iskeyword + "-" -- consider - as part of word
+vim.opt.whichwrap = "" -- was "<,>,[,]" so left and right but I unmap them
+vim.opt.wildmode = "longest,list,full"
+vim.opt_local.foldmethod = "marker"
 vim.opt.foldenable = true -- in case someone reset it
 vim.opt.foldlevelstart = 2 -- was 20
 vim.opt.tildeop = true
 -- default statuline
-vim.opt.cinoptions = ''
-vim.opt.cinoptions = vim.opt.cinoptions + 'L0.5s'          -- align labels at 0.5 shiftwidth
-vim.opt.cinoptions = vim.opt.cinoptions + ':0.5s,=0.5s'    -- same for case labels and code following a label
-vim.opt.cinoptions = vim.opt.cinoptions + 'g0.5s,h0.5s'    -- same for c++ stuff
-vim.opt.cinoptions = vim.opt.cinoptions + 't0'             -- type on the line before the functions is not idented
-vim.opt.cinoptions = vim.opt.cinoptions + '(0,Ws'          -- indent in functions ( ... ) when it breaks
-vim.opt.cinoptions = vim.opt.cinoptions + 'm1'             -- aligh the closing ) properly
-vim.opt.cinoptions = vim.opt.cinoptions + 'j1'             -- java/javscript -> fixes blocks
+vim.opt.cinoptions = ""
+vim.opt.cinoptions = vim.opt.cinoptions + "L0.5s" -- align labels at 0.5 shiftwidth
+vim.opt.cinoptions = vim.opt.cinoptions + ":0.5s,=0.5s" -- same for case labels and code following a label
+vim.opt.cinoptions = vim.opt.cinoptions + "g0.5s,h0.5s" -- same for c++ stuff
+vim.opt.cinoptions = vim.opt.cinoptions + "t0" -- type on the line before the functions is not idented
+vim.opt.cinoptions = vim.opt.cinoptions + "(0,Ws" -- indent in functions ( ... ) when it breaks
+vim.opt.cinoptions = vim.opt.cinoptions + "m1" -- aligh the closing ) properly
+vim.opt.cinoptions = vim.opt.cinoptions + "j1" -- java/javscript -> fixes blocks
 -- vim.opt.cinoptions = vim.opt.cinoptions + 'l0.5s' -- align code after label ignoring braces.
 vim.opt.wrapscan = false -- stop search at end of buffer
-vim.opt.virtualedit = 'onemore' -- allow to be on \n
-vim.opt.spelllang = 'en_us,fr'
+vim.opt.virtualedit = "onemore" -- allow to be on \n
+vim.opt.spelllang = "en_us,fr"
 -- make <enter> work in popup
 vim.cmd([[:inoremap <cr> <C-R>=pumvisible() ? "\<lt>C-Y>" : "\<lt>cr>"<cr>]])
 
 -- ]]]
 -- [[[ external tools: diff, make, grep, path…
 
-vim.opt.diffopt = 'internal,filler,closeoff,context:5,iwhite,vertical,algorithm:histogram'
-vim.opt.makeprg = 'LC_ALL=C make MONOCHROME=1 L=1'
-vim.opt.grepprg = '{{env_var "HOME"}}/bin/rg --no-heading --ignore-nested-git --vimgrep'
-vim.opt.grepformat = '%f:%l:%c:%m'
-vim.opt.path = '.,./include,./../include'
+vim.opt.diffopt =
+  "internal,filler,closeoff,context:5,iwhite,vertical,algorithm:histogram"
+vim.opt.makeprg = "LC_ALL=C make MONOCHROME=1 L=1"
+vim.opt.grepprg =
+  '{{env_var "HOME"}}/bin/rg --no-heading --ignore-nested-git --vimgrep'
+vim.opt.grepformat = "%f:%l:%c:%m"
+vim.opt.path = ".,./include,./../include"
 
 --- ]]]
 --- [[[ FIXME XXX NOT defaults but will be modified by init.vim
@@ -222,7 +242,7 @@ vim.opt.path = '.,./include,./../include'
 vim.opt.laststatus = 0 -- no statusline -- will be change in init.lua
 vim.opt.ruler = false -- no cursor position
 vim.opt.showcmd = false -- no command in lower right
-vim.opt.shadafile = 'NONE' -- no history load/store
+vim.opt.shadafile = "NONE" -- no history load/store
 vim.opt_local.wrapmargin = 1
 
 -- XXX restore correct pre 0.10 swapfile behavior with E325 (tmux own-patched)
@@ -234,24 +254,24 @@ vim.cmd([[:autocmd SwapExists * :let v:swapchoice = '']])
 -- ]]]
 -- [[[ clipboard
 
-vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard = "unnamedplus"
 
 -- share clipboard via terminal
-require('osc52').setup {
-  max_length = 0,      -- Maximum length of selection (0 for no limit)
-  silent     = false,  -- Disable message on successful copy
-  trim       = false,  -- Trim surrounding whitespaces before copy
-}
+require("osc52").setup({
+  max_length = 0, -- Maximum length of selection (0 for no limit)
+  silent = false, -- Disable message on successful copy
+  trim = false, -- Trim surrounding whitespaces before copy
+})
 -- TODO test tmux.nvim plugin
 vim.g.clipboard = {
-  name = 'tmuxClipboard',
+  name = "tmuxClipboard",
   copy = {
-    ['+'] = {'tmux', 'load-buffer', '-w', '-'},
-    ['*'] = {'tmux', 'load-buffer', '-w', '-'},
+    ["+"] = { "tmux", "load-buffer", "-w", "-" },
+    ["*"] = { "tmux", "load-buffer", "-w", "-" },
   },
   paste = {
-    ['+'] = {'tmux', 'save-buffer', '-'},
-    ['*'] = {'tmux', 'save-buffer', '-'},
+    ["+"] = { "tmux", "save-buffer", "-" },
+    ["*"] = { "tmux", "save-buffer", "-" },
   },
   cache_enabled = true,
 }
@@ -259,19 +279,19 @@ vim.g.clipboard = {
 -- ]]]
 -- [[[ fugitive
 
-vim.keymap.set('n', '<Leader>gv', '<CMD>Gvdiffsplit!<CR>')
-vim.keymap.set('n', '<Leader>gh', '<CMD>Gvdiff HEAD<CR>')
-vim.keymap.set('n', '<Leader>go', '<CMD>Gvdiff origin/master<CR>')
-vim.keymap.set('n', '<Leader>ga', '<CMD>Git difftool -y<CR>')
+vim.keymap.set("n", "<Leader>gv", "<CMD>Gvdiffsplit!<CR>")
+vim.keymap.set("n", "<Leader>gh", "<CMD>Gvdiff HEAD<CR>")
+vim.keymap.set("n", "<Leader>go", "<CMD>Gvdiff origin/master<CR>")
+vim.keymap.set("n", "<Leader>ga", "<CMD>Git difftool -y<CR>")
 
 -- ]]]
 -- [[[ leap
 
-require('leap').create_default_mappings()
+require("leap").create_default_mappings()
 
 -- ]]]
 
-vim.keymap.set('n', ';', ':')
+vim.keymap.set("n", ";", ":")
 
 -- dotter/handlebars+fold incompatibility: temporary [ instead of {
 -- vim: foldmethod=marker
