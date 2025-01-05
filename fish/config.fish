@@ -340,6 +340,9 @@ alias topo "tig --topo-order -500"
 alias topoa "tig --topo-order --all -500"
 alias tigreflog "git reflog --format=raw --decorate=full | tig --pretty=raw"
 
+# tig <git-ls-file> direct completion
+complete -c tig -n 'not contains -- -- (commandline -opc)' -xa '(set -l t (commandline -ct); complete -C"git log $t")'
+
 function up -d "go to the upper git repo head"
     set BCK (pwd)
     set A (pwd)
