@@ -155,21 +155,6 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 			rm -rf $(SRC);")
 neovim: $(NEOVIM_INSTALL)
 
-NEOVIM_LSP_PYTHON = $(UTILS)/pylsp
-$(NEOVIM_LSP_PYTHON) : | $(BIN) $(UTILS)
-	# apt install python3-pyls
-	# OR
-	# apt-get install conda
-	$(eval CONDA := /opt/conda/bin/conda)
-	$(eval NAME := pyls)
-	$(eval SRC := $(UTILS)/$(NAME)/)
-	rm -rf $(SRC)
-	# $(CONDA) creatm -y -p $(SRC) -c conda-forge python-language-server
-	$(CONDA) create -y -p $(SRC) -c conda-forge python-lsp-server
-	rm -f $(BIN)/pylsp
-	ln -s $(SRC)/bin/pylsp $(BIN)/
-neovim-lsp-python: $(NEOVIM_LSP_PYTHON)
-
 # }}}
 # {{{ alacritty
 
