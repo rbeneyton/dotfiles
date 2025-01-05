@@ -59,18 +59,18 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	# no out-of-source-tree support
 	rm -rf $(SRC)
 	mkdir -p $(SRC)
-	wget https://www.kernel.org/pub/software/scm/git/git-2.43.2.tar.xz -O $(TAR)
+	wget https://www.kernel.org/pub/software/scm/git/git-2.47.1.tar.xz -O $(TAR)
 	tar --xz -xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
 	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
+			make configure; \
 			CPP=$(GCC_INSTALL)/bin/cpp \
 			CC=$(GCC_INSTALL)/bin/gcc \
 			CFLAGS='-march=native -flto -O3' \
 			$(SRC)/configure \
 				--prefix=$(INSTALL) \
-				--with-curl \
 				--with-libpcre2 \
 				--without-tcltk \
 				; \
@@ -370,6 +370,7 @@ debian-install-base:
 	apt-get install flex # for gcc (bug 84715 using multilib but not in src tree /o\)
 	apt-get install zlib1g-dev # zlib.h
 	apt-get install asciidoc gettext xmlto # git
+	apt-get install -t bookworm-backports libcurl4-openssl-dev # git ssl
 	apt-get install docbook-utils libncurses-dev libpcre2-posix2 # tig
 	apt-get install texinfo # gdb
 	apt-get install libgmp-dev # gdb
