@@ -26,7 +26,13 @@
 # toprc is invalid UTF8, so force type
 "top/toprc" = { target = "~/.toprc", type = "symbolic" }
 
+# gcc
+[build_gcc.files]
+"gcc/build.mak.template" = "gcc/build.mak"
+
 # gdb
+[build_gdb.files]
+"gdb/build.mak.template" = "gdb/build.mak"
 [gdb.files]
 "gdb/gdbinit" = "~/.gdbinit"
 "gdb/gdbearlyinit" = "~/.config/gdb/gdbearlyinit"
@@ -36,6 +42,10 @@
 "gdb/pahole/offsets.py" = { target = "~/.config/gdb/pahole/offsets.py", type = "symbolic" }
 "gdb/pahole/pahole.py" = { target = "~/.config/gdb/pahole/pahole.py", type = "symbolic" }
 "gdb/source-highlight/src" = { target = "~/.source-highlight", type = "symbolic", recurse = false }
+
+# llvm
+[build_llvm.files]
+"llvm/build.mak.template" = "llvm/build.mak"
 
 # valgrind
 [valgrind.files]

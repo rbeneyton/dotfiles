@@ -273,115 +273,20 @@ tmux: $(TMUX_INSTALL)
 # }}}
 # {{{ gcc/gdb/llvm
 
-GCC_INSTALL = $(UTILS)/gcc_install
-$(GCC_INSTALL) : | $(UTILS)
-$(GCC_INSTALL) :
-	# apt-get-install gcc-multilib flex
-	$(eval NAME := gcc)
-	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
-	$(eval INSTALL := $(UTILS)/$(NAME)_install)
-	$(eval BUILD := $(SRC)/build)
-	rm -rf $(SRC)
-	git clone --branch releases/gcc-13 --single-branch --depth 10 https://gcc.gnu.org/git/gcc.git $(SRC)
-	mkdir -p $(BUILD)
-	# -disable-multilib --disable-shared # gcc bug 66955
-	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
-		bash --noprofile --norc -c " \
-			set -e; \
-			(cd $(SRC) && ./contrib/download_prerequisites); \
-			CC=/usr/bin/gcc \
-			CXX=/usr/bin/g++ \
-			$(SRC)/configure \
-				--prefix=$(INSTALL) \
-				--enable-languages=c,c++,lto \
-				--host=x86_64-pc-linux-gnu \
-				--disable-nls \
-				--disable-docs \
-				--disable-multilib \
-				; \
-			nice -n 20 \
-				make -j $(NPROC) bootstrap; \
-			rm -rf $(INSTALL); \
-			make install-strip; \
-			rm -rf $(BUILD) $(SRC);")
+-include gcc/build.mak
+GCC_INSTALL ?= $(shell dirname $$(dirname $$(which gcc)))
 gcc : $(GCC_INSTALL)
+	@echo GCC_INSTALL: $(GCC_INSTALL)
 
-GDB_INSTALL = $(UTILS)/gdb_install
-$(GDB_INSTALL) : | $(UTILS)
-	$(eval NAME := gdb)
-	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
-	$(eval TAR := $(UTILS)/$(NAME).tar.xz)
-	$(eval INSTALL := $(UTILS)/$(NAME)_install)
-	$(eval BUILD := $(SRC)/build)
-	rm -rf $(SRC)
-	git clone --branch gdb-14-branch --single-branch --depth 50 https://sourceware.org/git/binutils-gdb.git $(SRC)
-	mkdir -p $(SRC) $(BUILD)
-	# wget $(GNU_MIRROR)/gdb/gdb-13.2.tar.xz -O $(TAR)
-	# tar xf $(TAR) -C $(SRC) --strip-components 1
-	# rm $(TAR)
-	# recursiv make/configure isn't possible with gdb
-	# autoreconf -f -i $(SRC) neither
-	# XXX never ever use make -j
-	# TODO disable fucking terminal mouse support
-	# TODO own gcc lead to 'error: source highlight is incompatible with -static-libstdc++; either use -disable-source-highlight or --without-static-standard-libraries'
-	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
-		bash --noprofile --norc -c " \
-			set -e; \
-			CPP=$(GCC_INSTALL)/bin/cpp \
-			CC=$(GCC_INSTALL)/bin/gcc \
-			CFLAGS='-march=native -O3' \
-			CXX=$(GCC_INSTALL)/bin/g++ \
-			CXXFLAGS='-march=native -O3' \
-			$(SRC)/configure \
-				--prefix=$(INSTALL) \
-				--with-curses \
-				--with-python \
-				--enable-tui \
-				--enable-lto \
-				; \
-			nice -n 20 \
-				make; \
-			rm -rf $(INSTALL); \
-			make -C gdb install; \
-			make -C gdbserver install; \
-			rm -rf $(BUILD) $(SRC);")
+-include gdb/build.mak
+GDB_INSTALL ?= $(shell dirname $$(dirname $$(which gdb)))
 gdb : $(GDB_INSTALL)
+	@echo GDB_INSTALL: $(GDB_INSTALL)
 
-LLVM_INSTALL = $(UTILS)/llvm_install
-$(LLVM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
-	$(eval NAME := llvm)
-	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
-	$(eval INSTALL := $(UTILS)/$(NAME)_install/)
-	$(eval BUILD := $(SRC)/build/)
-	rm -rf $(SRC)
-	git clone --branch release/16.x --single-branch --depth 300 https://github.com/llvm/llvm-project.git $(SRC)
-	mkdir -p $(BUILD)
-	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
-		bash --noprofile --norc -c " \
-			set -e; \
-			CPP=$(GCC_INSTALL)/bin/cpp \
-			cmake -G 'Unix Makefiles' \
-				-DCMAKE_C_COMPILER=$(GCC_INSTALL)/bin/gcc \
-				-DCMAKE_C_FLAGS='-march=native' \
-				-DCMAKE_CXX_COMPILER=$(GCC_INSTALL)/bin/g++ \
-				-DCMAKE_CXX_FLAGS='-march=native' \
-				-DCMAKE_CXX_LINK_FLAGS='-static-libgcc -static-libstdc++' \
-				-DLLVM_ENABLE_LTO=ON \
-				-DLLVM_TARGETS_TO_BUILD='WebAssembly;X86' \
-				-DLLVM_ENABLE_PROJECTS='compiler-rt;clang;clang-tools-extra;lldb;lld' \
-				-DCMAKE_BUILD_TYPE=Release \
-				-DCLANG_TOOLS_EXTRA_INCLUDE_DOCS=ON \
-				-DCLANG_ENABLE_CLANGD=ON \
-				-DCMAKE_INSTALL_PREFIX=$(INSTALL) \
-				$(SRC)/llvm \
-				; \
-			nice -n 20 \
-				make -j $(NPROC); \
-			make check; \
-			rm -rf $(INSTALL); \
-			make install; \
-			rm -rf $(BUILD) $(SRC);")
+-include llvm/build.mak
+LLVM_INSTALL ?= $(shell dirname $$(dirname $$(which clang)))
 llvm : $(LLVM_INSTALL)
+	@echo LLVM_INSTALL: $(LLVM_INSTALL)
 
 # }}}
 # {{{ rust
