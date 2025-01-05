@@ -57,6 +57,7 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval TAR := $(UTILS)/$(NAME).tar.xz)
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	# no out-of-source-tree support
+	# mount -o remount,size=6G,noatime /run/user/1000
 	rm -rf $(SRC)
 	mkdir -p $(SRC)
 	wget https://www.kernel.org/pub/software/scm/git/git-2.47.1.tar.xz -O $(TAR)

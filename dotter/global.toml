@@ -29,10 +29,14 @@
 # gcc
 [build_gcc.files]
 "gcc/build.mak.template" = "gcc/build.mak"
+[build_gcc.variables]
+gcc_branch = "releases/gcc-14"
 
 # gdb
 [build_gdb.files]
 "gdb/build.mak.template" = "gdb/build.mak"
+[build_gdb.variables]
+gdb_branch = "gdb-15-branch"
 [gdb.files]
 "gdb/gdbinit" = "~/.gdbinit"
 "gdb/gdbearlyinit" = "~/.config/gdb/gdbearlyinit"
@@ -46,6 +50,8 @@
 # llvm
 [build_llvm.files]
 "llvm/build.mak.template" = "llvm/build.mak"
+[build_llvm.variables]
+llvm_branch = "release/19.x"
 
 # valgrind
 [valgrind.files]

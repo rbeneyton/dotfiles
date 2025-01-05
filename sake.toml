@@ -2,6 +2,9 @@
 
 packages = [
     "base",
+    "build_gcc",
+    "build_gdb",
+    "build_llvm",
 ]
 
 [variables]

@@ -7,7 +7,7 @@ $(GCC_INSTALL) :
 	$(eval INSTALL := $(UTILS)/$(NAME)_install)
 	$(eval BUILD := $(SRC)/build)
 	rm -rf $(SRC)
-	git clone --branch releases/gcc-13 --single-branch --depth 10 https://gcc.gnu.org/git/gcc.git $(SRC)
+	git clone --branch {{gcc_branch}} --single-branch --depth 10 https://gcc.gnu.org/git/gcc.git $(SRC)
 	mkdir -p $(BUILD)
 	# -disable-multilib --disable-shared # gcc bug 66955
 	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \

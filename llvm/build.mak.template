@@ -5,7 +5,7 @@ $(LLVM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval INSTALL := $(UTILS)/$(NAME)_install/)
 	$(eval BUILD := $(SRC)/build/)
 	rm -rf $(SRC)
-	git clone --branch release/16.x --single-branch --depth 300 https://github.com/llvm/llvm-project.git $(SRC)
+	git clone --branch {{llvm_branch}} --single-branch --depth 300 https://github.com/llvm/llvm-project.git $(SRC)
 	mkdir -p $(BUILD)
 	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
