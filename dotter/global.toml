@@ -204,4 +204,4 @@ depends = [
     "zathura",
 ]
 
-# vim: filetype=cfg
+# vim: filetype=toml
