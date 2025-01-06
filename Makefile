@@ -260,17 +260,17 @@ tmux: $(TMUX_INSTALL)
 # {{{ gcc/gdb/llvm
 
 -include gcc/build.mak
-GCC_INSTALL ?= $(shell dirname $$(dirname $$(which gcc)))
+GCC_INSTALL ?= $(shell dirname $$(dirname $$(which gcc | echo /)))
 gcc : $(GCC_INSTALL)
 	@echo GCC_INSTALL: $(GCC_INSTALL)
 
 -include gdb/build.mak
-GDB_INSTALL ?= $(shell dirname $$(dirname $$(which gdb)))
+GDB_INSTALL ?= $(shell dirname $$(dirname $$(which gdb | echo /)))
 gdb : $(GDB_INSTALL)
 	@echo GDB_INSTALL: $(GDB_INSTALL)
 
 -include llvm/build.mak
-LLVM_INSTALL ?= $(shell dirname $$(dirname $$(which clang)))
+LLVM_INSTALL ?= $(shell dirname $$(dirname $$(which clang | echo /)))
 llvm : $(LLVM_INSTALL)
 	@echo LLVM_INSTALL: $(LLVM_INSTALL)
 
