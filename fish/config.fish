@@ -110,9 +110,11 @@ alias cal 'ncal -M -b -3'
 alias caly 'ncal -M -b -y'
 if test -f $HOME/bin/rg
     function rg
-        $HOME/bin/rg --follow --engine auto --search-zip $argv
+        $HOME/bin/rg --engine auto --search-zip $argv
     end
-    alias grg "rg --ignore-nested-git"
+    function grg
+        $HOME/bin/rg --engine auto --search-zip --ignore-nested-git $argv
+    end
 else
     alias grep "command grep --color=auto"
     alias grg "git grep"
@@ -259,10 +261,10 @@ function vl -d "open latest saved vim session"
 end
 
 function vrg -d "rg then pipe results into nvim"
-    command $EDITOR -c "/$argv[1]" -q (rg --vimgrep $argv | psub)
+    rg --vimgrep $argv | $EDITOR -c ":cwindow" -q -
 end
 function vgrg -d "rg (no submodule) then pipe results into nvim"
-    command $EDITOR -c "/$argv[1]" -q (grg --vimgrep $argv | psub)
+    grg --vimgrep $argv | $EDITOR -c ":cwindow" -q -
 end
 
 # sun mgmt
