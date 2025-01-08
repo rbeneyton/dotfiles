@@ -72,6 +72,7 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 			CFLAGS='-march=native -flto -O3' \
 			$(SRC)/configure \
 				--prefix=$(INSTALL) \
+				--with-curl \
 				--with-libpcre2 \
 				--without-tcltk \
 				; \
