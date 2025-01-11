@@ -372,6 +372,7 @@ debian-install-base:
 	apt-get install xserver-xorg-input-synaptics xinput # touchpad
 	apt-get install protobuf-compiler # atuin
 	apt-get install jq # here
+	apt-get install ncdu
 	apt-get clean
 
 debian-install-net:
