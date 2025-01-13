@@ -419,8 +419,7 @@ if status --is-interactive
 
         # bind \t complete-and-search # always search mode (shift+tab) on tab
         bind \cD delete-or-exit # restore usual behavior
-        bind \cK accept-autosuggestion # C-k accept suggestion
-        bind \cQ kill-line # C-q kill-line (usually C-k)
+        bind \cK accept-autosuggestion or kill-line # C-k hybrid mode (accept suggestion or usual kill-line)
         bind \cY accept-autosuggestion execute # C-y accept suggestion + execute
     end
 
