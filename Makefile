@@ -165,7 +165,7 @@ $(ALACRITTY) : | $(BIN) $(UTILS) rust-update
 	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	$(eval BUILD := $(SRC)/build)
 	rm -rf $(SRC)
-	git clone --branch v0.14 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
+	git clone --branch v0.15 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
 	$(CARGO) build \
 		--target-dir $(BUILD) \
 		--manifest-path $(SRC)/Cargo.toml \
