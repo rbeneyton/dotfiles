@@ -302,7 +302,7 @@ misc-user: $(BIN) rg
 	$(CARGO) install --force --locked bat
 	$(CARGO) install --force --locked just
 	$(CARGO) install --force --locked cargo-atcoder
-	# $(CARGO) install --force --locked --git https://github.com/charliermarsh/ruff.git ruff
+	$(CARGO) install --force --locked --git https://github.com/astral-sh/ruff.git ruff
 	$(CARGO) install --force --locked cargo-expand
 	$(CARGO) install --force --locked fd-find
 	# install completions
