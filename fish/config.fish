@@ -136,6 +136,9 @@ function rust-gdb
     #RUST_GDB=/usr/bin/gdb command rust-gdb --quiet --ex start --ex 'break rust_panic' $argv
     command rust-gdb --quiet --ex start --ex 'break rust_panic' $argv
 end
+# Mason-installed version
+alias ruff-nvim $HOME/.local/share/nvim/mason/packages/ruff/venv/bin/ruff
+alias clang-format-nvim $HOME/.local/share/nvim/mason/packages/clang-format/venv/bin/clang-format
 
 function mkcd
     command mkdir -p $argv
