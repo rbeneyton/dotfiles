@@ -1,9 +1,12 @@
 -- remind, after add: :helptags ALL
 
+-- [[[ load 'light' settings
+
 -- load setings common to 'page'
 -- :luafile ~/.nvim.light.init.lua
 require("init-light")
 
+-- ]]]
 -- [[[ main settings
 
 vim.api.nvim_set_option_value("number", true, { win = 0 })
@@ -284,6 +287,7 @@ require("blink.cmp").setup({
   },
 })
 
+-- ]]]
 -- [[[ dap
 
 vim.cmd(":packadd nvim-dap")
