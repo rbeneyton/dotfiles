@@ -304,21 +304,21 @@ end
 function gem -d "open git modified files"
     set -f BCK (pwd)
     up
-    git jump diff
+    git jump --stdout diff | $EDITOR -c ":cwindow" -q -
     # $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)
     cd $BCK
 end
 function ges -d "open git staged files"
     set -f BCK (pwd)
     up
-    git jump diff --staged
+    git jump --stdout diff --staged | $EDITOR -c ":cwindow" -q -
     # $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^M" | trs | cut -d" " -f2)
     cd $BCK
 end
 function ge -d "open git edited files"
     set -f BCK (pwd)
     up
-    git jump diff HEAD
+    git jump --stdout diff HEAD | $EDITOR -c ":cwindow" -q -
     # $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)
     cd $BCK
 end
@@ -334,7 +334,7 @@ function gep -d "open patched files from given commit range (HEAD~[..]HEAD by de
     end
     set -f BCK (pwd)
     up
-    git jump diff $RANGE
+    git jump --stdout diff $RANGE | $EDITOR -c ":cwindow" -q -
     # $EDITOR (git show --pretty="format:" --name-only $RANGE | grep . | sort | uniq)
     cd $BCK
 end
