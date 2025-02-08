@@ -301,10 +301,10 @@ function ganonrebase -d "git rebase without updating committer"
 end
 
 # TODO safer method
-function gem -d "open git modified files"
+function gem -d "open git modified files (default HEAD, use argv to specify range/path)"
     set -f BCK (pwd)
     up
-    git jump --stdout diff | $EDITOR -c ":cwindow" -q -
+    git jump --stdout diff $argv | $EDITOR -c ":cwindow" -q -
     # $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)
     cd $BCK
 end
