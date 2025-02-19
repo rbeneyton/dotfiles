@@ -297,7 +297,7 @@ function gwhitespace -d "git with # lines in commit message"
 end
 
 function ganonrebase -d "git rebase without updating committer"
-    command git -c rebase.instructionFormat='%s%nexec GIT_COMMITTER_DATE="%cI" GIT_COMMITTER_NAME="%cN" GIT_COMMITTER_EMAIL="%cE" git commit --amend --no-edit%n' rebase -i $argv
+    command git -c rebase.instructionFormat='%s%nexec GIT_COMMITTER_DATE="%cI" GIT_COMMITTER_NAME="%aN" GIT_COMMITTER_EMAIL="%aE" git commit --amend --no-edit%n' rebase -i $argv
 end
 
 # TODO safer method
