@@ -174,6 +174,10 @@ git_email = "richard.beneyton@gmail.com"
 # TODO atuin creates its default config file when running so break upgrade by dotter
 "atuin/config.toml" = "~/.config/atuin/config.toml"
 
+# python
+[python.files]
+"python/pdbrc" = "~/.pdbrc"
+
 # dummy "flag only" packages
 [bluetooth.variables]
 [laptop.variables]
@@ -199,6 +203,7 @@ depends = [
     "gtk",
     "nu",
     "nvim",
+    "python",
     "redshift",
     "rust",
     "starship",
