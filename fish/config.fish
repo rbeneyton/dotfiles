@@ -112,14 +112,12 @@ if test -f $HOME/bin/rg
     function rg
         $HOME/bin/rg --engine auto --search-zip $argv
     end
-    function grg
-        $HOME/bin/rg --engine auto --search-zip --ignore-nested-git $argv
-    end
+    alias rgv "rg --vimgrep"
+    alias grg "rg --ignore-nested-git"
+    alias grgv "rg --ignore-nested-git --vimgrep"
 else
     alias grep "command grep --color=auto"
-    alias grg "git grep"
 end
-alias gr grep
 alias psu "ps -flwu $USER w f"
 alias topu "top -u $USER"
 alias cutd "cut -d\' \'"
@@ -263,11 +261,12 @@ function vl -d "open latest saved vim session"
     command $EDITOR -S ~/.cache/session.vim
 end
 
+alias vgr "$EDITOR -c :cwindow -q -"
 function vrg -d "rg then pipe results into nvim"
-    rg --vimgrep $argv | $EDITOR -c ":cwindow" -q -
+    rg --vimgrep $argv | $EDITOR -c :cwindow -q -
 end
 function vgrg -d "rg (no submodule) then pipe results into nvim"
-    grg --vimgrep $argv | $EDITOR -c ":cwindow" -q -
+    grg --vimgrep $argv | $EDITOR -c :cwindow -q -
 end
 
 # sun mgmt

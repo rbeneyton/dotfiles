@@ -101,10 +101,12 @@ ulimit -c unlimited
     alias caly='ncal -M -b -y'
     if type rg &> /dev/null; then
         alias grep="rg --follow --engine auto --search-zip"
+        alias rgv "rg --vimgrep"
+        alias grg "rg --ignore-nested-git"
+        alias grgv "rg --ignore-nested-git --vimgrep"
     else
         alias grep="grep --color=auto"
     fi
-    alias gr=grep
     alias psu='ps -flwu $USER w f'
     alias topu='top -u $USER'
     alias cutd="cut -d' '"
@@ -236,6 +238,9 @@ ulimit -c unlimited
         false
     }
     alias vl='$EDITOR -S ~/.cache/session.vim'
+
+    alias vgr="$EDITOR -c :cwindow -q -"
+
     # sun mgmt
     alias theme_light='export theme="light"'
     alias theme_dark='unset theme'
