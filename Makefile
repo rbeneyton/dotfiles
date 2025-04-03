@@ -305,6 +305,7 @@ misc-user: $(BIN) rg
 	$(CARGO) install --force --locked --git https://github.com/astral-sh/ruff.git ruff
 	$(CARGO) install --force --locked cargo-expand
 	$(CARGO) install --force --locked fd-find
+	$(CARGO) install cargo-cache
 	# install completions
 	fd --gen-completions=fish > ~/.config/fish/completions/fd.fish
 	# $(CARGO) install --force --locked --features=dataframe nu
