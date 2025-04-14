@@ -246,6 +246,8 @@ require("blink.cmp").setup({
   -- use an empty table to disable a keymap
   keymap = {
     ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+    -- 2 band mapping, see alacritty conf (for suboptimal OS)
+    ["ſ"] = { "show", "show_documentation", "hide_documentation", "hide" },
     ["<C-h>"] = { "hide" },
     ["<C-k>"] = { "select_and_accept" },
     ["<C-p>"] = { "select_prev", "fallback" },
@@ -258,6 +260,8 @@ require("blink.cmp").setup({
     -- same, but with Tab support too
     keymap = {
       ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+      -- 2 band mapping, see alacritty conf (for suboptimal OS)
+      ["ſ"] = { "show", "show_documentation", "hide_documentation" },
       ["<Tab>"] = { "show", "select_and_accept" },
       ["<C-h>"] = { "hide" },
       ["<C-k>"] = { "select_and_accept" },
