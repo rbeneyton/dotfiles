@@ -48,7 +48,7 @@ require("mason-tool-installer").setup({
     "gersemi",
 
     -- markdown
-    "mdformat",
+    "deno",
 
     -- yaml
     "yamlfix",
@@ -166,7 +166,7 @@ require("conform").setup({
     cpp = { "clang-format" },
     fish = { "fish_indent" },
     lua = { "stylua" },
-    markdown = { "mdformat" },
+    markdown = { "deno_fmt" },
     python = { "ruff_format" },
     rust = { "rustfmt" },
     sh = { "shellharden", "shellcheck" },
