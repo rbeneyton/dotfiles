@@ -258,9 +258,9 @@ require("blink.cmp").setup({
     -- same, but with Tab support too
     keymap = {
       ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+      ["<Tab>"] = { "show", "select_and_accept" },
       ["<C-h>"] = { "hide" },
       ["<C-k>"] = { "select_and_accept" },
-      ["<Tab>"] = { "select_and_accept" },
       ["<C-p>"] = { "select_prev", "fallback" },
       ["<C-n>"] = { "select_next", "fallback" },
       ["<C-b>"] = { "scroll_documentation_up", "fallback" },
