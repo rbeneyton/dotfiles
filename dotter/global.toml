@@ -177,6 +177,7 @@ git_email = "richard.beneyton@gmail.com"
 # python
 [python.files]
 "python/pdbrc" = "~/.pdbrc"
+"python/pdbrc.py" = "~/.config/python/pdbrc.py"
 
 # dummy "flag only" packages
 [bluetooth.variables]

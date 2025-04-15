@@ -1,1 +1,9 @@
-alias ex import os;os._exit(0)
+# NB: `pdb` only accepts single-line statements
+import os
+with open(os.path.expanduser("~/.config/python/pdbrc.py")) as _f: _f = _f.read()
+exec(_f)
+pdbrc_setup()
+del _f
+
+# quick real exit
+alias ex import os;pdbrc_save_history();os._exit(0)
