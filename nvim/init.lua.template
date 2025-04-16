@@ -48,7 +48,7 @@ require("mason-tool-installer").setup({
     "gersemi",
 
     -- markdown
-    "deno",
+    "vale",
 
     -- yaml
     "yamlfix",
@@ -160,13 +160,22 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- [[[ formatting
 
 vim.cmd(":packadd conform.nvim")
+require("conform").formatters.markdown_vale = {
+  inherit = false,
+  command = '{{env_var "HOME"}}/.local/share/nvim/mason/bin/vale', -- via Mason + vale sync
+  args = {
+    "--config",
+    '{{env_var "HOME"}}/.config/nvim/vale/vale.ini',
+    "--ext=.md",
+  },
+}
 require("conform").setup({
   formatters_by_ft = {
     cmake = { "gersemi" },
     cpp = { "clang-format" },
     fish = { "fish_indent" },
     lua = { "stylua" },
-    markdown = { "deno_fmt" },
+    markdown = { "markdown_vale" },
     python = { "ruff_format" },
     rust = { "rustfmt" },
     sh = { "shellharden", "shellcheck" },
