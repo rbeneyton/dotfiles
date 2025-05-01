@@ -246,10 +246,11 @@ vim.opt.shadafile = "NONE" -- no history load/store
 vim.opt_local.wrapmargin = 1
 
 -- XXX restore correct pre 0.10 swapfile behavior with E325 (tmux own-patched)
+-- XXX nvim 11 rename the group
 -- 1:remove silent-but-one-warning-line (displayed even if appropriate callback is defined!)
-vim.cmd([[:autocmd! nvim_swapfile]])
+vim.cmd([[:autocmd! nvim.swapfile]])
 -- 2:force ATTENTION message when swap detected
-vim.cmd([[:autocmd SwapExists * :let v:swapchoice = '']])
+vim.cmd([[:autocmd SwapExists * let v:swapchoice = ' ']])
 
 -- ]]]
 -- [[[ clipboard
