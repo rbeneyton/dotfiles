@@ -127,6 +127,7 @@
   subuir = submodule update --init --recursive
   subs = submodule summary
 #  subf = "submodule foreach 'rm -rf $toplevel/$path ; sh /usr/share/doc/git/contrib/workdir/git-new-workdir ~/devs/bares/$name $toplevel/$path $sha1 ; rm -rf $toplevel/.git/modules/$path'"
+  submodule-check = "!f() { git submodule --quiet foreach 'echo $sm_path $(git rev-list --count HEAD..origin/HEAD)' | rg -v ' 0$'; }; f"
   v = !vim $(git status --ignore-submodules --porcelain | sed -ne 's/^ M //p')
   pr = pull --rebase
   pro = pull --rebase origin
