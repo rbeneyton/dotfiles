@@ -470,7 +470,7 @@ debian-up:
 # {{{ fish
 
 FISH_INSTALL = $(UTILS)/fish_install
-$(FISH_INSTALL) : | $(GCC_INSTALL) $(UTILS)
+$(FISH_INSTALL) : | $(UTILS) rust-update
 	$(eval NAME := fish)
 	$(eval SRC := $(UTILS)/$(NAME))
 	$(eval TAR := $(UTILS)/$(NAME).tar.xz)
@@ -479,24 +479,17 @@ $(FISH_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	rm -rf $(SRC)
 	mkdir -p $(SRC)
 	mkdir -p $(BUILD)
-	wget https://github.com/fish-shell/fish-shell/releases/download/3.7.1/fish-3.7.1.tar.xz -O $(TAR)
+	wget https://github.com/fish-shell/fish-shell/releases/download/4.0.2/fish-4.0.2.tar.xz -O $(TAR)
 	tar xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
 	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
 		bash --noprofile --norc -c " \
 			set -e; \
-			cmake -G 'Unix Makefiles' \
-				-DCMAKE_C_COMPILER=$(GCC_INSTALL)/bin/gcc \
-				-DCMAKE_C_FLAGS='-march=native -O3 -flto' \
-				-DCMAKE_CXX_COMPILER=$(GCC_INSTALL)/bin/g++ \
-				-DCMAKE_CXX_FLAGS='-march=native -O3 -flto' \
-				-DCMAKE_CXX_LINK_FLAGS='-static-libgcc -static-libstdc++' \
-				-DCMAKE_BUILD_TYPE=Invalid \
+			cmake \
 				-DCMAKE_INSTALL_PREFIX=$(INSTALL) \
 				$(SRC) \
 				; \
-			nice -n 20 \
-				make -j $(NPROC); \
+			make ; \
 			rm -rf $(INSTALL); \
 			make install; \
 			rm -rf $(BUILD) $(SRC);")
