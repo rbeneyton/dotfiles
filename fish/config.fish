@@ -14,41 +14,69 @@ abbr --global --add bash "NOFISH=1 bash"
 
 # [[[ own installs
 
-function pathadd
-    fish_add_path --path $argv
+function path_add --argument toadd
+    # fish_add_path --path $argv
+    set toadd (path resolve $toadd)
+    set --export PATH $toadd $PATH
 end
-function manpathadd
+function path_remove --argument todel
+    set todel (path resolve $todel)
+    if contains $todel $PATH
+        set --local idx (contains -i $todel $PATH)
+        set --erase PATH[$idx]
+    end
+end
+
+function manpath_add
     if ! contains $argv $MANPATH
         set --global --export MANPATH $MANPATH $argv
     end
 end
 
-pathadd $HOME/bin
+function pythonpath_add --argument toadd
+    set toadd (path resolve $toadd)
+    if set --query PYTHONPATH
+        set --global --export PYTHONPATH $toadd $PYTHONPATH
+    else
+        set --global --export PYTHONPATH $toadd
+    end
+end
+function pythonpath_remove --argument todel
+    set todel (path resolve $todel)
+    if set --query PYTHONPATH
+        if contains $todel $PYTHONPATH
+            set --local idx (contains -i $todel $PYTHONPATH)
+            set --global --erase PYTHONPATH[$idx]
+        end
+    end
+end
 
-pathadd $HOME/firefox
+path_add $HOME/bin
+
+path_add $HOME/firefox
 
 set --global --export UTILS $HOME/utils.(hostname -s)
 
-pathadd $UTILS/git_install/bin
-manpathadd $UTILS/git_install/share/man
+path_add $UTILS/git_install/bin
+manpath_add $UTILS/git_install/share/man
 
-pathadd $UTILS/tig_install/bin
-manpathadd $UTILS/tig_install/share/man
+path_add $UTILS/tig_install/bin
+manpath_add $UTILS/tig_install/share/man
 
-pathadd $UTILS/gcc_install/bin
-manpathadd $UTILS/gcc_install/share/man
+path_add $UTILS/gcc_install/bin
+manpath_add $UTILS/gcc_install/share/man
 
-pathadd $UTILS/gdb_install/bin
-manpathadd $UTILS/gdb_install/share/man
+path_add $UTILS/gdb_install/bin
+manpath_add $UTILS/gdb_install/share/man
 
-pathadd $UTILS/neovim_install/bin
-manpathadd $UTILS/neovim_install/share/man
+path_add $UTILS/neovim_install/bin
+manpath_add $UTILS/neovim_install/share/man
 
-pathadd $UTILS/tmux_install/bin
-manpathadd $UTILS/tmux_install/share/man
+path_add $UTILS/tmux_install/bin
+manpath_add $UTILS/tmux_install/share/man
 
-pathadd $UTILS/llvm_install/bin
-manpathadd $UTILS/llvm_install/share/man
+path_add $UTILS/llvm_install/bin
+manpath_add $UTILS/llvm_install/share/man
 if type llvm-symbolizer &>/dev/null
     # FIXME safe which
     set --global --export ASAN_SYMBOLIZER_PATH (which llvm-symbolizer)
@@ -56,14 +84,14 @@ end
 set --global --export ASAN_OPTIONS abort_on_error=1:detect_leaks=1
 set --global --export LSAN_OPTIONS use_stacks=0:use_registers=0:use_globals=1:use_tls=1
 
-pathadd $UTILS/fish_install/bin
-manpathadd $UTILS/fish_install/share/man
+path_add $UTILS/fish_install/bin
+manpath_add $UTILS/fish_install/share/man
 
 # XXX fish MANPATH bug #2090
-manpathadd ":"
+manpath_add ":"
 
 # rust
-pathadd $HOME/.cargo/bin
+path_add $HOME/.cargo/bin
 
 # ]]]
 # [[[ main settings
@@ -168,7 +196,7 @@ alias i ipython3
 alias is "PYTHONNOUSERSITE=on ipython3"
 
 # conda
-# pathadd /opt/conda/bin
+# path_add /opt/conda/bin
 function condainit
     eval conda "shell.fish" hook $argv | source
 end
