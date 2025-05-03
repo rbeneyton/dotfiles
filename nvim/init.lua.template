@@ -81,7 +81,6 @@ require("mason-lspconfig").setup_handlers({
 })
 
 vim.cmd(":packadd nvim-lspconfig")
-local lsp = require("lspconfig") -- XXX no local, as used later
 
 -- toggle error diagnostic window
 vim.keymap.set("n", "<leader>e", function()
@@ -1032,12 +1031,13 @@ local capabilities = require("blink.cmp").get_lsp_capabilities({
 -- })
 
 -- cmake
-lsp.cmake.setup({
+vim.lsp.config("cmake", {
   capabilities = capabilities,
 })
+vim.lsp.enable("cmake")
 
 -- lua
-lsp.lua_ls.setup({
+vim.lsp.config("lua_ls", {
   settings = {
     Lua = {
       diagnostics = {
@@ -1047,9 +1047,10 @@ lsp.lua_ls.setup({
   },
   capabilities = capabilities,
 })
+vim.lsp.enable("lua_ls")
 
 -- python
-lsp.basedpyright.setup({
+vim.lsp.config("basedpyright", {
   settings = {
     basedpyright = {
       typeCheckingMode = "off",
@@ -1063,7 +1064,9 @@ lsp.basedpyright.setup({
   },
   capabilities = capabilities,
 })
-lsp.ruff.setup({
+vim.lsp.enable("basedpyright")
+
+vim.lsp.config("ruff", {
   init_options = {
     settings = {
       lineLength = 100,
@@ -1071,14 +1074,16 @@ lsp.ruff.setup({
   },
   capabilities = capabilities,
 })
+vim.lsp.enable("ruff")
 
 -- C++
-lsp.clangd.setup({
+vim.lsp.config("clangd", {
   on_attach = vim.schedule_wrap(function()
     vim.keymap.set("n", "<leader>h", "<cmd>ClangdSwitchSourceHeader<CR>")
   end),
   capabilities = capabilities,
 })
+vim.lsp.enable("clangd")
 
 -- ]]]
 -- [[[ gundo/mundo/undotree
