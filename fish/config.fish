@@ -322,6 +322,12 @@ end
 function gwhitespace -d "git with # lines in commit message"
     command git -c commit.cleanup=whitespace $argv
 end
+function gnosub -d "git with no submodule info"
+    command git \
+        -c diff.ignoreSubmodules=all \
+        -c status.submoduleSummary=0 \
+        $argv
+end
 
 function ganonrebase -d "git rebase without updating committer"
     command git -c rebase.instructionFormat='%s%nexec GIT_COMMITTER_DATE="%cI" GIT_COMMITTER_NAME="%aN" GIT_COMMITTER_EMAIL="%aE" git commit --amend --no-edit%n' rebase -i $argv
