@@ -95,6 +95,14 @@ vim.keymap.set("n", "<leader>e", function()
   vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
 end, { desc = "Toggle Diagnostics" })
 
+vim.keymap.set("n", "<leader>E", function()
+  local cur = vim.diagnostic.config()["virtual_lines"]
+
+  vim.diagnostic.config({
+    virtual_lines = not cur,
+  })
+end, { desc = "Toggle Diagnostics Inline" })
+
 -- vim.cmd(":packadd lsp_signature")
 -- require("lsp_signature").setup({
 --   doc_lines = 0,
