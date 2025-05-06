@@ -27,19 +27,28 @@ function path_remove --argument todel
     end
 end
 
-function manpath_add
-    if ! contains $argv $MANPATH
-        set --global --export MANPATH $MANPATH $argv
+function manpath_add --argument toadd
+    set toadd (path resolve $toadd)
+    if set --query MANPATH
+        if ! contains $toadd $MANPATH
+            set --global --export MANPATH $MANPATH $toadd
+        end
+    else
+        set --global --export MANPATH $toadd
     end
+    true
 end
 
 function pythonpath_add --argument toadd
     set toadd (path resolve $toadd)
     if set --query PYTHONPATH
-        set --global --export PYTHONPATH $toadd $PYTHONPATH
+        if ! contains $toadd $PYTHONPATH
+            set --global --export PYTHONPATH $toadd $PYTHONPATH
+        end
     else
         set --global --export PYTHONPATH $toadd
     end
+    true
 end
 function pythonpath_remove --argument todel
     set todel (path resolve $todel)
@@ -49,6 +58,7 @@ function pythonpath_remove --argument todel
             set --global --erase PYTHONPATH[$idx]
         end
     end
+    true
 end
 
 path_add $HOME/bin
