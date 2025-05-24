@@ -323,6 +323,12 @@ ulimit -c unlimited
 
     export FILTER_BRANCH_SQUELCH_WARNING=1
 # ]]]
+# [[[ build
+
+# always generate compile_commands.json
+export CMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+# ]]]
 
 # ]]]
 # [[[ interactiv only settings

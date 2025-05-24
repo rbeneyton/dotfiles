@@ -430,6 +430,13 @@ function gbr -d "get flat list of branches, for using in scripts"
 end
 
 set --export FILTER_BRANCH_SQUELCH_WARNING 1
+
+# ]]]
+# [[[ build
+
+# always generate compile_commands.json
+set -gx CMAKE_EXPORT_COMPILE_COMMANDS ON
+
 # ]]]
 # [[[ interactiv only settings
 
