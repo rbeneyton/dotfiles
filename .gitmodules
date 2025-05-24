@@ -184,3 +184,9 @@
 [submodule "nvim/pack/extend/opt/mason-tool-installer"]
 	path = nvim/pack/extend/opt/mason-tool-installer
 	url = https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim.git
+[submodule "nvim/pack/extend/opt/nvim-nio"]
+	path = nvim/pack/extend/opt/nvim-nio
+	url = https://github.com/nvim-neotest/nvim-nio.git
+[submodule "nvim/pack/extend/opt/nvim-dap-view"]
+	path = nvim/pack/extend/opt/nvim-dap-view
+	url = https://github.com/igorlfs/nvim-dap-view.git

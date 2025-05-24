@@ -28,6 +28,9 @@ require("mason-tool-installer").setup({
   ensure_installed = {
     -- run :MasonToolsUpdateSync to force all
 
+    -- dap for C/C++/Rust
+    { "codelldb" }, -- for dap
+
     -- C++
     { "clang-format", version = "19.1.5" },
     { "clangd", version = "19.1.2" },
@@ -67,7 +70,7 @@ require("mason-tool-installer").setup({
   integrations = {
     ["mason-lspconfig"] = true,
     ["mason-null-ls"] = false,
-    ["mason-nvim-dap"] = false,
+    ["mason-nvim-dap"] = true,
   },
 })
 
@@ -330,8 +333,158 @@ require("blink.cmp").setup({
 -- [[[ dap
 
 vim.cmd(":packadd nvim-dap")
-vim.cmd(":packadd nvim-dap-ui")
-require("dapui").setup()
+vim.cmd(":packadd nvim-nio")
+-- vim.cmd(":packadd nvim-dap-ui")
+-- require("dapui").setup()
+local dap = require("dap")
+-- dap.defaults.fallback.focus_terminal = true
+dap.defaults.fallback.force_external_terminal = true
+dap.defaults.fallback.external_terminal = {
+  command = '{{env_var "HOME"}}/utils/tmux_install/bin/tmux',
+  args = { "split-window", "-v", "--" },
+}
+
+dap.adapters.gdb = { -- no externalTerminal support
+  type = "executable",
+  command = "gdb",
+  args = { "--interpreter=dap", "--eval-command", "set print pretty on" },
+}
+dap.adapters.lldb = { -- no externalTerminal support
+  type = "executable",
+  command = "lldb-dap-19",
+}
+dap.adapters.code_lldb = {
+  type = "executable",
+  command = '{{env_var "HOME"}}/.local/share/nvim/mason/bin/codelldb', -- via mason-tool-installer
+}
+dap.configurations.cpp = {
+  {
+    name = "Launch",
+    -- type = "gdb",
+    type = "code_lldb",
+    request = "launch",
+    program = function()
+      return vim.fn.input(
+        "Path to executable: ",
+        vim.fn.getcwd() .. "/",
+        "file"
+      )
+    end,
+    cwd = "${workspaceFolder}",
+    stopAtBeginningOfMainSubprogram = true,
+    console = "externalTerminal",
+  },
+  {
+    name = "Select and attach to process",
+    type = "gdb",
+    request = "attach",
+    program = function()
+      return vim.fn.input(
+        "Path to executable: ",
+        vim.fn.getcwd() .. "/",
+        "file"
+      )
+    end,
+    pid = function()
+      local name = vim.fn.input("Executable name (filter): ")
+      return require("dap.utils").pick_process({ filter = name })
+    end,
+    cwd = "${workspaceFolder}",
+  },
+  {
+    name = "Attach to gdbserver :1234",
+    type = "gdb",
+    request = "attach",
+    target = "localhost:1234",
+    program = function()
+      return vim.fn.input(
+        "Path to executable: ",
+        vim.fn.getcwd() .. "/",
+        "file"
+      )
+    end,
+    cwd = "${workspaceFolder}",
+  },
+}
+
+dap.set_log_level("TRACE")
+-- mapping
+-- Break
+vim.keymap.set(
+  "n",
+  "<Leader>b",
+  dap.toggle_breakpoint,
+  { desc = "add a breakpoint" }
+)
+-- Until
+vim.keymap.set("n", "<Leader>u", dap.run_to_cursor, { desc = "until" })
+-- Var under cursor
+-- vim.keymap.set("n", "<space>v", function()
+--   require("dapui").eval(nil, { enter = true })
+-- end)
+-- Continue (also start)
+vim.keymap.set("n", "<Leader>c", dap.continue)
+-- Step in
+vim.keymap.set("n", "<Leader>s", dap.step_into)
+-- vim.keymap.set("n", "<F3>", dap.step_over)
+-- vim.keymap.set("n", "<F4>", dap.step_out)
+-- vim.keymap.set("n", "<F5>", dap.step_back)
+-- vim.keymap.set("n", "<F13>", dap.restart)
+
+vim.cmd(":packadd nvim-dap-view")
+local dapview = require("dap-view")
+dapview.setup({
+  winbar = {
+    show = true,
+    -- You can add a "console" section to merge the terminal with the other views
+    sections = {
+      "watches",
+      "scopes",
+      "exceptions",
+      "breakpoints",
+      "threads",
+      "repl",
+      "console",
+    },
+    default_section = "watches",
+    controls = {
+      enabled = true,
+      position = "left",
+    },
+  },
+  windows = {
+    terminal = {
+      position = "below",
+    },
+  },
+})
+
+dap.listeners.before.attach["dap-view-config"] = function()
+  dapview.open()
+end
+dap.listeners.before.launch["dap-view-config"] = function()
+  dapview.open()
+end
+dap.listeners.before.event_terminated["dap-view-config"] = function()
+  dapview.close()
+end
+dap.listeners.before.event_exited["dap-view-config"] = function()
+  dapview.close()
+end
+
+-- local dapui = require("dapui")
+-- dap.listeners.before.attach.dapui_config = function()
+--   dapui.open()
+-- end
+-- dap.listeners.before.launch.dapui_config = function()
+--   dapui.open()
+-- end
+-- dap.listeners.before.event_terminated.dapui_config = function()
+--   dapui.close()
+-- end
+-- dap.listeners.before.event_exited.dapui_config = function()
+--   dapui.close()
+-- end
 
 -- ]]]
 -- [[[ main settings cont'd
@@ -366,7 +519,7 @@ require("neo-tree").setup({
 -- XXX why not? vim.api.nvim_set_keymap("n", "\", ":Neotree toggle current reveal_force_cwd<CR>", { noremap = true})
 vim.cmd([[:nnoremap \ :Neotree toggle current reveal_force_cwd<CR>]])
 vim.cmd([[:nnoremap \| :Neotree toggle reveal current buffers dir=/<CR>]])
-vim.cmd([[:nnoremap <Leader>s :Neotree toggle git_status<CR>]])
+vim.cmd([[:nnoremap <Leader>G :Neotree toggle git_status<CR>]])
 
 -- ]]]
 -- [[[ Mappings
@@ -679,12 +832,12 @@ vim.keymap.set("c", "<C-j>", "<C-c>", { noremap = true })
 -- [[[ macros cont'd
 
 -- map to remove trailing spaces
-vim.keymap.set(
-  { "n", "v" },
-  "<Leader>b",
-  "<ESC>:%s/\\s\\+$//e<CR>",
-  { desc = "remove all trailing spaces", noremap = true }
-)
+-- vim.keymap.set(
+--   { "n", "v" },
+--   "<Leader>b",
+--   "<ESC>:%s/\\s\\+$//e<CR>",
+--   { desc = "remove all trailing spaces", noremap = true }
+-- )
 
 -- alias M for make
 vim.keymap.set("n", "<Leader>m", "<ESC>:wall<CR>:make<CR>", { noremap = true })
@@ -777,7 +930,7 @@ vim.cmd.colorscheme("kanagawa")
 -- [[[ neovim specific
 
 -- neovim default is 'nvi', which is unusable and inhibit ~normal~ copy/paste
-vim.opt.mouse = ""
+-- vim.opt.mouse = ""
 
 -- exit from term with alt space (not binding by any shell or tool IMHO)
 -- tnoremap <A-Space> <C-\><C-n>
