@@ -16,15 +16,17 @@ abbr --global --add bash "NOFISH=1 bash"
 
 function path_add --argument toadd
     # fish_add_path --path $argv
+    path_remove $toadd
     set toadd (path resolve $toadd)
-    set --export PATH $toadd $PATH
+    set --global --export PATH $toadd $PATH
 end
 function path_remove --argument todel
     set todel (path resolve $todel)
     if contains $todel $PATH
         set --local idx (contains -i $todel $PATH)
-        set --erase PATH[$idx]
+        set --global --erase PATH[$idx]
     end
+    true
 end
 
 function manpath_add --argument toadd
@@ -40,6 +42,7 @@ function manpath_add --argument toadd
 end
 
 function pythonpath_add --argument toadd
+    pythonpath_remove $toadd
     set toadd (path resolve $toadd)
     if set --query PYTHONPATH
         if ! contains $toadd $PYTHONPATH
@@ -148,7 +151,7 @@ alias cal 'ncal -M -b -3'
 alias caly 'ncal -M -b -y'
 if test -f $HOME/bin/rg
     function rg
-        $HOME/bin/rg --engine auto --search-zip $argv
+        command $HOME/bin/rg --engine auto --search-zip $argv
     end
     alias rgv "rg --vimgrep"
     alias grg "rg --ignore-nested-git"

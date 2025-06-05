@@ -101,9 +101,9 @@ ulimit -c unlimited
     alias caly='ncal -M -b -y'
     if type rg &> /dev/null; then
         alias grep="rg --follow --engine auto --search-zip"
-        alias rgv "rg --vimgrep"
-        alias grg "rg --ignore-nested-git"
-        alias grgv "rg --ignore-nested-git --vimgrep"
+        alias rgv="rg --vimgrep"
+        alias grg="rg --ignore-nested-git"
+        alias grgv="rg --ignore-nested-git --vimgrep"
     else
         alias grep="grep --color=auto"
     fi
