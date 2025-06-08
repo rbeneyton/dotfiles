@@ -297,14 +297,15 @@ misc-user: $(BIN) rg
 	chmod u+x $(BIN)/yt-dlp
 	$(CARGO) install --force --locked flamegraph
 	$(CARGO) install --force --locked cargo-criterion
+	$(CARGO) install --force --locked cargo-atcoder
+	$(CARGO) install --force --locked cargo-expand
+	$(CARGO) install --force --locked cargo-cache
 	$(CARGO) install --force --locked starship
 	$(CARGO) install --force --locked hyperfine
 	$(CARGO) install --force --locked eza
 	$(CARGO) install --force --locked bat
 	$(CARGO) install --force --locked just
-	$(CARGO) install --force --locked cargo-atcoder
 	$(CARGO) install --force --locked --git https://github.com/astral-sh/ruff.git ruff
-	$(CARGO) install --force --locked cargo-expand
 	$(CARGO) install --force --locked fd-find
 	$(CARGO) install cargo-cache
 	# install completions
