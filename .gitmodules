@@ -19,27 +19,66 @@
 [submodule "gdb/source-highlight"]
 	path = gdb/source-highlight
 	url = https://git.savannah.gnu.org/git/src-highlite.git
+[submodule "nvim/pack/cmp/opt/cmp-buffer"]
+	path = nvim/pack/cmp/opt/cmp-buffer
+	url = https://github.com/hrsh7th/cmp-buffer.git
+[submodule "nvim/pack/cmp/opt/cmp-cmdline-history"]
+	path = nvim/pack/cmp/opt/cmp-cmdline-history
+	url = https://github.com/dmitmel/cmp-cmdline-history.git
+[submodule "nvim/pack/cmp/opt/cmp-cmdline"]
+	path = nvim/pack/cmp/opt/cmp-cmdline
+	url = https://github.com/hrsh7th/cmp-cmdline.git
+[submodule "nvim/pack/cmp/opt/cmp-nvim-lsp"]
+	path = nvim/pack/cmp/opt/cmp-nvim-lsp
+	url = https://github.com/hrsh7th/cmp-nvim-lsp.git
+[submodule "nvim/pack/cmp/opt/cmp-path"]
+	path = nvim/pack/cmp/opt/cmp-path
+	url = https://github.com/hrsh7th/cmp-path.git
+[submodule "nvim/pack/cmp/opt/nvim-cmp"]
+	path = nvim/pack/cmp/opt/nvim-cmp
+	url = https://github.com/hrsh7th/nvim-cmp.git
+[submodule "nvim/pack/extend/opt/blink.cmp"]
+	path = nvim/pack/extend/opt/blink.cmp
+	url = https://github.com/Saghen/blink.cmp.git
+[submodule "nvim/pack/extend/opt/conform.nvim"]
+	path = nvim/pack/extend/opt/conform.nvim
+	url = https://github.com/stevearc/conform.nvim.git
 [submodule "nvim/pack/extend/opt/mason-lspconfig"]
 	path = nvim/pack/extend/opt/mason-lspconfig
 	url = https://github.com/williamboman/mason-lspconfig.nvim.git
 [submodule "nvim/pack/extend/opt/mason"]
 	path = nvim/pack/extend/opt/mason
 	url = https://github.com/williamboman/mason.nvim.git
+[submodule "nvim/pack/extend/opt/mason-tool-installer"]
+	path = nvim/pack/extend/opt/mason-tool-installer
+	url = https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim.git
 [submodule "nvim/pack/extend/opt/nvim-dap"]
 	path = nvim/pack/extend/opt/nvim-dap
 	url = https://github.com/mfussenegger/nvim-dap.git
 [submodule "nvim/pack/extend/opt/nvim-dap-ui"]
 	path = nvim/pack/extend/opt/nvim-dap-ui
 	url = https://github.com/rcarriga/nvim-dap-ui.git
+[submodule "nvim/pack/extend/opt/nvim-dap-view"]
+	path = nvim/pack/extend/opt/nvim-dap-view
+	url = https://github.com/igorlfs/nvim-dap-view.git
+[submodule "nvim/pack/extend/opt/nvim-nio"]
+	path = nvim/pack/extend/opt/nvim-nio
+	url = https://github.com/nvim-neotest/nvim-nio.git
 [submodule "nvim/pack/extend/opt/syntastic"]
 	path = nvim/pack/extend/opt/syntastic
 	url = https://github.com/scrooloose/syntastic.git
+[submodule "nvim/pack/extend/opt/tmux"]
+	path = nvim/pack/extend/opt/tmux
+	url = https://github.com/nathom/tmux.nvim.git
 [submodule "nvim/pack/extend/opt/vimwiki"]
 	path = nvim/pack/extend/opt/vimwiki
 	url = https://github.com/vimwiki/vimwiki.git
 [submodule "nvim/pack/extend/start/async"]
 	path = nvim/pack/extend/start/async
 	url = https://github.com/prabirshrestha/async.vim.git
+[submodule "nvim/pack/extend/start/leap"]
+	path = nvim/pack/extend/start/leap
+	url = https://github.com/ggandor/leap.nvim.git
 [submodule "nvim/pack/extend/start/nvim-ocs52"]
 	path = nvim/pack/extend/start/nvim-ocs52
 	url = https://github.com/ojroques/nvim-osc52.git
@@ -79,39 +118,63 @@
 [submodule "nvim/pack/git/start/gitsigns"]
 	path = nvim/pack/git/start/gitsigns
 	url = https://github.com/lewis6991/gitsigns.nvim
-[submodule "nvim/pack/lang/opt/xit"]
-	path = nvim/pack/lang/opt/xit
-	url = https://github.com/synaptiko/xit.nvim
-[submodule "nvim/pack/lang/start/ron"]
-	path = nvim/pack/lang/start/ron
-	url = https://github.com/ron-rs/ron.vim.git
+[submodule "nvim/pack/lang/opt/rustaceanvim"]
+	path = nvim/pack/lang/opt/rustaceanvim
+	url = https://github.com/mrcjkb/rustaceanvim.git
 [submodule "nvim/pack/lang/opt/rust"]
 	path = nvim/pack/lang/opt/rust
 	url = https://github.com/rust-lang/rust.vim.git
 [submodule "nvim/pack/lang/opt/rust-tools"]
 	path = nvim/pack/lang/opt/rust-tools
 	url = https://github.com/simrat39/rust-tools.nvim.git
+[submodule "nvim/pack/lang/opt/xit"]
+	path = nvim/pack/lang/opt/xit
+	url = https://github.com/synaptiko/xit.nvim
+[submodule "nvim/pack/lang/start/ron"]
+	path = nvim/pack/lang/start/ron
+	url = https://github.com/ron-rs/ron.vim.git
 [submodule "nvim/pack/lang/start/vim-fish-syntax"]
 	path = nvim/pack/lang/start/vim-fish-syntax
 	url = https://github.com/khaveesh/vim-fish-syntax.git
+[submodule "nvim/pack/lsp/opt/lsp_signature"]
+	path = nvim/pack/lsp/opt/lsp_signature
+	url = https://github.com/ray-x/lsp_signature.nvim.git
 [submodule "nvim/pack/lsp/opt/nvim-lspconfig"]
 	path = nvim/pack/lsp/opt/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lsp.git
+[submodule "nvim/pack/misc/start/neo-tree"]
+	path = nvim/pack/misc/start/neo-tree
+	url = https://github.com/nvim-neo-tree/neo-tree.nvim.git
+[submodule "nvim/pack/misc/start/nui"]
+	path = nvim/pack/misc/start/nui
+	url = https://github.com/MunifTanjim/nui.nvim.git
+[submodule "nvim/pack/misc/start/nvim-web-devicons"]
+	path = nvim/pack/misc/start/nvim-web-devicons
+	url = https://github.com/nvim-tree/nvim-web-devicons.git
+[submodule "nvim/pack/misc/start/plenary"]
+	path = nvim/pack/misc/start/plenary
+	url = https://github.com/nvim-lua/plenary.nvim.git
 [submodule "nvim/pack/parser/opt/nvim-treesitter"]
 	path = nvim/pack/parser/opt/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter
+[submodule "nvim/pack/parser/opt/rainbow-delimiters"]
+	path = nvim/pack/parser/opt/rainbow-delimiters
+	url = https://github.com/HiPhish/rainbow-delimiters.nvim.git
 [submodule "nvim/pack/parser/opt/tree-sitter-xit"]
 	path = nvim/pack/parser/opt/tree-sitter-xit
 	url = https://github.com/synaptiko/tree-sitter-xit.git
-[submodule "nvim/pack/theme/opt/kanagawa"]
-	path = nvim/pack/theme/opt/kanagawa
-	url = https://github.com/rebelot/kanagawa.nvim.git
 [submodule "nvim/pack/theme/opt/airline"]
 	path = nvim/pack/theme/opt/airline
 	url = https://github.com/bling/vim-airline.git
 [submodule "nvim/pack/theme/opt/airline-themes"]
 	path = nvim/pack/theme/opt/airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes
+[submodule "nvim/pack/theme/opt/kanagawa"]
+	path = nvim/pack/theme/opt/kanagawa
+	url = https://github.com/rebelot/kanagawa.nvim.git
+[submodule "nvim/pack/theme/opt/lualine"]
+	path = nvim/pack/theme/opt/lualine
+	url = https://github.com/nvim-lualine/lualine.nvim.git
 [submodule "nvim/pack/theme/opt/tmuxline"]
 	path = nvim/pack/theme/opt/tmuxline
 	url = https://github.com/edkolev/tmuxline.vim.git
@@ -124,69 +187,6 @@
 [submodule "nvim/pack/undo/opt/undotree"]
 	path = nvim/pack/undo/opt/undotree
 	url = https://github.com/mbbill/undotree.git
-[submodule "nvim/pack/lang/opt/rustaceanvim"]
-	path = nvim/pack/lang/opt/rustaceanvim
-	url = https://github.com/mrcjkb/rustaceanvim.git
-[submodule "nvim/pack/misc/start/plenary"]
-	path = nvim/pack/misc/start/plenary
-	url = https://github.com/nvim-lua/plenary.nvim.git
-[submodule "nvim/pack/misc/start/nui"]
-	path = nvim/pack/misc/start/nui
-	url = https://github.com/MunifTanjim/nui.nvim.git
-[submodule "nvim/pack/misc/start/nvim-web-devicons"]
-	path = nvim/pack/misc/start/nvim-web-devicons
-	url = https://github.com/nvim-tree/nvim-web-devicons.git
-[submodule "nvim/pack/misc/start/neo-tree"]
-	path = nvim/pack/misc/start/neo-tree
-	url = https://github.com/nvim-neo-tree/neo-tree.nvim.git
-[submodule "nvim/pack/theme/opt/lualine"]
-	path = nvim/pack/theme/opt/lualine
-	url = https://github.com/nvim-lualine/lualine.nvim.git
-[submodule "nvim/pack/extend/opt/tmux"]
-	path = nvim/pack/extend/opt/tmux
-	url = https://github.com/nathom/tmux.nvim.git
-[submodule "nvim/pack/parser/opt/rainbow-delimiters"]
-	path = nvim/pack/parser/opt/rainbow-delimiters
-	url = https://github.com/HiPhish/rainbow-delimiters.nvim.git
-[submodule "nvim/pack/extend/start/leap"]
-	path = nvim/pack/extend/start/leap
-	url = https://github.com/ggandor/leap.nvim.git
-[submodule "nvim/pack/cmp/opt/cmp-nvim-lsp"]
-	path = nvim/pack/cmp/opt/cmp-nvim-lsp
-	url = https://github.com/hrsh7th/cmp-nvim-lsp.git
-[submodule "nvim/pack/cmp/opt/cmp-buffer"]
-	path = nvim/pack/cmp/opt/cmp-buffer
-	url = https://github.com/hrsh7th/cmp-buffer.git
-[submodule "nvim/pack/cmp/opt/cmp-path"]
-	path = nvim/pack/cmp/opt/cmp-path
-	url = https://github.com/hrsh7th/cmp-path.git
-[submodule "nvim/pack/cmp/opt/cmp-cmdline"]
-	path = nvim/pack/cmp/opt/cmp-cmdline
-	url = https://github.com/hrsh7th/cmp-cmdline.git
-[submodule "nvim/pack/cmp/opt/nvim-cmp"]
-	path = nvim/pack/cmp/opt/nvim-cmp
-	url = https://github.com/hrsh7th/nvim-cmp.git
-[submodule "nvim/pack/cmp/opt/cmp-cmdline-history"]
-	path = nvim/pack/cmp/opt/cmp-cmdline-history
-	url = https://github.com/dmitmel/cmp-cmdline-history.git
-[submodule "nvim/pack/lsp/opt/lsp_signature"]
-	path = nvim/pack/lsp/opt/lsp_signature
-	url = https://github.com/ray-x/lsp_signature.nvim.git
-[submodule "nvim/pack/extend/opt/conform.nvim"]
-	path = nvim/pack/extend/opt/conform.nvim
-	url = https://github.com/stevearc/conform.nvim.git
-[submodule "nvim/pack/extend/opt/blink.cmp"]
-	path = nvim/pack/extend/opt/blink.cmp
-	url = https://github.com/Saghen/blink.cmp.git
 [submodule "vim/pack/theme/opt/lualine"]
 	path = vim/pack/theme/opt/lualine
 	url = https://github.com/nvim-lualine/lualine.nvim.git
-[submodule "nvim/pack/extend/opt/mason-tool-installer"]
-	path = nvim/pack/extend/opt/mason-tool-installer
-	url = https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim.git
-[submodule "nvim/pack/extend/opt/nvim-nio"]
-	path = nvim/pack/extend/opt/nvim-nio
-	url = https://github.com/nvim-neotest/nvim-nio.git
-[submodule "nvim/pack/extend/opt/nvim-dap-view"]
-	path = nvim/pack/extend/opt/nvim-dap-view
-	url = https://github.com/igorlfs/nvim-dap-view.git
