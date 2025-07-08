@@ -20,6 +20,7 @@ ssh_only = false
 disabled = false
 format = '[@](bold blue)[$hostname](bold green) '
 # trim_at = '.'
+# aliases = {}
 
 # add time
 [time]
@@ -53,6 +54,7 @@ disabled = false
 ahead = ""
 behind = ""
 style = "bold purple"
+disabled = true
 
 # bash/fish
 [shell]
@@ -87,5 +89,8 @@ disabled = true
 [conda]
 style = "cyan"
 format = "env [$environment]($style) " # no weird symbol
+
+[cpp]
+disabled = false
 
 # vim: filetype=cfg
