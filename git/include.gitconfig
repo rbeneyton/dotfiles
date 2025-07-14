@@ -103,6 +103,7 @@
   who = shortlog -s --
   squash = commit -s --amend -C HEAD
   dc = diff --cached --full-index
+  # deprecated
   lfsdiff = -c diff.lfs.textconv=cat diff --full-index
   lfsdiffc = -c diff.lfs.textconv=cat diff --cached --full-index
   logp = log --pretty=oneline --decorate=full -15
@@ -118,6 +119,7 @@
   resa = reset --hard HEAD
   fe = fetch
   fea = fetch --all
+  fep = fetch --prune
   s = status
   sub = submodule
   subi = submodule init

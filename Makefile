@@ -60,7 +60,7 @@ $(GIT_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	# mount -o remount,size=6G,noatime /run/user/1000
 	rm -rf $(SRC)
 	mkdir -p $(SRC)
-	wget https://www.kernel.org/pub/software/scm/git/git-2.49.0.tar.xz -O $(TAR)
+	wget https://www.kernel.org/pub/software/scm/git/git-2.50.1.tar.xz -O $(TAR)
 	tar --xz -xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
 	($(ENV) -C $(SRC) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \

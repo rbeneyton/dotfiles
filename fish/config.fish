@@ -347,6 +347,9 @@ end
 function gwhitespace -d "git with # lines in commit message"
     command git -c commit.cleanup=whitespace $argv
 end
+function glfs -d "git with lfs diff expanded"
+    command git -c diff.lfs.textconv=cat $argv
+end
 function gnosub -d "git with no submodule info"
     command git \
         -c diff.ignoreSubmodules=all \
