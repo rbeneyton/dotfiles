@@ -222,6 +222,18 @@ end
 # pdf reader of the month
 alias pdf zathura
 
+# designed-to-be-kill commands
+function oom
+    command choom -n 1000 -- $argv
+end
+
+function cargo
+    oom cargo $argv
+end
+function make
+    oom make $argv
+end
+
 # ]]]
 # [[[ tmux
 

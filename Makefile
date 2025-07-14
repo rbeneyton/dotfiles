@@ -342,6 +342,8 @@ rg: $(RG)
 debian-install: debian-install-base debian-install-net debian-install-graphic
 
 debian-install-base:
+	apt remove systemd-oomd # avoid https://github.com/systemd/systemd/issues/25376
+	# /etc/systemd/system.conf: DefaultOOMPolicy=continue
 	apt-get install ntp
 	apt-get install make # chicken & egg, here to remember
 	apt-get install time # no shell builtin
