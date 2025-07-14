@@ -85,7 +85,7 @@
 [submodule "nvim/pack/extend/start/tabular"]
 	path = nvim/pack/extend/start/tabular
 	url = https://github.com/godlygeek/tabular.git
-[submodule "nvim/pack/extend/start/tcomment-vim"]
+[submodule "nvim/pack/extend/opt/tcomment-vim"]
 	path = nvim/pack/extend/opt/tcomment-vim
 	url = https://github.com/tomtom/tcomment_vim.git
 [submodule "nvim/pack/extend/start/vim-commentary"]
