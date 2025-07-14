@@ -179,6 +179,13 @@ git_email = "richard.beneyton@gmail.com"
 "python/pdbrc" = "~/.pdbrc"
 "python/pdbrc.py" = "~/.config/python/pdbrc.py"
 
+# rio
+[rio.files]
+"rio/config.toml" = "~/.config/rio/config.toml"
+"rio/themes" = { target = "~/.config/rio/themes", type = "symbolic", recurse = false }
+[rio.variables]
+rio_font_size = 10
+
 # dummy "flag only" packages
 [bluetooth.variables]
 [laptop.variables]
@@ -206,6 +213,7 @@ depends = [
     "nvim",
     "python",
     "redshift",
+    "rio",
     "rust",
     "starship",
     "tmux",
