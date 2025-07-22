@@ -56,6 +56,7 @@ beautiful.init(config_dir .. "theme.lua")
 -- terminal = "konsole"
 -- terminal = "wezterm"
 terminal = "alacritty"
+-- terminal = "rio"
 editor = "nvim"
 editor_cmd = terminal .. " -e " .. editor
 

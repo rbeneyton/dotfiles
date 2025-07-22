@@ -209,11 +209,13 @@ family = "DejaVuSansM Nerd Font Mono"
 #
 # In case you want to specify any font feature:
 # [fonts]
-# features = ["ss02", "ss03", "ss05", "ss19"]
+features = ["ss02", "ss03", "ss05", "ss19"]
 #
 # Note: Font features do not have support to live reload on configuration,
 # so to reflect your changes, you will need to close and reopen Rio.
-#
+
+use-drawable-chars = true
+
 # You can also disable font hinting. Font hinting is enabled by default.
 # [fonts]
 # hinting = false

@@ -15,7 +15,8 @@ $(BIN):
 	mkdir -p $@
 
 toto:
-	echo $(NPROC)
+	echo NPROC:$(NPROC)
+	echo CURDIR:$(CURDIR)
 
 UTILS = ${HOME}/utils.$(shell hostname -s)
 $(UTILS):
@@ -314,6 +315,9 @@ misc-user: $(BIN) rg
 	$(CARGO) install --force --locked --git https://github.com/I60R/page.git
 	$(CARGO) install --force --locked atuin
 	atuin gen-completions --shell fish > ~/.config/fish/completions/atuin.fish
+	# rio
+	$(CARGO) install --locked --git https://github.com/raphamorim/rio.git --rev 96bf02873ada3c1bc85d88c76a4699e00f726aa6 # v0.2.22+
+	tic -xe rio $(CURDIR)/rio/rio.terminfo
 
 
 RG = $(BIN)/rg
