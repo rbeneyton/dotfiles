@@ -1285,10 +1285,12 @@ vim.lsp.config("ruff", {
 vim.lsp.enable("ruff")
 
 -- C++
+local clangd_attach_orig = (vim.lsp.config["clangd"] or {}).on_attach
 vim.lsp.config("clangd", {
-  on_attach = vim.schedule_wrap(function()
-    vim.keymap.set("n", "<leader>h", "<cmd>ClangdSwitchSourceHeader<CR>")
-  end),
+  on_attach = function(args)
+    clangd_attach_orig(args)
+    vim.keymap.set("n", "<leader>h", "<cmd>LspClangdSwitchSourceHeader<CR>")
+  end,
   capabilities = capabilities,
 })
 vim.lsp.enable("clangd")
