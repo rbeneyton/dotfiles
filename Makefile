@@ -390,6 +390,7 @@ debian-install-net:
 	apt-get install dnsmasq # +edit /etc/NetworkManager/dnsmasq.d/custom-dns & /etc/NetworkManager/NetworkManager.conf
 	apt-get install tlp tlp-rdw
 	apt-get install sylpheed
+	apt-get install claws-mail claws-mail-plugins
 	apt-get clean
 
 debian-install-graphic:
