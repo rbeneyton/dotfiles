@@ -295,26 +295,26 @@ misc-user: $(BIN) rg
 	rm -f $(BIN)/yt-dlp
 	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o $(BIN)/yt-dlp
 	chmod u+x $(BIN)/yt-dlp
-	$(CARGO) install --force --locked flamegraph
-	$(CARGO) install --force --locked cargo-criterion
-	$(CARGO) install --force --locked cargo-atcoder
-	$(CARGO) install --force --locked cargo-expand
-	$(CARGO) install --force --locked cargo-cache
-	$(CARGO) install --force --locked starship
-	$(CARGO) install --force --locked hyperfine
-	$(CARGO) install --force --locked eza
-	$(CARGO) install --force --locked bat
-	$(CARGO) install --force --locked just
-	$(CARGO) install --force --locked --git https://github.com/astral-sh/ruff.git ruff
-	$(CARGO) install --force --locked fd-find
+	$(CARGO) install --locked flamegraph
+	$(CARGO) install --locked cargo-criterion
+	$(CARGO) install --locked cargo-atcoder
+	$(CARGO) install --locked cargo-expand
+	$(CARGO) install --locked cargo-cache
+	$(CARGO) install --locked starship
+	$(CARGO) install --locked hyperfine
+	$(CARGO) install --locked eza
+	$(CARGO) install --locked bat
+	$(CARGO) install --locked just
+	$(CARGO) install --locked --git https://github.com/astral-sh/ruff.git ruff
+	$(CARGO) install --locked fd-find
 	$(CARGO) install cargo-cache
 	# install completions
 	fd --gen-completions=fish > ~/.config/fish/completions/fd.fish
-	# $(CARGO) install --force --locked --features=dataframe nu
-	$(CARGO) install --force --locked --git https://github.com/dandavison/delta.git
+	# $(CARGO) install --locked --features=dataframe nu
+	$(CARGO) install --locked --git https://github.com/dandavison/delta.git
 	delta --generate-completion fish > ~/.config/fish/completions/delta.fish
-	$(CARGO) install --force --locked --git https://github.com/I60R/page.git
-	$(CARGO) install --force --locked atuin
+	$(CARGO) install --locked --git https://github.com/I60R/page.git
+	$(CARGO) install --locked atuin
 	atuin gen-completions --shell fish > ~/.config/fish/completions/atuin.fish
 	# rio
 	$(CARGO) install --locked --git https://github.com/raphamorim/rio.git --rev 96bf02873ada3c1bc85d88c76a4699e00f726aa6 # v0.2.22+
