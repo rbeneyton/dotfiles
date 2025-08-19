@@ -384,6 +384,8 @@ debian-install-base:
 	apt-get install ncdu
 	apt-get install webp
 	apt-get install lldb-19 python3-lldb-19
+	apt-get install libreoffice # bug trixie
+	apt-get install cryptsetup # backup
 	apt-get clean
 
 debian-install-net:
