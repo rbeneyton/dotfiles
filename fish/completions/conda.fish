@@ -59,8 +59,13 @@ __fish_conda_top -a upgrade -d "Alias for conda update"
 
 # command added by sourcing ~/miniconda3/etc/fish/conf.d/conda.fish,
 # which is the recommended way to use conda with fish
-__fish_conda_top -a activate -d "Activate the given environment"
-__fish_conda activate -x -a "(__fish_conda_environments)"
+# __fish_conda_top -a activate -d "Activate the given environment"
+# __fish_conda activate -x -a "(__fish_conda_environments)"
+# remove "activate" completion (way too slow to scan for env, and I always use path anyway)
+complete -c conda -n "__fish_seen_subcommand_from activate" -e
+# add a directory expand completion on activate
+complete -c conda -n "__fish_seen_subcommand_from activate" -a "(__fish_complete_directories)"
+
 __fish_conda_top -a deactivate -d "Deactivate current environment, reactivating the previous one"
 
 # common to all top-level commands
