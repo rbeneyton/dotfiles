@@ -300,6 +300,7 @@ misc-user: $(BIN) rg
 	$(CARGO) install --locked cargo-atcoder
 	$(CARGO) install --locked cargo-expand
 	$(CARGO) install --locked cargo-cache
+	$(CARGO) install --locked cargo-show-asm
 	$(CARGO) install --locked starship
 	$(CARGO) install --locked hyperfine
 	$(CARGO) install --locked eza
