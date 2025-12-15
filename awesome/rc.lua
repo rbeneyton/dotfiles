@@ -116,7 +116,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                     { "clementine", "clementine" },
                                     { "&chromium", "chromium" },
                                     { "&discord", home .. "/Downloads/Discord/Discord" },
-                                    { "&firefox", home .. "firefox/firefox" },
+                                    { "&firefox", home .. "/firefox/firefox" },
                                     { "&mail", "sylpheed" },
                                     { "&remmina", "remmina" },
                                     { "&signal", "env LANG=fr_FR.utf-8 LANGUAGE=fr signal-desktop" },
