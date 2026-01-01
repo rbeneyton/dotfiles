@@ -33,7 +33,7 @@ require("mason-tool-installer").setup({
 
     -- C++
     { "clang-format", version = "21.1.8" },
-    { "clangd", version = "19.1.2" },
+    { "clangd", version = "21.1.8" },
 
     -- python
     { "ruff", auto_update = true },
