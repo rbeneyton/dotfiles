@@ -190,6 +190,10 @@ rio_font_size = 10
 [mpv.files]
 "mpv/mpv.conf" = "~/.config/mpv/mpv.conf"
 
+# ipython
+[ipython.files]
+"ipython/startup" = { target = "~/.ipython/profile_default/startup", type = "symbolic", recurse = false }
+
 # dummy "flag only" packages
 [bluetooth.variables]
 [laptop.variables]
@@ -213,6 +217,7 @@ depends = [
     "gdb",
     "git",
     "gtk",
+    "ipython",
     "mpv",
     "nu",
     "nvim",
