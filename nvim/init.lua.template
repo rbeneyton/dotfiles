@@ -38,6 +38,7 @@ require("mason-tool-installer").setup({
     -- python
     { "ruff", auto_update = true },
     "basedpyright",
+    { "ty", auto_update = true },
 
     -- rust
     -- XXX managed by rustaceanvim
@@ -125,6 +126,16 @@ vim.lsp.handlers["textDocument/signatureHelp"] =
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
+    -- disable signatureHelp for basedpyright (ty version is better, and we get 2 entries)
+    local id = vim.tbl_get(ev, "data", "client_id")
+    local client = id and vim.lsp.get_client_by_id(id)
+    if client then
+      if client.name == "basedpyright" then
+        -- vim.print(client.server_capabilities)
+        -- client.server_capabilities.signatureHelpProvider = false
+      end
+    end
+
     -- Enable completion triggered by <c-x><c-o>
     vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
 
@@ -1283,6 +1294,22 @@ vim.lsp.config("ruff", {
   capabilities = capabilities,
 })
 vim.lsp.enable("ruff")
+
+vim.lsp.config("ty", {
+  settings = {
+    ty = {
+      -- ty language server settings go here
+      -- disableLanguageServices = true,
+      -- configuration = {
+      --   rules = {
+      --     ["invalid-syntax"] = "ignore",
+      --   },
+      -- },
+    },
+  },
+  capabilities = capabilities,
+})
+vim.lsp.enable("ty")
 
 -- C++
 local clangd_attach_orig = (vim.lsp.config["clangd"] or {}).on_attach
