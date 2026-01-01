@@ -1168,7 +1168,7 @@ if vim.env.TMUX then
   }
   vim.g.slime_dont_ask_default = 1
   -- for ipython set %autoindent to OFF
-  vim.g.slime_python_ipython = 1
+  -- vim.g.slime_python_ipython = 1 -- no need any more inside tmux with slime_bracketed_paste mode
 
   -- stylua: ignore start
   vim.g.slime_paste_file = "{{env_var "HOME"}}/.slime_paste"
