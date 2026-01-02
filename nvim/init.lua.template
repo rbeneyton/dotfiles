@@ -63,6 +63,9 @@ require("mason-tool-installer").setup({
     -- other shells
     "shellharden",
     "shellcheck",
+
+    -- grammar,
+    "harper-ls",
   },
   auto_update = false,
   run_on_start = false,
@@ -146,6 +149,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set("n", "C-[", vim.lsp.buf.declaration, opts)
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
     vim.keymap.set("n", "C-]", vim.lsp.buf.definition, opts)
+
+    -- vim.keymap.set("n", "]d", vim.diagnostic.goto_next) -- default
+    -- vim.keymap.set("n", "[d", vim.diagnostic.goto_prev) -- default
+
     vim.keymap.set("n", "K", function()
       -- map also 'K' to close hover window (so K(display) then K(into) then K(close))
       if vim.api.nvim_win_get_config(0).relative == "win" then
@@ -154,16 +161,20 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.lsp.buf.hover()
       end
     end, { silent = true, noremap = true })
+
     vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+
     vim.keymap.set("n", "<C-k>", function()
       vim.lsp.buf.signature_help()
       -- require("lsp_signature").toggle_float_win()
     end, { silent = true, noremap = true, buffer = ev.buf })
+
     vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
     vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
     vim.keymap.set("n", "<leader>wl", function()
       print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, opts)
+
     -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
     vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
     vim.keymap.set({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action, opts)
@@ -1321,6 +1332,19 @@ vim.lsp.config("clangd", {
   capabilities = capabilities,
 })
 vim.lsp.enable("clangd")
+
+-- grammar
+vim.lsp.config("harper_ls", {
+  settings = {
+    ["harper-ls"] = {
+      linters = {
+        SentenceCapitalization = false,
+        SpellCheck = false,
+      },
+    },
+  },
+})
+vim.lsp.enable("harper_ls")
 
 -- ]]]
 -- [[[ gundo/mundo/undotree
