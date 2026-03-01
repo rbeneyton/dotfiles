@@ -115,6 +115,7 @@
   rea = rebase --abort
   ref = "!f() { GIT_SEQUENCE_EDITOR=true git rebase -i --autostash; }; f"
   rio = rebase -i origin/master
+  reflogdate = reflog --date=local
   rese = reset HEAD~1
   resa = reset --hard HEAD
   fe = fetch
