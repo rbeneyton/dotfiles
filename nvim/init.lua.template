@@ -126,6 +126,37 @@ vim.lsp.handlers["textDocument/signatureHelp"] =
     },
   })
 
+-- [[[ ancillary function to better manage references
+local function smart_references()
+  vim.lsp.buf.references(nil, {
+    on_list = function(options)
+      local refs = options.items
+      local current_line = vim.api.nvim_win_get_cursor(0)[1]
+      local current_file = vim.api.nvim_buf_get_name(0)
+
+      -- Filter out the reference under the cursor
+      local filtered = vim.tbl_filter(function(item)
+        local item_file = item.filename
+          or (item.bufnr and vim.api.nvim_buf_get_name(item.bufnr))
+          or ""
+        return not (item_file == current_file and item.lnum == current_line)
+      end, refs)
+
+      if #filtered == 1 then
+        local target = filtered[1]
+        local bufnr = target.bufnr or vim.fn.bufadd(target.filename)
+        vim.fn.bufload(bufnr)
+        vim.api.nvim_set_current_buf(bufnr)
+        vim.api.nvim_win_set_cursor(0, { target.lnum, (target.col or 1) - 1 })
+      else
+        vim.fn.setqflist({}, " ", options)
+        vim.cmd("copen")
+      end
+    end,
+  })
+end
+-- ]]]
+
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", {}),
   callback = function(ev)
@@ -178,7 +209,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
     vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
     vim.keymap.set({ "n", "v" }, "<leader>a", vim.lsp.buf.code_action, opts)
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+    -- vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "gr", smart_references, opts)
     vim.keymap.set("n", "<leader>f", function()
       vim.lsp.buf.format({ async = true })
     end, opts)
