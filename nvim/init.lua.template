@@ -1357,9 +1357,16 @@ vim.lsp.enable("ty")
 -- C++
 local clangd_attach_orig = (vim.lsp.config["clangd"] or {}).on_attach
 vim.lsp.config("clangd", {
-  on_attach = function(args)
-    clangd_attach_orig(args)
-    vim.keymap.set("n", "<leader>h", "<cmd>LspClangdSwitchSourceHeader<CR>")
+  on_attach = function(client, bufnr)
+    if clangd_attach_orig then
+      clangd_attach_orig(client, bufnr)
+    end
+    vim.keymap.set(
+      "n",
+      "<leader>h",
+      "<cmd>LspClangdSwitchSourceHeader<CR>",
+      { buffer = bufnr }
+    )
   end,
   capabilities = capabilities,
 })
