@@ -727,18 +727,18 @@ vim.api.nvim_set_keymap(
 -- allow to use :let per buffer, when adding on first/last lines stuff like:
 -- // VIM: let b:syntastic_c_cflags = "-DMACRO_XXX=2"
 -- autocmd BufNewFile * let b:this_is_new_buffer=1
-vim.api.nvim_create_autocmd({ "BufNewFile" }, {
-  pattern = "*",
-  callback = function()
-    vim.cmd("let b:this_is_new_buffer=1")
-  end,
-})
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-  pattern = "*",
-  callback = function()
-    vim.cmd("call FirstModeLine()")
-  end,
-})
+-- vim.api.nvim_create_autocmd({ "BufNewFile" }, {
+--   pattern = "*",
+--   callback = function()
+--     vim.cmd("let b:this_is_new_buffer=1")
+--   end,
+-- })
+-- vim.api.nvim_create_autocmd({ "BufEnter" }, {
+--   pattern = "*",
+--   callback = function()
+--     vim.cmd("call FirstModeLine()")
+--   end,
+-- })
 
 -- always backup session (reopen via vl alias)
 -- autocmd VimLeave * mksession! ~/.cache/session.vim
