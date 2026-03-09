@@ -126,8 +126,9 @@ $(NEOVIM_INSTALL) : | $(GCC_INSTALL) $(UTILS)
 	$(eval INSTALL := $(UTILS)/$(NAME)_install/)
 	$(eval BUILD := $(SRC)/build/)
 	rm -rf $(SRC)
-	git clone --branch release-0.11 --single-branch --depth 50 https://github.com/rbeneyton/neovim.git $(SRC)
-	# cp -ar ${HOME}/work/neovim/ $(SRC)
+	git clone --branch master --single-branch --depth 50 https://github.com/rbeneyton/neovim.git $(SRC)
+	# TOTEST:
+	# cp -ar ${HOME}/work/neovim $(SRC)
 	rm -rf $(BUILD)
 	mkdir -p $(BUILD)
 	($(ENV) -C $(BUILD) -i - \
