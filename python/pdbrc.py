@@ -1,6 +1,12 @@
 histfile_g = None
 
 
+def numpy_setup():
+    import numpy as np
+
+    np.set_printoptions(threshold=10000)
+
+
 def pdbrc_setup():
     import readline
     import pathlib

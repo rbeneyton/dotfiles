@@ -2,6 +2,7 @@
 import os
 with open(os.path.expanduser("~/.config/python/pdbrc.py")) as _f: _f = _f.read()
 exec(_f)
+numpy_setup()
 pdbrc_setup()
 del _f
 
