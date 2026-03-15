@@ -1045,99 +1045,101 @@ let g:terminal_scrollback_buffer_size=99999
 -- ]]]
 -- [[[ lualine options
 
-vim.cmd("packadd lualine")
-local function lualine_slime()
-  if vim.b.slime_config and vim.b.slime_config["target_pane"] then
-    return "" .. vim.b.slime_config["target_pane"]
+vim.defer_fn(function()
+  vim.cmd("packadd lualine")
+  local function lualine_slime()
+    if vim.b.slime_config and vim.b.slime_config["target_pane"] then
+      return "" .. vim.b.slime_config["target_pane"]
+    end
+    return ""
   end
-  return ""
-end
 
-require("lualine").setup({
-  options = {
-    icons_enabled = true,
-    theme = "auto",
-    component_separators = { left = "", right = "" },
-    section_separators = { left = "", right = "" },
-    disabled_filetypes = {
-      statusline = {}, -- 'neo-tree'},
-      winbar = {},
+  require("lualine").setup({
+    options = {
+      icons_enabled = true,
+      theme = "auto",
+      component_separators = { left = "", right = "" },
+      section_separators = { left = "", right = "" },
+      disabled_filetypes = {
+        statusline = {}, -- 'neo-tree'},
+        winbar = {},
+      },
+      ignore_focus = {},
+      always_divide_middle = true,
+      globalstatus = false,
+      refresh = {
+        statusline = 1000,
+        tabline = 1000,
+        winbar = 1000,
+      },
     },
-    ignore_focus = {},
-    always_divide_middle = true,
-    globalstatus = false,
-    refresh = {
-      statusline = 1000,
-      tabline = 1000,
-      winbar = 1000,
-    },
-  },
-  sections = {
-    lualine_a = { "mode" },
-    lualine_b = {
-      {
-        "branch",
-        cond = function()
-          return vim.api.nvim_win_get_width(0) > 70
+    sections = {
+      lualine_a = { "mode" },
+      lualine_b = {
+        {
+          "branch",
+          cond = function()
+            return vim.api.nvim_win_get_width(0) > 70
+          end,
+        },
+        "diff",
+      },
+      lualine_c = { "filename" },
+      lualine_x = {
+        lualine_slime,
+        '%{ObsessionStatus("", "")}',
+        "searchcount",
+        {
+          "filetype",
+          cond = function()
+            return vim.api.nvim_win_get_width(0) > 90
+          end,
+        },
+      },
+      lualine_y = {
+        "%n", -- always buffer number
+        "diagnostics",
+      },
+      lualine_z = {
+        -- progress without fancy Top/Bot labels
+        function()
+          local cur = vim.fn.line(".")
+          local total = vim.fn.line("$")
+          return string.format("%2d%%%%", math.floor(cur / total * 100))
         end,
-      },
-      "diff",
-    },
-    lualine_c = { "filename" },
-    lualine_x = {
-      lualine_slime,
-      '%{ObsessionStatus("", "")}',
-      "searchcount",
-      {
-        "filetype",
-        cond = function()
-          return vim.api.nvim_win_get_width(0) > 90
-        end,
+        "location",
       },
     },
-    lualine_y = {
-      "%n", -- always buffer number
-      "diagnostics",
+    inactive_sections = {
+      lualine_a = {},
+      lualine_b = {},
+      lualine_c = { "filename" },
+      lualine_x = {},
+      lualine_y = { "%n" },
+      lualine_z = { "location" },
     },
-    lualine_z = {
-      -- progress without fancy Top/Bot labels
-      function()
-        local cur = vim.fn.line(".")
-        local total = vim.fn.line("$")
-        return string.format("%2d%%%%", math.floor(cur / total * 100))
-      end,
-      "location",
-    },
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = { "filename" },
-    lualine_x = {},
-    lualine_y = { "%n" },
-    lualine_z = { "location" },
-  },
-  tabline = {
-    lualine_a = {
-      -- {'buffers', mode=4} },
-      {
-        "tabs",
-        mode = 2,
-        tab_max_length = vim.o.columns,
-        max_length = vim.o.columns,
+    tabline = {
+      lualine_a = {
+        -- {'buffers', mode=4} },
+        {
+          "tabs",
+          mode = 2,
+          tab_max_length = vim.o.columns,
+          max_length = vim.o.columns,
+        },
       },
+      lualine_b = {},
+      lualine_c = {},
+      lualine_x = {},
+      lualine_y = {},
+      lualine_z = {},
     },
-    lualine_b = {},
-    lualine_c = {},
-    lualine_x = {},
-    lualine_y = {},
-    lualine_z = {},
-  },
-  winbar = {},
-  inactive_winbar = {},
-  extensions = { "quickfix", "fugitive", "neo-tree" },
-})
-vim.opt.showtabline = 1 -- disable tabs if only one
+    winbar = {},
+    inactive_winbar = {},
+    extensions = { "quickfix", "fugitive", "neo-tree" },
+  })
+  vim.opt.showtabline = 1 -- disable tabs if only one
+end, 10)
 
 -- quick switch tab
 vim.api.nvim_set_keymap("n", "<leader>1", ":1tabnext<cr>", { noremap = true })
