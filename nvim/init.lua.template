@@ -1380,7 +1380,7 @@ vim.lsp.config("harper_ls", {
     ["harper-ls"] = {
       linters = {
         SentenceCapitalization = false,
-        SpellCheck = false,
+        LongSentences = false,
       },
     },
   },
