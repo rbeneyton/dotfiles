@@ -1054,6 +1054,89 @@ vim.defer_fn(function()
     return ""
   end
 
+  -- [[[ git merge extra info
+
+  local function safe_readfile(path)
+    local ok, result = pcall(vim.fn.readfile, path)
+    if ok and result and #result > 0 then
+      return result[1]:gsub("%s+$", "")
+    end
+    return nil
+  end
+
+  local function resolve_ref(gitdir, merge_filename)
+    -- git writes these files during a merge
+    local ref = safe_readfile(gitdir .. merge_filename)
+    if not ref then
+      return "" -- not in a merge state
+    end
+
+    -- resolve symbolic refs like "ref: refs/heads/master"
+    local symbolic = ref:match("^ref: (.+)$")
+    if symbolic then
+      ref = symbolic
+      local result = vim.fn.system(
+        string.format(
+          "git -C %s rev-parse --abbrev-ref %s 2>/dev/null",
+          vim.fn.shellescape(gitdir),
+          vim.fn.shellescape(ref)
+        )
+      )
+      return result:gsub("%s+$", "")
+    end
+
+    -- for SHA1, find which branch points to it
+    local result = vim.fn.system(
+      string.format(
+        "git -C %s branch --all --points-at %s --format=%%\\(refname:short\\) 2>/dev/null",
+        vim.fn.shellescape(gitdir),
+        vim.fn.shellescape(ref)
+      )
+    )
+    -- longest entry, as it should be the correct one
+    local lines = vim.split(result, "\n", { trimempty = true })
+    table.sort(lines, function(a, b)
+      return #a > #b
+    end)
+    result = lines[1] or ""
+    -- ref cleaning
+    result = result:match("([^\n]+)") or ""
+    result = result:gsub("^remotes/", "")
+    return result:gsub("%s+$", "")
+  end
+
+  local function _lualine_merge_origin(bufnr)
+    local bufname = vim.api.nvim_buf_get_name(bufnr)
+    -- fugitive paths look like: fugitive:///path/to/repo/.git//2/filename
+    local gitdir, ref = bufname:match("fugitive://(.+)//(%w+)/.+")
+    if not gitdir or not ref then
+      return ""
+    end
+
+    -- git writes these files during a merge
+    if ref == "2" then
+      return "OURS: " .. resolve_ref(gitdir, "/HEAD")
+    elseif ref == "3" then
+      return "THEIRS: " .. resolve_ref(gitdir, "/MERGE_HEAD")
+    elseif ref == "1" then
+      return "BASE"
+    end
+    return ""
+  end
+
+  -- cached version
+  local branch_cache = {}
+  local function lualine_merge_origin()
+    local bufnr = vim.api.nvim_get_current_buf()
+    if branch_cache[bufnr] then
+      return branch_cache[bufnr]
+    end
+    branch_cache[bufnr] = _lualine_merge_origin(bufnr)
+    return branch_cache[bufnr]
+  end
+
+  -- ]]]
+
   require("lualine").setup({
     options = {
       icons_enabled = true,
@@ -1082,6 +1165,7 @@ vim.defer_fn(function()
             return vim.api.nvim_win_get_width(0) > 70
           end,
         },
+        lualine_merge_origin,
         "diff",
       },
       lualine_c = { "filename" },
@@ -1112,7 +1196,7 @@ vim.defer_fn(function()
     },
     inactive_sections = {
       lualine_a = {},
-      lualine_b = {},
+      lualine_b = { lualine_merge_origin },
       lualine_c = { "filename" },
       lualine_x = {},
       lualine_y = { "%n" },
