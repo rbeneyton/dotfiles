@@ -494,7 +494,7 @@ $(FISH_INSTALL) : | $(UTILS) rust-update
 	rm -rf $(SRC)
 	mkdir -p $(SRC)
 	mkdir -p $(BUILD)
-	wget https://github.com/fish-shell/fish-shell/releases/download/4.0.2/fish-4.0.2.tar.xz -O $(TAR)
+	wget https://github.com/fish-shell/fish-shell/releases/download/4.5.0/fish-4.5.0.tar.xz -O $(TAR)
 	tar xvf $(TAR) -C $(SRC) --strip-components 1
 	rm $(TAR)
 	($(ENV) -C $(BUILD) -i - HOME=${HOME} PATH=$(CLEAN_PATH) LD_LIBRARY_PATH=$(CLEAN_LD_LIBRARY_PATH) LOGNAME=${LOGNAME} MAIL=${MAIL} LANG=${LANG} \
