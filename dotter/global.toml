@@ -173,6 +173,11 @@ git_email = "richard.beneyton@gmail.com"
 [atuin.files]
 # TODO atuin creates its default config file when running so break upgrade by dotter
 "atuin/config.toml" = "~/.config/atuin/config.toml"
+"atuin/server.toml" = "~/.config/atuin/server.toml"
+[atuin.variables]
+atuin_port = 2345
+atuin_db = ".config/atuin/db"
+atuin_sync_address = "https://localhost:2345/"
 
 # python
 [python.files]

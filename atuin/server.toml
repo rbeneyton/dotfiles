@@ -1,0 +1,4 @@
+host = "0.0.0.0"
+port = {{atuin_port}}
+open_registration = false
+db_uri="sqlite://{{env_var "HOME"}}/{{atuin_db}}"

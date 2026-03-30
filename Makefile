@@ -318,6 +318,7 @@ misc-user: $(BIN) rg
 	delta --generate-completion fish > ~/.config/fish/completions/delta.fish
 	$(CARGO) install --locked --git https://github.com/I60R/page.git
 	$(CARGO) install --locked atuin
+	$(CARGO) install --locked atuin-server
 	atuin gen-completions --shell fish > ~/.config/fish/completions/atuin.fish
 	# rio
 	$(CARGO) install --locked --git https://github.com/raphamorim/rio.git --rev 96bf02873ada3c1bc85d88c76a4699e00f726aa6 # v0.2.22+
