@@ -1105,6 +1105,17 @@ vim.defer_fn(function()
     return result:gsub("%s+$", "")
   end
 
+  local function get_merge_type(gitdir)
+    if safe_readfile(gitdir .. "/MERGE_HEAD") then
+      return "merge"
+    elseif safe_readfile(gitdir .. "/CHERRY_PICK_HEAD") then
+      return "cherry-pick"
+    elseif safe_readfile(gitdir .. "/REBASE_HEAD") then
+      return "rebase"
+    end
+    return nil
+  end
+
   local function _lualine_merge_origin(bufnr)
     local bufname = vim.api.nvim_buf_get_name(bufnr)
     -- fugitive paths look like: fugitive:///path/to/repo/.git//2/filename
@@ -1112,14 +1123,25 @@ vim.defer_fn(function()
     if not gitdir or not ref then
       return ""
     end
+    local merge_type = get_merge_type(gitdir)
+    if not merge_type then
+      return ""
+    end
+    local other_head = {
+      ["merge"] = "/MERGE_HEAD",
+      ["cherry-pick"] = "/CHERRY_PICK_HEAD",
+      ["rebase"] = "/REBASE_HEAD",
+    }
 
-    -- git writes these files during a merge
-    if ref == "2" then
-      return "OURS: " .. resolve_ref(gitdir, "/HEAD")
-    elseif ref == "3" then
-      return "THEIRS: " .. resolve_ref(gitdir, "/MERGE_HEAD")
-    elseif ref == "1" then
+    if ref == "1" then
       return "BASE"
+    elseif ref == "2" then
+      return "OURS(" .. merge_type .. "): " .. resolve_ref(gitdir, "/HEAD")
+    elseif ref == "3" then
+      return "THEIRS("
+        .. merge_type
+        .. "): "
+        .. resolve_ref(gitdir, other_head[merge_type])
     end
     return ""
   end
