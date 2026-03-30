@@ -80,7 +80,7 @@
 	path = nvim/pack/extend/start/leap
 	url = https://codeberg.org/andyg/leap.nvim.git
 [submodule "nvim/pack/extend/start/nvim-ocs52"]
-	path = nvim/pack/extend/start/nvim-ocs52
+	path = nvim/pack/extend/opt/nvim-ocs52
 	url = https://github.com/ojroques/nvim-osc52.git
 [submodule "nvim/pack/extend/start/tabular"]
 	path = nvim/pack/extend/start/tabular
