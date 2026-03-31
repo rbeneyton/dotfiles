@@ -296,6 +296,7 @@ misc-user: $(BIN) rg
 	rm -f $(BIN)/yt-dlp
 	curl --silent --location https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o $(BIN)/yt-dlp
 	chmod u+x $(BIN)/yt-dlp
+	$(CARGO) install --locked tree-sitter-cli
 	$(CARGO) install --locked flamegraph
 	$(CARGO) install --locked cargo-criterion
 	$(CARGO) install --locked cargo-atcoder
