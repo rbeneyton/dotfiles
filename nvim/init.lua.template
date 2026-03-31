@@ -118,13 +118,14 @@ end, { desc = "Toggle Diagnostics Inline" })
 --   },
 -- })
 
-vim.lsp.handlers["textDocument/signatureHelp"] =
-  vim.lsp.with(vim.lsp.handlers.signature_help, {
+vim.keymap.set("n", "gs", function()
+  vim.lsp.buf.signature_help({
     float = {
       focusable = false,
       close_events = { "CursorMoved", "BufHidden", "InsertCharPre" },
     },
   })
+end, opts)
 
 -- [[[ ancillary function to better manage references
 local function smart_references()
@@ -1382,7 +1383,7 @@ vim.g.rustaceanvim = {
 }
 
 -- LSP shortcuts
-vim.lsp.set_log_level("off")
+vim.lsp.log.set_level("off")
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 
 local capabilities = require("blink.cmp").get_lsp_capabilities({
