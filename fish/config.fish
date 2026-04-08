@@ -68,7 +68,7 @@ path_add $HOME/bin
 
 path_add $HOME/firefox
 
-set --global --export UTILS $HOME/utils.(hostname -s)
+set --global --export UTILS (string join . $HOME/utils (string split -f 1 . $HOSTNAME (hostname -s)))
 
 path_add $UTILS/git_install/bin
 manpath_add $UTILS/git_install/share/man
