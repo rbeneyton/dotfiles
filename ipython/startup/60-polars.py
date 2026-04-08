@@ -1,6 +1,6 @@
 try:
     import polars as pl
-    import polars.selector as cs
+    import polars.selectors as cs
 
     # expand up to 40 columns
     pl.Config().set_tbl_cols(40)
