@@ -588,7 +588,7 @@ require("neo-tree").setup({
 -- XXX why not? vim.api.nvim_set_keymap("n", "\", ":Neotree toggle current reveal_force_cwd<CR>", { noremap = true})
 vim.cmd([[:nnoremap \ :Neotree toggle current reveal_force_cwd<CR>]])
 vim.cmd([[:nnoremap \| :Neotree toggle reveal current buffers dir=/<CR>]])
-vim.cmd([[:nnoremap <Leader>G :Neotree toggle git_status<CR>]])
+-- vim.cmd([[:nnoremap <F6> :Neotree toggle git_status<CR>]])
 
 -- ]]]
 -- [[[ Mappings
