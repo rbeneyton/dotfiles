@@ -190,3 +190,6 @@
 [submodule "vim/pack/theme/opt/lualine"]
 	path = vim/pack/theme/opt/lualine
 	url = https://github.com/nvim-lualine/lualine.nvim.git
+[submodule "nvim/pack/theme/opt/tiny-cmdline"]
+	path = nvim/pack/theme/opt/tiny-cmdline
+	url = https://github.com/rachartier/tiny-cmdline.nvim.git

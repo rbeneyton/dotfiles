@@ -1,3 +1,11 @@
+-- [[[ ui2 + tiny-cmdline
+
+-- require("vim._core.ui2").enable({})
+-- vim.o.cmdheight = 0
+-- vim.cmd("packadd tiny-cmdline")
+-- require("tiny-cmdline").setup()
+
+-- ]]]
 -- remind, after add: :helptags ALL
 
 -- [[[ load 'light' settings
