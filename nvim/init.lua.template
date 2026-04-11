@@ -329,7 +329,7 @@ require("blink.cmp").setup({
     },
     -- 2 band mapping, see alacritty conf (for suboptimal OS)
     ["ſ"] = { "show", "show_documentation", "hide_documentation", "hide" },
-    ["<C-h>"] = { "hide" },
+    ["<C-h>"] = { "hide", "show" },
     ["<C-k>"] = { "select_and_accept" },
     ["<C-p>"] = { "select_prev", "fallback" },
     ["<C-n>"] = { "select_next", "fallback" },
@@ -344,7 +344,7 @@ require("blink.cmp").setup({
       -- 2 band mapping, see alacritty conf (for suboptimal OS)
       ["ſ"] = { "show", "hide" },
       ["<Tab>"] = { "show", "select_and_accept" },
-      ["<C-h>"] = { "hide" },
+      ["<C-h>"] = { "hide", "show" },
       ["<C-k>"] = { "select_and_accept" },
       ["<C-p>"] = { "select_prev", "fallback" },
       ["<C-n>"] = { "select_next", "fallback" },
