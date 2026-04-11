@@ -153,7 +153,7 @@ git_email = "richard.beneyton@gmail.com"
 
 # conda
 [conda.files]
-"conda/condarc" = "~/.condarc"
+"conda/condarc" = { target = "~/.condarc", type = "template" }
 
 # zathura
 [zathura.files]
