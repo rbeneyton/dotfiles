@@ -351,6 +351,10 @@ require("blink.cmp").setup({
       ["<C-b>"] = { "scroll_documentation_up", "fallback" },
       ["<C-f>"] = { "scroll_documentation_down", "fallback" },
     },
+    completion = {
+      menu = { auto_show = true },
+      ghost_text = { enabled = true }, -- still not working (no noice)
+    },
   },
 
   completion = {
