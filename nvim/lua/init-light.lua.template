@@ -34,9 +34,9 @@ require("nvim-treesitter.install").compilers = {
 
 -- " :lua vim.opt.runtimepath:append("~/.config/nvim/parsers")
 
-require("nvim-treesitter").setup{
-  install_dir = vim.fn.stdpath('data') .. '/nvim-treesitter'
-}
+require("nvim-treesitter").setup({
+  install_dir = vim.fn.stdpath("data") .. "/nvim-treesitter",
+})
 -- sync_install = false,
 -- auto_install = false,
 -- ignore_install = { "help", "javascript" },
@@ -75,7 +75,7 @@ require("nvim-treesitter").setup{
 --   enable = false,
 -- },
 
-require("nvim-treesitter").install{
+require("nvim-treesitter").install({
   "bash",
   "c",
   "comment",
@@ -87,9 +87,9 @@ require("nvim-treesitter").install{
   "markdown",
   "python",
   "rust",
-  "toml"
+  "toml",
   -- "xit"
-}
+})
 
 vim.cmd(":packadd rainbow-delimiters")
 local rainbow_delimiters = require("rainbow-delimiters")
