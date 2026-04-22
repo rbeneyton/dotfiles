@@ -208,10 +208,27 @@ alias h 'history --reverse --show-time | bat --language fish --force-colorizatio
 alias i ipython3
 alias is "PYTHONNOUSERSITE=on ipython3"
 
-# conda
+# conda/mamba
 # path_add /opt/conda/bin
 function condainit
     eval conda "shell.fish" hook $argv | source
+end
+function condalib
+    set -gx LD_LIBRARY_PATH $CONDA_PREFIX/lib/ $LD_LIBRARY_PATH
+end
+# Override mambe to prevent direct package file installation, as the deps mgmt is broken in this case
+function mamba --wraps mamba
+    # Checks arguments for .bz2 or .conda files
+    for args in $argv
+        if string match -q "*.bz2" -- $arg or string match -q "*.conda" -- $arg
+            echo "Achtung XXX rbeneyton XXX: Direct package installation is broken from deps point of view!"
+            echo "Use instead:"
+            echo " mamba create -p ./env -c file:///path/to/conda <package>[=<version>]"
+            return 2
+        end
+    end
+    # Call real mambe ottherwise
+    command mamba $argv
 end
 
 # video reader of the month (with true hardware decoding)
