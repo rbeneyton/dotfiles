@@ -278,6 +278,19 @@ vim.keymap.set("n", "<Leader>gh", "<CMD>Gvdiff HEAD<CR>")
 vim.keymap.set("n", "<Leader>go", "<CMD>Gvdiff origin/master<CR>")
 vim.keymap.set("n", "<Leader>ga", "<CMD>Git difftool -y<CR>")
 
+-- correct type when showing commit in blame
+vim.api.nvim_create_autocmd("BufRead", {
+  group = vim.api.nvim_create_augroup("fugitive_commit", { clear = true }),
+  pattern = "fugitive://*",
+  callback = function()
+    local bufname = vim.fn.expand("%")
+    -- Match fugitive://path/to/repo/SHA1 format (commit)
+    if bufname:match("fugitive://.*/%x%x%x%x%x%x%x+$") then
+      vim.opt_local.filetype = "gitcommit"
+    end
+  end,
+})
+
 -- ]]]
 -- [[[ leap
 
