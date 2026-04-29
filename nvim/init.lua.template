@@ -1211,6 +1211,12 @@ vim.defer_fn(function()
         {
           "filetype",
           cond = function()
+            return vim.api.nvim_win_get_width(0) > 150
+          end,
+        },
+        {
+          "lsp_status",
+          cond = function()
             return vim.api.nvim_win_get_width(0) > 90
           end,
         },
