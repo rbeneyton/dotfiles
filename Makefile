@@ -391,6 +391,7 @@ debian-install-base:
 	apt-get install libreoffice # bug trixie
 	apt-get install cryptsetup # backup
 	apt-get install btrfs-progs # backup
+	apt-get install clang # deps of tree-sitter-cli
 	apt-get clean
 
 debian-install-net:
