@@ -127,6 +127,7 @@ gtk_font_size = "8"
 "git/include.gitconfig" = "~/.gitconfig.include"
 "git/gitignore.main" = "~/.gitignore"
 "git/git-submodule-align" = "~/bin/git-submodule-align"
+"git/git-submodule-check-inner.fish" = "~/bin/git-submodule-check-inner"
 "git/tigconfig" = "~/.config/tig/config"
 [git.variables]
 git_name = "Richard Beneyton"
