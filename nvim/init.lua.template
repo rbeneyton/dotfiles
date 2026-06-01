@@ -90,10 +90,10 @@ vim.cmd(":packadd mason-lspconfig")
 require("mason-lspconfig").setup({
   ensure_installed = {},
 })
-require("mason-lspconfig").setup_handlers({
-  -- rustaceanvim will manage its conf
-  ["rust_analyzer"] = function() end,
-})
+-- require("mason-lspconfig").setup_handlers({
+--   -- rustaceanvim will manage its conf
+--   ["rust_analyzer"] = function() end,
+-- })
 
 vim.cmd(":packadd nvim-lspconfig")
 
