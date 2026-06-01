@@ -200,6 +200,11 @@ rio_font_size = 10
 [ipython.files]
 "ipython/startup" = { target = "~/.ipython/profile_default/startup", type = "symbolic", recurse = false }
 
+# claude
+[claude.files]
+"claude/CLAUDE.md" = "~/.claude/CLAUDE.md"
+"claude/statusline.sh" = "~/.claude/statusline.sh"
+
 # dummy "flag only" packages
 [bluetooth.variables]
 [laptop.variables]
@@ -217,6 +222,7 @@ depends = [
     "bluetooth",
     "compose",
     "conda",
+    "claude",
     "firefox",
     "fish",
     "fonts",

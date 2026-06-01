@@ -1545,6 +1545,98 @@ hi User6 term=inverse,bold ctermfg=DarkCyan ctermbg=Black
 hi User7 term=inverse,bold ctermfg=White ctermbg=Black
 ]])
 
+-- ]]]
+-- [[[ claude
+
+vim.cmd(":packadd snacks")
+require("snacks").setup()
+-- terminal window should always be resizable
+vim.api.nvim_create_autocmd("TermOpen", {
+  callback = function()
+    vim.wo.winfixwidth = false
+    vim.wo.winfixheight = false
+  end,
+})
+
+vim.cmd(":packadd claudecode")
+require("claudecode").setup({
+  -- Top-level aliases are supported and forwarded to terminal config
+  git_repo_cwd = true,
+  -- terminal_cmd = "~/.local/bin/claude", -- Point to local installation
+  focus_after_send = true,
+  terminal = {
+    split_width_percentage = 0.33,
+    snacks_win_opts = {
+      resize = true,
+      -- fixate = false, -- allow resizing
+      -- width = nil, -- Don't force width
+      -- height = nil, -- Don't force height
+    },
+  },
+  diff_opts = {
+    open_in_new_tab = true,
+  },
+})
+-- exit from terminal use double Esc
+vim.keymap.set("t", "<C-]>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+vim.keymap.set(
+  "n",
+  "<leader>cc",
+  "<cmd>ClaudeCode<cr>",
+  { desc = "Toggle Claude" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>cf",
+  "<cmd>ClaudeCodeFocus<cr>",
+  { desc = "Focus Claude" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>cr",
+  "<cmd>ClaudeCode --resume<cr>",
+  { desc = "Resume Claude" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>cC",
+  "<cmd>ClaudeCode --continue<cr>",
+  { desc = "Continue Claude" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>cm",
+  "<cmd>ClaudeCodeSelectModel<cr>",
+  { desc = "Select Claude model" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>cb",
+  "<cmd>ClaudeCodeAdd %<cr>",
+  { desc = "Add current buffer" }
+)
+vim.keymap.set(
+  "v",
+  "<leader>cs",
+  "<cmd>ClaudeCodeSend<cr>",
+  { desc = "Send to Claude" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>ca",
+  "<cmd>ClaudeCodeDiffAccept<cr>",
+  { desc = "Accept diff" }
+)
+vim.keymap.set(
+  "n",
+  "<leader>cd",
+  "<cmd>ClaudeCodeDiffDeny<cr>",
+  { desc = "Deny diff" }
+)
+
+-- ]]]
+
 -- dotter/handlebars+fold incompatibility: temporary [ instead of {
 -- vim: foldmethod=marker
 -- vim: foldmarker=[[[,]]]

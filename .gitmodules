@@ -193,3 +193,9 @@
 [submodule "nvim/pack/theme/opt/tiny-cmdline"]
 	path = nvim/pack/theme/opt/tiny-cmdline
 	url = https://github.com/rachartier/tiny-cmdline.nvim.git
+[submodule "nvim/pack/cfm/opt/claudecode"]
+	path = nvim/pack/cfm/opt/claudecode
+	url = https://github.com/coder/claudecode.nvim.git
+[submodule "nvim/pack/cfm/opt/snacks"]
+	path = nvim/pack/cfm/opt/snacks
+	url = https://github.com/folke/snacks.nvim.git

@@ -36,3 +36,7 @@ target/
 .syntastic_cpp_config
 .cscope.files
 .cscope.out
+
+# IA
+CLAUDE.md
+.claude

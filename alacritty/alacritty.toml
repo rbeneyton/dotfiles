@@ -585,6 +585,12 @@ chars = "\u017F"
 key = "Space"
 mods = "Control"
 
+#rb Shift-enter send \n not Enter
+[[keyboard.bindings]]
+chars = "\n"
+key = "Enter"
+mods = "Shift"
+
 [mouse]
 hide_when_typing = true
 

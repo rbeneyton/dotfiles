@@ -252,6 +252,9 @@ if type choom &>/dev/null
     end
 end
 
+# alias claude ~/.local/bin/claude
+path_add ~/.local/bin
+
 # ]]]
 # [[[ tmux
 
