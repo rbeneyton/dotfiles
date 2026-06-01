@@ -265,6 +265,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
     if os.getenv("TMUX") then
       local text = table.concat(vim.v.event.regcontents, "\n")
+      -- keep the trailing newline for linewise yanks (e.g. yy) so that
+      -- reading the register back from tmux stays linewise instead of
+      -- charwise (otherwise `p` drops the line break)
+      if vim.v.event.regtype:sub(1, 1) == "V" then
+        text = text .. "\n"
+      end
       vim.fn.system("tmux load-buffer -", text)
     end
   end,
