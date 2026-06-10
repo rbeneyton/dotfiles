@@ -392,6 +392,7 @@ debian-install-base:
 	apt-get install cryptsetup # backup
 	apt-get install btrfs-progs # backup
 	apt-get install clang # deps of tree-sitter-cli
+	apt-get install light gnome-session-xsession # deps of awesome / awesome own conf
 	apt-get clean
 
 debian-install-net:
