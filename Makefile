@@ -393,6 +393,7 @@ debian-install-base:
 	apt-get install btrfs-progs # backup
 	apt-get install clang # deps of tree-sitter-cli
 	apt-get install light gnome-session-xsession # deps of awesome / awesome own conf
+	loginctl enable-linger beneyton # enable linger for latest wayland-wm, to make tmux session robust to logout
 	apt-get clean
 
 debian-install-net:
