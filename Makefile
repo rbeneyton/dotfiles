@@ -313,6 +313,7 @@ misc-user: $(BIN) rg
 	$(CARGO) install --locked fd-find
 	$(CARGO) install cargo-cache
 	$(CARGO) install --locked lowcharts
+	$(CARGO) install --locked rust-script
 	# install completions
 	fd --gen-completions=fish > ~/.config/fish/completions/fd.fish
 	# $(CARGO) install --locked --features=dataframe nu
