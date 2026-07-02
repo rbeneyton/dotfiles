@@ -312,6 +312,7 @@ misc-user: $(BIN) rg
 	$(CARGO) install --locked --git https://github.com/astral-sh/ruff.git ruff
 	$(CARGO) install --locked fd-find
 	$(CARGO) install cargo-cache
+	$(CARGO) install --locked lowcharts
 	# install completions
 	fd --gen-completions=fish > ~/.config/fish/completions/fd.fish
 	# $(CARGO) install --locked --features=dataframe nu
