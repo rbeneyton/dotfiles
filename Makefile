@@ -434,6 +434,14 @@ debian-install-graphic:
 	apt install vlc mpv
 	# wezterm build deps
 	apt install -t bookworm-backports libx11-xcb-dev libxcb-ewmh-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-render0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev xorg-dev libxcb-util-dev
+	# hyprland
+	apt install -t trixie-backports hyprland hyprlock hypridle hyprland-guiutils hyprpaper hyprsunset hyprpicker
+	apt install waybar fuzzel mako-notifier wl-clipboard cliphist grim slurp xdg-desktop-portal-gtk
+	# Hyprland binary has cap_sys_nice, so secure_getenv() returns NULL in libxkbcommon
+	# and ~/.config/xkb is never probed: expose custom xkb files via /etc/xkb (always probed)
+	mkdir -p /etc/xkb/symbols /etc/xkb/types
+	ln -sf /home/beneyton/.config/xkb/symbols/rb /etc/xkb/symbols/rb
+	ln -sf /home/beneyton/.config/xkb/types/rb /etc/xkb/types/rb
 	apt-get clean
 
 debian-install-misc:

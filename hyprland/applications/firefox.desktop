@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Firefox (home)
+Exec={{trim (command_output "realpath ~")}}/firefox/firefox %u
+Icon=firefox
+Terminal=false
+Categories=Network;WebBrowser;

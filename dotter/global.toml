@@ -67,9 +67,33 @@ llvm_branch = "release/19.x"
 "awesome/dim-screen.sh" = "~/.config/awesome/dim-screen.sh"
 [awesome.variables]
 awesome_network_interface = "eth0"
-awesome_xset_wait_period = "120"
-awesome_xset_burn_period = "130"
+awesome_xset_wait_period = "320"
+awesome_xset_burn_period = "330"
 awesome_height = "20"
+
+# hyprland (wayland awesome replacement; awesome kept for X11 sessions)
+[hyprland.files]
+"hyprland/hyprland.conf" = "~/.config/hypr/hyprland.conf"
+"hyprland/hypridle.conf" = "~/.config/hypr/hypridle.conf"
+"hyprland/hyprlock.conf" = "~/.config/hypr/hyprlock.conf"
+"hyprland/hyprpaper.conf" = "~/.config/hypr/hyprpaper.conf"
+"hyprland/hyprsunset.conf" = "~/.config/hypr/hyprsunset.conf"
+"hyprland/restore-min.sh" = "~/.config/hypr/restore-min.sh"
+"hyprland/workspace-step.sh" = "~/.config/hypr/workspace-step.sh"
+"hyprland/mako.conf" = "~/.config/mako/config"
+"hyprland/fuzzel.ini" = "~/.config/fuzzel/fuzzel.ini"
+# own .desktop entries for the launcher (rc.lua mymainmenu customs)
+"hyprland/applications/firefox.desktop" = "~/.local/share/applications/firefox.desktop"
+"hyprland/applications/discord.desktop" = "~/.local/share/applications/discord.desktop"
+"hyprland/applications/signal-desktop.desktop" = "~/.local/share/applications/signal-desktop.desktop"
+"hyprland/waybar/config.jsonc" = "~/.config/waybar/config.jsonc"
+"hyprland/waybar/style.css" = "~/.config/waybar/style.css"
+"hyprland/waybar/rates.rs" = "~/.config/waybar/rates.rs"
+"hyprland/waybar/battery-icon.sh" = "~/.config/waybar/battery-icon.sh"
+[hyprland.variables]
+# hyprsunset wants an integer, so no reuse of redshift_night_temperature
+hyprland_night_temperature = "3800"
+hyprland_dpms_off_period = "400"
 
 # alacritty
 [alacritty.files]
@@ -229,6 +253,7 @@ depends = [
     "gdb",
     "git",
     "gtk",
+    "hyprland",
     "ipython",
     "mpv",
     "nu",

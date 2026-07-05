@@ -13,5 +13,6 @@ gtk_font_size = "12"
 awesome_height = "30"
 alacritty_font_size = 18
 redshift_night_temperature = "5000K" # no big shift to red for pastis
+hyprland_night_temperature = "5000"
 
 # vim: filetype=cfg

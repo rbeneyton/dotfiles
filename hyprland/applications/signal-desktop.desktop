@@ -1,0 +1,9 @@
+# overrides /usr/share/applications/signal-desktop.desktop (same file name)
+# to force french locale, as in awesome mymainmenu
+[Desktop Entry]
+Type=Application
+Name=Signal
+Exec=env LANG=fr_FR.utf-8 LANGUAGE=fr /opt/Signal/signal-desktop %U
+Icon=signal-desktop
+Terminal=false
+Categories=Network;InstantMessaging;

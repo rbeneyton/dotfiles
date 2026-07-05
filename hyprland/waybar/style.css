@@ -1,0 +1,49 @@
+/* waybar style (theme.lua colors) */
+
+* {
+    font-family: monospace;
+    font-size: 12px;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: #222222;
+    color: #aaaaaa;
+}
+
+#workspaces button {
+    padding: 0 4px;
+    color: #aaaaaa;
+    border-radius: 0;
+    /* occupied tag marker (awesome taglist square) */
+    border-top: 2px solid #aaaaaa;
+}
+#workspaces button.empty {
+    color: #666666;
+    border-top-color: transparent;
+}
+#workspaces button.active {
+    background-color: #535d6c;
+    color: #ffffff;
+}
+#workspaces button.urgent {
+    background-color: #ff0000;
+    color: #ffffff;
+}
+
+#window {
+    color: #ffffff;
+}
+
+#image {
+    padding-left: 6px;
+}
+
+#cpu, #memory, #custom-io, #custom-net, #clock, #pulseaudio,
+#battery, #backlight, #tray {
+    padding: 0 6px 0 2px;
+}
+
+#battery.critical {
+    color: #ff0000;
+}
