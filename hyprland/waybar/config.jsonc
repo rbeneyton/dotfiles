@@ -7,11 +7,11 @@
     "modules-left": [
         "hyprland/workspaces",
         "image#cpu",
-        "cpu",
+        "custom/cpu",
         "image#mem",
-        "memory",
+        "custom/mem",
         "image#load",
-        "cpu#load",
+        "custom/load",
         "image#io",
         "custom/io",
         "image#net",
@@ -46,19 +46,10 @@
     "image#net":  { "path": "{{trim (command_output "realpath ~")}}/.config/awesome/data/globe-network.png", "size": 16 },
     "image#date": { "path": "{{trim (command_output "realpath ~")}}/.config/awesome/data/clock-frame.png", "size": 16 },
     "image#vol":  { "path": "{{trim (command_output "realpath ~")}}/.config/awesome/data/speaker-volume.png", "size": 16 },
-    "cpu": {
-        "interval": 3,
-        "format": "{usage}%"
-    },
-    // 1min load average (loadwidget equivalent)
-    "cpu#load": {
-        "interval": 3,
-        "format": "{load}"
-    },
-    "memory": {
-        "interval": 3,
-        "format": "{percentage}%"
-    },
+    // fixed-width cpu%/mem%/1min-load (no per-value width jitter, keeps its own icon)
+    "custom/cpu":  { "exec": "$HOME/.config/waybar/rates.rs cpu",  "restart-interval": 5, "tooltip": false },
+    "custom/mem":  { "exec": "$HOME/.config/waybar/rates.rs mem",  "restart-interval": 5, "tooltip": false },
+    "custom/load": { "exec": "$HOME/.config/waybar/rates.rs load", "restart-interval": 5, "tooltip": false },
     "custom/io": {
         "exec": "$HOME/.config/waybar/rates.rs io {{awesome_disk_interface}}",
         "restart-interval": 5,
