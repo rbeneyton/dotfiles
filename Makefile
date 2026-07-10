@@ -437,6 +437,7 @@ debian-install-graphic:
 	# hyprland
 	apt install -t trixie-backports hyprland hyprlock hypridle hyprland-guiutils hyprpaper hyprsunset hyprpicker
 	apt install waybar fuzzel mako-notifier wl-clipboard cliphist grim slurp xdg-desktop-portal-gtk
+	apt install nwg-displays
 	apt install nwg-look gnome-themes-extra qt6ct # gtk & qt theme
 	# Hyprland binary has cap_sys_nice, so secure_getenv() returns NULL in libxkbcommon
 	# and ~/.config/xkb is never probed: expose custom xkb files via /etc/xkb (always probed)

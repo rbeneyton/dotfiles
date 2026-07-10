@@ -33,7 +33,10 @@
     "modules-right": [],
 
     "hyprland/workspaces": {
-        "persistent-workspaces": { "*": 9 }
+        // each bar shows only its own monitor's tags (all-outputs defaults to false).
+        // the tags themselves are made persistent in hyprland.conf (persistent:true on
+        // the workspace rules), so the laptop bar shows 1-5 and the external bar 6-9.
+        "all-outputs": false
     },
     // icons from awesome theme.lua (data dir symlinked by awesome package)
     "image#cpu":  { "path": "{{trim (command_output "realpath ~")}}/.config/awesome/data/system-monitor.png", "size": 16 },
