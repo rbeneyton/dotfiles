@@ -23,6 +23,7 @@
 {{#if dotter.packages.laptop}}
         "image#bat",
         "battery",
+        "image#bl",
         "backlight",
 {{/if}}
         "tray"
@@ -47,42 +48,43 @@
     "image#date": { "path": "{{trim (command_output "realpath ~")}}/.config/awesome/data/clock-frame.png", "size": 16 },
     "image#vol":  { "path": "{{trim (command_output "realpath ~")}}/.config/awesome/data/speaker-volume.png", "size": 16 },
     // fixed-width cpu%/mem%/1min-load (no per-value width jitter, keeps its own icon)
-    "custom/cpu":  { "exec": "$HOME/.config/waybar/rates.rs cpu",  "restart-interval": 5, "tooltip": false },
-    "custom/mem":  { "exec": "$HOME/.config/waybar/rates.rs mem",  "restart-interval": 5, "tooltip": false },
-    "custom/load": { "exec": "$HOME/.config/waybar/rates.rs load", "restart-interval": 5, "tooltip": false },
+    "custom/cpu":  { "exec": "exec {{trim (command_output "realpath ~")}}/.config/waybar/rates.rs cpu",  "restart-interval": 5, "tooltip": false },
+    "custom/mem":  { "exec": "exec {{trim (command_output "realpath ~")}}/.config/waybar/rates.rs mem",  "restart-interval": 5, "tooltip": false },
+    "custom/load": { "exec": "exec {{trim (command_output "realpath ~")}}/.config/waybar/rates.rs load", "restart-interval": 5, "tooltip": false },
     "custom/io": {
-        "exec": "$HOME/.config/waybar/rates.rs io {{awesome_disk_interface}}",
+        "exec": "exec {{trim (command_output "realpath ~")}}/.config/waybar/rates.rs io {{awesome_disk_interface}}",
         "restart-interval": 5,
         "tooltip": false
     },
     "custom/net": {
-        "exec": "$HOME/.config/waybar/rates.rs net {{awesome_network_interface}}",
+        "exec": "exec {{trim (command_output "realpath ~")}}/.config/waybar/rates.rs net {{awesome_network_interface}}",
         "restart-interval": 5,
         "tooltip": false
     },
     "clock": {
         "format": "{:%R %a %d/%m}",
-        "tooltip-format": "<tt><small>{calendar}</small></tt>"
+        "tooltip-format": "{calendar}"
     },
     "pulseaudio": {
-        "format": "vol {volume}%",
-        "format-muted": "vol muted",
+        "format": "{volume}%",
+        "format-muted": "mut",
         "scroll-step": 5,
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
         "on-click-right": "pavucontrol"
     },
 {{#if dotter.packages.laptop}}
     "image#bat": {
-        "exec": "/bin/bash $HOME/.config/waybar/battery-icon.sh",
+        "exec": "/bin/bash {{trim (command_output "realpath ~")}}/.config/waybar/battery-icon.sh",
         "interval": 10,
         "size": 16
     },
     "battery": {
-        "format": "bat {capacity}%",
+        "format": "{capacity}%",
         "states": { "warning": 30, "critical": 15 }
     },
+    "image#bl": { "path": "{{trim (command_output "realpath ~")}}/.config/awesome/data/light-bulb.png", "size": 16 },
     "backlight": {
-        "format": "bl {percent}%",
+        "format": "{percent}%",
         "on-scroll-up": "light -A 5",
         "on-scroll-down": "light -U 5"
     },
