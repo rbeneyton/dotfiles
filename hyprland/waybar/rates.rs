@@ -1,4 +1,4 @@
-#!/usr/bin/env rust-script
+#!{{trim (command_output "realpath ~")}}/.cargo/bin/rust-script
 // waybar streaming module: fixed-width network/disk rates, one line per period
 // usage: rates.rs net <iface> | rates.rs io <disk> | rates.rs cpu|mem|load
 // net: SI units (1000); io: 1024-based, [1000;1023] saturates at 999 to keep 3 digits
@@ -110,7 +110,11 @@ fn mem_pct(buf: &mut [u8]) -> u64 {
 
 fn load1(buf: &mut [u8]) -> f64 {
     let data = read_proc("/proc/loadavg", buf);
-    data.split_whitespace().next().unwrap().parse().unwrap_or(0.0)
+    data.split_whitespace()
+        .next()
+        .unwrap()
+        .parse()
+        .unwrap_or(0.0)
 }
 
 // one fixed-width stat per line: cpu% (busy over the period), mem%, or 1min load
@@ -128,7 +132,11 @@ fn run_stat(mode: &str) -> ! {
                 let total = now.0.saturating_sub(prev.0);
                 let idle = now.1.saturating_sub(prev.1);
                 prev = now;
-                let cpu = if total == 0 { 0 } else { 100 * (total - idle) / total };
+                let cpu = if total == 0 {
+                    0
+                } else {
+                    100 * (total - idle) / total
+                };
                 write!(cur, "{:2}", cpu.min(99)).unwrap();
             }
             "mem" => write!(cur, "{:2}", mem_pct(&mut buf).min(99)).unwrap(),
@@ -144,7 +152,9 @@ fn run_stat(mode: &str) -> ! {
 fn main() {
     let mut args = std::env::args();
     let _ = args.next();
-    let arg1 = args.next().expect("usage: rates.rs net|io <device> | cpu|mem|load");
+    let arg1 = args
+        .next()
+        .expect("usage: rates.rs net|io <device> | cpu|mem|load");
     if matches!(arg1.as_str(), "cpu" | "mem" | "load") {
         run_stat(&arg1);
     }

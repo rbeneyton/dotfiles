@@ -35,9 +35,22 @@
 
     "hyprland/workspaces": {
         // each bar shows only its own monitor's tags (all-outputs defaults to false).
-        // the tags themselves are made persistent in hyprland.conf (persistent:true on
-        // the workspace rules), so the laptop bar shows 1-5 and the external bar 6-9.
-        "all-outputs": false
+        // the laptop bar shows 1-9 (persistent in hyprland.conf); the external's tags
+        // are not persistent in hyprland (they would migrate to the laptop on unplug),
+        // so its bar gets them as waybar-side placeholders. placeholders only merge
+        // with real workspaces when the names match, hence numeric workspace names
+        // (= ids) in hyprland and the E* labels applied here via format-icons.
+        "all-outputs": false,
+        "persistent-workspaces": {
+            "HDMI-A-1": [11, 12, 13, 14, 15, 16, 17, 18, 19]
+        },
+        "format": "{icon}",
+        "format-icons": {
+            "1": "1", "2": "2", "3": "3", "4": "4", "5": "5",
+            "6": "6", "7": "7", "8": "8", "9": "9",
+            "11": "E1", "12": "E2", "13": "E3", "14": "E4", "15": "E5",
+            "16": "E6", "17": "E7", "18": "E8", "19": "E9"
+        }
     },
     // icons from awesome theme.lua (data dir symlinked by awesome package)
     "image#cpu":  { "path": "{{trim (command_output "realpath ~")}}/.config/awesome/data/system-monitor.png", "size": 16 },

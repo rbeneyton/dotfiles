@@ -79,7 +79,7 @@ awesome_height = "20"
 "hyprland/hyprpaper.conf" = "~/.config/hypr/hyprpaper.conf"
 "hyprland/hyprsunset.conf" = "~/.config/hypr/hyprsunset.conf"
 "hyprland/restore-min.sh" = "~/.config/hypr/restore-min.sh"
-"hyprland/workspace-step.sh" = "~/.config/hypr/workspace-step.sh"
+"hyprland/hypr-ws.rs" = "~/.config/hypr/hypr-ws.rs"
 "hyprland/mako.conf" = "~/.config/mako/config"
 "hyprland/fuzzel.ini" = "~/.config/fuzzel/fuzzel.ini"
 # own .desktop entries for the launcher (rc.lua mymainmenu customs)
