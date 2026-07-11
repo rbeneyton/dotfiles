@@ -273,7 +273,7 @@ function tmuxa
     if test (count $argv) -gt 0
         tmux new-session -A -D -s $argv
     else
-        tmux attach\; choose-tree
+        tmux new-session -A -D -s (string upper $hostname)
     end
 end
 alias tmuxl 'tmux ls'

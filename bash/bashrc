@@ -180,7 +180,8 @@ ulimit -c unlimited
         then
             tmux new-session -A -D -s "$1"
         else
-            tmux attach\; choose-tree
+            local session_name="${HOSTNAME%%.*}"
+            tmux new-session -A -D -s "${session_name^^}"
         fi
     }
     alias tmuxl='tmux ls'
