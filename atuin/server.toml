@@ -2,3 +2,49 @@ host = "0.0.0.0"
 port = {{atuin_port}}
 open_registration = false
 db_uri="sqlite://{{env_var "HOME"}}/{{atuin_db}}"
+
+# ---------------------------------------------------------------------------
+# state layout
+# ---------------------------------------------------------------------------
+# server (this node only):
+#   db_uri above          all accounts + encrypted records from every node;
+#                         single writer = this atuin-server process, so safe on NFS
+# clients (every node, including this one):
+#   ~/.local/share/atuin.<host>/  per-host primary state, via ATUIN_DATA_DIR (fish+bash):
+#                         history.db (ctrl-r search), records.db (sync store), host_id,
+#                         meta.db (holds the login session -> one login per node)
+#   ~/.config/atuin/key   E2E encryption key, shared by all nodes (key_path in config.toml);
+#                         login prompts for the password only, key is picked up from there
+# per-host dirs exist so no two hosts ever open the same sqlite file over NFS (WAL
+# shared-memory does not work across hosts). Losing the key = synced data unrecoverable.
+# every node must run `atuin daemon start` (socket in XDG_RUNTIME_DIR): with daemon enabled,
+# recording routes through it (down = commands silently lost) and ctrl-r (daemon-fuzzy)
+# is served from its in-memory index.
+#
+# fish function `atuin-check` ensureS server & daemon, done at shell startup
+#
+# registration bootstrap, once per environment: set open_registration=true in the
+# *deployed* copy of this file, restart the server, `atuin register -u $USER -e ...`,
+# then `make up` + restart (deployed-file edits are reverted by the next deploy).
+# fresh node (never ran atuin): nothing to migrate, just `atuin login -u $USER`.
+#
+# ---------------------------------------------------------------------------
+# migrating a host with a legacy ~/.local/share/atuin (pre-split layout)
+# ---------------------------------------------------------------------------
+# preconditions: no atuin process alive (daemon, open ctrl-r TUI); afterwards restart
+# shells/tmux — pre-existing shells silently recreate the legacy dir and write into it.
+#
+#   host=$(hostname -s)
+#   mkdir -p ~/.local/share/atuin.$host
+#   cd ~/.local/share/atuin
+#   mv *.db *.db-shm *.db-wal host_id ~/.local/share/atuin.$host/  # keep -wal/-shm with dbs
+#   if [ -e ~/.config/atuin/key ]; then rm key; else mv key ~/.config/atuin/; fi
+#   cd ~ && rm -rf ~/.local/share/atuin       # leftovers regenerate under the new dir
+#   atuin login -u $USER                      # skip if this host registered the account
+#   atuin store verify || { atuin store purge; atuin history init-store; }
+#   atuin sync
+#
+# the `if` on the key: the first migrated host donates its key; later hosts keep the
+# shared one, so their records.db (encrypted with their old key) no longer decrypts —
+# verify detects that, purge drops the unreadable records, init-store rebuilds the
+# record store from the plaintext history.db with the shared key. No history is lost.

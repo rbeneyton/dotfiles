@@ -519,7 +519,23 @@ if status --is-interactive
     # [[[ history
 
     if type atuin &>/dev/null
+        # per-host dbs; key stays shared in ~/.config/atuin (see atuin/config.toml)
+        set --global --export ATUIN_DATA_DIR $HOME/.local/share/atuin.(hostname -s)
         atuin init --disable-up-arrow fish | source
+
+        # daemon is mandatory (recording routes through it); server only where dotter
+        # deployed server.toml (atuin_server package)
+        function atuin-check
+            if not pgrep -u $USER -f '^atuin daemon' > /dev/null
+                echo 'atuin-check: starting atuin daemon'
+                setsid --fork atuin daemon start > $ATUIN_DATA_DIR/daemon.log 2>&1
+            end
+            if test -f ~/.config/atuin/server.toml; and not pgrep -x atuin-server > /dev/null
+                echo 'atuin-check: starting atuin-server'
+                setsid --fork atuin-server start > ~/.config/atuin/server.log 2>&1
+            end
+        end
+        atuin-check
     end
 
     # ]]]

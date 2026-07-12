@@ -7,6 +7,9 @@
 ## linux/mac: ~/.local/share/atuin/key
 ## windows: %USERPROFILE%/.local/share/atuin/key
 # key_path = "~/.key"
+# dbs are per-host via ATUIN_DATA_DIR; key stays shared next to the configs
+# (session token lives in per-host meta.db since 18.x -> one login per node)
+key_path = "~/.config/atuin/key"
 
 ## where to store your auth session token, default is your system data directory
 ## linux/mac: ~/.local/share/atuin/session
@@ -31,7 +34,7 @@ update_check = false
 
 ## address of the sync server
 # sync_address = "https://api.atuin.sh"
-sync_address = "{{atuin_sync_address}}"
+sync_address = "http://{{atuin_server_host}}:{{atuin_port}}/"
 
 ## how often to sync history. note that this is only triggered when a command
 ## is ran, so sync intervals may well be longer
@@ -41,6 +44,8 @@ sync_address = "{{atuin_sync_address}}"
 ## which search mode to use
 ## possible values: prefix, fulltext, fuzzy, skim
 # search_mode = "fuzzy"
+# daemon-fuzzy = served from daemon memory (nucleo); errors if the daemon is not running
+search_mode = "{{atuin_search_mode}}"
 
 ## which filter mode to use
 ## possible values: global, host, session, directory
@@ -231,6 +236,7 @@ strategy = "static"
 [daemon]
 ## Enables using the daemon to sync. Requires the daemon to be running in the background. Start it with `atuin daemon`
 # enabled = false
+enabled = {{atuin_daemon}}
 
 ## How often the daemon should sync in seconds
 # sync_frequency = 300

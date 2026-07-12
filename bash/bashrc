@@ -151,6 +151,12 @@ ulimit -c unlimited
     export HISTCONTROL=ignoreboth
     alias h=history
 
+    if type atuin &>/dev/null; then
+        # per-host dbs; key stays shared in ~/.config/atuin (see atuin/config.toml)
+        export ATUIN_DATA_DIR=$HOME/.local/share/atuin.$(hostname -s)
+        eval "$(atuin init --disable-up-arrow bash)"
+    fi
+
     alias i=ipython3
     alias is='PYTHONNOUSERSITE=on ipython3'
 
