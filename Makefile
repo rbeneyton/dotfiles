@@ -315,6 +315,7 @@ misc-user: $(BIN) rg
 	$(CARGO) install --locked lowcharts
 	$(CARGO) install --locked rust-script
 	$(CARGO) install --locked megafine
+	$(CARGO) install --locked alacritty && cp $HOME/.cargo/bin/alacritty $HOME/bin/
 	# install completions
 	fd --gen-completions=fish > ~/.config/fish/completions/fd.fish
 	megafine --gen-completions=fish > ~/.config/fish/completions/megafine.fish
