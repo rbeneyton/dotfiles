@@ -314,8 +314,10 @@ misc-user: $(BIN) rg
 	$(CARGO) install cargo-cache
 	$(CARGO) install --locked lowcharts
 	$(CARGO) install --locked rust-script
+	$(CARGO) install --locked megafine
 	# install completions
 	fd --gen-completions=fish > ~/.config/fish/completions/fd.fish
+	megafine --gen-completions=fish > ~/.config/fish/completions/megafine.fish
 	# $(CARGO) install --locked --features=dataframe nu
 	$(CARGO) install --locked --git https://github.com/dandavison/delta.git
 	delta --generate-completion fish > ~/.config/fish/completions/delta.fish
