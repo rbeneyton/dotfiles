@@ -35,15 +35,10 @@
 
     "hyprland/workspaces": {
         // each bar shows only its own monitor's tags (all-outputs defaults to false).
-        // the laptop bar shows 1-9 (persistent in hyprland.conf); the external's tags
-        // are not persistent in hyprland (they would migrate to the laptop on unplug),
-        // so its bar gets them as waybar-side placeholders. placeholders only merge
-        // with real workspaces when the names match, hence numeric workspace names
-        // (= ids) in hyprland and the E* labels applied here via format-icons.
+        // every monitor's decade is made persistent at runtime by hypr-ws.rs, so
+        // the tags show up here without waybar-side placeholders. numeric workspace
+        // names (= ids) in hyprland, E* labels applied via format-icons.
         "all-outputs": false,
-        "persistent-workspaces": {
-            "HDMI-A-1": [11, 12, 13, 14, 15, 16, 17, 18, 19]
-        },
         "format": "{icon}",
         "format-icons": {
             "1": "1", "2": "2", "3": "3", "4": "4", "5": "5",
