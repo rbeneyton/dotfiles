@@ -14,5 +14,7 @@ awesome_height = "30"
 alacritty_font_size = 18
 redshift_night_temperature = "5000K" # no big shift to red for pastis
 hyprland_night_temperature = "5000"
+hyprland_fuzzel_font_size = "18"
+hyprland_fuzzel_width = "120"
 
 # vim: filetype=cfg

@@ -94,6 +94,8 @@ awesome_height = "20"
 # hyprsunset wants an integer, so no reuse of redshift_night_temperature
 hyprland_night_temperature = "3800"
 hyprland_dpms_off_period = "400"
+hyprland_fuzzel_font_size = "14"
+hyprland_fuzzel_width = "60"
 
 # alacritty
 [alacritty.files]

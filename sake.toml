@@ -2,9 +2,11 @@
 
 packages = [
     "base",
+    "atuin_server",
     "build_gcc",
     "build_gdb",
     "build_llvm",
+    "noscreenlock",
 ]
 
 [variables]
