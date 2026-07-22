@@ -445,6 +445,10 @@ debian-install-graphic:
 	apt install slurp grim # screen capture
 	# Hyprland binary has cap_sys_nice, so secure_getenv() returns NULL in libxkbcommon
 	# and ~/.config/xkb is never probed: expose custom xkb files via /etc/xkb (always probed)
+	# Fix Hyprland debian packaging, which skrew up every user with hyperland
+	# root: systemctl --global disable hypridle.service hyprpaper.service hyprsunset.service waybar.service mako.service
+	# restore for hyprland users (seriously!)
+	# user: systemctl --user enable hypridle.service hyprpaper.service hyprsunset.service waybar.service mako.service
 	mkdir -p /etc/xkb/symbols /etc/xkb/types
 	ln -sf /home/beneyton/.config/xkb/symbols/rb /etc/xkb/symbols/rb
 	ln -sf /home/beneyton/.config/xkb/types/rb /etc/xkb/types/rb
