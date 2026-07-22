@@ -97,6 +97,8 @@ end
 set --global --export ASAN_OPTIONS abort_on_error=1:detect_leaks=1
 set --global --export LSAN_OPTIONS use_stacks=0:use_registers=0:use_globals=1:use_tls=1
 
+set --global --export COLORTERM truecolor
+
 path_add $UTILS/fish_install/bin
 manpath_add $UTILS/fish_install/share/man
 
@@ -385,21 +387,21 @@ end
 # TODO safer method
 function gem -d "open git modified files (default HEAD, use argv to specify range/path)"
     set -f BCK (pwd)
-    up
+    upone
     git jump --stdout diff $argv | $EDITOR -c ":cwindow" -q -
     # $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M]M" | trs | cut -d" " -f2)
     cd $BCK
 end
 function ges -d "open git staged files"
     set -f BCK (pwd)
-    up
+    upone
     git jump --stdout diff --staged | $EDITOR -c ":cwindow" -q -
     # $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^M" | trs | cut -d" " -f2)
     cd $BCK
 end
 function ge -d "open git edited files"
     set -f BCK (pwd)
-    up
+    upone
     git jump --stdout diff HEAD | $EDITOR -c ":cwindow" -q -
     # $EDITOR (git status --ignore-submodules --porcelain | /bin/grep --color=no "^[ M][ M]" | trs | cut -d" " -f2)
     cd $BCK
@@ -415,7 +417,7 @@ function gep -d "open patched files from given commit range (HEAD~[..]HEAD by de
         set -f RANGE $FROM..$TO
     end
     set -f BCK (pwd)
-    up
+    upone
     git jump --stdout diff $RANGE | $EDITOR -c ":cwindow" -q -
     # $EDITOR (git show --pretty="format:" --name-only $RANGE | grep . | sort | uniq)
     cd $BCK
@@ -430,20 +432,23 @@ alias tigreflog "git reflog --format=raw --decorate=full | tig --pretty=raw"
 # tig <git-ls-file> direct completion
 complete -c tig -n 'not contains -- -- (commandline -opc)' -xa '(set -l t (commandline -ct); complete -C"git log $t")'
 
+function upone -d "go to the upper git repo head, not traversing submodule boundary"
+    set --local A (git rev-parse --show-toplevel 2> /dev/null)
+    and cd $A
+end
+
 function up -d "go to the upper git repo head"
-    set BCK (pwd)
-    set A (pwd)
+    set --local BCK (pwd)
+    set --local A (pwd)
     while git rev-parse --show-toplevel &>/dev/null
-        set A (git rev-parse --show-toplevel 2> /dev/null)
+        set --local A (git rev-parse --show-toplevel 2> /dev/null)
         cd (dirname $A)
     end
     cd $BCK # keep `cd -` expected behavior
     if git -C $A rev-parse --show-toplevel &>/dev/null
         cd $A
-        set --erase A
         true
     else
-        set --erase A
         false
     end
 end
@@ -526,13 +531,13 @@ if status --is-interactive
         # daemon is mandatory (recording routes through it); server only where dotter
         # deployed server.toml (atuin_server package)
         function atuin-check
-            if not pgrep -u $USER -f '^atuin daemon' > /dev/null
+            if not pgrep -u $USER -f '^atuin daemon' >/dev/null
                 echo 'atuin-check: starting atuin daemon'
-                setsid --fork atuin daemon start > $ATUIN_DATA_DIR/daemon.log 2>&1
+                setsid --fork atuin daemon start >$ATUIN_DATA_DIR/daemon.log 2>&1
             end
-            if test -f ~/.config/atuin/server.toml; and not pgrep -x atuin-server > /dev/null
+            if test -f ~/.config/atuin/server.toml; and not pgrep -x atuin-server >/dev/null
                 echo 'atuin-check: starting atuin-server'
-                setsid --fork atuin-server start > ~/.config/atuin/server.log 2>&1
+                setsid --fork atuin-server start >~/.config/atuin/server.log 2>&1
             end
         end
         atuin-check
