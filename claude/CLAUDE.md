@@ -79,3 +79,5 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 - for Python:
     - assume 3.12 is available
     - format using ruff
+
+@RTK.md

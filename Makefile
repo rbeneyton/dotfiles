@@ -329,6 +329,11 @@ misc-user: $(BIN) rg
 	# rio
 	$(CARGO) install --locked --git https://github.com/raphamorim/rio.git --rev 96bf02873ada3c1bc85d88c76a4699e00f726aa6 # v0.2.22+
 	tic -xe rio $(CURDIR)/rio/rio.terminfo
+	# ai
+	$(CARGO) install --git https://github.com/rtk-ai/rtk
+	rtk init -g --agent claude
+	rtk telemetry disable
+	rtk telemetry forget
 
 
 RG = $(BIN)/rg
