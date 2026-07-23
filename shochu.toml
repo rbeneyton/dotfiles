@@ -2,7 +2,6 @@
 
 packages = [
     "base",
-    "atuin_server",
     "laptop",
     "thinkpad",
 ]

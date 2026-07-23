@@ -202,16 +202,13 @@ git_email = "richard.beneyton@gmail.com"
 "atuin/config.toml" = "~/.config/atuin/config.toml"
 [atuin.variables]
 atuin_port = 2345
-atuin_server_host = "localhost"
+atuin_server_host = "pastis" # main server
+atuin_db = "/mnt/NAS/home/beneyton/atuin-db" # used by server.toml (db_uri) and config.fish (ATUIN_DB_URI)
 # daemon is mandatory when enabled: recording routes through it (down = commands silently lost)
 atuin_daemon = true
 atuin_search_mode = "daemon-fuzzy"
-
-# atuin_server: only on the node running atuin-server (single writer of atuin_db)
 [atuin_server.files]
 "atuin/server.toml" = "~/.config/atuin/server.toml"
-[atuin_server.variables]
-atuin_db = ".config/atuin/db"
 
 # python
 [python.files]

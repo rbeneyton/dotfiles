@@ -275,7 +275,7 @@ function tmuxa
     if test (count $argv) -gt 0
         tmux new-session -A -D -s $argv
     else
-        tmux new-session -A -D -s (string upper $hostname)
+        tmux new-session -A -D -s (string upper (hostname -s))
     end
 end
 alias tmuxl 'tmux ls'
@@ -535,9 +535,15 @@ if status --is-interactive
                 echo 'atuin-check: starting atuin daemon'
                 setsid --fork atuin daemon start >$ATUIN_DATA_DIR/daemon.log 2>&1
             end
-            if test -f ~/.config/atuin/server.toml; and not pgrep -x atuin-server >/dev/null
-                echo 'atuin-check: starting atuin-server'
-                setsid --fork atuin-server start >~/.config/atuin/server.log 2>&1
+            set -l atuin_srv {{atuin_server_host}}
+            if test (hostname -s) = (string split -m1 . "$atuin_srv")[1]
+                if test -f ~/.config/atuin/server.toml; and not pgrep -x atuin-server >/dev/null
+                    echo 'atuin-check: starting atuin-server'
+                    ATUIN_DB_URI="sqlite://{{atuin_db}}" \
+                        setsid --fork atuin-server start \
+                        --host 0.0.0.0 \
+                        --port {{atuin_port}} >~/.config/atuin/server.log 2>&1
+                end
             end
         end
         atuin-check

@@ -8,6 +8,15 @@ host=$(hostname -s)
 old=~/.local/share/atuin
 new=~/.local/share/atuin.$host
 
+# key first, before anything can run atuin: load_key() silently mints a throwaway key
+# when key_path is missing, and records written with it are unrecoverable forever.
+if [ ! -f ~/.config/atuin/key ]; then
+    [ -f "$old/key" ] || { echo "no key at ~/.config/atuin/key nor $old/key; copy it from a synced host first" >&2; exit 1; }
+    mkdir -p ~/.config/atuin
+    echo "installing shared key at ~/.config/atuin/key"
+    cp "$old/key" ~/.config/atuin/key
+fi
+
 if pgrep -u "$USER" -f '^atuin daemon' > /dev/null; then
     echo "stopping atuin daemon"
     pkill -u "$USER" -f '^atuin daemon'
@@ -35,12 +44,17 @@ else
     echo "history rows: $before -> $after (backup: $new/history.db.pre-merge.bak)"
 fi
 
-if [ ! -f ~/.config/atuin/key ] && [ -f "$old/key" ]; then
-    echo "copying shared key to ~/.config/atuin/key"
-    cp "$old/key" ~/.config/atuin/key
+export ATUIN_DATA_DIR="$new"
+
+# catches records written under a throwaway key. rebuild rather than `store purge`:
+# purge leaves an idx hole unless every bad record is at the tail. Only safe while the
+# server holds no chain for this host_id, which is the case before the first sync.
+if ! atuin store verify; then
+    echo "record store does not decrypt with the shared key, rebuilding from history.db"
+    rm -f "$new"/records.db*
+    atuin history init-store
 fi
 
-export ATUIN_DATA_DIR="$new"
 echo "starting atuin daemon"
 setsid --fork atuin daemon start > "$new/daemon.log" 2>&1
 

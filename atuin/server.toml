@@ -1,7 +1,7 @@
 host = "0.0.0.0"
 port = {{atuin_port}}
 open_registration = false
-db_uri="sqlite://{{env_var "HOME"}}/{{atuin_db}}"
+db_uri="sqlite://{{atuin_db}}"
 
 # ---------------------------------------------------------------------------
 # state layout
@@ -35,16 +35,22 @@ db_uri="sqlite://{{env_var "HOME"}}/{{atuin_db}}"
 # shells/tmux — pre-existing shells silently recreate the legacy dir and write into it.
 #
 #   host=$(hostname -s)
+#   cp <key from a node already syncing> ~/.config/atuin/key   # FIRST, see below
 #   mkdir -p ~/.local/share/atuin.$host
 #   cd ~/.local/share/atuin
 #   mv *.db *.db-shm *.db-wal host_id ~/.local/share/atuin.$host/  # keep -wal/-shm with dbs
-#   if [ -e ~/.config/atuin/key ]; then rm key; else mv key ~/.config/atuin/; fi
 #   cd ~ && rm -rf ~/.local/share/atuin       # leftovers regenerate under the new dir
 #   atuin login -u $USER                      # skip if this host registered the account
-#   atuin store verify || { atuin store purge; atuin history init-store; }
+#   atuin store verify || { rm -f ~/.local/share/atuin.$host/records.db*; atuin history init-store; }
 #   atuin sync
 #
-# the `if` on the key: the first migrated host donates its key; later hosts keep the
-# shared one, so their records.db (encrypted with their old key) no longer decrypts —
-# verify detects that, purge drops the unreadable records, init-store rebuilds the
-# record store from the plaintext history.db with the shared key. No history is lost.
+# the key must be installed before ANY atuin command, including one from a stray shell
+# or the daemon: load_key() mints a throwaway key when key_path is missing, and every
+# record written with it is unrecoverable — it blocks store verify, re_encrypt and
+# login -k for the whole store, since all three bail on the first failing record.
+# on verify failure rebuild, do not `store purge`: purge leaves an idx hole unless the
+# bad records are all at the tail, and it cannot repair records already uploaded (server
+# is UNIQUE(user_id,host,tag,idx) + `on conflict do nothing`, so a server-side delete
+# only sticks once every client is purged, else the first to sync puts them back).
+# rm records.db* + init-store rebuilds a contiguous chain from the plaintext history.db.
+# server-side surgery: store.host is a blob, match lower(hex(host)) not the uuid text.
