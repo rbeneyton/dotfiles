@@ -151,6 +151,8 @@ gtk_font_size = "8"
 [git.files]
 "git/gitconfig" = "~/.gitconfig"
 "git/include.gitconfig" = "~/.gitconfig.include"
+"git/include.nfs" = "~/.gitconfig.nfs"
+"git/include.local" = "~/.gitconfig.local"
 "git/gitignore.main" = "~/.gitignore"
 "git/git-submodule-align" = "~/bin/git-submodule-align"
 "git/git-submodule-check-inner.fish" = "~/bin/git-submodule-check-inner"

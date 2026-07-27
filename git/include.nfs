@@ -1,0 +1,13 @@
+[core]
+  fsmonitor = true
+
+[fsmonitor]
+  allowRemote = true
+  # hard to pick a correct place which is robust here due to:
+  # - /tmp or /var/tmp: regular cleaning and socket don't update atime;
+  # - /run/user/(id)/ is wipe at logout, but tmux server survive;
+  # → we need loginctl enable-linger $user
+  # worst case: duplicate daemon \o/
+  # socketDir = /opt/
+
+# vim: filetype=dosini

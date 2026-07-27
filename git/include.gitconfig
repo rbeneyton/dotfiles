@@ -2,6 +2,13 @@
   editor = nvim
   excludesfile = ~/.gitignore
   pager = delta
+  # fsmonitor managed by includeIf cases
+  fsmonitor = false # default
+
+[includeIf "gitdir:/mnt/nas-**/.git"]
+  path = {{trim (command_output "realpath ~")}}/.gitconfig.nfs
+[includeIf "gitdir:/local/ssd/**/.git"]
+  path = {{trim (command_output "realpath ~")}}/.gitconfig.local
 
 [delta]
   navigate = true # use n and N to move between diff sections
