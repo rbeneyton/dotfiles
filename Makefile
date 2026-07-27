@@ -261,7 +261,8 @@ tmux: $(TMUX_INSTALL)
 # {{{ gcc/gdb/llvm
 
 -include gcc/build.mak
-GCC_INSTALL ?= $(shell dirname $$(dirname $$(which gcc | echo /)))
+# GCC_INSTALL ?= $(shell dirname $$(dirname $$(which gcc | echo /)))
+GCC_INSTALL ?= /usr/
 gcc : $(GCC_INSTALL)
 	@echo GCC_INSTALL: $(GCC_INSTALL)
 
