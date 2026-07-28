@@ -350,9 +350,11 @@ $(RG) : | $(BIN) $(UTILS) rust-update
 	rm -rf $(SRC)
 	# git clone --branch master --single-branch --depth 30 https://github.com/BurntSushi/ripgrep $(SRC)
 	# version with 'no submodule' option
-	git clone --branch ignoreNestedRepos --single-branch --depth 30 https://github.com/zaneduffield/ripgrep.git $(SRC)
-	# TODO simd
-	RUSTC_BOOTSTRAP=encoding_rs \
+	# PR #2751 closed, same for #23 and #2492, and BurntSushi always refuse this essential feature
+	# git clone --branch ignoreNestedRepos --single-branch --depth 30 https://github.com/zaneduffield/ripgrep.git $(SRC)
+	# own fork version now
+	git clone --branch master --single-branch --depth 30 https://github.com/rbeneyton/ripgrep.git $(SRC)
+	RUSTFLAGS="-C target-cpu=native" \
 		$(CARGO) build \
 			--target-dir $(BUILD) \
 			--manifest-path $(SRC)/Cargo.toml \
@@ -360,6 +362,8 @@ $(RG) : | $(BIN) $(UTILS) rust-update
 			--features 'pcre2'
 	cp -f $(BUILD)/release/$(NAME) $(BIN)/
 	rm -rf $(SRC)
+	# new shell completions option
+	$(BIN)/$(NAME) --generate=complete-fish > ~/.config/fish/completions/$(NAME).fish
 rg: $(RG)
 
 # }}}
