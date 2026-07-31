@@ -1378,16 +1378,93 @@ vim.g.alternateSearchPath = "sfr:../src,sfr:../../src,sfr:../include"
 -- ]]]
 -- [[[ LSP
 
+local lspmux = {
+  -- must match `listen`/`connect` in ~/.config/lspmux/config.toml
+  sock = ("/run/user/%d/lspmux.sock"):format(vim.uv.getuid()),
+  bin = vim.fn.exepath("lspmux"),
+  servers = {
+    "ruff",
+    "ty",
+    "clangd",
+    "harper_ls",
+    -- lua_ls incompatible
+    -- basedpyright incompatible
+    -- rust-analyzer wired below, rustaceanvim owns its config
+  },
+}
+
+local function lspmux_ready()
+  local sock, ok = vim.uv.new_pipe(), false
+  sock:connect(lspmux.sock, function(err)
+    ok = err == nil
+  end)
+  vim.wait(100, function()
+    return ok
+  end, 5)
+  sock:close()
+  return ok
+end
+
+local function lspmux_start()
+  if lspmux.bin == "" then
+    return false
+  end
+  if lspmux_ready() then
+    return true
+  end
+  local mem_total_kb =
+    tonumber(vim.fn.readfile("/proc/meminfo", "", 1)[1]:match("(%d+)"))
+  -- the fixed unit name makes a concurrent nvim a no-op and --collect reaps a
+  -- dead unit; PATH is for rustaceanvim, which asks for rust-analyzer by name
+  local run = {
+    "systemd-run",
+    "--user",
+    "--quiet",
+    "--collect",
+    "--unit=lspmux",
+    "--setenv=PATH=" .. vim.env.PATH,
+    ("--property=MemoryHigh=%dK"):format(mem_total_kb * 0.22),
+    ("--property=MemoryMax=%dK"):format(mem_total_kb * 0.25),
+    "--property=MemorySwapMax=0", -- a cap that can swap is not a cap
+    "--property=LimitCORE=0", -- core_pattern is ./core, instances run in cwd
+    "--",
+    lspmux.bin,
+    "server",
+  }
+  vim.system(run):wait()
+  local deadline = vim.uv.now() + 3000
+  while vim.uv.now() < deadline do
+    if lspmux_ready() then
+      return true
+    end
+  end
+  return false
+end
+
+lspmux.running = lspmux_start()
+
 -- rust
 vim.cmd(":packadd rustaceanvim")
 -- main conf in vim.g.rustaceanvim
 -- conf via after/ftplugin/rust.lua
+
+-- rustaceanvim's own lspmux discovery only speaks TCP (127.0.0.1:27631) and
+-- refuses on our socket-only server, so turn it off and drive the client
+-- ourselves. Its default cmd adds a per-nvim --log-file, which lspmux would
+-- read as a distinct instance.
+local rust_analyzer = vim.fn.exepath("rust-analyzer")
+local rust_analyzer_cmd = lspmux.running
+  and rust_analyzer ~= ""
+  and { lspmux.bin, "client", "--server-path", rust_analyzer, "--" }
+  or nil
 
 vim.g.rustaceanvim = {
   -- Plugin configuration
   tools = {},
   -- LSP configuration
   server = {
+    cmd = rust_analyzer_cmd,
+    lspmux = { enable = false },
     on_attach = function(client, bufnr)
       -- you can also put keymaps in here
     end,
@@ -1511,6 +1588,49 @@ vim.lsp.config("harper_ls", {
   },
 })
 vim.lsp.enable("harper_ls")
+
+-- Route these through lspmux: one process per (server, cwd) shared by every
+-- nvim, inside its memory-capped cgroup. Merges into the configs above, and
+-- must stay after them. rustaceanvim does its own lspmux discovery.
+for _, name in ipairs(lspmux.servers) do
+  local cmd = (vim.lsp.config[name] or {}).cmd
+  -- empty exepath is nvim's own auto-start condition, which the proxy would
+  -- otherwise always satisfy: uninstalled servers must stay uninstalled
+  local exe = type(cmd) == "table" and vim.fn.exepath(cmd[1]) or ""
+  if lspmux.running and exe ~= "" then
+    vim.lsp.config(name, {
+      cmd = vim.list_extend(
+        { lspmux.bin, "client", "--server-path", exe, "--" },
+        vim.list_slice(cmd, 2)
+      ),
+    })
+  end
+end
+
+-- Mason replaces a binary but the daemon keeps the running instance, so a
+-- plain :LspRestart reconnects to the old one: the daemon has to go too.
+vim.api.nvim_create_user_command("LspMuxRestart", function()
+  local muxed = vim.list_extend({ "rust-analyzer" }, lspmux.servers)
+  local ids, bufs = {}, {}
+  for _, client in ipairs(vim.lsp.get_clients()) do
+    if vim.tbl_contains(muxed, client.name) then
+      table.insert(ids, client.id)
+      vim.list_extend(bufs, vim.tbl_keys(client.attached_buffers))
+      client:stop(true)
+    end
+  end
+  -- re-attaching before the clients are gone makes nvim reuse the dead ones
+  vim.wait(3000, function()
+    return #vim.tbl_filter(vim.lsp.get_client_by_id, ids) == 0
+  end)
+  vim.system({ "systemctl", "--user", "stop", "lspmux.service" }):wait()
+  lspmux.running = lspmux_start()
+  for _, buf in ipairs(bufs) do
+    if vim.api.nvim_buf_is_loaded(buf) then
+      vim.api.nvim_exec_autocmds("FileType", { buffer = buf })
+    end
+  end
+end, { desc = "Restart lspmux and every server it spawned" })
 
 -- ]]]
 -- [[[ gundo/mundo/undotree
