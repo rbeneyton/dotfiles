@@ -441,7 +441,7 @@ function up -d "go to the upper git repo head"
     set --local BCK (pwd)
     set --local A (pwd)
     while git rev-parse --show-toplevel &>/dev/null
-        set --local A (git rev-parse --show-toplevel 2> /dev/null)
+        set A (git rev-parse --show-toplevel 2> /dev/null)
         cd (dirname $A)
     end
     cd $BCK # keep `cd -` expected behavior
