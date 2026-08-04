@@ -1,0 +1,8 @@
+{
+  "rust-analyzer": {
+    "cargo": {
+      "features": ["nightly"],
+      "extraEnv": { "RUSTUP_TOOLCHAIN": "nightly" }
+    }
+  }
+}

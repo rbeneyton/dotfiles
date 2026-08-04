@@ -184,7 +184,6 @@ lpmux_instance_timeout = 300 # stop unconnected lsp server after 300 seconds
 # rust
 [rust.files]
 "rust/cargo.toml" = "~/.cargo/config.toml"
-"rust/rust-analyzer.toml" = "~/.config/rust-analyzer/rust-analyzer.toml"
 
 # conda
 [conda.files]

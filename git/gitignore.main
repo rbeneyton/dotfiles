@@ -27,6 +27,7 @@ eggs/
 # rust
 debug/
 target/
+rust-analyzer.json
 
 # xit
 *.xit

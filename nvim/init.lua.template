@@ -1454,8 +1454,8 @@ vim.cmd(":packadd rustaceanvim")
 -- read as a distinct instance.
 local rust_analyzer = vim.fn.exepath("rust-analyzer")
 local rust_analyzer_cmd = lspmux.running
-  and rust_analyzer ~= ""
-  and { lspmux.bin, "client", "--server-path", rust_analyzer, "--" }
+    and rust_analyzer ~= ""
+    and { lspmux.bin, "client", "--server-path", rust_analyzer, "--" }
   or nil
 
 vim.g.rustaceanvim = {
@@ -1470,8 +1470,20 @@ vim.g.rustaceanvim = {
     end,
     default_settings = {
       -- rust-analyzer language server configuration
-      ["rust-analyzer"] = {},
+      ["rust-analyzer"] = {
+        cargo = { cfgs = { "debug_assertions", "!miri" } },
+      },
     },
+    -- extract setting dynamically from project
+    settings = function(project_root, default_settings)
+      local ok, extra = pcall(function()
+        return vim.json.decode(
+          table.concat(vim.fn.readfile(project_root .. "/rust-analyzer.json"))
+        )
+      end)
+      return ok and vim.tbl_deep_extend("force", default_settings, extra)
+        or default_settings
+    end,
   },
   -- DAP configuration
   dap = {},
