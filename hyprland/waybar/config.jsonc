@@ -29,7 +29,7 @@
         "tray"
     ],
     "modules-center": [
-        "hyprland/window"
+        "custom/tasks"
     ],
     "modules-right": [],
 
@@ -46,6 +46,10 @@
             "11": "E1", "12": "E2", "13": "E3", "14": "E4", "15": "E5",
             "16": "E6", "17": "E7", "18": "E8", "19": "E9"
         }
+    },
+    "custom/tasks": {
+        "exec": "exec {{trim (command_output "realpath ~")}}/.config/hypr/hypr-ws.rs tasks",
+        "tooltip": false
     },
     // icons from awesome theme.lua (data dir symlinked by awesome package)
     "image#cpu":  { "path": "{{trim (command_output "realpath ~")}}/.config/awesome/data/system-monitor.png", "size": 16 },

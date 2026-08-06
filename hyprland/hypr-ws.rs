@@ -7,10 +7,15 @@
 //                                       adopts its windows onto the remaining
 //                                       tags (Ei -> Mi). no monitor name is
 //                                       ever read from the config
+//        hypr-ws.rs tasks               waybar tasklist: one line per hyprland
+//                                       event, the focused tag's window titles
+//        hypr-ws.rs min                 minimize: hide into special:min<tag>,
+//                                       the tag being the origin to restore to
 // use hyprland's IPC socket directly
 
 use std::io::{BufRead, BufReader, Read, Write};
 use std::os::unix::net::UnixStream;
+use std::sync::OnceLock;
 
 fn socket(name: &str) -> String {
     format!(
@@ -20,12 +25,19 @@ fn socket(name: &str) -> String {
     )
 }
 
-// one connection per request, like hyprctl
-fn request(msg: &str) -> String {
-    let mut s = UnixStream::connect(socket(".socket.sock")).unwrap();
+// one connection per request, like hyprctl. the path is built once: the
+// tasklist redraws on every event, and socket() reads the environment
+fn request_into(msg: &str, reply: &mut String) {
+    static PATH: OnceLock<String> = OnceLock::new();
+    let mut s = UnixStream::connect(PATH.get_or_init(|| socket(".socket.sock"))).unwrap();
     s.write_all(msg.as_bytes()).unwrap();
+    reply.clear();
+    s.read_to_string(reply).unwrap();
+}
+
+fn request(msg: &str) -> String {
     let mut reply = String::new();
-    s.read_to_string(&mut reply).unwrap();
+    request_into(msg, &mut reply);
     reply
 }
 
@@ -61,7 +73,10 @@ fn sync_decades() {
     let mut batch = String::new();
     for (name, id, _) in &mons {
         for tag in 1..=9 {
-            batch += &format!("keyword workspace {},monitor:{name},persistent:true;", id * 10 + tag);
+            batch += &format!(
+                "keyword workspace {},monitor:{name},persistent:true;",
+                id * 10 + tag
+            );
         }
     }
     // relocate tag workspaces stranded on the wrong monitor (hyprland grabs a
@@ -119,9 +134,28 @@ fn adopt_orphans() {
         if let Some(rest) = line.strip_prefix("Window ") {
             addr = rest.split_whitespace().next().unwrap();
         } else if let Some(rest) = line.trim_start().strip_prefix("workspace: ") {
-            let id: i64 = rest.split_whitespace().next().unwrap().parse().unwrap();
-            if orphan(id) {
-                batch += &format!("dispatch movetoworkspacesilent {},address:0x{addr};", id % 10);
+            let (id, name) = rest.split_once(" (").unwrap();
+            match name
+                .trim_end_matches(')')
+                .strip_prefix("special:min")
+                .and_then(|tag| tag.parse::<i64>().ok())
+            {
+                Some(tag) if orphan(tag) => {
+                    batch += &format!(
+                        "dispatch movetoworkspacesilent special:min{},address:0x{addr};",
+                        tag % 10
+                    );
+                }
+                None => {
+                    let id: i64 = id.parse().unwrap();
+                    if orphan(id) {
+                        batch += &format!(
+                            "dispatch movetoworkspacesilent {},address:0x{addr};",
+                            id % 10
+                        );
+                    }
+                }
+                _ => {}
             }
         }
     }
@@ -131,6 +165,83 @@ fn adopt_orphans() {
     let active = field(&request("j/activeworkspace"), "id");
     if orphan(active) {
         request(&format!("dispatch workspace {}", active % 10));
+    }
+}
+
+fn write_escaped(out: &mut impl Write, mut text: &str) {
+    while let Some(i) = text.find(['&', '<']) {
+        out.write_all(text[..i].as_bytes()).unwrap();
+        let entity: &[u8] = if text.as_bytes()[i] == b'&' {
+            b"&amp;"
+        } else {
+            b"&lt;"
+        };
+        out.write_all(entity).unwrap();
+        text = &text[i + 1..];
+    }
+    out.write_all(text.as_bytes()).unwrap();
+}
+
+fn render_tasks(out: &mut impl Write, reply: &mut String) {
+    const TITLE_MAX: usize = 24;
+    request_into("activeworkspace", reply);
+    let ws: i64 = reply["workspace ID ".len()..]
+        .split_whitespace()
+        .next()
+        .unwrap()
+        .parse()
+        .unwrap();
+    request_into("clients", reply);
+    let (mut show, mut min, mut title, mut first) = (false, false, "", true);
+    for line in reply.lines() {
+        let line = line.trim_start();
+        if line.starts_with("Window ") {
+            (show, min, title) = (false, false, "");
+        } else if let Some(rest) = line.strip_prefix("workspace: ") {
+            let (id, name) = rest.split_once(" (").unwrap();
+            min = name
+                .trim_end_matches(')')
+                .strip_prefix("special:min")
+                .is_some_and(|tag| tag.parse() == Ok(ws));
+            show = min || id.parse() == Ok(ws);
+        } else if let Some(rest) = line.strip_prefix("title: ") {
+            title = rest
+                .char_indices()
+                .nth(TITLE_MAX)
+                .map_or(rest, |(end, _)| &rest[..end]);
+        } else if let Some(rest) = line.strip_prefix("focusHistoryID: ") {
+            if show {
+                let (open, close): (&[u8], &[u8]) = if min {
+                    (b"<i>", b"</i>")
+                } else if rest == "0" {
+                    (b"<b>", b"</b>")
+                } else {
+                    (b"", b"")
+                };
+                if !first {
+                    out.write_all(b"   ").unwrap();
+                }
+                first = false;
+                out.write_all(open).unwrap();
+                write_escaped(out, title);
+                out.write_all(close).unwrap();
+            }
+        }
+    }
+    out.write_all(b"\n").unwrap();
+}
+
+fn tasks() {
+    let mut events = BufReader::new(UnixStream::connect(socket(".socket2.sock")).unwrap());
+    let (mut out, mut reply) = (std::io::stdout().lock(), String::new());
+    let mut event = String::new();
+    render_tasks(&mut out, &mut reply);
+    loop {
+        event.clear();
+        if events.read_line(&mut event).unwrap() == 0 {
+            return;
+        }
+        render_tasks(&mut out, &mut reply);
     }
 }
 
@@ -150,7 +261,9 @@ fn watch() {
             // waybar freezes and hyprpaper crashes when an output dies: restart
             // them (spawned by hyprland so the daemon holds no child to reap)
             for prog in ["waybar", "hyprpaper"] {
-                let _ = std::process::Command::new("pkill").args(["-x", prog]).status();
+                let _ = std::process::Command::new("pkill")
+                    .args(["-x", prog])
+                    .status();
             }
             std::thread::sleep(std::time::Duration::from_millis(200));
             request("[[BATCH]]dispatch exec waybar;dispatch exec hyprpaper");
@@ -162,9 +275,14 @@ fn main() {
     let args: Vec<String> = std::env::args().collect();
     let target = match args[1].as_str() {
         "watch" => return watch(),
+        "tasks" => return tasks(),
+        "min" => {
+            let ws = field(&request("j/activeworkspace"), "id");
+            request(&format!("dispatch movetoworkspacesilent special:min{ws}"));
+            return;
+        }
         "go" => {
-            field(&request("j/activeworkspace"), "monitorID") * 10
-                + args[2].parse::<i64>().unwrap()
+            field(&request("j/activeworkspace"), "monitorID") * 10 + args[2].parse::<i64>().unwrap()
         }
         "step" => {
             let id = field(&request("j/activeworkspace"), "id");
