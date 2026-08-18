@@ -235,7 +235,10 @@ end
 
 # video reader of the month (with true hardware decoding)
 if type mpv &>/dev/null
-    alias vlc "mpv --hwdec=auto"
+    # workaround of https://github.com/hyprwm/hypridle/issues/197
+    function mpv
+        systemd-inhibit --what=idle --who=mpv --why="hypridle#197" -- mpv --hwdec=auto --profile=fast $argv
+    end
 end
 
 # pdf reader of the month
