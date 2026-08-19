@@ -10,5 +10,6 @@ packages = [
 awesome_network_interface = "wlp3s0" # "enp5s0"
 awesome_disk_interface = "nvme0n1"
 alacritty_font_size = 10
+rio_font_size = 14
 
 # vim: filetype=cfg

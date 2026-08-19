@@ -172,7 +172,7 @@ $(ALACRITTY) : | $(BIN) $(UTILS) rust-update
 	$(eval SRC := $(if $(BUILD_TREE),$(BUILD_TREE)/$(NAME),$(UTILS)/$(NAME)/))
 	$(eval BUILD := $(SRC)/build)
 	rm -rf $(SRC)
-	git clone --branch v0.15 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
+	git clone --branch v0.17 --single-branch --depth 10 https://github.com/alacritty/alacritty.git $(SRC)
 	$(CARGO) build \
 		--target-dir $(BUILD) \
 		--manifest-path $(SRC)/Cargo.toml \
@@ -334,8 +334,8 @@ misc-user: $(BIN) rg
 	$(CARGO) install --locked atuin-server
 	atuin gen-completions --shell fish > ~/.config/fish/completions/atuin.fish
 	# rio
-	$(CARGO) install --locked --git https://github.com/raphamorim/rio.git --rev 96bf02873ada3c1bc85d88c76a4699e00f726aa6 # v0.2.22+
-	tic -xe rio $(CURDIR)/rio/rio.terminfo
+	$(CARGO) install rioterm --locked # tested: v0.5.25
+	tic -xe rio $(CURDIR)/rio/rio.terminfo # re-apply after every rioterm upgrade
 	# ai
 	$(CARGO) install --git https://github.com/rtk-ai/rtk
 	rtk init -g --agent claude
@@ -468,6 +468,7 @@ debian-install-graphic:
 	mkdir -p /etc/xkb/symbols /etc/xkb/types
 	ln -sf /home/beneyton/.config/xkb/symbols/rb /etc/xkb/symbols/rb
 	ln -sf /home/beneyton/.config/xkb/types/rb /etc/xkb/types/rb
+	apt install glslang-tools # rioterm
 	apt-get clean
 
 debian-install-misc:

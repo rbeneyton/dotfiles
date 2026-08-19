@@ -605,6 +605,9 @@ mouse = "Right"
 [selection]
 save_to_clipboard = true
 
+[terminal]
+osc52 = "CopyPaste"
+
 [window.dimensions]
 columns = 80
 lines = 24

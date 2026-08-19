@@ -5,6 +5,7 @@ rio,
     use=xterm-rio,
     rs1=\Ec\E]104\007,
     ccc,
+    Tc,
     colors#0x100, pairs#0x7FFF,
     initc=\E]4;%p1%d;rgb\:%p2%{255}%*%{1000}%/%2.2X/%p3%{255}%*
           %{1000}%/%2.2X/%p4%{255}%*%{1000}%/%2.2X\E\\,
