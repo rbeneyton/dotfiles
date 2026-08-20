@@ -163,6 +163,7 @@ else
 end
 alias psu "ps -flwu $USER w f"
 alias topu "top -u $USER"
+alias topuu "systemd-cgtop --depth 1 /user.slice/"
 alias cutd "cut -d\' \'"
 alias trs 'tr -s "  " " " | sed -e "s/^\s*//"'
 if type bat &>/dev/null
