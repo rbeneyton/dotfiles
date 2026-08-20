@@ -182,12 +182,25 @@ ulimit -c unlimited
 
     alias tm=tmux
     function tmuxa {
+        local lbl
         if [[ -n "$1" ]]
         then
-            tmux new-session -A -D -s "$1"
+            lbl="$1"
         else
-            local session_name="${HOSTNAME%%.*}"
-            tmux new-session -A -D -s "${session_name^^}"
+            lbl="${HOSTNAME%%.*}"
+            lbl="${lbl^^}"
+        fi
+        local cmd=(tmux new-session -A -D -s "$lbl")
+        if systemctl --user is-active --quiet tmux-server.scope 2>/dev/null
+        then
+            "${cmd[@]}"
+        else
+            systemd-run --quiet --user --scope \
+                --unit=tmux-server \
+                -p MemoryHigh=80% \
+                -p MemoryMax=90% \
+                -p CPUQuota=$(( $(nproc) * 90 ))% \
+                -- "${cmd[@]}"
         fi
     }
     alias tmuxl='tmux ls'

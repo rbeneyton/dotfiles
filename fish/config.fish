@@ -276,9 +276,20 @@ end
 abbr tm tmux
 function tmuxa
     if test (count $argv) -gt 0
-        tmux new-session -A -D -s $argv
+        set lbl $argv
     else
-        tmux new-session -A -D -s (string upper (hostname -s))
+        set lbl (string upper (hostname -s))
+    end
+    set -l cmd tmux new-session -A -D -s $lbl
+    if systemctl --user is-active --quiet tmux-server.scope 2>/dev/null
+        $cmd
+    else
+        systemd-run --quiet --user --scope \
+            --unit=tmux-server \
+            -p MemoryHigh=80% \
+            -p MemoryMax=90% \
+            -p CPUQuota=(math (nproc) \* 90)% \
+            -- $cmd
     end
 end
 alias tmuxl 'tmux ls'
