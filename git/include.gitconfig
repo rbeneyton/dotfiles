@@ -148,6 +148,7 @@
   pop = stash pop
   human = name-rev --name-only --refs=refs/heads/*
   pushpr = push -o merge_request.create
+  push = "!\"$(git --exec-path)/git-push\" --force-with-lease \"$@\" #"
 
 [commit]
   verbose = true
