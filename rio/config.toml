@@ -130,8 +130,8 @@ size = {{rio_font_size}}
 # [bindings]
 # keys = []
 
-[renderer]
-disable-unfocused-render = true
+# [renderer]
+# disable-unfocused-render = false
 # disable-occluded-render = false
 # strategy = "Events"
 # use-cpu = false
