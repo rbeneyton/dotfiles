@@ -497,6 +497,7 @@ set -gx CMAKE_EXPORT_COMPILE_COMMANDS ON
 # [[[ interactiv only settings
 
 if status --is-interactive
+    printf '\e[2 q' # never blinking cursor
 
     # [[[ prompt
 
