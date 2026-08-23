@@ -236,9 +236,18 @@ end
 
 # video reader of the month (with true hardware decoding)
 if type mpv &>/dev/null
-    # workaround of https://github.com/hyprwm/hypridle/issues/197
+    # - workaround of https://github.com/hyprwm/hypridle/issues/197 (no dpms support, so screen locks after some period)
+    # - inhibit hyprsunset to respect director's color choices
     function mpv
-        systemd-inhibit --what=idle --who=mpv --why="hypridle#197" -- mpv --hwdec=auto --profile=fast $argv
+        set -l wrap
+        if pgrep -x hyprsunset >/dev/null
+            set wrap systemd-run --user --pty --collect --quiet \
+                -E WAYLAND_DISPLAY -E HYPRLAND_INSTANCE_SIGNATURE \
+                --property=ExecStartPre='-/usr/bin/pkill -x hyprsunset' \
+                --property=ExecStopPost='/usr/bin/systemd-run --user --collect --quiet -E WAYLAND_DISPLAY -E HYPRLAND_INSTANCE_SIGNATURE /usr/bin/hyprsunset' \
+                --
+        end
+        $wrap systemd-inhibit --what=idle --who=mpv --why="dpms+hyprsunset" -- mpv --hwdec=auto --profile=fast $argv
     end
 end
 
