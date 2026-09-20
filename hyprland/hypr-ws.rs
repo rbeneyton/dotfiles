@@ -245,29 +245,43 @@ fn tasks() {
     }
 }
 
+// the daemon is spawned once by hyprland and nothing restarts it: if it dies the
+// session silently loses wallpaper and bar recovery until the next login. every
+// helper here unwraps and hyprland's ipc is briefly unavailable while an output
+// is torn down, so each event runs under catch_unwind and the event socket is
+// reconnected instead of ending the loop. the missing socket means the
+// compositor is gone, which is the one reason to stop.
 fn watch() {
-    sync_decades();
-    let events = UnixStream::connect(socket(".socket2.sock")).unwrap();
-    for line in BufReader::new(events).lines() {
-        let line = line.unwrap();
-        if line.starts_with("monitoradded>>") {
-            // let hyprland finish assigning the new output a workspace
-            std::thread::sleep(std::time::Duration::from_millis(100));
-            sync_decades();
-        } else if line.starts_with("monitorremoved>>") {
-            // let hyprland finish reassigning the dead monitor's workspaces
-            std::thread::sleep(std::time::Duration::from_millis(100));
-            adopt_orphans();
-            // waybar freezes and hyprpaper crashes when an output dies: restart
-            // them (spawned by hyprland so the daemon holds no child to reap)
-            for prog in ["waybar", "hyprpaper"] {
-                let _ = std::process::Command::new("pkill")
-                    .args(["-x", prog])
-                    .status();
+    let path = socket(".socket2.sock");
+    while std::fs::exists(&path).unwrap_or(false) {
+        if let Ok(events) = UnixStream::connect(&path) {
+            let _ = std::panic::catch_unwind(sync_decades);
+            for line in BufReader::new(events).lines() {
+                let Ok(line) = line else { break };
+                let _ = std::panic::catch_unwind(|| {
+                    if line.starts_with("monitoradded>>") {
+                        // let hyprland finish assigning the new output a workspace
+                        std::thread::sleep(std::time::Duration::from_millis(100));
+                        sync_decades();
+                    } else if line.starts_with("monitorremoved>>") {
+                        // let hyprland finish reassigning the dead monitor's workspaces
+                        std::thread::sleep(std::time::Duration::from_millis(100));
+                        adopt_orphans();
+                        // waybar freezes and hyprpaper crashes when an output dies:
+                        // restart them (spawned by hyprland so the daemon holds no
+                        // child to reap)
+                        for prog in ["waybar", "hyprpaper"] {
+                            let _ = std::process::Command::new("pkill")
+                                .args(["-x", prog])
+                                .status();
+                        }
+                        std::thread::sleep(std::time::Duration::from_millis(200));
+                        request("[[BATCH]]dispatch exec waybar;dispatch exec hyprpaper");
+                    }
+                });
             }
-            std::thread::sleep(std::time::Duration::from_millis(200));
-            request("[[BATCH]]dispatch exec waybar;dispatch exec hyprpaper");
         }
+        std::thread::sleep(std::time::Duration::from_secs(1));
     }
 }
 
