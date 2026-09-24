@@ -64,8 +64,6 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ## 6. Code generation
 
 - generate code for linux
-- use /bin/cat, as cat is an alias
-- use /bin/bash, as fish is my shell
 - for C++:
     - assume C++20 is available
     - format using clang-format

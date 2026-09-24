@@ -587,6 +587,10 @@ then
 
 fi
 
+if [[ -n $CLAUDECODE ]]; then
+    unalias -a
+fi
+
 # ]]]
 
 # dotter/handlebars+fold incompatibility: temporary [[[ / ]]]]
