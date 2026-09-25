@@ -241,7 +241,7 @@ if type mpv &>/dev/null
     function mpv
         set -l wrap
         if pgrep -x hyprsunset >/dev/null
-            set wrap systemd-run --user --pty --collect --quiet \
+            set wrap systemd-run --user --pty --same-dir --collect --quiet \
                 -E WAYLAND_DISPLAY -E HYPRLAND_INSTANCE_SIGNATURE \
                 --property=ExecStartPre='-/usr/bin/pkill -x hyprsunset' \
                 --property=ExecStopPost='/usr/bin/systemd-run --user --collect --quiet -E WAYLAND_DISPLAY -E HYPRLAND_INSTANCE_SIGNATURE /usr/bin/hyprsunset' \
