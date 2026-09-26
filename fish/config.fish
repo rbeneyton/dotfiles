@@ -557,7 +557,9 @@ if status --is-interactive
         # daemon is mandatory (recording routes through it); server only where dotter
         # deployed server.toml (atuin_server package)
         function atuin-check
-            if not pgrep -u $USER -f '^atuin daemon' >/dev/null
+            # not pgrep -f: it reads every process cmdline and blocks on any stuck one (after resume)
+            set -l pid (head -n1 $ATUIN_DATA_DIR/atuin-daemon.pid 2>/dev/null)
+            if not cat "/proc/$pid/cmdline" 2>/dev/null | string split0 | string join ' ' | string match -q 'atuin daemon*'
                 echo 'atuin-check: starting atuin daemon'
                 setsid --fork atuin daemon start >$ATUIN_DATA_DIR/daemon.log 2>&1
             end
