@@ -13,5 +13,26 @@
  * `> toolbar` only: notification decks must stay visible. */
 :root[inFullscreen] #navigator-toolbox > toolbar { display: none !important; }
 
+/* RB: Firefox 157 turned the urlbar view into an anchored popover, so the
+ * import's `#urlbar[breakout-extend]` flip is dead. Open it above the bar and
+ * mirror both halves of the joint background (input half / view half).
+ * No version query in CSS: every selector keys on the popover, so <157 is untouched. */
+#urlbar > .urlbarView:popover-open { position-area: block-start center !important; }
+#urlbar[popover-open] > .urlbar-background {
+  inset-block: calc(-1 * var(--urlbar-joint-background-overlap)) calc(-1 * (var(--urlbar-background-overhang-open) + var(--urlbar-input-growth-open-block))) !important;
+  border-radius: 0 0 var(--urlbar-background-border-top-radius-open) var(--urlbar-background-border-top-radius-open) !important;
+  clip-path: inset(
+    calc(var(--urlbar-joint-background-overlap) - var(--urlbar-input-growth-open-block)) calc(-1 * var(--urlbar-joint-background-shadow-margin))
+      calc(-1 * var(--urlbar-joint-background-shadow-margin))
+  ) !important;
+}
+#urlbar > .urlbarView:popover-open > .urlbarView-background {
+  inset-block: calc(-1 * var(--urlbarView-joint-background-outset-block)) calc(-1 * var(--urlbarView-margin-block) - var(--urlbar-joint-background-overlap)) !important;
+  border-radius: var(--urlbar-background-border-radius) var(--urlbar-background-border-radius) 0 0 !important;
+  clip-path: inset(
+    calc(-1 * var(--urlbar-joint-background-shadow-margin)) calc(-1 * var(--urlbar-joint-background-shadow-margin)) var(--urlbar-joint-background-overlap)
+  ) !important;
+}
+
 /* RB: wide 'chose bookmark folder' list (why they keep this crappy setting ???) */
 #editBMPanel_folderTree { min-height: 200em !important; }
