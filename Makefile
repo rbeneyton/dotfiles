@@ -341,6 +341,8 @@ misc-user: $(BIN) rg
 	rtk init -g --agent claude
 	rtk telemetry disable
 	rtk telemetry forget
+	# terminal snapshot
+	$(CARGO) install --locked asciinema
 
 
 RG = $(BIN)/rg
@@ -415,6 +417,7 @@ debian-install-base:
 	apt-get install clang # deps of tree-sitter-cli
 	apt-get install light gnome-session-xsession # deps of awesome / awesome own conf
 	loginctl enable-linger beneyton # enable linger for latest wayland-wm, to make tmux session robust to logout
+	apt-get install npm # /o\ sadly required for svg-term-cli for megafine snapshot
 	apt-get clean
 
 debian-install-net:
