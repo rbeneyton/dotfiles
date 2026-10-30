@@ -1,0 +1,3 @@
+# act when available RAM <= 5% and free swap <= 10% (swap is tiny, ~1 GB)
+# kill compilers/linkers first, never the compositor, terminals or tmux
+EARLYOOM_ARGS="-m 5 -s 10 -r 0 --prefer '^(rustc|cc1plus|clang|ld|ld\.lld|mold)$' --avoid '^(Hyprland|Xorg|awesome|systemd|sshd|tmux.*|alacritty|wezterm|rio)$'"

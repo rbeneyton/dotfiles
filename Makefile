@@ -375,8 +375,6 @@ rg: $(RG)
 debian-install: debian-install-base debian-install-net debian-install-graphic
 
 debian-install-base:
-	apt remove systemd-oomd # avoid https://github.com/systemd/systemd/issues/25376
-	# /etc/systemd/system.conf: DefaultOOMPolicy=continue
 	apt-get install ntp
 	apt-get install make # chicken & egg, here to remember
 	apt-get install time # no shell builtin
@@ -418,6 +416,10 @@ debian-install-base:
 	apt-get install light gnome-session-xsession # deps of awesome / awesome own conf
 	loginctl enable-linger beneyton # enable linger for latest wayland-wm, to make tmux session robust to logout
 	apt-get install npm # /o\ sadly required for svg-term-cli for megafine snapshot
+	apt remove systemd-oomd # kills whole cgroups: whole desktop or tmux-server.scope (all panes) here
+	apt-get install earlyoom
+	cp root/earlyoom.default /etc/default/earlyoom
+	systemctl restart earlyoom
 	apt-get clean
 
 debian-install-net:
