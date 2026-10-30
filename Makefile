@@ -391,12 +391,12 @@ debian-install-base:
 	apt-get install flex # for gcc (bug 84715 using multilib but not in src tree /o\)
 	apt-get install zlib1g-dev # zlib.h
 	apt-get install asciidoc gettext xmlto # git
-	apt-get install -t bookworm-backports libcurl4-openssl-dev # git ssl
-	apt-get install docbook-utils libncurses-dev libpcre2-posix2 # tig
+	apt-get install -t trixie-backports libcurl4-openssl-dev # git ssl
+	apt-get install docbook-utils libncurses-dev libpcre2-posix3 # tig
 	apt-get install texinfo # gdb
 	apt-get install libgmp-dev # gdb
 	apt-get install libmpfr-dev # gdb
-	apt-get install pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3  # alacritty
+	apt-get install pkg-config libfreetype-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev python3  # alacritty
 	apt-get install python3-pynvim # nvim
 	apt-get install python3-venv # nvim Mason
 	apt-get install libssl-dev # libevent
