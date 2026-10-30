@@ -185,6 +185,8 @@ lpmux_instance_timeout = 300 # stop unconnected lsp server after 300 seconds
 # rust
 [rust.files]
 "rust/cargo.toml" = "~/.cargo/config.toml"
+[rust.variables]
+cargo_jobs = 8 # default parallel rustc
 
 # conda
 [conda.files]
