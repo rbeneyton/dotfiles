@@ -245,6 +245,14 @@ fn tasks() {
     }
 }
 
+fn hyprlock_running() -> bool {
+    std::process::Command::new("pgrep")
+        .args(["-x", "hyprlock"])
+        .stdout(std::process::Stdio::null())
+        .status()
+        .is_ok_and(|s| s.success())
+}
+
 // the daemon is spawned once by hyprland and nothing restarts it: if it dies the
 // session silently loses wallpaper and bar recovery until the next login. every
 // helper here unwraps and hyprland's ipc is briefly unavailable while an output
@@ -264,6 +272,7 @@ fn watch() {
                         std::thread::sleep(std::time::Duration::from_millis(100));
                         sync_decades();
                     } else if line.starts_with("monitorremoved>>") {
+                        let locked = hyprlock_running();
                         // let hyprland finish reassigning the dead monitor's workspaces
                         std::thread::sleep(std::time::Duration::from_millis(100));
                         adopt_orphans();
@@ -277,6 +286,15 @@ fn watch() {
                         }
                         std::thread::sleep(std::time::Duration::from_millis(200));
                         request("[[BATCH]]dispatch exec waybar;dispatch exec hyprpaper");
+                        // hyprland may also drop hyprlock's connection, leaving the
+                        // session locked with no locker; relaunching it relies on
+                        // misc:allow_session_lock_restore
+                        if locked {
+                            std::thread::sleep(std::time::Duration::from_secs(1));
+                            if !hyprlock_running() {
+                                request("dispatch exec hyprlock");
+                            }
+                        }
                     }
                 });
             }
