@@ -420,6 +420,9 @@ debian-install-base:
 	apt-get install earlyoom
 	cp root/earlyoom.default /etc/default/earlyoom
 	systemctl restart earlyoom
+	apt install android-file-transfer # simplest method
+	apt install cups cups-browsed avahi-daemon libnss-mdns sane-airscan sane-utils simple-scan # ensure print/scan utility presence
+	sed -i 's/^escl$/#escl/' /etc/sane.d/dll.conf # disable invalid driver which is randomly chosen
 	apt-get clean
 
 debian-install-net:
